@@ -1,0 +1,13 @@
+<h1>{{ student.user.first_name }} {{ student.user.last_name }}</h1>
+
+<div>
+  {{ student.bio_fr }}
+</div>
+
+Promotion <a ui-sref="promotion"></a>
+
+<h2><i class="glyphicon glyphicon-flash"></i>Oeuvres</h2>
+
+<div ng-repeat="artwork in artworks">
+  <a ui-sref="artwork({id: artwork.id})">{{ artwork.title }}</a>
+</div>

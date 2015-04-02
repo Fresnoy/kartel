@@ -1,0 +1,36 @@
+<img ng-src="http://media.lefresnoy.net/?url=http://api.lefresnoy.net/{{ artwork.picture }}&w=1920&h=200">
+
+<h1>{{ artwork.title }}</h1>
+<h2 ng-if="artwork.subtitle"> {{ artwork.subtitle }}</h2>
+
+de
+<ul>
+  <li ng-repeat="author in artwork.authors">
+    <a ui-sref="artist({id: author.id})">{{ author.user.first_name }} {{ author.user.last_name }}</a>
+  </li>
+</ul>
+
+<h3>Description longue</h3>
+<tabset>
+  <tab heading="FR"><div ng-bind-html="artwork.description_fr|markdown"></div></tab>
+  <tab ng-if="artwork.description_en" heading="EN"><div ng-bind-html="artwork.description_en|markdown"></div></tab>
+</tabset>
+
+<h3>Description courte</h3>
+<tabset>
+  <tab heading="FR"><div ng-bind-html="artwork.description_short_fr|markdown"></div></tab>
+  <tab ng-if="artwork.description_short_en" heading="EN"><div ng-bind-html="artwork.description_short_en|markdown"></div></tab>
+</tabset>
+
+
+<h3>Copyright</h3>
+<tabset>
+  <tab heading="FR"><div ng-bind-html="artwork.copyright_fr|markdown"></div></tab>
+  <tab ng-if="artwork.copyright_en" heading="EN"><div ng-bind-html="artwork.copyright_en|markdown"></div></tab>
+</tabset>
+
+<h3>Crédits</h3>
+<tabset>
+  <tab heading="FR"><div ng-bind-html="artwork.credits_fr|markdown"></div></tab>
+  <tab ng-if="artwork.credits_en" heading="EN"><div ng-bind-html="artwork.credits_en|markdown"></div></tab>
+</tabset>

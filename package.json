@@ -1,0 +1,25 @@
+{
+  "name": "memoire",
+  "version": "0.0.1",
+  "repository": "https://ff",
+  "description": "XXXX.",
+  "author": {
+    "name": "Guillaume Libersat",
+    "url": "http://fuzzyfrequency.com/"
+  },
+  "main": "./lib/index",
+  "dependencies": {
+    "sass-brunch": "latest"
+  },
+  "devDependencies": {
+    "bower": "latest",
+    "brunch": "latest",
+    "javascript-brunch": "latest",
+    "coffee-script-brunch": "latest",
+    "sass-brunch": "latest",
+    "css-brunch": "latest",
+    "ng-annotate-uglify-js-brunch": "latest",
+    "clean-css-brunch": "latest",
+    "auto-reload-brunch": "latest"
+  }
+}

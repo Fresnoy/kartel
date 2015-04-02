@@ -1,0 +1,11 @@
+<div class="student-card col-md-2" ng-repeat="student in students">
+  <a ui-sref="school.student({id: student.id})">
+    <div class="thumbnail">
+      <img ng-if="student.user.photo" src="http://media.lefresnoy.net/?url=http://api.lefresnoy.net/media/{{ student.user.photo }}&h=200&w=300" alt="...">
+      <img ng-if="!student.user.photo" src="images/anonymous.jpg" alt="..">
+      <div class="caption">
+        <h3>{{ student.user.first_name }} {{ student.user.last_name }}</h3>
+      </div>
+    </div>
+  </a>
+</div>
