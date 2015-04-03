@@ -1,4 +1,4 @@
-angular.module('memoire', ['memoire.controllers', 'ui.router', 'ngAnimate', 'restangular', 'chieffancypants.loadingBar', 'ui.bootstrap', 'ngSanitize', 'markdown'])
+angular.module('memoire', ['memoire.controllers', 'memoire.directives', 'ui.router', 'ngAnimate', 'restangular', 'chieffancypants.loadingBar', 'ui.bootstrap', 'ngSanitize', 'markdown'])
 
 # CORS
 .config(['$httpProvider', ($httpProvider) ->

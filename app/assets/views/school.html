@@ -1,9 +1,11 @@
 <div class="row">
   <div class="col-md-2 sidebar">
-    <ul class="nav nav-sidebar">
+    <h2>Promotions</h2>
+    <ul class="nav nav-sidebar" class="promotions">
       <li class="promotion" ng-repeat="promotion in promotions">
-        <span>{{ promotion.starting_year }}-{{ promotion.ending_year }}</span>
-        <a ui-sref="school.promotion({id: promotion.id})">{{ promotion.name }}</a>
+        <a ui-sref-active="active" ui-sref="school.promotion({id: promotion.id})"><span class="label label-primary">{{ promotion.starting_year }}-{{ promotion.ending_year }}</span>
+          <span>{{ promotion.name }}</span>
+        </a>
       </li>
     </ul>
   </div>

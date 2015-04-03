@@ -1,36 +1,112 @@
-<img ng-src="http://media.lefresnoy.net/?url=http://api.lefresnoy.net/{{ artwork.picture }}&w=1920&h=200">
+<div class="header">
+  <div class="overlay"></div>
+  <fresnoy-thumbnail thurl="artwork.picture" thwidth="1920" thheight="200"></fresnoy-thumbnail>
+  <h1>{{ artwork.title }}</h1>
+  <h2 ng-if="artwork.subtitle"> {{ artwork.subtitle }}</h2>
+</div>
 
-<h1>{{ artwork.title }}</h1>
-<h2 ng-if="artwork.subtitle"> {{ artwork.subtitle }}</h2>
+<div class="nature">
+  {{ artwork.type }}
+  de
+  <ul class="authors">
+    <li ng-repeat="author in artwork.authors">
+      <a ui-sref="artist({id: author.id})"><span class="firstname">{{ author.user.first_name }}</span> <span class="lastname">{{ author.user.last_name }}</span></a></li>
+  </ul>
+</div>
 
-de
-<ul>
-  <li ng-repeat="author in artwork.authors">
-    <a ui-sref="artist({id: author.id})">{{ author.user.first_name }} {{ author.user.last_name }}</a>
-  </li>
-</ul>
+<div class="row">
+  <div class="col-md-10">
+    <tabset>
+      <tab>
+        <tab-heading>
+          <i class="glyphicon glyphicon-info-sign"></i>&nbsp;A propos
+        </tab-heading>
+        <h3>Description</h3>
+        <tabset>
+          <tab heading="Longue FR"><div ng-bind-html="artwork.description_fr|markdown"></div></tab>
+          <tab ng-if="artwork.description_en" heading="Longue EN"><div ng-bind-html="artwork.description_en|markdown"></div></tab>
+          <tab ng-if="artwork.description_short_fr" heading="Courte FR"><div ng-bind-html="artwork.description_short_fr|markdown"></div></tab>
+          <tab ng-if="artwork.description_short_en" heading="Courte EN"><div ng-bind-html="artwork.description_short_en|markdown"></div></tab>
+        </tabset>
 
-<h3>Description longue</h3>
-<tabset>
-  <tab heading="FR"><div ng-bind-html="artwork.description_fr|markdown"></div></tab>
-  <tab ng-if="artwork.description_en" heading="EN"><div ng-bind-html="artwork.description_en|markdown"></div></tab>
-</tabset>
-
-<h3>Description courte</h3>
-<tabset>
-  <tab heading="FR"><div ng-bind-html="artwork.description_short_fr|markdown"></div></tab>
-  <tab ng-if="artwork.description_short_en" heading="EN"><div ng-bind-html="artwork.description_short_en|markdown"></div></tab>
-</tabset>
+        <tabset>
+        </tabset>
 
 
-<h3>Copyright</h3>
-<tabset>
-  <tab heading="FR"><div ng-bind-html="artwork.copyright_fr|markdown"></div></tab>
-  <tab ng-if="artwork.copyright_en" heading="EN"><div ng-bind-html="artwork.copyright_en|markdown"></div></tab>
-</tabset>
+        <h3>Copyright</h3>
+        <tabset>
+          <tab heading="FR"><div ng-bind-html="artwork.copyright_fr|markdown"></div></tab>
+          <tab ng-if="artwork.copyright_en" heading="EN"><div ng-bind-html="artwork.copyright_en|markdown"></div></tab>
+        </tabset>
 
-<h3>Crédits</h3>
-<tabset>
-  <tab heading="FR"><div ng-bind-html="artwork.credits_fr|markdown"></div></tab>
-  <tab ng-if="artwork.credits_en" heading="EN"><div ng-bind-html="artwork.credits_en|markdown"></div></tab>
-</tabset>
+        <h3>Crédits</h3>
+        <tabset>
+          <tab heading="FR"><div ng-bind-html="artwork.credits_fr|markdown"></div></tab>
+          <tab ng-if="artwork.credits_en" heading="EN"><div ng-bind-html="artwork.credits_en|markdown"></div></tab>
+        </tabset>
+
+      </tab>
+      <tab>
+        <tab-heading>
+          <i class="glyphicon glyphicon-picture"></i>&nbsp;Media
+        </tab-heading>
+
+        <h4><i class="glyphicon glyphicon-picture"></i>&nbsp;Visuel principal</h4>
+        <div class="col-sm-2">
+          <a href="#" class="thumbnail">
+            <fresnoy-thumbnail thurl="artwork.picture" thwidth="300" thheight="200"></fresnoy-thumbnail>
+          </a>
+        </div>
+
+        <div class="clearfix"></div>
+
+        <div ng-if="artwork.in_situ_galleries.length">
+          <h4><i class="glyphicon glyphicon-map-marker"></i>&nbsp;In Situ</h4>
+          <div ng-repeat="gallery in artwork.in_situ_galleries">
+            <h5>{{ gallery.label }} ({{ gallery.description }})</h5>
+            <fresnoy-gallery gallery="gallery"></fresnoy-gallery>
+            <div class="clearfix"></div>
+          </div>
+        </div>
+
+        <div ng-if="artwork.mediation_galleries.length">
+          <h4><i class="glyphicon glyphicon-user"></i>&nbsp;Médiation</h4>
+          <div ng-repeat="gallery in artwork.mediation_galleries">
+            <h5>{{ gallery.label }} ({{ gallery.description }})</h5>
+            <fresnoy-gallery gallery="gallery"></fresnoy-gallery>
+            <div class="clearfix"></div>
+          </div>
+        </div>
+
+        <div ng-if="artwork.press_galleries.length">
+          <h4><i class="glyphicon glyphicon-paperclip"></i>&nbsp;Presse</h4>
+          <div ng-repeat="gallery in artwork.press_galleries">
+            <h5>{{ gallery.label }} ({{ gallery.description }})</h5>
+            <fresnoy-gallery gallery="gallery"></fresnoy-gallery>
+            <div class="clearfix"></div>
+          </div>
+        </div>
+
+        <div ng-if="artwork.process_galleries.length">
+          <h4><i class="glyphicon glyphicon-cog"></i>&nbsp;Processus</h4>
+          <div ng-repeat="gallery in artwork.process_galleries">
+            <h5>{{ gallery.label }} ({{ gallery.description }})</h5>
+            <fresnoy-gallery gallery="gallery"></fresnoy-gallery>
+            <div class="clearfix"></div>
+          </div>
+        </div>
+
+
+      </tab>
+    </tabset>
+  </div>
+
+  <div class="col-md-2 sidebar">
+    <h3><i class="glyphicon glyphicon-bullhorn"></i>&nbsp;Diffusions</h3>
+    <ul>
+      <li ng-repeat="event in events">{{ event.title }}</li>
+    </ul>
+  </div>
+
+
+</div>
