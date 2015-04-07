@@ -1,7 +1,7 @@
 # -*- tab-width: 2 -*-
 "use strict"
 
-angular.module('memoire.directives', ['memoire.services'])
+angular.module('memoire.directives', ['memoire.services', 'bootstrapLightbox'])
 
 .directive("fresnoyThumbnail", ->
   return {
@@ -11,18 +11,48 @@ angular.module('memoire.directives', ['memoire.services'])
       url: '=thurl'
       width: '=thwidth'
       height: '=thheight'
+      op: '='
     },
-    template: '<img ng-src="http://media.lefresnoy.net/?url=http://api.lefresnoy.net/{{ url }}&w={{ width }}&h={{ height }}" />'
+    template: (x, scope) ->
+      url = "http://media.lefresnoy.net/?url=http://api.lefresnoy.net/{{ url }}&w={{ width }}&h={{ height }}"
+      if scope.op
+        url += "&op=#{ scope.op }"
+      return "<img ng-src=\"#{url}\" />"
   }
+)
+
+.config((LightboxProvider) ->
+  LightboxProvider.templateUrl = 'directives/fresnoyGallery-lightbox-modal.html'
 )
 
 .directive("fresnoyGallery", ->
   return {
     restrict: 'E',
-    replace: true
+    replace: true,
+    transclude: true,
     scope: {
       gallery: '='
+      openLightboxModal: '&'
     }
     templateUrl: "directives/gallery.html"
+    controller: ($scope, $sce, Lightbox) ->
+      for media in $scope.gallery.media
+        if media.medium_url
+          media.medium_url = $sce.trustAsResourceUrl(media.medium_url)
+
+      $scope.openLightboxModal = (index) ->
+        Lightbox.openModal($scope.gallery.media, index)
+  }
+)
+
+.directive("flagIcon", ->
+  return {
+    restrict: 'E',
+    replace: true,
+    scope: {
+      country: '='
+    }
+    template: (x, scope) ->
+      return '<img class="flag" ng-src="images/flags/' + scope.country + '.png" alt="{{ country }}"/>'
   }
 )

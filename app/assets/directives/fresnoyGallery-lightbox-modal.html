@@ -1,0 +1,19 @@
+<div class="modal-body" ng-swipe-left="Lightbox.nextImage()"
+    ng-swipe-right="Lightbox.prevImage()">
+
+  <div class="lightbox-nav">
+    <button class="close" aria-hidden=true ng-click="$dismiss()">×</button>
+    <div class="btn-group">
+      <a class="btn btn-xs btn-default" ng-click="Lightbox.prevImage()">‹ Précédente</a>
+      <a class="btn btn-xs btn-default" ng-click="Lightbox.nextImage()">Suivante ›</a>
+    </div>
+  </div>
+
+  <!-- video -->
+  <!-- image -->
+  <div class="lightbox-image-container">
+    <video width="100%" poster="http://media.lefresnoy.net/?url=http://api.lefresnoy.net/{{ Lightbox.image.picture }}&op=noop" ng-if="Lightbox.image.medium_url" controls ng-src="{{ Lightbox.image.medium_url }}">{{ Lightbox.image.description }}</video>
+    <img ng-if="!Lightbox.image.medium_url" lightbox-src="http://media.lefresnoy.net/?url=http://api.lefresnoy.net/{{ Lightbox.image.picture }}&op=noop"/>
+  </div>
+
+</div>

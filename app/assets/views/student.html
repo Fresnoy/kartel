@@ -6,6 +6,9 @@
 <div class="info col-sm-9">
 
   <div class="person">
+
+    <h2><i class="glyphicon glyphicon-question-sign"></i>&nbsp;A propos</h2>
+
     <div ng-if="student.user.birthdate || student.user.birthplace">
       Né(e) <span ng-if="student.user.birthdate">le {{ student.user.birthdate }}</span> <span ng-if="student.user.birthplace">à {{ student.user.birthplace }}</span>.
     </div>
@@ -32,12 +35,28 @@
   </div>
 
   <div>
-    <h3>Biographie</h3>
     <tabset>
-      <tab heading="Longue FR"><div ng-bind-html="student.bio_fr|markdown"></div></tab>
-      <tab ng-if="student.bio_en" heading="Longue EN"><div ng-bind-html="student.bio_en|markdown"></div></tab>
-      <tab ng-if="student.bio_short_fr" heading="Courte FR"><div ng-bind-html="student.bio_short_fr|markdown"></div></tab>
-      <tab ng-if="student.bio_short_en" heading="Courte EN"><div ng-bind-html="student.bio_short_en|markdown"></div></tab>
+      <h3>Biographie</h3>
+      <tab>
+        <tab-heading><flag-icon country="fr"></flag-icon></tab-heading>
+        <div ng-bind-html="student.bio_fr|markdown"></div>
+      </tab>
+
+      <tab ng-if="student.bio_en">
+        <tab-heading><flag-icon country="uk"></flag-icon></tab-heading>
+        <div ng-bind-html="student.bio_en|markdown"></div>
+      </tab>
+
+      <tab ng-if="student.bio_short_fr">
+        <tab-heading>Courte <flag-icon country="fr"></flag-icon></tab-heading>
+        <div ng-bind-html="student.bio_short_fr|markdown"></div>
+      </tab>
+
+      <tab ng-if="student.bio_short_en">
+        <tab-heading>Courte <flag-icon country="uk"></flag-icon></tab-heading>
+        <div ng-bind-html="student.bio_short_en|markdown"></div>
+      </tab>
+
     </tabset>
   </div>
 
@@ -51,17 +70,16 @@
   </div>
 </div>
 
+<div class="info col-sm-12">
+  <h2><i class="glyphicon glyphicon-flash"></i>Oeuvres</h2>
 
-
-<div class="clearfix"></div>
-
-
-<h2><i class="glyphicon glyphicon-flash"></i>Oeuvres</h2>
-
-<div class="col-sm-2" ng-repeat="artwork in artworks">
-  <a ui-sref="artwork({id: artwork.id})" class="thumbnail">
-    <fresnoy-thumbnail thurl="artwork.picture" thwidth="300" thheight="200"></fresnoy-thumbnail>
-    {{ artwork.title }}
-    {{ media.type }}
-  </a>
+  <div class="row">
+    <div class="col-sm-2" ng-repeat="artwork in artworks">
+      <a ui-sref="artwork({id: artwork.id})" class="thumbnail">
+        <fresnoy-thumbnail thurl="artwork.picture" thwidth="300" thheight="200"></fresnoy-thumbnail>
+        {{ artwork.title }}
+        {{ media.type }}
+      </a>
+    </div>
+  </div>
 </div>

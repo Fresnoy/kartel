@@ -1,3 +1,7 @@
+.modal-dialog{
+    min-width: 70%;
+}
+
 .main-container {
     margin-top: 50px;
 }
@@ -27,7 +31,7 @@ li.promotion {
 }
 
 .student-card {
-    height: 250px;
+    height: 200px;
 }
 
 /*-- Student --*/
@@ -62,6 +66,32 @@ li.promotion {
 
 
 /*-- Artwork --*/
+
+.flag {
+    height: 18px;
+}
+
+.nav-tabs {
+    h3 {
+        display: inline-block;
+        float: left;
+        vertical-align: middle;
+        line-height: 20px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        padding-right: 10px;
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+}
+
+div.api-field {
+    margin-bottom: 20px;;
+}
+
+.artwork-about .tab-content {
+    padding-top: 10px;
+}
 
 .header {
     display: block;

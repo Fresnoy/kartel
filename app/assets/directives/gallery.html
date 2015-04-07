@@ -1,7 +1,12 @@
 <div class="col-sm-2" ng-repeat="media in gallery.media">
-  <a href="#" class="thumbnail">
-    <fresnoy-thumbnail thurl="media.picture" thwidth="300" thheight="200"></fresnoy-thumbnail>
-    {{ media.label }}
-    {{ media.description }}
-  </a>
+  <div class="thumbnail">
+    <a href="javascript:void(0);" ng-click="$parent.openLightboxModal($index)">
+      <fresnoy-thumbnail thurl="media.picture" thwidth="300" thheight="200"></fresnoy-thumbnail>
+    </a>
+      <i ng-if="media.medium_url" class="glyphicon glyphicon-film"></i>
+      <a href="javascript:void(0);" ng-click="$parent.openLightboxModal($index)">
+        {{ media.label }}
+        {{ media.description }}
+      </a>
+  </div>
 </div>

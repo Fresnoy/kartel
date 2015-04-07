@@ -21,9 +21,10 @@ angular.module('memoire.controllers', ['memoire.services'])
   $scope.artists = Artists.one($stateParams.id).get().$object
 )
 
-.controller('ArtworkController', ($scope, $stateParams, Artworks, Events) ->
+.controller('ArtworkController', ($scope, $stateParams, Lightbox, Artworks, Events) ->
   $scope.artwork = null
   $scope.events = []
+  $scope.main_picture_gallery = {media: []}
 
   Artworks.one().one($stateParams.id).get().then((artwork) ->
     $scope.artwork = artwork
@@ -34,6 +35,13 @@ angular.module('memoire.controllers', ['memoire.services'])
         Events.one(event_id).get().then((event) ->
           $scope.events.push(event)
         )
+
+    # Fake a gallery for the main visual so we can reuse the gallery
+    # component
+    $scope.main_picture_gallery.media.push({
+      picture: artwork.picture
+      description: 'Visuel principal'
+    })
   )
 
 )
