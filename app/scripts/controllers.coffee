@@ -3,6 +3,36 @@
 
 angular.module('memoire.controllers', ['memoire.services'])
 
+.controller('QuickSearch', ($scope, $q, $state, Restangular) ->
+  $scope.selected = null
+
+  $scope.goTo = ($item, $model, $label) ->
+    # Extract the id
+    matches = $item.resource_uri.match(/\d+$/)
+    if matches
+      id = matches[0]
+
+    if $item.resource_uri.search("production") != -1
+      $state.go("artwork", {id: id})
+
+    else if $item.resource_uri.search("student") != -1
+      $state.go("school.student", {id: id})
+
+
+  $scope.search = (value) ->
+    artworks = Restangular.all('production/artwork').customGET('search', {q: value}).then((response) ->
+      return response.objects
+    )
+
+    students = Restangular.all('school/student').customGET('search', {q: value}).then((response) ->
+      return response.objects
+    )
+
+    $q.all([artworks, students]).then((results) ->
+      return _.flatten(_.map(results, _.values))
+    )
+)
+
 .controller('ArtistListingController', ($scope, Artists) ->
   $scope.artists = Artists.getList().$object
 )
@@ -17,8 +47,22 @@ angular.module('memoire.controllers', ['memoire.services'])
   $scope.students = Students.getList({promotion: $stateParams.id, limit: 100}).$object
 )
 
-.controller('ArtistController', ($scope, $stateParams, Artists) ->
-  $scope.artists = Artists.one($stateParams.id).get().$object
+.controller('ArtistController', ($scope, $stateParams, Artists, Artworks) ->
+  $scope.student = null
+  $scope.artworks = []
+
+  Artists.one().one($stateParams.id).get().then((artist) ->
+    $scope.student = artist
+
+    # Fetch artworks
+    for artwork_uri in $scope.student.artworks
+      matches = artwork_uri.match(/\d+$/)
+      if matches
+        artwork_id = matches[0]
+        Artworks.one(artwork_id).get().then((artwork) ->
+          $scope.artworks.push(artwork)
+        )
+  )
 )
 
 .controller('ArtworkController', ($scope, $stateParams, Lightbox, Artworks, Events) ->

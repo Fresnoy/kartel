@@ -31,8 +31,27 @@
             <li><a href="#">Artistes</a></li>
             <li><a href="#">Oeuvres</a></li>
           </ul>
-          <form class="navbar-form navbar-right">
-            <input type="text" class="form-control" placeholder="Rechercher...">
+          <script type="text/ng-template" id="customTemplate.html">
+            <a ng-click="goTo()">
+              <div class="media">
+                <div class="media-left">
+                  <fresnoy-thumbnail ng-if="match.model.user" class="media-object" thurl="'media/' + match.model.user.picture" thwidth="40" thheight="40"></fresnoy-thumbnail>
+                  <fresnoy-thumbnail ng-if="!match.model.user" class="media-object" thurl="match.model.picture" thwidth="40" thheight="40"></fresnoy-thumbnail>
+                </div>
+                <div class="media-body">
+                  <h4 class="media-heading" ng-if="!match.model.user" bind-html-unsafe="match.model.title | typeaheadHighlight:query"></h4>
+                  <h4 class="media-heading" ng-if="match.model.user"><span bind-html-unsafe="match.model.user.first_name | typeaheadHighlight:query"></span> <span bind-html-unsafe="match.model.user.last_name | typeaheadHighlight:query"></span> </h4>
+
+                  <span ng-if="!match.model.user" class="author">{{ match.model.authors[0].user.first_name }} {{ match.model.authors[0].user.last_name }}</span>
+                  <span ng-if="match.model.nickname" class="nickname">{{ match.model.nickname }}</span>
+                </div>
+              </div>
+            </a>
+          </script>
+
+          <form class="navbar-form navbar-right" ng-controller="QuickSearch">
+            <input typeahead="object for objects in search($viewValue)" typeahead-wait-ms="200" typeahead-min-length="3" typeahead-template-url="customTemplate.html" ng-model="selected" typeahead-loading="loading" typeahead-editable="false" typeahead-on-select="goTo($item, $model, $label)" type="text" class="form-control" placeholder="Rechercher...">
+            <i ng-show="loading" class="glyphicon glyphicon-refresh"></i>
           </form>
         </div>
       </div>

@@ -56,7 +56,7 @@ angular.module('memoire', ['memoire.controllers', 'memoire.directives', 'ui.rout
 
         $stateProvider.state('artist',
                 url: '/artist/:id',
-                templateUrl: 'views/artist.html'
+                templateUrl: 'views/student.html'
                 controller: 'ArtistController'
         )
 
