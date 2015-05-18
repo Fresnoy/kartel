@@ -43,12 +43,17 @@ angular.module('memoire.controllers', ['memoire.services'])
   $scope.letter = $state.params.letter || "a"
   $scope.artworks = Artworks.getList({title__istartswith: $scope.letter}).$object
   $scope.alphabet = "abcdefghijklmnopqrstuvwxyz".split("")
-  console.debug("yo")
 )
 
 
-.controller('SchoolController', ($scope, Promotions, Students) ->
-  $scope.promotions = Promotions.getList({order_by: "-starting_year"}).$object
+.controller('SchoolController', ($scope, $state, Promotions, Students) ->
+  $scope.promotions = []
+
+  Promotions.getList({order_by: "-starting_year"}).then((promotions) ->
+    $scope.promotions = promotions
+    $state.go('school.promotion', {id: $scope.promotions[0].id})
+  )
+
 )
 
 .controller('PromotionController', ($scope, $stateParams, Students, Promotions) ->
