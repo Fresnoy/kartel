@@ -13,7 +13,7 @@ angular.module('memoire.controllers', ['memoire.services'])
       id = matches[0]
 
     if $item.resource_uri.search("production") != -1
-      $state.go("artwork", {id: id})
+      $state.go("artwork-detail", {id: id})
 
     else if $item.resource_uri.search("student") != -1
       $state.go("school.student", {id: id})
