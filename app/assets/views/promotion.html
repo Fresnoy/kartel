@@ -1,14 +1,4 @@
 <h1>{{ promotion.starting_year }}-{{ promotion.ending_year }} - {{ promotion.name }}</h1>
 
 
-<div class="student-card col-md-2" ng-repeat="student in students">
-  <a ui-sref="school.student({id: student.id})">
-    <div class="thumbnail">
-      <fresnoy-thumbnail ng-if="student.user.photo" thurl="'media/'+student.user.photo" thwidth="300" thheight="200"></fresnoy-thumbnail>
-      <img ng-if="!student.user.photo" src="images/anonymous.jpg" alt="..">
-      <div class="caption">
-        {{ student.user.first_name }} <strong>{{ student.user.last_name }}</strong>
-      </div>
-    </div>
-  </a>
-</div>
+<ng-include src="'views/partials/student_card.html'" ng-repeat="student in students"></ng-include>

@@ -93,6 +93,14 @@ div.api-field {
     padding-top: 10px;
 }
 
+/* header */
+.navbar-brand {
+    img {
+        margin-top: -4px;
+    }
+}
+
+
 .header {
     display: block;
     height: 200px;
@@ -164,6 +172,23 @@ div.api-field {
 
         .lastname {
             text-transform: uppercase;
+        }
+    }
+}
+
+.quicksearch {
+    ul {
+        margin: 0px;
+        padding: 0px;
+        max-width: 30%;
+
+        li {
+            a {
+                padding-left: 10px;
+                padding-right: 10px;
+                padding-bottom: 5px;
+                padding-top: 5px;
+            }
         }
     }
 }

@@ -28,14 +28,24 @@ angular.module('memoire.controllers', ['memoire.services'])
       return response.objects
     )
 
-    $q.all([artworks, students]).then((results) ->
+    $q.all([students, artworks]).then((results) ->
       return _.flatten(_.map(results, _.values))
     )
 )
 
-.controller('ArtistListingController', ($scope, Artists) ->
-  $scope.artists = Artists.getList().$object
+.controller('ArtistListingController', ($scope, Artists, $state) ->
+  $scope.letter = $state.params.letter || "a"
+  $scope.artists = Artists.getList({user__last_name__istartswith: $scope.letter}).$object
+  $scope.alphabet = "abcdefghijklmnopqrstuvwxyz".split("")
 )
+
+.controller('ArtworkListingController', ($scope, Artworks, $state) ->
+  $scope.letter = $state.params.letter || "a"
+  $scope.artworks = Artworks.getList({title__istartswith: $scope.letter}).$object
+  $scope.alphabet = "abcdefghijklmnopqrstuvwxyz".split("")
+  console.debug("yo")
+)
+
 
 .controller('SchoolController', ($scope, Promotions, Students) ->
   $scope.promotions = Promotions.getList({order_by: "-starting_year"}).$object

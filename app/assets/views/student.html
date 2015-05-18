@@ -74,12 +74,6 @@
   <h2><i class="glyphicon glyphicon-flash"></i>Oeuvres</h2>
 
   <div class="row">
-    <div class="col-sm-2" ng-repeat="artwork in artworks">
-      <a ui-sref="artwork({id: artwork.id})" class="thumbnail">
-        <fresnoy-thumbnail thurl="artwork.picture" thwidth="300" thheight="200"></fresnoy-thumbnail>
-        {{ artwork.title }}
-        {{ media.type }}
-      </a>
-    </div>
+    <ng-include src="'views/partials/artwork_card.html'" ng-repeat="artwork in artworks"></ng-include>
   </div>
 </div>
