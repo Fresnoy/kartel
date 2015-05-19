@@ -51,7 +51,6 @@ angular.module('memoire.controllers', ['memoire.services'])
 
   Promotions.getList({order_by: "-starting_year"}).then((promotions) ->
     $scope.promotions = promotions
-    $state.go('school.promotion', {id: $scope.promotions[0].id})
   )
 
 )
