@@ -192,3 +192,16 @@ div.api-field {
         }
     }
 }
+
+
+// print
+@media print {
+    .no-print, .no-print * {
+        display: none !important;
+    }
+
+    .tab-content > .tab-pane {
+        display: block !important; opacity: 1 !important;
+        visibility: visible;
+    }
+}

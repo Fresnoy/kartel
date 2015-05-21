@@ -5,6 +5,7 @@
     <button class="close" aria-hidden=true ng-click="$dismiss()">×</button>
     <div class="btn-group">
       <a class="btn btn-xs btn-default" ng-click="Lightbox.prevImage()">‹ Précédente</a>
+      <a class="btn btn-xs btn-default" target="_blank" href="http://media.lefresnoy.net/?url=http://api.lefresnoy.net/{{ Lightbox.image.picture }}&op=noop" download="Image"><i class="glyphicon glyphicon-link"></i>&nbsp;Lien vers l'original</a>
       <a class="btn btn-xs btn-default" ng-click="Lightbox.nextImage()">Suivante ›</a>
     </div>
   </div>
