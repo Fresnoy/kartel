@@ -1,7 +1,7 @@
-<div class="col-sm-2">
+<div class="col-sm-2 artwork-card">
   <a ui-sref="artwork-detail({id: artwork.id})" class="thumbnail">
     <fresnoy-thumbnail thurl="artwork.picture" thwidth="300" thheight="200"></fresnoy-thumbnail>
-    {{ artwork.title }}
+    <span class="title">{{ artwork.title }}</span>
     {{ media.type }}
   </a>
 </div>

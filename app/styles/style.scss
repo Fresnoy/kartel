@@ -67,6 +67,18 @@ li.promotion {
 
 /*-- Artwork --*/
 
+.artwork-card {
+    overflow: hidden;
+
+    span.title {
+        display: block;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        width: 100%;
+    }
+}
+
 .flag {
     height: 18px;
 }
@@ -177,6 +189,10 @@ div.api-field {
 }
 
 .quicksearch {
+    i.loading-glyph {
+        color: white;
+        padding-left: 5px;
+    }
     ul {
         margin: 0px;
         padding: 0px;

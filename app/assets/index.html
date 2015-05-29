@@ -57,7 +57,7 @@
 
           <form class="quicksearch navbar-form navbar-left" ng-controller="QuickSearch">
             <input typeahead="object for objects in search($viewValue)" typeahead-wait-ms="200" typeahead-min-length="3" typeahead-template-url="customTemplate.html" ng-model="selected" typeahead-loading="loading" typeahead-editable="false" typeahead-on-select="goTo($item, $model, $label)" type="text" class="form-control" placeholder="Rechercher...">
-            <i ng-show="loading" class="glyphicon glyphicon-refresh"></i>
+            <i ng-show="loading" class="loading-glyph glyphicon glyphicon-refresh"></i>
           </form>
         </div>
       </div>
