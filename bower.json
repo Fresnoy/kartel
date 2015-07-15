@@ -1,15 +1,15 @@
 {
-  "name": "memoire",
+  "name": "kart",
   "version": "0.0.2",
-  "homepage": "https://ff",
+  "homepage": "https://github.com/Fresnoy/kart",
   "authors": [
-    "Unisson Team <contact@fuzzyfrequency.com>"
+    "Fuzzy Frequency <contact@fuzzyfrequency.com>"
   ],
-  "description": "Memoire",
+  "description": "Kart",
   "main": "index.html",
   "keywords": [
-    "unisson",
-    "map"
+    "frontend",
+    "culture"
   ],
   "license": "AGPL v3",
   "private": true,
