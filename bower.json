@@ -1,11 +1,11 @@
 {
-  "name": "kart",
+  "name": "kartel",
   "version": "0.0.2",
-  "homepage": "https://github.com/Fresnoy/kart",
+  "homepage": "https://github.com/Fresnoy/kartel",
   "authors": [
     "Fuzzy Frequency <contact@fuzzyfrequency.com>"
   ],
-  "description": "Kart",
+  "description": "Kartel",
   "main": "index.html",
   "keywords": [
     "frontend",

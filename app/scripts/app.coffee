@@ -1,9 +1,9 @@
 ###
 Copyright (c) 2015 "Fuzzy Frequency, Le Fresnoy"
 
-This file is part of Kart.
+This file is part of Kartel.
 
-Kart is free software: you can redistribute it and/or modify
+Kartel is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as
 published by the Free Software Foundation, either version 3 of the
 License, or (at your option) any later version.
