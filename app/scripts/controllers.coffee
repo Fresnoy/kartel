@@ -35,7 +35,7 @@ angular.module('memoire.controllers', ['memoire.services'])
 
 .controller('ArtistListingController', ($scope, Artists, $state) ->
   $scope.letter = $state.params.letter || "a"
-  $scope.artists = Artists.getList({user__last_name__istartswith: $scope.letter}).$object
+  $scope.artists = Artists.getList({user__last_name__istartswith: $scope.letter, limit: 100}).$object
   $scope.alphabet = "abcdefghijklmnopqrstuvwxyz".split("")
 )
 
