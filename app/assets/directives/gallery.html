@@ -1,13 +1,15 @@
 <div class="col-sm-2" ng-repeat="media in gallery.media">
   <div class="thumbnail">
     <a href="javascript:void(0);" ng-click="$parent.openLightboxModal($index)">
-      <fresnoy-thumbnail thurl="media.picture" thwidth="300" thheight="200"></fresnoy-thumbnail>
+      <fresnoy-thumbnail ng-if="media.picture | isFresnoyUrl" thurl="media.picture" thwidth="300" thheight="200" thformat="jpg"></fresnoy-thumbnail>
+      <img ng-if="!(media.picture | isFresnoyUrl)" src="{{ media.picture }}" />
     </a>
       <i ng-if="media.medium_url" class="glyphicon glyphicon-film"></i>
       <a href="javascript:void(0);" ng-click="$parent.openLightboxModal($index)">
         {{ media.label }}
         {{ media.description }}
       </a>
-      <a class="no-print" target="_blank" href="http://media.lefresnoy.net/?url=http://api.lefresnoy.net/{{ media.picture }}&op=noop" download="Image"><i class="glyphicon glyphicon-link"></i></a>
+      <a class="no-print" ng-if="media.medium_url | isFresnoyUrl" target="_blank" href="http://media.lefresnoy.net/?url=http://api.lefresnoy.net/{{ media.picture }}&op=noop" download="Image"><i class="glyphicon glyphicon-link"></i></a>
+      <a class="no-print" ng-if="!(media.picture | isFresnoyUrl)" target="_blank" href="{{ media.picture }}" download="Image"><i class="glyphicon glyphicon-link"></i></a>
   </div>
 </div>
