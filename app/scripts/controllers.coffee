@@ -97,24 +97,22 @@ angular.module('memoire.controllers', ['memoire.services'])
         )
 
 
-    search = artwork.title
+    search = (artwork.title)+" "+slug(artwork.authors[0].user.first_name[0]+artwork.authors[0].user.last_name).toLowerCase()
+    #search :  Archipel gabbruzzese
     AmeRestangular.all("api_search/").get("",{"search": search, "flvfile": "true", "previewsize":"scr"}).then((ame_artwork) ->
-
       for archive in ame_artwork
         if archive.flvpath
 
           $scope.ame_artwork_gallery.media.push({
             picture : archive.flvthumb
             medium_url : $sce.trustAsResourceUrl(archive.flvpath)
-            description : ''
+            description : archive.field8
          })
-         console.log($scope.ame_artwork_gallery)
+
     , (response) ->
-      console.log(response)
+      #erreur service
       $scope.ame_access = false
     )
-
-
     # Fake a gallery for the main visual so we can reuse the gallery
     # component
     $scope.main_picture_gallery.media.push({

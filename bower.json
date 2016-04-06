@@ -21,6 +21,7 @@
     "tests"
   ],
   "dependencies": {
+    "slug" : "",
     "lodash":"~4.6",
     "underscore": "~1.8.0",
     "jquery": "~2.1.1",
