@@ -22,7 +22,6 @@ angular.module('memoire', ['memoire.controllers', 'memoire.directives', 'ui.rout
 # CORS
 .config(['$httpProvider', ($httpProvider) ->
         $httpProvider.defaults.useXDomain = true
-
         delete $httpProvider.defaults.headers.common['X-Requested-With']
 ])
 
@@ -44,29 +43,6 @@ angular.module('memoire', ['memoire.controllers', 'memoire.directives', 'ui.rout
                 return newResponse
         )
 )
-
-# AME Service
-.factory('AmeRestangular', (Restangular) ->
-
-      Restangular.setDefaultRequestParams({key: config.ame_key})
-      #
-      return Restangular.withConfig((RestangularConfigurer) ->
-            RestangularConfigurer.setBaseUrl(config.ame_rest_uri);
-
-            #RestangularConfigurer.defaultRequestParams.common.apikey = config.ame_key;
-            #Restangular.setDefaultRequestParams({key: config.ame_key});
-      )
-)
-
-.filter("isFresnoyUrl", ->
-  return (input, str = "/media/") ->
-    if typeof input isnt 'string'
-      return false
-    return input.indexOf(str) > -1
-
-
-)
-
 
 # URI config
 .config(['$locationProvider', '$stateProvider', '$urlRouterProvider', ($locationProvider, $stateProvider, $urlRouterProvider) ->
@@ -131,18 +107,6 @@ angular.module('memoire', ['memoire.controllers', 'memoire.directives', 'ui.rout
         $rootScope.$state = $state
         $rootScope.$stateParams = $stateParams
         # $rootScope.loginService = loginService
-])
-
-.run(['AmeRestangular', (AmeRestangular) ->
-  AmeRestangular.setErrorInterceptor((response) ->
-    if (response.status == 401)
-        console.log("Login required... ")
-    else if (response.status == 404)
-        console.log("Resource not available...")
-    else
-        console.log("Ame service not available : " + response.status )
-    return response # stop the promise chain
-  )
 ])
 
 # Ugly Fix for autofill on forms

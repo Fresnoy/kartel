@@ -84,10 +84,6 @@ li.promotion {
 }
 
 .nav-tabs {
-    margin-top: 10px;
-    a {
-      cursor: pointer;
-    }
     h3 {
         display: inline-block;
         float: left;
@@ -96,7 +92,7 @@ li.promotion {
         padding-top: 10px;
         padding-bottom: 10px;
         padding-right: 10px;
-        margin-top: 0px;
+        margin-top: 0;
         margin-bottom: 0;
     }
 }
@@ -166,9 +162,6 @@ div.api-field {
 
     }
 }
-
-
-
 
 .nature {
 

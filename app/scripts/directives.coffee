@@ -14,18 +14,16 @@ angular.module('memoire.directives', ['memoire.services', 'bootstrapLightbox'])
       op: '='
     },
     template: (x, scope) ->
-      url = "http://media.lefresnoy.net/?url=http://api.lefresnoy.net/{{ url }}&w={{ width }}&h={{ height }}&fmt=jpg"
+      url = "http://media.lefresnoy.net/?url=http://api.lefresnoy.net/{{ url }}&w={{ width }}&h={{ height }}"
       if scope.op
         url += "&op=#{ scope.op }"
       return "<img ng-src=\"#{url}\" />"
   }
 )
 
-
 .config((LightboxProvider) ->
   LightboxProvider.templateUrl = 'directives/fresnoyGallery-lightbox-modal.html'
 )
-
 
 .directive("fresnoyGallery", ->
   return {
@@ -38,7 +36,6 @@ angular.module('memoire.directives', ['memoire.services', 'bootstrapLightbox'])
     }
     templateUrl: "directives/gallery.html"
     controller: ($scope, $sce, Lightbox) ->
-
       for media in $scope.gallery.media
         if media.medium_url
           media.medium_url = $sce.trustAsResourceUrl(media.medium_url)

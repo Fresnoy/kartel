@@ -79,12 +79,10 @@ angular.module('memoire.controllers', ['memoire.services'])
   )
 )
 
-.controller('ArtworkController', ($scope, $stateParams, $sce, Lightbox, Artworks, AmeRestangular,  Events) ->
+.controller('ArtworkController', ($scope, $stateParams, Lightbox, Artworks, Events) ->
   $scope.artwork = null
   $scope.events = []
   $scope.main_picture_gallery = {media: []}
-  $scope.ame_artwork_gallery = {media: []}
-  $scope.ame_access = true
 
   Artworks.one().one($stateParams.id).get().then((artwork) ->
     $scope.artwork = artwork
@@ -96,34 +94,12 @@ angular.module('memoire.controllers', ['memoire.services'])
           $scope.events.push(event)
         )
 
-
-    search = artwork.title
-    AmeRestangular.all("api_search/").get("",{"search": search, "flvfile": "true", "previewsize":"scr"}).then((ame_artwork) ->
-
-      for archive in ame_artwork
-        if archive.flvpath
-
-          $scope.ame_artwork_gallery.media.push({
-            picture : archive.flvthumb
-            medium_url : $sce.trustAsResourceUrl(archive.flvpath)
-            description : ''
-         })
-         console.log($scope.ame_artwork_gallery)
-    , (response) ->
-      console.log(response)
-      $scope.ame_access = false
-    )
-
-
     # Fake a gallery for the main visual so we can reuse the gallery
     # component
     $scope.main_picture_gallery.media.push({
       picture: artwork.picture
       description: 'Visuel principal'
     })
-
-
-
   )
 
 )
