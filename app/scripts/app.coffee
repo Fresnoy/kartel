@@ -50,9 +50,7 @@ angular.module('memoire', ['memoire.controllers', 'memoire.directives', 'ui.rout
 
       Restangular.setDefaultRequestParams({key: config.ame_key})
       #
-
       return Restangular.withConfig((RestangularConfigurer) ->
-         #console.log(RestangularConfigurer)
             RestangularConfigurer.setBaseUrl(config.ame_rest_uri);
 
             #RestangularConfigurer.defaultRequestParams.common.apikey = config.ame_key;
@@ -133,6 +131,18 @@ angular.module('memoire', ['memoire.controllers', 'memoire.directives', 'ui.rout
         $rootScope.$state = $state
         $rootScope.$stateParams = $stateParams
         # $rootScope.loginService = loginService
+])
+
+.run(['AmeRestangular', (AmeRestangular) ->
+  AmeRestangular.setErrorInterceptor((response) ->
+    if (response.status == 401)
+        console.log("Login required... ")
+    else if (response.status == 404)
+        console.log("Resource not available...")
+    else
+        console.log("Ame service not available : " + response.status )
+    return response # stop the promise chain
+  )
 ])
 
 # Ugly Fix for autofill on forms

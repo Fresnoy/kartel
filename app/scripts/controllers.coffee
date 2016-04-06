@@ -84,6 +84,7 @@ angular.module('memoire.controllers', ['memoire.services'])
   $scope.events = []
   $scope.main_picture_gallery = {media: []}
   $scope.ame_artwork_gallery = {media: []}
+  $scope.ame_access = true
 
   Artworks.one().one($stateParams.id).get().then((artwork) ->
     $scope.artwork = artwork
@@ -97,29 +98,22 @@ angular.module('memoire.controllers', ['memoire.services'])
 
 
     search = artwork.title
-    AmeRestangular.all("api_search/").get("/",{"search": search, "flvfile": "true", "previewsize":"scr"}).then((ame_artwork) ->
+    AmeRestangular.all("api_search/").get("",{"search": search, "flvfile": "true", "previewsize":"scr"}).then((ame_artwork) ->
 
       for archive in ame_artwork
-          console.log(archive)
-          if archive.flvpath
-            picture_url = archive.flvthumb
-            medium_url = archive.flvpath
-            description = ''
-            try
-                medium_url = $sce.trustAsResourceUrl(medium_url)
-            catch error
-                medium_url = ""
-                description = "Not Allowed"
-            finally
-                 $scope.ame_artwork_gallery.media.push({
-                    picture: picture_url
-                    medium_url: medium_url
-                    description: description
-                  })
+        if archive.flvpath
 
-
-
+          $scope.ame_artwork_gallery.media.push({
+            picture : archive.flvthumb
+            medium_url : $sce.trustAsResourceUrl(archive.flvpath)
+            description : ''
+         })
+         console.log($scope.ame_artwork_gallery)
+    , (response) ->
+      console.log(response)
+      $scope.ame_access = false
     )
+
 
     # Fake a gallery for the main visual so we can reuse the gallery
     # component
