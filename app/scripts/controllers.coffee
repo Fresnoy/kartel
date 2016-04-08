@@ -83,7 +83,7 @@ angular.module('memoire.controllers', ['memoire.services'])
   $scope.artwork = null
   $scope.events = []
   $scope.main_picture_gallery = {media: []}
-  # ame gallery vars
+  # ame gallery vars for gallery
   $scope.ame_artwork_gallery = {media: []}
   # ame available for template
   $scope.ame_access = true

@@ -1,0 +1,2 @@
+<img ng-if=!scope.op ng-src="http://media.lefresnoy.net/?url=http://api.lefresnoy.net/{{ url }}&w={{ width }}&h={{ height }}&fmt=jpg" />
+<img ng-if=scope.op ng-src="http://media.lefresnoy.net/?url=http://api.lefresnoy.net/{{ url }}&w={{ width }}&h={{ height }}&fmt=jpg&op=#{{ scope.op }}" />
