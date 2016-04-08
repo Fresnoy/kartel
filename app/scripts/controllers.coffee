@@ -83,7 +83,9 @@ angular.module('memoire.controllers', ['memoire.services'])
   $scope.artwork = null
   $scope.events = []
   $scope.main_picture_gallery = {media: []}
+  # ame gallery vars
   $scope.ame_artwork_gallery = {media: []}
+  # ame available for template
   $scope.ame_access = true
 
   Artworks.one().one($stateParams.id).get().then((artwork) ->
