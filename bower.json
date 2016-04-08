@@ -21,6 +21,7 @@
     "tests"
   ],
   "dependencies": {
+    "slug" : "0.9.1",
     "lodash":"~4.6",
     "underscore": "~1.8.0",
     "jquery": "~2.1.1",
@@ -46,7 +47,8 @@
   	        "main": [
   	           "less/bootstrap.less",
   	           "dist/css/bootstrap.css",
-  	           "dist/js/bootstrap.js"
+  	           "dist/js/bootstrap.js",
+  	           "dist/js/tab.js"
   	         ]
   	   },
     "jsonselect": {
