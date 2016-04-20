@@ -46,8 +46,8 @@
                   </div>
                 </div>
                 <div class="media-body">
-                  <h4 class="media-heading" ng-if="!match.model.user" bind-html-unsafe="match.model.title | typeaheadHighlight:query"></h4>
-                  <h4 class="media-heading" ng-if="match.model.user"><span ng-bind-html="match.model.user.first_name | typeaheadHighlight:query"></span> <span ng-bind-html="match.model.user.last_name | typeaheadHighlight:query"></span> </h4>
+                  <h4 class="media-heading" ng-if="!match.model.user" bind-html-unsafe="match.model.title | uibTypeaheadHighlight:query"></h4>
+                  <h4 class="media-heading" ng-if="match.model.user"><span ng-bind-html="match.model.user.first_name | uibTypeaheadHighlight:query"></span> <span ng-bind-html="match.model.user.last_name | uibTypeaheadHighlight:query"></span> </h4>
 
                   <span ng-if="!match.model.user" class="author">{{ match.model.authors[0].user.first_name }} {{ match.model.authors[0].user.last_name }}</span>
                   <span ng-if="match.model.nickname" class="nickname">{{ match.model.nickname }}</span>
