@@ -41,7 +41,7 @@ angular.module('memoire.controllers', ['memoire.services'])
 
 .controller('ArtworkListingController', ($scope, Artworks, $state) ->
   $scope.letter = $state.params.letter || "a"
-  $scope.artworks = Artworks.getList({title__istartswith: $scope.letter}).$object
+  $scope.artworks = Artworks.getList({title__istartswith: $scope.letter, limit: 100}).$object
   $scope.alphabet = "abcdefghijklmnopqrstuvwxyz".split("")
 )
 
