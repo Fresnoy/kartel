@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    
+
     <link href='http://fonts.googleapis.com/css?family=Oswald:400,300' rel='stylesheet' type='text/css'>
 
     <script src="js/config.js" type="text/javascript"></script>
@@ -46,8 +46,8 @@
                   </div>
                 </div>
                 <div class="media-body">
-                  <h4 class="media-heading" ng-if="!match.model.user" bind-html-unsafe="match.model.title | typeaheadHighlight:query"></h4>
-                  <h4 class="media-heading" ng-if="match.model.user"><span bind-html-unsafe="match.model.user.first_name | typeaheadHighlight:query"></span> <span bind-html-unsafe="match.model.user.last_name | typeaheadHighlight:query"></span> </h4>
+                  <h4 class="media-heading" ng-if="!match.model.user" bind-html-unsafe="match.model.title | uibTypeaheadHighlight:query"></h4>
+                  <h4 class="media-heading" ng-if="match.model.user"><span ng-bind-html="match.model.user.first_name | uibTypeaheadHighlight:query"></span> <span ng-bind-html="match.model.user.last_name | uibTypeaheadHighlight:query"></span> </h4>
 
                   <span ng-if="!match.model.user" class="author">{{ match.model.authors[0].user.first_name }} {{ match.model.authors[0].user.last_name }}</span>
                   <span ng-if="match.model.nickname" class="nickname">{{ match.model.nickname }}</span>
@@ -57,7 +57,7 @@
           </script>
 
           <form class="quicksearch navbar-form navbar-left" ng-controller="QuickSearch">
-            <input typeahead="object for objects in search($viewValue)" typeahead-wait-ms="200" typeahead-min-length="3" typeahead-template-url="customTemplate.html" ng-model="selected" typeahead-loading="loading" typeahead-editable="false" typeahead-on-select="goTo($item, $model, $label)" type="text" class="form-control" placeholder="Rechercher...">
+            <input uib-typeahead="object for objects in search($viewValue)" typeahead-wait-ms="200" typeahead-min-length="3" typeahead-template-url="customTemplate.html" ng-model="selected" typeahead-loading="loading" typeahead-editable="false" typeahead-on-select="goTo($item, $model, $label)" type="text" class="form-control" placeholder="Rechercher...">
             <i ng-show="loading" class="loading-glyph glyphicon glyphicon-refresh"></i>
           </form>
         </div>

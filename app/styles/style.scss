@@ -31,7 +31,12 @@ li.promotion {
 }
 
 .student-card {
-    height: 200px;
+    img{
+      max-height: 200px;
+    }
+    .caption {
+      text-align: center;
+    }
 }
 
 /*-- Student --*/
