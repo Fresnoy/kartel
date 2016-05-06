@@ -28,7 +28,7 @@
           <i class="glyphicon glyphicon-picture"></i>&nbsp;Media
         </a>
       </li>
-      <li role="presentation" ng:class="ame_access==0 ? 'disabled' : ''">
+      <li role="presentation" ng:class="ame_access==0||ame_artwork_gallery.media.length==0 ? 'disabled' : ''">
         <a data-target ="#archive" aria-controls="archive" role="tab" data-toggle="tab">
           <i class="glyphicon disabled glyphicon-film"></i>&nbsp;Archive
         </a>
