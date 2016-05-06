@@ -36,6 +36,8 @@ li.promotion {
     }
     .caption {
       text-align: center;
+      height: 60px;
+      overflow: hidden;
     }
 }
 
@@ -112,6 +114,12 @@ div.api-field {
 
 .artwork-about .tab-content {
     padding-top: 10px;
+}
+
+.lightbox-image-container {
+  video{
+    width: 100%
+  }
 }
 
 /* header */
