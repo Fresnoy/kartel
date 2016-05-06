@@ -82,7 +82,7 @@ angular.module('memoire.controllers', ['memoire.services'])
 .controller('ArtworkController', ($scope, $stateParams, $sce, Lightbox, Artworks, AmeRestangular,  Events) ->
   $scope.artwork = null
   $scope.events = []
-  $scope.galleries_types = ["teaser_galleries", "in_situ_galleries","mediation_galleries", "press_galleries", "process_galleries"]
+
   $scope.main_picture_gallery = {media: []}
   # ame gallery vars for gallery
   $scope.ame_artwork_gallery = {media: []}

@@ -142,6 +142,15 @@
 
         <div class="clearfix"></div>
 
+        <div ng-if="artwork.teaser_galleries.length">
+          <h4><i class="glyphicon glyphicon-map-marker"></i>Teaser</h4>
+          <div ng-repeat="gallery in artwork.teaser_galleries">
+            <h5>{{ gallery.label }} ({{ gallery.description }})</h5>
+            <fresnoy-gallery gallery="gallery"></fresnoy-gallery>
+            <div class="clearfix"></div>
+          </div>
+        </div>
+
         <div ng-if="artwork.in_situ_galleries.length">
           <h4><i class="glyphicon glyphicon-map-marker"></i>&nbsp;In Situ</h4>
           <div ng-repeat="gallery in artwork.in_situ_galleries">

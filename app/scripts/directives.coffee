@@ -38,7 +38,6 @@ angular.module('memoire.directives', ['memoire.services', 'bootstrapLightbox'])
     }
     templateUrl: "directives/gallery.html"
     controller: ($scope, $sce, Lightbox) ->
-
       for media in $scope.gallery.media
         if media.medium_url
           media.medium_url = $sce.trustAsResourceUrl(media.medium_url)
