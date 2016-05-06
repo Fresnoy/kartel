@@ -8,7 +8,7 @@
 <div class="nature">
   {{ artwork.type }}
   de
-  <ul class="authors">
+  <ul class="authors list list-inline">
     <li ng-repeat="author in artwork.authors">
       <a ui-sref="school.student({id: author.id})"><span class="firstname">{{ author.user.first_name }}</span> <span class="lastname">{{ author.user.last_name }}</span></a></li>
   </ul>
