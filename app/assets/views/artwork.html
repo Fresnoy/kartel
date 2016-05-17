@@ -20,7 +20,7 @@
 <ul class="authors list list-unstyled" ng-if="artwork.type=='film'">
   <li class="duration">Durée : {{ artwork.duration | date: "hh 'h' mm 'm' ss's'" }}</li>
   <li class="format">Format : {{ artwork.shooting_format }}</li>
-  <li class="process">Process : {{ artwork.process }}</li>  
+  <li class="process">Process : {{ artwork.process }}</li>
   <li class="ratio">Ratio : {{ artwork.aspect_ratio  }}</li>
 </ul>
 
@@ -144,6 +144,8 @@
             </div>
           </div>
         </tabset>
+      
+
       </div>
 
       <div role="tabpanel" class="tab-pane" id="media">
@@ -213,7 +215,7 @@
 
     <h3><i class="glyphicon glyphicon-th-large"></i>&nbsp;Partenaires</h3>
     <ul>
-      <li ng-repeat="partner in artwork.partners">{{ partner.name }}</li>
+      <li ng-repeat="partner in artwork.partners">{{ partner.organization.name }} ({{ partner.task.label }})</li>
     </ul>
 
   </div>
