@@ -35,29 +35,52 @@
   </div>
 
   <div>
-    <tabset>
-      <h3>Biographie</h3>
-      <tab>
-        <tab-heading><flag-icon country="fr"></flag-icon></tab-heading>
-        <div ng-bind-html="student.bio_fr|markdown"></div>
-      </tab>
 
-      <tab ng-if="student.bio_en">
-        <tab-heading><flag-icon country="uk"></flag-icon></tab-heading>
-        <div ng-bind-html="student.bio_en|markdown"></div>
-      </tab>
+      <tabset class="api-field">
+        <!-- Desciption  tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+          <li role="presentation" class="text">
+              <h3>Biographie</h3>
+          </li>
+          <li role="presentation" class="active">
+            <a data-target ="#bio-fr" aria-controls="description-fr" role="tab" data-toggle="tab">
+              <flag-icon country="fr"></flag-icon>
+            </a>
+          </li>
+          <li role="presentation">
+            <a data-target ="#bio-en" aria-controls="description-en" role="tab" data-toggle="tab">
+              <flag-icon country="uk"></flag-icon>
+            </a>
+          </li>
+          <li ng-if="student.bio_short_fr" role="presentation">
+            <a data-target ="#bio-short-fr" aria-controls="bio-short-fr" role="tab" data-toggle="tab">
+              Courte <flag-icon country="fr"></flag-icon>
+            </a>
+          </li>
+          <li ng-if="student.bio_short_en" role="presentation">
+            <a data-target ="#bio-short-en" aria-controls="bio-short-en" role="tab" data-toggle="tab">
+              Courte <flag-icon country="uk"></flag-icon>
+            </a>
+          </li>
+        </ul>
+          <!-- Desciption  content -->
+        <div class="tab-content">
+          <div role="tabpanel" class="tab-pane active" id="bio-fr">
+            <div ng-bind-html="student.bio_fr|markdown"></div>
+          </div>
+          <div role="tabpanel" class="tab-pane" id="bio-en">
+            <div ng-bind-html="student.bio_en|markdown"></div>
+          </div>
+          <div role="tabpanel" class="tab-pane" id="bio-short-fr">
+            <div ng-bind-html="student.bio_short_fr|markdown"></div>
+          </div>
+          <div role="tabpanel" class="tab-pane" id="bio-short-en">
+            <div ng-bind-html="student.bio_short_en|markdown"></div>
+          </div>
+        </div>
+      </tabset>
 
-      <tab ng-if="student.bio_short_fr">
-        <tab-heading>Courte <flag-icon country="fr"></flag-icon></tab-heading>
-        <div ng-bind-html="student.bio_short_fr|markdown"></div>
-      </tab>
 
-      <tab ng-if="student.bio_short_en">
-        <tab-heading>Courte <flag-icon country="uk"></flag-icon></tab-heading>
-        <div ng-bind-html="student.bio_short_en|markdown"></div>
-      </tab>
-
-    </tabset>
   </div>
 
 
