@@ -188,6 +188,18 @@ div.api-field {
     &:first-letter {
         text-transform: uppercase;
     }
+    ul.genres{
+      display: inline;
+
+      li:after {
+          content: ',';
+      }
+
+      li:last-child:after{
+          content: '';
+      }
+
+    }
 
     ul.authors {
         display: inline-block;

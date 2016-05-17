@@ -45,6 +45,11 @@ angular.module('memoire.controllers', ['memoire.services'])
   $scope.alphabet = "abcdefghijklmnopqrstuvwxyz".split("")
 )
 
+.controller('ArtworkGenreListingController', ($scope, Artworks, $state) ->
+  $scope.genre = $state.params.genre || ""
+  $scope.artworks = Artworks.getList({genres: $scope.genre, limit: 100}).$object
+)
+
 
 .controller('SchoolController', ($scope, $state, Promotions, Students) ->
   $scope.promotions = []

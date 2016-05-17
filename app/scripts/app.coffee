@@ -111,11 +111,19 @@ angular.module('memoire', ['memoire.controllers', 'memoire.directives', 'ui.rout
                 controller: 'ArtistController'
         )
 
+        $stateProvider.state('genre',
+                url: '/artwork/?genre',
+                templateUrl: 'views/artworks.html'
+                controller: 'ArtworkGenreListingController'
+        )
+
         $stateProvider.state('artwork',
                 url: '/artwork?letter',
                 templateUrl: 'views/artworks.html'
                 controller: 'ArtworkListingController'
         )
+
+
 
         $stateProvider.state('artwork-detail',
                 url: '/artwork/:id',
