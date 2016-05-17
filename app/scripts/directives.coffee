@@ -38,10 +38,12 @@ angular.module('memoire.directives', ['memoire.services', 'bootstrapLightbox'])
     }
     templateUrl: "directives/gallery.html"
     controller: ($scope, $sce, Lightbox) ->
-
       for media in $scope.gallery.media
+        media.isvideo = false
         if media.medium_url
+          media.isvideo =  new RegExp("aml|youtube|vimeo|mp4","gi").test(media.medium_url);
           media.medium_url = $sce.trustAsResourceUrl(media.medium_url)
+
 
       $scope.openLightboxModal = (index) ->
         Lightbox.openModal($scope.gallery.media, index)

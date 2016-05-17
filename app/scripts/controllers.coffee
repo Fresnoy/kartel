@@ -82,6 +82,7 @@ angular.module('memoire.controllers', ['memoire.services'])
 .controller('ArtworkController', ($scope, $stateParams, $sce, Lightbox, Artworks, AmeRestangular,  Events) ->
   $scope.artwork = null
   $scope.events = []
+
   $scope.main_picture_gallery = {media: []}
   # ame gallery vars for gallery
   $scope.ame_artwork_gallery = {media: []}
@@ -99,17 +100,21 @@ angular.module('memoire.controllers', ['memoire.services'])
         )
 
 
-    search = (artwork.title)+" "+slug(artwork.authors[0].user.first_name[0]+artwork.authors[0].user.last_name).toLowerCase()
-    #search :  Archipel gabbruzzese
+    search = slug(artwork.authors[0].user.first_name[0]+artwork.authors[0].user.last_name).toLowerCase()
+    #search with Author :  gabbruzzese
     AmeRestangular.all("api_search/").get("",{"search": search, "flvfile": "true", "previewsize":"scr"}).then((ame_artwork) ->
       for archive in ame_artwork
-        if archive.flvpath
+        # valid reference id Fresnoy => id AME
 
-          $scope.ame_artwork_gallery.media.push({
-            picture : archive.flvthumb
-            medium_url : $sce.trustAsResourceUrl(archive.flvpath)
-            description : archive.field8 #media ame title
-         })
+        if parseInt(archive.field201) == $scope.artwork.id
+
+          if archive.flvpath
+
+            $scope.ame_artwork_gallery.media.push({
+              picture : archive.flvthumb
+              medium_url : $sce.trustAsResourceUrl(archive.flvpath)
+              description : archive.field8 #media ame title
+           })
 
     , (response) ->
       #erreur service

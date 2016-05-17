@@ -8,7 +8,7 @@
 <div class="nature">
   {{ artwork.type }}
   de
-  <ul class="authors">
+  <ul class="authors list list-inline">
     <li ng-repeat="author in artwork.authors">
       <a ui-sref="school.student({id: author.id})"><span class="firstname">{{ author.user.first_name }}</span> <span class="lastname">{{ author.user.last_name }}</span></a></li>
   </ul>
@@ -28,7 +28,7 @@
           <i class="glyphicon glyphicon-picture"></i>&nbsp;Media
         </a>
       </li>
-      <li role="presentation" ng:class="ame_access==0 ? 'disabled' : ''">
+      <li role="presentation" ng:class="ame_access==0||ame_artwork_gallery.media.length==0 ? 'disabled' : ''">
         <a data-target ="#archive" aria-controls="archive" role="tab" data-toggle="tab">
           <i class="glyphicon disabled glyphicon-film"></i>&nbsp;Archive
         </a>
@@ -141,6 +141,15 @@
         <fresnoy-gallery gallery="main_picture_gallery"></fresnoy-gallery>
 
         <div class="clearfix"></div>
+
+        <div ng-if="artwork.teaser_galleries.length">
+          <h4><i class="glyphicon glyphicon-map-marker"></i>Teaser</h4>
+          <div ng-repeat="gallery in artwork.teaser_galleries">
+            <h5>{{ gallery.label }} ({{ gallery.description }})</h5>
+            <fresnoy-gallery gallery="gallery"></fresnoy-gallery>
+            <div class="clearfix"></div>
+          </div>
+        </div>
 
         <div ng-if="artwork.in_situ_galleries.length">
           <h4><i class="glyphicon glyphicon-map-marker"></i>&nbsp;In Situ</h4>
