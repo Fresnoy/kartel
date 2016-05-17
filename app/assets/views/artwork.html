@@ -142,9 +142,13 @@
             <div role="tabpanel" class="tab-pane" id="credits-en">
               <div ng-bind-html="artwork.credits_en|markdown"></div>
             </div>
+            <ul class="list list-unstyled">
+              <li ng-repeat="collaborator in artwork.collaborators">{{ collaborator.task.label }} : {{ collaborator.staff.user.first_name }} {{ collaborator.staff.user.last_name }}</li>
+            </ul>
+
           </div>
         </tabset>
-      
+
 
       </div>
 
