@@ -9,7 +9,7 @@
   </div>
 
   <div class="col-md-10">
-    <h1>{{ letter|uppercase }} ({{ artworks.length }})</h1>
+    <h1>{{ (letter || genre )|uppercase }} ({{ artworks.length }})</h1>
     <ng-include src="'views/partials/artwork_card.html'" ng-repeat="artwork in artworks"></ng-include>
   </div>
 

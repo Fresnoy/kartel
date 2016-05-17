@@ -7,6 +7,10 @@
 
 <div class="nature">
   {{ artwork.type }}
+  <ul class="genres list list-inline">
+    <li ng-repeat="genre in artwork.genres">
+      <a ui-sref="genre({genre: genre.label})">{{ genre.label }}</a></li>
+  </ul>
   de
   <ul class="authors list list-inline">
     <li ng-repeat="author in artwork.authors">
