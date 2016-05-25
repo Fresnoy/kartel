@@ -35,19 +35,19 @@ angular.module('memoire.controllers', ['memoire.services'])
 
 .controller('ArtistListingController', ($scope, Artists, $state) ->
   $scope.letter = $state.params.letter || "a"
-  $scope.artists = Artists.getList({user__last_name__istartswith: $scope.letter, limit: 100}).$object
+  $scope.artists = Artists.getList({user__last_name__istartswith: $scope.letter, limit: 200}).$object
   $scope.alphabet = "abcdefghijklmnopqrstuvwxyz".split("")
 )
 
 .controller('ArtworkListingController', ($scope, Artworks, $state) ->
   $scope.letter = $state.params.letter || "a"
-  $scope.artworks = Artworks.getList({title__istartswith: $scope.letter, limit: 100}).$object
+  $scope.artworks = Artworks.getList({title__istartswith: $scope.letter, limit: 200}).$object
   $scope.alphabet = "abcdefghijklmnopqrstuvwxyz".split("")
 )
 
 .controller('ArtworkGenreListingController', ($scope, Artworks, $state) ->
   $scope.genre = $state.params.genre || ""
-  $scope.artworks = Artworks.getList({genres: $scope.genre, limit: 100}).$object
+  $scope.artworks = Artworks.getList({genres: $scope.genre, limit: 200}).$object
 )
 
 
@@ -106,22 +106,24 @@ angular.module('memoire.controllers', ['memoire.services'])
         )
 
     for collaborator_uri,key in $scope.artwork.collaborators
-      matches = collaborator_uri.match(/\d+$/)
-      if matches
-        collaborator_id = matches[0]
-        $scope.artwork.collaborators[key] = Collaborators.one(collaborator_id).get().$object
+      if typeof collaborator_uri.match == Function
+        matches = collaborator_uri.match(/\d+$/)
+        if matches
+          collaborator_id = matches[0]
+          $scope.artwork.collaborators[key] = Collaborators.one(collaborator_id).get().$object
 
 
     for partner_uri,key in $scope.artwork.partners
-      matches = partner_uri.match(/\d+$/)
-      if matches
-        partner_id = matches[0]
-        $scope.artwork.partners[key] = Partners.one(partner_id).get().$object
+      if typeof partner_uri.match == Function
+        matches = partner_uri.match(/\d+$/)
+        if matches
+          partner_id = matches[0]
+          $scope.artwork.partners[key] = Partners.one(partner_id).get().$object
 
 
 
-    search = slug(artwork.authors[0].user.first_name[0]+artwork.authors[0].user.last_name).toLowerCase()
-    #search with Author :  gabbruzzese
+    search = ""
+    #return all artwork video and filtre with idFrezsnoy - TODO search idFresnoy in api
     AmeRestangular.all("api_search/").get("",{"search": search, "flvfile": "true", "previewsize":"scr"}).then((ame_artwork) ->
       for archive in ame_artwork
         # valid reference id Fresnoy => id AME
