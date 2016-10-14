@@ -134,7 +134,7 @@ angular.module('memoire', ['memoire.controllers', 'memoire.directives', 'ui.rout
         )
 
         $stateProvider.state('artwork',
-                url: '/artwork?letter',
+                url: '/artwork?letter&offset',
                 templateUrl: 'views/artworks.html'
                 controller: 'ArtworkListingController'
         )

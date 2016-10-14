@@ -35,19 +35,21 @@ angular.module('memoire.controllers', ['memoire.services'])
 
 .controller('ArtistListingController', ($scope, Artists, $state) ->
   $scope.letter = $state.params.letter || "a"
-  $scope.artists = Artists.getList({user__last_name__istartswith: $scope.letter, limit: 100}).$object
+  $scope.artists = Artists.getList({user__last_name__istartswith: $scope.letter, limit: 500}).$object
   $scope.alphabet = "abcdefghijklmnopqrstuvwxyz".split("")
 )
 
 .controller('ArtworkListingController', ($scope, Artworks, $state) ->
   $scope.letter = $state.params.letter || "a"
-  $scope.artworks = Artworks.getList({title__istartswith: $scope.letter, limit: 100}).$object
+  $scope.offset = parseInt($state.params.offset) || 0
+  $scope.limit = 500
+  $scope.artworks = Artworks.getList({title__istartswith: $scope.letter, limit: $scope.limit, offset:$scope.offset }).$object
   $scope.alphabet = "abcdefghijklmnopqrstuvwxyz".split("")
 )
 
 .controller('ArtworkGenreListingController', ($scope, Artworks, $state) ->
   $scope.genre = $state.params.genre || ""
-  $scope.artworks = Artworks.getList({genres: $scope.genre, limit: 100}).$object
+  $scope.artworks = Artworks.getList({genres: $scope.genre, limit: 500}).$object
 )
 
 
@@ -63,7 +65,7 @@ angular.module('memoire.controllers', ['memoire.services'])
 .controller('PromotionController', ($scope, $stateParams, Students, Promotions) ->
   $scope.promotion = Promotions.one($stateParams.id).get().$object
 
-  $scope.students = Students.getList({promotion: $stateParams.id, limit: 100}).$object
+  $scope.students = Students.getList({promotion: $stateParams.id, limit: 500}).$object
 )
 
 .controller('ArtistController', ($scope, $stateParams, Artists, Artworks) ->
