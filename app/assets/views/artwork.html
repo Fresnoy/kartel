@@ -17,12 +17,15 @@
       <a ui-sref="school.student({id: author.id})"><span class="firstname">{{ author.user.first_name }}</span> <span class="lastname">{{ author.user.last_name }}</span></a></li>
   </ul>
 </div>
-<ul class="authors list list-unstyled" ng-if="artwork.type=='film'">
-  <li class="duration">Durée : {{ artwork.duration | date: "hh 'h' mm 'm' ss's'" }}</li>
-  <li class="format">Format : {{ artwork.shooting_format }}</li>
-  <li class="process">Process : {{ artwork.process }}</li>  
-  <li class="ratio">Ratio : {{ artwork.aspect_ratio  }}</li>
-</ul>
+
+<div class="technic">
+  <ul class="list list-unstyled list-inline" ng-if="artwork.type=='film'">
+    <li ng-if="artwork.duration" class="duration" title="Durée">{{ artwork.duration | time:"hh:mm:ss":"hh h mm minutes ss"  }}</li>
+    <li ng-if="artwork.shooting_format" class="format" title="Format">{{ artwork.shooting_format }}</li>
+    <li ng-if="artwork.process" class="process" title="Procédé">{{ artwork.process }}</li>
+    <li ng-if="artwork.aspect_ratio" class="ratio" title="Ratio">{{ artwork.aspect_ratio  }}</li>
+  </ul>
+</div>
 
 <div class="row">
   <div class="col-md-10">
