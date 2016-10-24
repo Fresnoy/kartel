@@ -36,6 +36,8 @@ li.promotion {
     }
     .caption {
       text-align: center;
+      height: 60px;
+      overflow: hidden;
     }
 }
 
@@ -114,6 +116,12 @@ div.api-field {
     padding-top: 10px;
 }
 
+.lightbox-image-container {
+  video{
+    width: 100%
+  }
+}
+
 /* header */
 .navbar-brand {
     img {
@@ -180,6 +188,19 @@ div.api-field {
     &:first-letter {
         text-transform: uppercase;
     }
+    ul.genres{
+      display: inline;
+      margin-left: 0px;
+
+      li:after {
+          content: ',';
+      }
+
+      li:last-child:after{
+          content: '';
+      }
+
+    }
 
     ul.authors {
         display: inline-block;
@@ -198,6 +219,27 @@ div.api-field {
             text-transform: uppercase;
         }
     }
+
+
+}
+
+.technic {
+
+  ul {
+
+    li:nth-child(n+2):before {
+       /* tous sauf premier */
+      content:"/ ";
+    }
+
+    li.duration {
+      // background-color: #666;
+      // color: white;
+      //padding: 0;
+    }
+
+  }
+
 }
 
 .quicksearch {

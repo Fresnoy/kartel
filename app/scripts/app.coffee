@@ -58,14 +58,33 @@ angular.module('memoire', ['memoire.controllers', 'memoire.directives', 'ui.rout
       )
 )
 
+
+
 .filter("isFresnoyUrl", ->
   return (input, str = "/media/") ->
     if typeof input isnt 'string'
       return false
     return input.indexOf(str) > -1
 
-
 )
+
+.filter('time', ->
+    return (value, unit, format, isPadded) ->
+      time = value.split(":")
+      hh = time[0]
+      mm = time[1]
+      ss = time[2]
+
+
+      if(hh!="0")
+        return format.replace(/hh/, hh).replace(/mm/, mm).replace(/ss/, ss);
+      if(hh=="0" && mm!="0")
+        # regex  hh[^mm] mm cible l'heure (hh) jusqu'au prochain 'mm' sans le prendre en compte : [^mm]
+        return format.replace(/\hh[^mm]+\mm/, '').replace(/mm/, mm).replace(/ss/, ss);
+      if(hh=="0" && mm=="0" && ss!="0")
+        return format.replace(/ss/, ss);
+)
+
 
 
 # URI config
@@ -108,11 +127,19 @@ angular.module('memoire', ['memoire.controllers', 'memoire.directives', 'ui.rout
                 controller: 'ArtistController'
         )
 
+        $stateProvider.state('genre',
+                url: '/artwork/?genre',
+                templateUrl: 'views/artworks.html'
+                controller: 'ArtworkGenreListingController'
+        )
+
         $stateProvider.state('artwork',
-                url: '/artwork?letter',
+                url: '/artwork?letter&offset',
                 templateUrl: 'views/artworks.html'
                 controller: 'ArtworkListingController'
         )
+
+
 
         $stateProvider.state('artwork-detail',
                 url: '/artwork/:id',
