@@ -190,6 +190,7 @@ div.api-field {
     }
     ul.genres{
       display: inline;
+      margin-left: 0px;
 
       li:after {
           content: ',';
@@ -218,6 +219,27 @@ div.api-field {
             text-transform: uppercase;
         }
     }
+
+
+}
+
+.technic {
+
+  ul {
+
+    li:nth-child(n+2):before {
+       /* tous sauf premier */
+      content:"/ ";
+    }
+
+    li.duration {
+      // background-color: #666;
+      // color: white;
+      //padding: 0;
+    }
+
+  }
+
 }
 
 .quicksearch {

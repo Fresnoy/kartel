@@ -41,13 +41,16 @@ angular.module('memoire.controllers', ['memoire.services'])
 
 .controller('ArtworkListingController', ($scope, Artworks, $state) ->
   $scope.letter = $state.params.letter || "a"
-  $scope.artworks = Artworks.getList({title__istartswith: $scope.letter, limit: 200}).$object
+  $scope.offset = parseInt($state.params.offset) || 0
+  $scope.limit = 200
+  $scope.artworks = Artworks.getList({title__istartswith: $scope.letter, limit: $scope.limit, offset:$scope.offset }).$object
   $scope.alphabet = "abcdefghijklmnopqrstuvwxyz".split("")
 )
 
 .controller('ArtworkGenreListingController', ($scope, Artworks, $state) ->
   $scope.genre = $state.params.genre || ""
   $scope.artworks = Artworks.getList({genres: $scope.genre, limit: 200}).$object
+
 )
 
 
@@ -63,7 +66,7 @@ angular.module('memoire.controllers', ['memoire.services'])
 .controller('PromotionController', ($scope, $stateParams, Students, Promotions) ->
   $scope.promotion = Promotions.one($stateParams.id).get().$object
 
-  $scope.students = Students.getList({promotion: $stateParams.id, limit: 100}).$object
+  $scope.students = Students.getList({promotion: $stateParams.id, limit: 500}).$object
 )
 
 .controller('ArtistController', ($scope, $stateParams, Artists, Artworks) ->
