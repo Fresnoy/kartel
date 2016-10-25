@@ -50,7 +50,6 @@ angular.module('memoire.controllers', ['memoire.services'])
 .controller('ArtworkGenreListingController', ($scope, Artworks, $state) ->
   $scope.genre = $state.params.genre || ""
   $scope.artworks = Artworks.getList({genres: $scope.genre, limit: 200}).$object
-
 )
 
 
