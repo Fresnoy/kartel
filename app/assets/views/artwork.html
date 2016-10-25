@@ -145,8 +145,14 @@
             <div role="tabpanel" class="tab-pane" id="credits-en">
               <div ng-bind-html="artwork.credits_en|markdown"></div>
             </div>
+            <ul class="list list-unstyled">
+              <li ng-repeat="collaborator in artwork.collaborators">{{ collaborator.task.label }} : {{ collaborator.staff.user.first_name }} {{ collaborator.staff.user.last_name }}</li>
+            </ul>
+
           </div>
         </tabset>
+
+
       </div>
 
       <div role="tabpanel" class="tab-pane" id="media">
@@ -216,7 +222,7 @@
 
     <h3><i class="glyphicon glyphicon-th-large"></i>&nbsp;Partenaires</h3>
     <ul>
-      <li ng-repeat="partner in artwork.partners">{{ partner.name }}</li>
+      <li ng-repeat="partner in artwork.partners">{{ partner.organization.name }} ({{ partner.task.label }})</li>
     </ul>
 
   </div>
