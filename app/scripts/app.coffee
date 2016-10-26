@@ -120,19 +120,17 @@ angular.module('memoire', ['memoire.controllers', 'memoire.directives', 'ui.rout
 
 
         # - Candidature
-        $stateProvider.state('school.applicationForm',
+        $stateProvider.state('candidature',
                 url: '/candidature',
-                templateUrl: 'views/candidature-intro.html'
+                templateUrl: 'views/candidature/home.html'
                 #controller: 'FormController'
         )
-        $stateProvider.state('school.applicationForm',
-                  url: '/candidature/etape-x',
-                  templateUrl: 'views/candidature-form.html'
-                  controller: 'FormController'
-          )
 
-
-
+        $stateProvider.state('candidature.form',
+                  url: '/etape',
+                  templateUrl: 'views/candidature/form.html'
+                  controller: 'CandidatureFormController'
+        )
 
         # ARTIST
 

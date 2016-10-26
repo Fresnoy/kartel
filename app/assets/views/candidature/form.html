@@ -1,0 +1,35 @@
+<h1>
+  Inscription
+</h1>
+<div ng-controller="FormController">
+  <form name="form" class="css-form" novalidate>
+    Nom / Name:
+    <input type="text" ng-model="user.name" name="uName" required="" />
+    <br />
+    <div ng-show="form.$submitted || form.uName.$touched">
+      <div ng-show="form.uName.$error.required">Tell us your name.</div>
+    </div>
+
+    E-mail:
+    <input type="email" ng-model="user.email" name="uEmail" required="" />
+    <br />
+    <div ng-show="form.$submitted || form.uEmail.$touched">
+      <span ng-show="form.uEmail.$error.required">Tell us your email.</span>
+      <span ng-show="form.uEmail.$error.email">E-mail non valid / This is not a valid email.</span>
+    </div>
+
+    Genre:
+    <input type="radio" ng-model="user.gender" value="male" />male
+    <input type="radio" ng-model="user.gender" value="female" />female
+    <br />
+
+
+    <input type="submit" ng-click="update(user)" value="Save" />
+  </form>
+  <div ng-show="form.$submitted">
+    <pre ng-repeat="(type,info) in infos">
+      {{type}} = {{info | json}}
+    </pre>
+
+  </div>
+</div>
