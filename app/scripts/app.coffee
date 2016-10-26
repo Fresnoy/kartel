@@ -98,11 +98,14 @@ angular.module('memoire', ['memoire.controllers', 'memoire.directives', 'ui.rout
                 controller: 'SchoolController'
         )
 
+        # SCHOOL
+
         $stateProvider.state('school',
                 url: '/school',
                 templateUrl: 'views/school.html'
                 controller: 'SchoolController'
         )
+
         $stateProvider.state('school.promotion',
                 url: '/promotion/:id',
                 templateUrl: 'views/promotion.html'
@@ -114,6 +117,24 @@ angular.module('memoire', ['memoire.controllers', 'memoire.directives', 'ui.rout
                 templateUrl: 'views/student.html'
                 controller: 'StudentController'
         )
+
+
+        # - Candidature
+        $stateProvider.state('school.applicationForm',
+                url: '/candidature',
+                templateUrl: 'views/candidature-intro.html'
+                #controller: 'FormController'
+        )
+        $stateProvider.state('school.applicationForm',
+                  url: '/candidature/etape-x',
+                  templateUrl: 'views/candidature-form.html'
+                  controller: 'FormController'
+          )
+
+
+
+
+        # ARTIST
 
         $stateProvider.state('artist',
                 url: '/artist?letter',
@@ -127,6 +148,8 @@ angular.module('memoire', ['memoire.controllers', 'memoire.directives', 'ui.rout
                 controller: 'ArtistController'
         )
 
+        # ARTWORK
+
         $stateProvider.state('genre',
                 url: '/artwork/?genre',
                 templateUrl: 'views/artworks.html'
@@ -138,9 +161,6 @@ angular.module('memoire', ['memoire.controllers', 'memoire.directives', 'ui.rout
                 templateUrl: 'views/artworks.html'
                 controller: 'ArtworkListingController'
         )
-
-
-
         $stateProvider.state('artwork-detail',
                 url: '/artwork/:id',
                 templateUrl: 'views/artwork.html'
