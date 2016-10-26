@@ -20,3 +20,11 @@ angular.module('memoire.services', ['restangular'])
 .factory('Events', (Restangular) ->
         return Restangular.service('production/event')
 )
+
+.factory('Collaborators', (Restangular) ->
+        return Restangular.service('production/productionstafftask/')
+)
+
+.factory('Partners', (Restangular) ->
+        return Restangular.service('production/productionorganizationtask/')
+)
