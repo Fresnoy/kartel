@@ -3,28 +3,38 @@
 </h1>
 <div >
   <form name="form" class="css-form" novalidate>
-    Nom / Name:
-    <input type="text" ng-model="user.name" name="uName" required="" />
-    <br />
-    <div ng-show="form.$submitted || form.uName.$touched">
-      <div ng-show="form.uName.$error.required">Tell us your name.</div>
+
+    <div class="control-group" ng-class="{error: myForm.name.$invalid}">
+
+        <label>Nom / Name</label>
+        <input type="text" ng-model="user.name" name="uName" required />
+        <div ng-show="form.$submitted || form.uName.$touched">
+          <span ng-show="form.uName.$error.required">Tell us your name.</div>
+        </div>
+
+        <label>E-mail</label>
+        <input type="email" ng-model="user.email" name="uEmail" required />
+        <div ng-show="form.$submitted || form.uEmail.$touched">
+          <span ng-show="form.uEmail.$error.required">Tell us your email.</span>
+          <span ng-show="form.uEmail.$error.email">E-mail non valid / This is not a valid email.</span>
+        </div>
+        
+        <label>Genre</label>
+        <select name="gender" ng-model="user.gender" name="uGender" required>
+          <option value="">---Choisir / Please select---</option> <!-- not selected / blank option -->
+          <option value="M">Male</option>
+          <option value="F">Female</option>
+          <option value="T">Transgender</option>
+          <option value="O">Other</option>
+        </select>
+
+
+
+
+
+        <input type="submit" ng-click="update(user)" value="Save" />
+
     </div>
-
-    E-mail:
-    <input type="email" ng-model="user.email" name="uEmail" required="" />
-    <br />
-    <div ng-show="form.$submitted || form.uEmail.$touched">
-      <span ng-show="form.uEmail.$error.required">Tell us your email.</span>
-      <span ng-show="form.uEmail.$error.email">E-mail non valid / This is not a valid email.</span>
-    </div>
-
-    Genre:
-    <input type="radio" ng-model="user.gender" value="male" />male
-    <input type="radio" ng-model="user.gender" value="female" />female
-    <br />
-
-
-    <input type="submit" ng-click="update(user)" value="Save" />
   </form>
   <div ng-show="form.$submitted">
     <pre ng-repeat="(type,info) in infos">
