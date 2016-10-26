@@ -126,8 +126,8 @@ angular.module('memoire', ['memoire.controllers', 'memoire.directives', 'ui.rout
                 #controller: 'FormController'
         )
 
-        $stateProvider.state('candidature.form',
-                  url: '/etape',
+        $stateProvider.state('candidature-form',
+                  url: '/candidature/etape',
                   templateUrl: 'views/candidature/form.html'
                   controller: 'CandidatureFormController'
         )
