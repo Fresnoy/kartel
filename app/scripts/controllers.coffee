@@ -192,7 +192,6 @@ angular.module('memoire.controllers', ['memoire.services'])
   $scope.master = {};
 
   $scope.update = (user) ->
-    console.log(user)
     $scope.infos = angular.copy(user);
     return true
 

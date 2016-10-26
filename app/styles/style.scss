@@ -264,6 +264,21 @@ div.api-field {
 }
 
 
+// Candidature
+.css-form input.ng-invalid.ng-touched {
+    background-color: #FA787E;
+ }
+
+ .css-form input.ng-valid.ng-touched {
+    background-color: #78FA89;
+ }
+
+ span[ng-show*="error"] {
+    color:red;
+ }
+
+
+
 // print
 @media print {
     .no-print, .no-print * {
