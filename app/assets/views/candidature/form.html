@@ -12,13 +12,19 @@
           <span ng-show="form.uName.$error.required">Tell us your name.</div>
         </div>
 
+        <label>Prénom / First Name</label>
+        <input type="text" ng-model="user.firstname" name="uFirstName" required />
+        <div ng-show="form.$submitted || form.uName.$touched">
+          <span ng-show="form.uFirstName.$error.required">Tell us your first-name.</div>
+        </div>
+
         <label>E-mail</label>
         <input type="email" ng-model="user.email" name="uEmail" required />
         <div ng-show="form.$submitted || form.uEmail.$touched">
           <span ng-show="form.uEmail.$error.required">Tell us your email.</span>
           <span ng-show="form.uEmail.$error.email">E-mail non valid / This is not a valid email.</span>
         </div>
-        
+
         <label>Genre</label>
         <select name="gender" ng-model="user.gender" name="uGender" required>
           <option value="">---Choisir / Please select---</option> <!-- not selected / blank option -->
@@ -28,15 +34,11 @@
           <option value="O">Other</option>
         </select>
 
-
-
-
-
-        <input type="submit" ng-click="update(user)" value="Save" />
+        <input type="submit" ng-click="update(user,form)" value="Save" />
 
     </div>
   </form>
-  <div ng-show="form.$submitted">
+  <div ng-show="form.$valid">
     <pre ng-repeat="(type,info) in infos">
       {{type}} = {{info | json}}
     </pre>

@@ -277,6 +277,12 @@ div.api-field {
     color:red;
  }
 
+ label,
+ input[type="submit"]
+  {
+   display: block;
+ }
+
 
 
 // print

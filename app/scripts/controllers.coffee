@@ -189,9 +189,10 @@ angular.module('memoire.controllers', ['memoire.services'])
 
 .controller('CandidatureFormController', ($scope, $q, $state, Restangular) ->
 
-  $scope.master = {};
-
-  $scope.update = (user) ->
+  console.log("candidature")
+  $scope.update = (user, form) ->
+    
+    console.log(form)
     $scope.infos = angular.copy(user);
     return true
 
