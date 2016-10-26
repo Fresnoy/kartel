@@ -75,12 +75,14 @@ angular.module('memoire', ['memoire.controllers', 'memoire.directives', 'ui.rout
       mm = time[1]
       ss = time[2]
 
+      if(ss=="00")
+        ss = ""
 
       if(hh!="0")
         return format.replace(/hh/, hh).replace(/mm/, mm).replace(/ss/, ss);
       if(hh=="0" && mm!="0")
         # regex  hh[^mm] mm cible l'heure (hh) jusqu'au prochain 'mm' sans le prendre en compte : [^mm]
-        return format.replace(/\hh[^mm]+\mm/, '').replace(/mm/, mm).replace(/ss/, ss);
+        return format.replace(/\hh[^mm]+\h/, '').replace(/mm/, mm).replace(/ss/, ss);
       if(hh=="0" && mm=="0" && ss!="0")
         return format.replace(/ss/, ss);
 )
