@@ -61,6 +61,45 @@
         </div>
 
 
+        <label>Adresse pays d'origine / Homeland Adresse</label>
+        <input type="text" ng-model="user.homeland_adress" name="uHomelandAdress" />
+
+        <div ng-show="user.homeland_adress">
+          <blockquote>
+            <label> > Pays  / Homeland  Country</label>
+            <select ng-model="user.homeland_country" name="uHomelandCountry">
+              <option value="">-- Select a Country --</option>
+              <option ng-repeat="(country,code) in countries" value="{{code}}">{{country}}</option>
+            </select>
+
+            <div ng-show="form.$submitted || form.uHomelandCountry.$touched">
+               <span ng-show="form.uHomelandCountry.$error.homeland_country">This must be a country code!</span>
+            </div>
+          </blockquote>
+        </div>
+
+
+        <label>Adresse pays de résidence / Residence Adresse</label>
+        <input type="text" ng-model="user.residence_address" name="uResidenceAdress" />
+
+        <div ng-show="user.residence_address">
+          <blockquote>
+            <label> > Pays  / Residence  Country</label>
+            <select ng-model="user.residence_country" name="uResidenceCountry">
+              <option value="">-- Select a Country --</option>
+              <option ng-repeat="(country,code) in countries" value="{{code}}">{{country}}</option>
+            </select>
+
+            <div ng-show="form.$submitted || form.uResidenceCountry.$touched">
+               <span ng-show="form.uResidenceCountry.$error.residence_adress">This must be a country code!</span>
+            </div>
+          </blockquote>
+        </div>
+
+
+
+
+
 
         <input type="submit" ng-click="update(user,form)" value="Save" />
 
