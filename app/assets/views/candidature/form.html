@@ -25,8 +25,23 @@
           <span ng-show="form.uEmail.$error.email">E-mail non valid / This is not a valid email.</span>
         </div>
 
+        <label>Photo</label>
+        <button type="file" ng-model="user.photo" name="uPhoto"
+          ngf-select="upload($file)"
+          accept="image/*" ngf-max-size="10MB" required>
+          Choisir une photo</button>
+          <span ng-show="form.uPhoto.$valid">
+            <span ng-show="upload_percentage < 0"> {{ upload_percentage }} </span>
+            <span ng-show="form.uPhoto.$valid">
+              OK photo
+              <img ngf-thumbnail="file || '/thumb.jpg'">
+            </span>
 
-
+        </span>
+        <div ng-show="form.$submitted || form.uPhoto.$touched">
+            <span ng-show="form.uPhoto.$error.required"> Give us a photo please</span>
+            <span ng-show="form.uPhoto.$error.photo"> Value error </span>
+          </div>
 
 
 
@@ -104,7 +119,7 @@
 
       <label>Numéro de téléphone pays d'origine   / Homeland Phone number</label>
       <input type="text" placeholder="+33-320283982" name="uHomelandPhone"
-        ng-pattern="/^\+?\d{2}[-. ]?\d{9}$/" ng-model="user.homeland_phone"
+        ng-pattern="phone_pattern" ng-model="user.homeland_phone"
         ng-minlength="10" ng-maxlength="15"
       />
       <div ng-show="form.$submitted || form.uResidenceCountry.$touched">

@@ -187,7 +187,7 @@ angular.module('memoire.controllers', ['memoire.services'])
 
 # Candidature Form
 
-.controller('CandidatureFormController', ($scope, $q, $state, Restangular, ISO3166) ->
+.controller('CandidatureFormController', ($scope, $q, $state, Restangular, ISO3166, Upload) ->
 
 
   # Birthdate minimum
@@ -199,13 +199,36 @@ angular.module('memoire.controllers', ['memoire.services'])
   $scope.countries = ISO3166.countryToCode
 
   #phone patterne
-  $scope.phone_pattern = "/^\+?\d{2}[-. ]?\d{9}$/"
+  $scope.phone_pattern = /^\+?\d{2}[-. ]?\d{9}$/
+
+  #upload file
+  $scope.upload_percentage = 0
+  $scope.upload = (file) ->
+    Upload.upload(
+      {
+        url: '/upload/url',
+        data: {
+          file: file,
+          name: $scope.username
+        }
+      }
+    )
+    .then((resp) ->
+        console.log('Success ' + resp.config.data.file.name + 'uploaded');
+        #console.log('Response: ' + resp.data);
+
+      ,(resp) ->
+        console.log('Error status: ' + resp.status);
+      ,(evt) ->
+        $scope.upload_percentage = parseInt(100.0 * evt.loaded / evt.total);
+        console.log('progress: ' + $scope.upload_percentage + '% ' + evt.config.data.file.name);
+    )
 
 
   $scope.update = (user, form) ->
 
     console.log(form)
-    console.log(form.uHomelandPhone.$error)
+    console.log(form.uPhoto)
     $scope.infos = angular.copy(user);
     return true
 
