@@ -9,13 +9,13 @@
         <label>Nom / Name</label>
         <input type="text" ng-model="user.name" name="uName" required />
         <div ng-show="form.$submitted || form.uName.$touched">
-          <span ng-show="form.uName.$error.required">Tell us your name.</div>
+          <span ng-show="form.uName.$error.required">Tell us your name.</span>
         </div>
 
         <label>Prénom / First Name</label>
         <input type="text" ng-model="user.firstname" name="uFirstName" required />
         <div ng-show="form.$submitted || form.uName.$touched">
-          <span ng-show="form.uFirstName.$error.required">Tell us your first-name.</div>
+          <span ng-show="form.uFirstName.$error.required">Tell us your first-name.</span>
         </div>
 
         <label>E-mail</label>
@@ -33,6 +33,21 @@
           <option value="T">Transgender</option>
           <option value="O">Other</option>
         </select>
+        <div ng-show="form.$submitted || form.uGender.$touched">
+          <span ng-show="form.uGender.$error.required">Tell us your gender.</span>
+          <span ng-show="form.uGender.$error.gender"> </span>
+        </div>
+
+        <label>Date de naissance / Birthdate</label>
+        <input type="date" ng-model="user.birthdate" name="uBirthdate" required
+             placeholder="{{birthdateMin | date:'dd-MM-yyyy'}}"
+             max="{{birthdateMin | date:'yyyy-MM-dd'}}" />
+
+        <div ng-show="form.$submitted || form.uBirthdate.$touched">
+           <span ng-show="form.uBirthdate.$error.required">Tell us your gender.</span>
+           <span ng-show="form.uBirthdate.$error.max"> Il faut être nés avant le {{birthdateMin | date:'dd MMMM yyyy'}} </span>
+        </div>
+
 
         <input type="submit" ng-click="update(user,form)" value="Save" />
 

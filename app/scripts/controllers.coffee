@@ -189,10 +189,16 @@ angular.module('memoire.controllers', ['memoire.services'])
 
 .controller('CandidatureFormController', ($scope, $q, $state, Restangular) ->
 
-  console.log("candidature")
+
+  # Birthdate minimum
+  current_year = new Date().getFullYear()
+  age_min = 25
+  $scope.birthdateMin = new Date(current_year-age_min,11,31)
+
   $scope.update = (user, form) ->
-    
+
     console.log(form)
+    console.log(form.uBirthdate)
     $scope.infos = angular.copy(user);
     return true
 
