@@ -37,7 +37,8 @@
     "angular-ui-grid": "~3.1.0",
     "angular-markdown-filter": "~1.4.0",
     "angular-sanitize": "~1.5.0",
-    "angular-bootstrap-lightbox": "~0.11.0"
+    "angular-bootstrap-lightbox": "~0.11.0",
+    "ng-country-select": "~0.1.4"
   },
   "overrides": {
   	"lodash":{

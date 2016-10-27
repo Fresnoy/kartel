@@ -17,7 +17,7 @@ You should have received a copy of the GNU Affero General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 ###
 
-angular.module('memoire', ['memoire.controllers', 'memoire.directives', 'ui.router', 'ngAnimate', 'restangular', 'chieffancypants.loadingBar', 'ui.bootstrap', 'ngSanitize', 'markdown'])
+angular.module('memoire', ['memoire.controllers', 'memoire.directives', 'ui.router', 'ngAnimate', 'restangular', 'chieffancypants.loadingBar', 'ui.bootstrap', 'ngSanitize', 'markdown', 'countrySelect'])
 
 # CORS
 .config(['$httpProvider', ($httpProvider) ->
@@ -75,12 +75,11 @@ angular.module('memoire', ['memoire.controllers', 'memoire.directives', 'ui.rout
       mm = time[1]
       ss = time[2]
 
-
       if(hh!="0")
         return format.replace(/hh/, hh).replace(/mm/, mm).replace(/ss/, ss);
       if(hh=="0" && mm!="0")
         # regex  hh[^mm] mm cible l'heure (hh) jusqu'au prochain 'mm' sans le prendre en compte : [^mm]
-        return format.replace(/\hh[^mm]+\mm/, '').replace(/mm/, mm).replace(/ss/, ss);
+        return format.replace(/\hh[^mm]+\h/, '').replace(/mm/, mm).replace(/ss/, ss);
       if(hh=="0" && mm=="0" && ss!="0")
         return format.replace(/ss/, ss);
 )
@@ -98,14 +97,11 @@ angular.module('memoire', ['memoire.controllers', 'memoire.directives', 'ui.rout
                 controller: 'SchoolController'
         )
 
-        # SCHOOL
-
         $stateProvider.state('school',
                 url: '/school',
                 templateUrl: 'views/school.html'
                 controller: 'SchoolController'
         )
-
         $stateProvider.state('school.promotion',
                 url: '/promotion/:id',
                 templateUrl: 'views/promotion.html'
@@ -117,22 +113,6 @@ angular.module('memoire', ['memoire.controllers', 'memoire.directives', 'ui.rout
                 templateUrl: 'views/student.html'
                 controller: 'StudentController'
         )
-
-
-        # - Candidature
-        $stateProvider.state('candidature',
-                url: '/candidature',
-                templateUrl: 'views/candidature/home.html'
-                #controller: 'FormController'
-        )
-
-        $stateProvider.state('candidature-form',
-                  url: '/candidature/etape',
-                  templateUrl: 'views/candidature/form.html'
-                  controller: 'CandidatureFormController'
-        )
-
-        # ARTIST
 
         $stateProvider.state('artist',
                 url: '/artist?letter',
@@ -146,8 +126,6 @@ angular.module('memoire', ['memoire.controllers', 'memoire.directives', 'ui.rout
                 controller: 'ArtistController'
         )
 
-        # ARTWORK
-
         $stateProvider.state('genre',
                 url: '/artwork/?genre',
                 templateUrl: 'views/artworks.html'
@@ -159,6 +137,9 @@ angular.module('memoire', ['memoire.controllers', 'memoire.directives', 'ui.rout
                 templateUrl: 'views/artworks.html'
                 controller: 'ArtworkListingController'
         )
+
+
+
         $stateProvider.state('artwork-detail',
                 url: '/artwork/:id',
                 templateUrl: 'views/artwork.html'

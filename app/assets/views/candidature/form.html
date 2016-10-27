@@ -38,15 +38,19 @@
           <span ng-show="form.uGender.$error.gender"> </span>
         </div>
 
+
         <label>Date de naissance / Birthdate</label>
         <input type="date" ng-model="user.birthdate" name="uBirthdate" required
              placeholder="{{birthdateMin | date:'dd-MM-yyyy'}}"
              max="{{birthdateMin | date:'yyyy-MM-dd'}}" />
-
         <div ng-show="form.$submitted || form.uBirthdate.$touched">
            <span ng-show="form.uBirthdate.$error.required">Tell us your gender.</span>
            <span ng-show="form.uBirthdate.$error.max"> Il faut être nés avant le {{birthdateMin | date:'dd MMMM yyyy'}} </span>
         </div>
+
+
+
+
 
 
         <input type="submit" ng-click="update(user,form)" value="Save" />
