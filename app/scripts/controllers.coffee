@@ -187,13 +187,17 @@ angular.module('memoire.controllers', ['memoire.services'])
 
 # Candidature Form
 
-.controller('CandidatureFormController', ($scope, $q, $state, Restangular) ->
+.controller('CandidatureFormController', ($scope, $q, $state, Restangular, ISO3166) ->
 
 
   # Birthdate minimum
   current_year = new Date().getFullYear()
   age_min = 25
   $scope.birthdateMin = new Date(current_year-age_min,11,31)
+
+  #country
+  $scope.countries = ISO3166.countryToCode
+  
 
   $scope.update = (user, form) ->
 

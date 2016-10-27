@@ -26,7 +26,7 @@
         </div>
 
         <label>Genre</label>
-        <select name="gender" ng-model="user.gender" name="uGender" required>
+        <select ng-model="user.gender" name="uGender" required>
           <option value="">---Choisir / Please select---</option> <!-- not selected / blank option -->
           <option value="M">Male</option>
           <option value="F">Female</option>
@@ -43,18 +43,21 @@
         <input type="date" ng-model="user.birthdate" name="uBirthDate" required
              placeholder="{{birthdateMin | date:'dd-MM-yyyy'}}"
              max="{{birthdateMin | date:'yyyy-MM-dd'}}" />
-        <div ng-show="form.$submitted || form.uBirthdate.$touched">
-           <span ng-show="form.uBirthdate.$error.required">Tell us your gender.</span>
-           <span ng-show="form.uBirthdate.$error.max"> Il faut être nés avant le {{birthdateMin | date:'dd MMMM yyyy'}} </span>
+        <div ng-show="form.$submitted || form.uBirthDate.$touched">
+           <span ng-show="form.uBirthDate.$error.required">Tell us your Birthday.</span>
+           <span ng-show="form.uBirthDate.$error.max"> Il faut être nés avant le {{birthdateMin | date:'dd MMMM yyyy'}} </span>
         </div>
 
 
         <label>Pays de naissance / Birth Place</label>
-        <input type="text" name="uBirthCountry" country-code />
-
+        <select ng-model="user.birthcountry" name="uBirthCountry" required>
+          <option value="">-- Select a Country --</option>
+          <option ng-repeat="(country,code) in countries" value="{{code}}">{{country}}</option>
+        </select>
 
         <div ng-show="form.$submitted || form.uBirthCountry.$touched">
-           <span ng-show="form.uBirthCountry.$error.countrycode">This must be a country code!</span>
+           <span ng-show="form.uBirthCountry.$error.required"> Tell us your Birth Place </span>
+           <span ng-show="form.uBirthCountry.$error.birthcountry">This must be a country code!</span>
         </div>
 
 
