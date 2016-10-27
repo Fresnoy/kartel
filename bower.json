@@ -38,7 +38,7 @@
     "angular-markdown-filter": "~1.4.0",
     "angular-sanitize": "~1.5.0",
     "angular-bootstrap-lightbox": "~0.11.0",
-    "ng-country-select": "~0.1.4"
+    "iso-3166-country-codes-angular": "1.1.1"
   },
   "overrides": {
   	"lodash":{

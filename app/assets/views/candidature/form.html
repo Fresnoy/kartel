@@ -35,12 +35,12 @@
         </select>
         <div ng-show="form.$submitted || form.uGender.$touched">
           <span ng-show="form.uGender.$error.required">Tell us your gender.</span>
-          <span ng-show="form.uGender.$error.gender"> </span>
+          <span ng-show="form.uGender.$error.gender"> Value error </span>
         </div>
 
 
         <label>Date de naissance / Birthdate</label>
-        <input type="date" ng-model="user.birthdate" name="uBirthdate" required
+        <input type="date" ng-model="user.birthdate" name="uBirthDate" required
              placeholder="{{birthdateMin | date:'dd-MM-yyyy'}}"
              max="{{birthdateMin | date:'yyyy-MM-dd'}}" />
         <div ng-show="form.$submitted || form.uBirthdate.$touched">
@@ -49,7 +49,13 @@
         </div>
 
 
+        <label>Pays de naissance / Birth Place</label>
+        <input type="text" name="uBirthCountry" country-code />
 
+
+        <div ng-show="form.$submitted || form.uBirthCountry.$touched">
+           <span ng-show="form.uBirthCountry.$error.countrycode">This must be a country code!</span>
+        </div>
 
 
 
