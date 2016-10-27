@@ -197,12 +197,15 @@ angular.module('memoire.controllers', ['memoire.services'])
 
   #country
   $scope.countries = ISO3166.countryToCode
-  
+
+  #phone patterne
+  $scope.phone_pattern = "/^\+?\d{2}[-. ]?\d{9}$/"
+
 
   $scope.update = (user, form) ->
 
     console.log(form)
-    console.log(form.uBirthdate)
+    console.log(form.uHomelandPhone.$error)
     $scope.infos = angular.copy(user);
     return true
 

@@ -25,6 +25,11 @@
           <span ng-show="form.uEmail.$error.email">E-mail non valid / This is not a valid email.</span>
         </div>
 
+
+
+
+
+
         <label>Genre</label>
         <select ng-model="user.gender" name="uGender" required>
           <option value="">---Choisir / Please select---</option> <!-- not selected / blank option -->
@@ -97,8 +102,38 @@
         </div>
 
 
+      <label>Numéro de téléphone pays d'origine   / Homeland Phone number</label>
+      <input type="text" placeholder="+33-320283982" name="uHomelandPhone"
+        ng-pattern="/^\+?\d{2}[-. ]?\d{9}$/" ng-model="user.homeland_phone"
+        ng-minlength="10" ng-maxlength="15"
+      />
+      <div ng-show="form.$submitted || form.uResidenceCountry.$touched">
+        <span class="block" ng-show="form.uHomelandPhone.$error.required">Required!</span>
+        <span class="block" ng-show="form.uHomelandPhone.$error.minlength">Phone no not less that 10 char.</span>
+        <span class="block" ng-show="form.uHomelandPhone.$error.maxlength">Phone no not more than 11 char.</span>
+        <span class="block" ng-show="form.uHomelandPhone.$error.pattern">Please match pattern [+33-123456789]</span>
+      </div>
 
 
+
+      <label>Numéro de téléphone Résidence / Residence Phone number</label>
+      <input type="text" placeholder="+33-320283982" name="uResidencePhone"
+        ng-pattern="phone_pattern" ng-model="user.residence_phone"
+        ng-minlength="10" ng-maxlength="15"
+      />
+      <div ng-show="form.$submitted || form.uResidencePhone.$touched">
+        <span class="block" ng-show="form.uResidencePhone.$error.required">Required!</span>
+        <span class="block" ng-show="form.uResidencePhone.$error.minlength">Phone no not less that 10 char.</span>
+        <span class="block" ng-show="form.uResidencePhone.$error.maxlength">Phone no not more than 11 char.</span>
+        <span class="block" ng-show="form.uResidencePhone.$error.pattern">Please match pattern [+33-123456789]</span>
+      </div>
+
+
+      <label>Numéro de sécurité sociale / Insurance number</label>
+      <input type="text" placeholder="+33-320283982" name="uInsuranceNumber" ng-model="user.insurance_number" required />
+      <div ng-show="form.$submitted || form.uInsuranceNumber.$touched">
+        <span class="block" ng-show="form.uInsuranceNumber.$error.required">Required!</span>
+      </div>
 
 
         <input type="submit" ng-click="update(user,form)" value="Save" />
