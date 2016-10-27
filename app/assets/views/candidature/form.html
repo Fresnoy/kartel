@@ -1,3 +1,4 @@
+
 <h1>
   Inscription
 </h1>
@@ -81,9 +82,15 @@
         </div>
 
 
-        <label>Adresse pays d'origine / Homeland Adresse</label>
-        <input type="text" ng-model="user.homeland_adress" name="uHomelandAdress" />
-
+        <label>Adresse du pays d'origine / Homeland Adresse</label>
+        <input type="text"
+    		   ng-places-autocomplete
+    		   pa-options="paOptions"
+    		   pa-on-place-ready="placesCallback"
+    		   pa-trigger="paTrigger"
+           name="uHomelandAdress"
+           ng-model="user.homeland_adress"
+  			/>
         <div ng-show="user.homeland_adress">
           <blockquote>
             <label> > Pays  / Homeland  Country</label>
@@ -99,9 +106,16 @@
         </div>
 
 
-        <label>Adresse pays de résidence / Residence Adresse</label>
-        <input type="text" ng-model="user.residence_address" name="uResidenceAdress" />
+        <label>Adresse du pays de résidence / Residence Adresse</label>
 
+        <input type="text"
+    		   ng-places-autocomplete
+    		   pa-options="paOptions"
+    		   pa-on-place-ready="placesCallback"
+    		   pa-trigger="paTrigger"
+           name="uResidenceAdress"
+           ng-model="user.residence_address"
+  			/>
         <div ng-show="user.residence_address">
           <blockquote>
             <label> > Pays  / Residence  Country</label>

@@ -224,11 +224,21 @@ angular.module('memoire.controllers', ['memoire.services'])
         console.log('progress: ' + $scope.upload_percentage + '% ' + evt.config.data.file.name);
     )
 
+  #adresse
+  $scope.paOptions = {
+  	updateModel : true
+  }
+  $scope.paTrigger = {};
+  $scope.paDetails = {};
+  $scope.placesCallback = () ->
 
+
+
+  #update
   $scope.update = (user, form) ->
 
     console.log(form)
-    console.log(form.uPhoto)
+    #console.log(form.uPhoto)
     $scope.infos = angular.copy(user);
     return true
 
