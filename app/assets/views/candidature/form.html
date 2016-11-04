@@ -164,6 +164,46 @@
         <span class="block" ng-show="form.uInsuranceNumber.$error.required">Required!</span>
       </div>
 
+      <label>Situation de famille / Family status</label>
+      <select ng-model="user.family_status" name="uFamilyStatus" required>
+        <option value="">---------</option>
+        <option value="S" selected="selected">Single</option>
+        <option value="E">Engaged</option>
+        <option value="M">Married</option>
+        <option value="D">Divorced</option>
+        <option value="W">Widowed</option>
+        <option value="C">Civil Union</option>
+      </select>
+      <div ng-show="form.$submitted || form.uFamilyStatus.$touched">
+        <span ng-show="form.uFamilyStatus.$error.required">Tell us your Family status.</span>
+        <span ng-show="form.uFamilyStatus.$error.gender"> Value error </span>
+      </div>
+
+      <label>Langue maternelle / Mother tongue</label>
+      <select ng-model="user.mother_tongue" name="uMotherTongue" required>
+        <option value="">-- Select a Language --</option>
+        <option ng-repeat="item in LANGUAGES" value="{{item.alpha2}}">{{item.English}}</option>
+      </select>
+      <div ng-show="form.$submitted || form.uMotherTongue.$touched">
+        <span ng-show="form.uFamilyStatus.$error.required">Tell us your Mother language.</span>
+        <span ng-show="form.uFamilyStatus.$error.gender"> Value error </span>
+      </div>
+
+      <label>Autres lmangues / Other tongue</label>
+      <select ng-model="user.other_language" name="uOtherLanguage" multiple >
+        <option ng-repeat="item in LANGUAGES" value="{{item.alpha2}}">{{item.English}}</option>
+      </select>
+
+      <label>Cursus/label>
+      <div ng-repeat="item in cursus.items">
+        <input type="text" placeholder="Année / year" ng-model="item.year" required>
+        <input type="text" placeholder="Text" ng-model="item.infos" required>
+        <button ng-click="">Remove</button>
+      </div>
+      <button ng-click="addCursus()">New Item</button>
+
+
+
 
         <input type="submit" ng-click="update(user,form)" value="Save" />
 
