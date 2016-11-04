@@ -35,11 +35,7 @@ angular.module('memoire', ['memoire.controllers', 'memoire.directives', 'ui.rout
         RestangularProvider.setResponseExtractor((response, operation, what, url) ->
                 newResponse = null;
 
-                if operation is "getList"
-                        newResponse = response.objects
-                        newResponse.metadata = response.meta
-                else
-                        newResponse = response
+                newResponse = response
 
                 return newResponse
         )

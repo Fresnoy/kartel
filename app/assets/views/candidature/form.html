@@ -28,14 +28,14 @@
 
         <label>Photo</label>
         <button type="file" ng-model="user.photo" name="uPhoto"
-          ngf-select="upload($file)"
+          ngf-select="upload(user.photo)"
           accept="image/*" ngf-max-size="10MB" required>
           Choisir une photo</button>
           <span ng-show="form.uPhoto.$valid">
             <span ng-show="upload_percentage < 0"> {{ upload_percentage }} </span>
             <span ng-show="form.uPhoto.$valid">
               OK photo
-              <img ngf-thumbnail="file || '/thumb.jpg'">
+              <img ngf-thumbnail="user.photo || '/thumb.jpg'">
             </span>
 
         </span>

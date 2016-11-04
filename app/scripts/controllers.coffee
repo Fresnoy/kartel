@@ -206,7 +206,7 @@ angular.module('memoire.controllers', ['memoire.services'])
   $scope.upload = (file) ->
     Upload.upload(
       {
-        url: '/upload/url',
+        url: 'api.lefresnoy.net/utils/upload/',
         data: {
           file: file,
           name: $scope.username
@@ -214,9 +214,8 @@ angular.module('memoire.controllers', ['memoire.services'])
       }
     )
     .then((resp) ->
-        console.log('Success ' + resp.config.data.file.name + 'uploaded');
-        #console.log('Response: ' + resp.data);
-
+        console.log('Success ' + resp.config.data.file.name + ' uploaded');
+        console.log(resp);
       ,(resp) ->
         console.log('Error status: ' + resp.status);
       ,(evt) ->
