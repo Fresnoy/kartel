@@ -26,6 +26,10 @@
           <span ng-show="form.uEmail.$error.email">E-mail non valid / This is not a valid email.</span>
         </div>
 
+        <label>Pseudo / Nickname</label>
+        <input type="text" ng-model="artist.nickname" name="aNickname" />
+        </div>
+
         <label>Photo</label>
         <button type="file" ng-model="user.photo" name="uPhoto"
           ngf-select="upload(user.photo)"
@@ -161,7 +165,7 @@
 
 
       <label>Numéro de sécurité sociale / Insurance number</label>
-      <input type="text" placeholder="+33-320283982" name="uInsuranceNumber" ng-model="user.insurance_number" required />
+      <input type="text" placeholder="" name="uInsuranceNumber" ng-model="user.insurance_number" required />
       <div ng-show="form.$submitted || form.uInsuranceNumber.$touched">
         <span class="block" ng-show="form.uInsuranceNumber.$error.required">Required!</span>
       </div>
@@ -199,38 +203,134 @@
       <label>Cursus</label>
       <div>
         <div ng-repeat="(index,item) in cursus.items" ng-model="cursus.items" name="uCursus"  >
-          <select ng-model="user.cursus[index].year"  >
-          <option value="">-- Select a Year --</option>
-          <option ng-repeat="year in years" value="{{year}}">{{year}}</option>
-          <input type="text" placeholder="Diplome " ng-model="user.cursus[index].infos" required>
-          <button type="file" ng-model="user.cursus[index].photo"
-            ngf-select="upload(user.cursus[index].photo)"
+          <select ng-model="cursus.items[index].year"  >
+            <option value="">-- Select Year --</option>
+            <option ng-repeat="year in years" value="{{year}}">{{year}}</option>
+          </select>
+          <input type="text" placeholder="Diplome " ng-model="cursus.items[index].infos" required>
+          <button type="file" ng-model="cursus.items[index].photo"
+            ngf-select="upload(cursus.items[index].photo)"
             accept="image/*" ngf-max-size="10MB" required>
             justificatif</button>
             <span class="student-card" >
               <span ng-show="upload_percentage < 100 "> {{ upload_percentage }} </span>
-
-                <img class="caption" ng-if="user.cursus[index].photo" ngf-thumbnail="user.cursus[index].photo">
+                <img class="caption" ng-if="cursus.items[index].photo" ngf-thumbnail="cursus.items[index].photo">
             </span>
 
           </span>
-          <div ng-show="form.$submitted || user.cursus[index].$touched">
+          <div class="inline"  ng-show="form.$submitted || user.cursus[index].$touched">
               <span ng-show="user.cursus[index].$error.required"> Give us a photo please</span>
               <span ng-show="user.cursus[index].$error.photo"> Value error </span>
           </div>
 
-          <button ng-click="removeCursus(index)"> - </button>
+          <button class="inline" ng-click="removeItem(cursus.items,index)"> - </button>
         </div>
       </div>
-      <button ng-click="addCursus()"> + </button>
+      <button ng-click="addItem(cursus.items)"> + </button>
+
+      <label> Réseaux sociaux / Social Network</label>
+      <input type="url" placeholder="Twitter Account" name="aTwitter" ng-model="artist.social.twitter" />
+      <input type="url" placeholder="Facebook Account" name="aFacebook" ng-model="artist.social.facebook" />
+      <input type="url" placeholder="Website" name="aWebsite" ng-model="artist.social.website" />
+
+
+      <label>Première inscription au Fresnoy </label>
+      <input type="radio" ng-model="application.first_time" name="saFirstTime" value="true" required ng-checked="true" /> Oui / yes
+      <br/>
+      <input type="radio" ng-model="application.first_time" name="saFirstTime" value="false" required  /> Non / No
+      <div class="inline" ng-show="application.first_time=='false'">
+        <select ng-model="application.last_application_year"  name="saLastApplication" ng-required="application.first_time=='false'"  >
+          <option value="">-- Select Year --</option>
+          <option ng-repeat="year in years" value="{{year}}">{{year}}</option>
+        </select>
+        <div class="inline" ng-show="form.$submitted || form.saLastApplication.$touched">
+            <span ng-show="form.saLastApplication.$error.required"> Give us the year</span>
+            <span ng-show="form.saLastApplication.$error.value"> Give us a year </span>
+        </div>
+      </div>
+
+      <label>Oeuvres / artworks </label>
+      <div>
+        <div ng-repeat="(index,item) in artwork_galleries.items" ng-model="artwork_galleries.items" name="saAwGalleries"  >
+
+          <input type="text" placeholder="Nom de l'oeuvre " ng-model="item.title" required />
+          <textarea placeholder="Description complète" ng-model="item.infos" />
+
+          <div class="inline" ng-repeat="(mediaIndex,mediaItem) in item.medias">
+
+            <button ng-if="!item.medias[mediaIndex].media"  type="file"
+              ngf-select="upload(item.medias[mediaIndex].media)" name="saMedia" ng-model="item.medias[mediaIndex].media"
+              accept="image/*" ngf-max-size="10MB" required>
+              Média
+            </button>
+            <span class="student-card" >
+              <span ng-show="upload_percentage < 100 "> {{ upload_percentage }} </span>
+                <img class="caption"  ngf-thumbnail="item.medias[mediaIndex].media">
+            </span>
+
+          </div>
+
+          <div ngf-drop ngf-select ng-model="item.medias.media" class="inline drop-box"
+            ngf-drag-over-class="'dragover'" ngf-multiple="true" ngf-allow-dir="true"
+            accept="image/*,application/pdf"
+            ngf-pattern="'image/*,application/pdf'">Drop pdfs or images here or click to upload</div>
+            <div ngf-no-file-drop>-------------------------------<br/>
+              File Drag/Drop is not supported for this browser
+            <br/> ------------------------------------------------</div>
+            <ul class="student-card" >
+                <li class="inline" ng-repeat="f in item.medias.media" style="font:smaller">
+                  <img class="caption"  ngf-thumbnail="f">
+                </li>
+          </ul>
+
+          <button ng-click="addItem(item.medias)">Ajouter une image</button>
+
+          <button ng-click="removeItem(artwork_galleries.items,index)"> supprimer cette oeuvre </button>
+        </div>
+      </div>
+      <button ng-click="addItem(artwork_galleries.items)">Ajouter une oeuvre</button>
+
+
+      <label>Entretiens</label>
+      <input type="checkbox" ng-model="application.remote_interview"  /> Je ne peux pas etre présent le 31 avril 2017
+      <div ng-show="application.remote_interview">
+        <div>Je passe l'entretient par </div>
+          <input type="text" placeholder="skype, facebook, appear in, " ng-model="application.remote_interview_type" required />
+          <input type="text" placeholder="identifiant" ng-model="application.remote_interview_info" required />
+      </div>
+      <label>Envois d'éléments par courrier </label>
+      <input type="checkbox" ng-model="application.asynchronous_element" />
+      <div class="inline" ng-show="application.asynchronous_element">
+
+          <textarea placeholder="Description de l'envoie" ng-model="application.asynchronous_element_description" />
+
+          <input type="checkbox" ng-model="application.asynchronous_element" readonly  /> Item non reçu
+
+      </div>
+
+
+      <label>Remarques </label>
+      <textarea placeholder="remarques générales " ng-model="application.remark" />
 
 
 
 
-        <input type="submit" ng-click="update(user,form)" value="Save" />
+      <br/>
+      <br/>
+
+
+      <input type="submit" ng-click="update(user,form)" value="Save" />
+
+      <br/>
+      <br/>
+      <br/>
+      <input type="submit" ng-click="" value="Validation finale" />
 
     </div>
   </form>
+
+
+
   <div ng-show="form.$valid">
     <pre ng-repeat="(type,info) in infos">
       {{type}} = {{info | json}}

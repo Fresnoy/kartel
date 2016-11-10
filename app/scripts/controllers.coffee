@@ -205,6 +205,16 @@ angular.module('memoire.controllers', ['memoire.services'])
 
   #upload file
   $scope.upload_percentage = 0
+  $scope.$watch('files', ->
+        $scope.uploadMulty($scope.files);
+  )
+  $scope.uploadMulty = (files) ->
+    if (files && files.length)
+      for file in files
+        if (!file.$error)
+          $scope.upload(file)
+
+
   $scope.upload = (file) ->
     Upload.upload(
       {
@@ -241,24 +251,31 @@ angular.module('memoire.controllers', ['memoire.services'])
   #cursus
   year = new Date().getFullYear();
   $scope.years = [];
-  $scope.years.push (year-i) for i in [1..30]
+  $scope.years.push (year-i) for i in [1..age_max]
 
   $scope.cursus = {}
   $scope.cursus.items = []
 
 
-  $scope.addCursus = ->
-      $scope.cursus.items.push({
-        infos: "",
-        year: "",
-        photo: ""
+
+  $scope.addItem = (item) ->
+      item.push({
+        medias:[]
+        photo:"",
+        name:""
       });
 
-  $scope.removeCursus = (num) ->
-    $scope.cursus.items.splice(num,1)
+
+  $scope.removeItem = (items, num) ->
+    items.splice(num,1)
 
 
+  #gallery
+  $scope.artwork_galleries = {}
+  $scope.artwork_galleries.items = []
+  $scope.artwork_galleries.medias = []
 
+  console.log($scope.artwork_galleries)
 
 
   #update
