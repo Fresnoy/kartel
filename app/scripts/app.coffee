@@ -56,6 +56,7 @@ angular.module('memoire', ['memoire.controllers', 'memoire.directives', 'ui.rout
 
 
 
+
 .filter("isFresnoyUrl", ->
   return (input, str = "/media/") ->
     if typeof input isnt 'string'
