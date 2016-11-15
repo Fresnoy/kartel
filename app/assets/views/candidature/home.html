@@ -33,5 +33,9 @@
   à la charge des candidats.
 </p>
 
-
-<a ui-sref="candidature-form"> > Inscription </a>
+<ng-include ng-if="!isAuthenticated" src="'views/partials/auth-form.html'" ng-controller="AuthForm"></ng-include>
+<div ng-if="isAuthenticated">
+  <span> Vous êtes identifiés, vous pouvez vous inscrire : </span>
+  <br/>
+  <a ui-sref="candidature-form"> > Inscription </a>
+</div>

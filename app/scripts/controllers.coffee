@@ -291,3 +291,18 @@ angular.module('memoire.controllers', ['memoire.services'])
 
 
 )
+
+.controller('AuthForm', ($scope, Authentification, jwtHelper) ->
+
+  $scope.login = (params) ->
+    Authentification.post(params).then((auth) ->
+      #ok
+      tokenDecode = jwtHelper.decodeToken(auth.token);
+      console.log(tokenDecode)
+      $scope.$apply()
+    , ->
+      #error
+      console.log("There was an error login");
+    )
+
+)

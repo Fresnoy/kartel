@@ -17,7 +17,15 @@ You should have received a copy of the GNU Affero General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 ###
 
-angular.module('memoire', ['memoire.controllers', 'memoire.directives', 'ui.router', 'ngAnimate', 'restangular', 'chieffancypants.loadingBar', 'ui.bootstrap', 'ngSanitize', 'markdown', 'iso-3166-country-codes', 'ngFileUpload', 'ngPlacesAutocomplete'])
+angular.module('memoire',
+              [
+                  'memoire.controllers', 'memoire.directives', 'ui.router',
+                  'restangular', 'auth0', 'angular-jwt',
+                  'ngAnimate', 'chieffancypants.loadingBar', 'ui.bootstrap',
+                  'ngSanitize', 'markdown',
+                  'iso-3166-country-codes', 'ngFileUpload', 'ngPlacesAutocomplete',
+
+              ])
 
 # CORS
 .config(['$httpProvider', ($httpProvider) ->
@@ -41,6 +49,28 @@ angular.module('memoire', ['memoire.controllers', 'memoire.directives', 'ui.rout
         )
 )
 
+# Authentification auth
+.config((authProvider) ->
+    authProvider.init({
+      domain: config.domain,
+      clientID: config.clientID,
+      loginUrl: "/auth/"
+    })
+)
+
+.run((auth) ->
+    auth.hookEvents();
+)
+
+#token
+.config(($httpProvider, jwtInterceptorProvider) ->
+  jwtInterceptorProvider.tokenGetter = (auth) ->
+    return auth.idToken;
+  $httpProvider.interceptors.push('jwtInterceptor');
+)
+
+
+
 # AME Service
 .factory('AmeRestangular', (Restangular) ->
 
@@ -53,6 +83,8 @@ angular.module('memoire', ['memoire.controllers', 'memoire.directives', 'ui.rout
             #Restangular.setDefaultRequestParams({key: config.ame_key});
       )
 )
+
+
 
 
 

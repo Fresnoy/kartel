@@ -41,7 +41,10 @@
     "iso-3166-country-codes-angular": "~1.1.1",
     "ng-file-upload": "~12.2.12",
     "ng-places-autocomplete":"~1.2.2",
-    "langmap":"~0.0.10"
+    "langmap":"~0.0.10",
+    "angular-jwt":"~0.1.8",
+    "auth0-lock":"~10.6.1",
+    "auth0-angular":"~4.2.7"
   },
   "overrides": {
     "lodash": {
