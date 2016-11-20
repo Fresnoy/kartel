@@ -20,7 +20,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 angular.module('memoire',
               [
                   'memoire.controllers', 'memoire.directives', 'ui.router',
-                  'restangular', 'auth0', 'angular-jwt',
+                  'restangular', 'angular-jwt',
                   'ngAnimate', 'chieffancypants.loadingBar', 'ui.bootstrap',
                   'ngSanitize', 'markdown',
                   'iso-3166-country-codes', 'ngFileUpload', 'ngPlacesAutocomplete',
@@ -37,54 +37,60 @@ angular.module('memoire',
 # Tastypie
 .config((RestangularProvider) ->
         RestangularProvider.setBaseUrl(config.rest_uri)
-        RestangularProvider.setRequestSuffix('?format=json');
+        #RestangularProvider.setRequestSuffix('?format=json');
         # RestangularProvider.setDefaultHeaders({"Authorization": "ApiKey pipo:46fbf0f29a849563ebd36176e1352169fd486787"});
         # Tastypie patch
         RestangularProvider.setResponseExtractor((response, operation, what, url) ->
                 newResponse = null;
 
-                newResponse = response
+                if operation is "getList"
+                        newResponse = response.objects
+                        newResponse.metadata = response.meta
+                else
+                        newResponse = response
 
                 return newResponse
         )
 )
 
-# Authentification auth
-.config((authProvider) ->
-    authProvider.init({
-      domain: config.domain,
-      clientID: config.clientID,
-      loginUrl: "/auth/"
-    })
-)
-
-.run((auth) ->
-    auth.hookEvents();
-)
-
 #token
-.config(($httpProvider, jwtInterceptorProvider) ->
-  jwtInterceptorProvider.tokenGetter = (auth) ->
-    return auth.idToken;
-  $httpProvider.interceptors.push('jwtInterceptor');
+ .config(($httpProvider, jwtOptionsProvider, RestangularProvider) ->
+    #Please note we're annotating the function so that the $injector works when the file is minified
+    jwtOptionsProvider.config({
+      tokenGetter: ['options', (options) ->
+        #myService.doSomething();
+        return localStorage.getItem('id_token');
+      ],
+      unauthenticatedRedirectPath: '/login',
+      unauthenticatedRedirector: ['$state', ($state) ->
+        #$state.go('app.login');
+        console.log("authredirector")
+
+      ],
+      whiteListedDomains: ['api.lefresnoy.net', 'localhost']
+
+    })
+
+    $httpProvider.interceptors.push('jwtInterceptor');
+    RestangularProvider.setDefaultHeaders({Authorization: "Bearer "+localStorage.getItem('id_token')})
+)
+.run((authManager) ->
+
+    authManager.checkAuthOnRefresh()
+    authManager.redirectWhenUnauthenticated()
+
 )
 
+.run(['$rootScope' ,'$state', ($rootScope, $state) ->
 
+  #console.log($rootScope)
 
-# AME Service
-.factory('AmeRestangular', (Restangular) ->
+  $rootScope.$on('tokenHasExpired', () ->
+    console.log('Your session has expired!')
+    # $state.go('apps.candidature')
+  )
 
-      Restangular.setDefaultRequestParams({key: config.ame_key})
-      #
-      return Restangular.withConfig((RestangularConfigurer) ->
-            RestangularConfigurer.setBaseUrl(config.ame_rest_uri);
-
-            #RestangularConfigurer.defaultRequestParams.common.apikey = config.ame_key;
-            #Restangular.setDefaultRequestParams({key: config.ame_key});
-      )
-)
-
-
+])
 
 
 
@@ -124,9 +130,14 @@ angular.module('memoire',
                 url: '/',
                 templateUrl: 'views/school.html'
                 controller: 'SchoolController'
+                data: {
+                  requiresLogin: true
+                }
         )
 
         # SCHOOL
+
+
 
         $stateProvider.state('school',
                 url: '/school',

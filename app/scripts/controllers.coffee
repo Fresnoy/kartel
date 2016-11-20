@@ -187,8 +187,16 @@ angular.module('memoire.controllers', ['memoire.services'])
 
 # Candidature Form
 
-.controller('CandidatureFormController', ($scope, $q, $state, Restangular, ISO3166, Upload) ->
+.controller('CandidatureFormController', ($scope, $q, $state, Users, Restangular, ISO3166, Upload) ->
 
+  if(localStorage.id_token)
+
+    Users.one(localStorage.user_id+"/").get().then( (u) ->
+      #console.log("user")
+      #console.log(u)
+      $scope.user = u
+    )
+    #console.log(user)
 
   # Birthdate minimum
   current_year = new Date().getFullYear()
@@ -292,17 +300,29 @@ angular.module('memoire.controllers', ['memoire.services'])
 
 )
 
-.controller('AuthForm', ($scope, Authentification, jwtHelper) ->
+.controller('AuthForm', ($scope, Authentification, jwtHelper, authManager) ->
+
+  console.log(authManager)
 
   $scope.login = (params) ->
     Authentification.post(params).then((auth) ->
       #ok
-      tokenDecode = jwtHelper.decodeToken(auth.token);
-      console.log(tokenDecode)
-      $scope.$apply()
+      authManager.authenticate()
+      #console.log(localStorage)
+      tokenDecode = jwtHelper.decodeToken(auth.token)
+      localStorage.setItem('id_token', auth.token)
+      localStorage.setItem('user_id', tokenDecode.user_id)
+      console.log(localStorage)
+
     , ->
       #error
-      console.log("There was an error login");
+      console.log("Error login");
     )
+
+  $scope.logout = () ->
+
+    localStorage.id_token = "";
+
+    authManager.unauthenticate()
 
 )
