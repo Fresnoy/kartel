@@ -2,7 +2,11 @@ angular.module('memoire.services', ['restangular'])
 
 # Services
 .factory('Users', (Restangular) ->
-        return Restangular.service('people/user/')
+        return Restangular.service('people/user')
+)
+
+.factory('Profiles', (Restangular) ->
+        return Restangular.service('people/userprofile')
 )
 
 .factory('Artists', (Restangular) ->
@@ -39,13 +43,8 @@ angular.module('memoire.services', ['restangular'])
 
 # AME Service
 .factory('AmeRestangular', (Restangular) ->
-
-      # Restangular.setDefaultRequestParams({key: config.ame_key})
-      #
       return Restangular.withConfig((RestangularConfigurer) ->
             RestangularConfigurer.setBaseUrl(config.ame_rest_uri);
-
-            #RestangularConfigurer.defaultRequestParams.common.apikey = config.ame_key;
             RestangularConfigurer.setDefaultRequestParams({key: config.ame_key});
       )
 )

@@ -187,14 +187,33 @@ angular.module('memoire.controllers', ['memoire.services'])
 
 # Candidature Form
 
-.controller('CandidatureFormController', ($scope, $q, $state, Users, Restangular, ISO3166, Upload) ->
+.controller('CandidatureFormController', ($scope, $q, $state, Users, Profiles, Restangular, ISO3166, Upload) ->
+
+
+    #update
+  $scope.update = (user, form) ->
+    $scope.user.save().then((response) ->
+       $scope.user = response
+    )
+
+    console.log($scope.profile)
+    #$scope.profile.photo = "lala.jpg"
+    $scope.profile.save().then((response) ->
+       $scope.profile = response
+    )
+
+
+    return true
 
   if(localStorage.id_token)
-
-    Users.one(localStorage.user_id+"/").get().then( (u) ->
-      #console.log("user")
-      #console.log(u)
-      $scope.user = u
+    Users.one(localStorage.user_id).get().then((user) ->
+      $scope.user = user
+      matches = user.profile.match(/\d+$/)
+      if matches
+        profile_id = matches[0]
+        Profiles.one(profile_id).get().then((profile) ->
+          $scope.profile = profile
+      )
     )
     #console.log(user)
 
@@ -223,24 +242,25 @@ angular.module('memoire.controllers', ['memoire.services'])
           $scope.upload(file)
 
 
-  $scope.upload = (file) ->
+  $scope.upload = (model) ->
     Upload.upload(
       {
-        url: 'api.lefresnoy.net/utils/upload/',
+        url: model,
         data: {
-          file: file,
-          name: $scope.username
+          #file: file,
+          #name: $scope.username
         }
       }
     )
     .then((resp) ->
-        console.log('Success ' + resp.config.data.file.name + ' uploaded');
+        #console.log('Success ' + resp.config.data.file.name + ' uploaded');
+        console.log('Success');
         console.log(resp);
       ,(resp) ->
         console.log('Error status: ' + resp.status);
       ,(evt) ->
-        $scope.upload_percentage = parseInt(100.0 * evt.loaded / evt.total);
-        console.log('progress: ' + $scope.upload_percentage + '% ' + evt.config.data.file.name);
+        #$scope.upload_percentage = parseInt(100.0 * evt.loaded / evt.total);
+        #console.log('progress: ' + $scope.upload_percentage + '% ' + evt.config.data.file.name);
     )
 
   #adresse
@@ -283,16 +303,9 @@ angular.module('memoire.controllers', ['memoire.services'])
   $scope.artwork_galleries.items = []
   $scope.artwork_galleries.medias = []
 
-  console.log($scope.artwork_galleries)
+  #console.log($scope.artwork_galleries)
 
 
-  #update
-  $scope.update = (user, form) ->
-
-    console.log(form)
-    #console.log(form.uPhoto)
-    $scope.infos = angular.copy(user);
-    return true
 
 
 
@@ -308,7 +321,6 @@ angular.module('memoire.controllers', ['memoire.services'])
     Authentification.post(params).then((auth) ->
       #ok
       authManager.authenticate()
-      #console.log(localStorage)
       tokenDecode = jwtHelper.decodeToken(auth.token)
       localStorage.setItem('id_token', auth.token)
       localStorage.setItem('user_id', tokenDecode.user_id)
@@ -317,11 +329,14 @@ angular.module('memoire.controllers', ['memoire.services'])
     , ->
       #error
       console.log("Error login");
+      $scope.logout()
     )
 
   $scope.logout = () ->
 
-    localStorage.id_token = "";
+    delete localStorage.id_token
+    delete localStorage.user_id
+
 
     authManager.unauthenticate()
 

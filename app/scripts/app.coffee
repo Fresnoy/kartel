@@ -72,7 +72,7 @@ angular.module('memoire',
     })
 
     $httpProvider.interceptors.push('jwtInterceptor');
-    RestangularProvider.setDefaultHeaders({Authorization: "Bearer "+localStorage.getItem('id_token')})
+    RestangularProvider.setDefaultHeaders({Authorization: "JWT "+localStorage.getItem('id_token')})
 )
 .run((authManager) ->
 

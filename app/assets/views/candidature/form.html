@@ -3,9 +3,11 @@
   Inscription
 </h1>
 <div >
-  <form name="form" class="css-form" novalidate>
+  <form name="form" class="css-form" novalidate enctype="multipart/form-data">
 
     <div class="control-group" ng-class="{error: myForm.name.$invalid}">
+
+        <input type="submit" ng-click="update(user,form)" value="Update" />
 
         <label>Nom / Name</label>
         <input type="text" ng-model="user.last_name" name="uName" required />
@@ -15,7 +17,7 @@
 
         <label>Prénom / First Name</label>
         <input type="text" ng-model="user.first_name" name="uFirstName" required />
-        <div ng-show="form.$submitted || form.uName.$touched">
+        <div ng-show="form.$submitted || form.uFirstName.$touched">
           <span ng-show="form.uFirstName.$error.required">Tell us your first-name.</span>
         </div>
 
@@ -31,15 +33,15 @@
         </div>
 
         <label>Photo</label>
-        <button type="file" ng-model="user.photo" name="uPhoto"
-          ngf-select="upload(user.photo)"
+        <button type="file" ng-model="profile.photo" name="uPhoto"
+          ngf-select="upload(profile.photo)"
           accept="image/*" ngf-max-size="10MB" required>
           Choisir une photo</button>
           <span ng-show="form.uPhoto.$valid">
             <span ng-show="upload_percentage < 0"> {{ upload_percentage }} </span>
             <span class="student-card" ng-show="form.uPhoto.$valid">
               <br>
-              <img class="caption" ngf-thumbnail="user.photo || '/thumb.jpg'">
+              <img class="caption" ngf-thumbnail="profile.photo || '/thumb.jpg'">
             </span>
 
         </span>
@@ -51,7 +53,7 @@
 
 
         <label>Genre</label>
-        <select ng-model="user.gender" name="uGender" required>
+        <select ng-model="profile.gender" name="uGender" required>
           <option value="">---Choisir / Please select---</option> <!-- not selected / blank option -->
           <option value="M">Male</option>
           <option value="F">Female</option>
@@ -319,7 +321,7 @@
       <br/>
 
 
-      <input type="submit" ng-click="update(user,form)" value="Save" />
+
 
       <br/>
       <br/>
