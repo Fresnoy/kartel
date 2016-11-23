@@ -9,6 +9,8 @@
 
         <input type="submit" ng-click="update(user,form)" value="Update" />
 
+        <input type="submit" ng-click="create(form)" value="Create" />
+
         <label>Nom / Name</label>
         <input type="text" ng-model="user.last_name" name="uName" required />
         <div ng-show="form.$submitted || form.uName.$touched">
@@ -34,7 +36,7 @@
 
         <label>Photo</label>
         <button type="file" ng-model="profile.photo" name="uPhoto"
-          ngf-select="upload(profile.photo)"
+          ngf-select="upload(profile.photo, profile.url)"
           accept="image/*" ngf-max-size="10MB" required>
           Choisir une photo</button>
           <span ng-show="form.uPhoto.$valid">

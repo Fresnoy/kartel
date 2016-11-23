@@ -44,8 +44,11 @@ angular.module('memoire',
                 newResponse = null;
 
                 if operation is "getList"
-                        newResponse = response.objects
-                        newResponse.metadata = response.meta
+                        #V2
+                        newResponse = response
+                        #V1
+                        #newResponse = response.objects
+                        #newResponse.metadata = response.meta
                 else
                         newResponse = response
 

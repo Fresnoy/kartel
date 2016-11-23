@@ -187,35 +187,94 @@ angular.module('memoire.controllers', ['memoire.services'])
 
 # Candidature Form
 
-.controller('CandidatureFormController', ($scope, $q, $state, Users, Profiles, Restangular, ISO3166, Upload) ->
+.controller('CandidatureFormController', (
+        $scope, $q, $state,
+        Users, Profiles, Artists, Restangular, Candidatures,
+        ISO3166, Upload
+  ) ->
+
+
+  $scope.artist = Artists;
+  $scope.user = Users;
+
+
+  console.log($scope)
+
+
+  $scope.create = (form) ->
+    Profiles.post($scope.profile).then((recordedProfile) ->
+
+      $scope.user.profile = recordedProfile.url
+
+      Users.post($scope.user).then((recordedUser) ->
+
+        $scope.artist.user = recordedUser.route+"/"+recordedUser.id
+
+        Artists.post($scope.artist).then((artist) ->
+
+
+          $scope.candidature.artist = artist.url
+
+          Candidatures.post().then((candidature) ->
+
+            console.log("ok Candidature")
+            console.log(candidature)
+
+          )
+        )
+      )
+    )
 
 
     #update
   $scope.update = (user, form) ->
     $scope.user.save().then((response) ->
        $scope.user = response
+       #console.log(response)
     )
 
-    console.log($scope.profile)
+    #console.log($scope.profile)
     #$scope.profile.photo = "lala.jpg"
     $scope.profile.save().then((response) ->
        $scope.profile = response
     )
 
+    $scope.artist.save()
+
 
     return true
 
+  """
   if(localStorage.id_token)
+    #user get
+
     Users.one(localStorage.user_id).get().then((user) ->
       $scope.user = user
+      #user profile get
       matches = user.profile.match(/\d+$/)
       if matches
         profile_id = matches[0]
         Profiles.one(profile_id).get().then((profile) ->
           $scope.profile = profile
       )
+      #artist get
+      console.log(user)
+      Artists.getList().then((artists) ->
+            for artist in artists
+              if(parseInt(artist.user.match(/\d+$/)[0]) == $scope.user.id)
+                $scope.artist = artist
+
+            if($scope.artist == undefined)
+              $scope.artist = Artists
+
+      )
+
     )
+    """
     #console.log(user)
+
+
+
 
   # Birthdate minimum
   current_year = new Date().getFullYear()
@@ -242,14 +301,18 @@ angular.module('memoire.controllers', ['memoire.services'])
           $scope.upload(file)
 
 
-  $scope.upload = (model) ->
+  $scope.upload = (file, endpoint) ->
+
     Upload.upload(
       {
-        url: model,
+        url: endpoint,
         data: {
-          #file: file,
-          #name: $scope.username
+          photo: file,
+          #name: file.name
         }
+        method: 'PATCH',
+        headers: { 'Authorization': 'JWT ' + localStorage.id_token },
+        #withCredentials: true
       }
     )
     .then((resp) ->

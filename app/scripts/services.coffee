@@ -13,6 +13,10 @@ angular.module('memoire.services', ['restangular'])
         return Restangular.service('people/artist')
 )
 
+.factory('Candidatures', (Restangular) ->
+        return Restangular.service('school/candidature')
+)
+
 .factory('Students', (Restangular) ->
         return Restangular.service('school/student')
 )
@@ -40,6 +44,7 @@ angular.module('memoire.services', ['restangular'])
 .factory('Authentification', (Restangular) ->
         return Restangular.service('auth/')
 )
+
 
 # AME Service
 .factory('AmeRestangular', (Restangular) ->
