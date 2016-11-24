@@ -189,57 +189,31 @@ angular.module('memoire.controllers', ['memoire.services'])
 
 .controller('CandidatureFormController', (
         $scope, $q, $state,
-        Users, Profiles, Artists, Restangular, Candidatures,
+        Users, Artists, Restangular, Candidatures,
         ISO3166, Upload
   ) ->
-
-
-  $scope.artist = Artists;
-  $scope.user = Users;
 
 
   console.log($scope)
 
 
   $scope.create = (form) ->
-    Profiles.post($scope.profile).then((recordedProfile) ->
+    $scope.user.profile = $scope.profile
 
-      $scope.user.profile = recordedProfile.url
+    Users.post($scope.user).then((recordedUser) ->
 
-      Users.post($scope.user).then((recordedUser) ->
-
-        $scope.artist.user = recordedUser.route+"/"+recordedUser.id
-
-        Artists.post($scope.artist).then((artist) ->
-
-
-          $scope.candidature.artist = artist.url
-
-          Candidatures.post().then((candidature) ->
-
-            console.log("ok Candidature")
-            console.log(candidature)
-
-          )
+      $scope.artist.user = recordedUser.url
+      Artists.post($scope.artist).then((recordedArtist) ->
+            $scope.application.artist = recordedArtist.url
+            Candidatures.post($scope.application).then((candidature) ->
+              console.log("ok Candidature")
+            )
         )
-      )
-    )
+  )
 
 
     #update
   $scope.update = (user, form) ->
-    $scope.user.save().then((response) ->
-       $scope.user = response
-       #console.log(response)
-    )
-
-    #console.log($scope.profile)
-    #$scope.profile.photo = "lala.jpg"
-    $scope.profile.save().then((response) ->
-       $scope.profile = response
-    )
-
-    $scope.artist.save()
 
 
     return true
@@ -247,7 +221,6 @@ angular.module('memoire.controllers', ['memoire.services'])
   """
   if(localStorage.id_token)
     #user get
-
     Users.one(localStorage.user_id).get().then((user) ->
       $scope.user = user
       #user profile get

@@ -11,6 +11,13 @@
 
         <input type="submit" ng-click="create(form)" value="Create" />
 
+        <label>Username</label>
+        <input type="text" ng-model="user.username" name="uUserName" required />
+        <div ng-show="form.$submitted || form.uUserName.$touched">
+          <span ng-show="form.uUserName.$error.required">Tell us your name.</span>
+        </div>
+
+
         <label>Nom / Name</label>
         <input type="text" ng-model="user.last_name" name="uName" required />
         <div ng-show="form.$submitted || form.uName.$touched">

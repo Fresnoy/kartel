@@ -5,10 +5,6 @@ angular.module('memoire.services', ['restangular'])
         return Restangular.service('people/user')
 )
 
-.factory('Profiles', (Restangular) ->
-        return Restangular.service('people/userprofile')
-)
-
 .factory('Artists', (Restangular) ->
         return Restangular.service('people/artist')
 )
