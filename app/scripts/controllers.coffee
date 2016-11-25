@@ -188,23 +188,57 @@ angular.module('memoire.controllers', ['memoire.services'])
 # Candidature Form
 
 .controller('CandidatureFormController', (
-        $scope, $q, $state,
+        $scope, $q, $state, $filter
         Users, Artists, Restangular, Candidatures,
-        ISO3166, Upload
+        ISO3166, Upload,
   ) ->
 
 
   console.log($scope)
 
+  $scope.application = Candidatures
+  $scope.user = Users
+  $scope.user.profile = []
+  $scope.artist = Artists
+
+
 
   $scope.create = (form) ->
-    $scope.user.profile = $scope.profile
+
+
+
+    console.log($scope.user)
+    console.log($scope.artist)
+
+    if(!form.$valid)
+          console.log("Formulaire incomplet")
+          console.log(form)
+          return
+
+    # change date after validation
+    $scope.user.profile.birthdate = $filter('date')($scope.profile.birthdate, 'yyyy-MM-dd')
+
+    # change other_language
+    $scope.user.profile.other_language = $scope.user.profile.other_language.join(",")
+
+    # cursus to txt
+    $scope.user.profile.cursus = ""
+    for item in $scope.cursus.items
+      $scope.user.profile.cursus += item.year+ " - "+
+       item.infos+"\r\n"
 
     Users.post($scope.user).then((recordedUser) ->
 
+      console.log($scope.artist)
+      console.log(recordedUser)
       $scope.artist.user = recordedUser.url
+
+      console.log($scope.artist)
+
       Artists.post($scope.artist).then((recordedArtist) ->
+
             $scope.application.artist = recordedArtist.url
+
             Candidatures.post($scope.application).then((candidature) ->
               console.log("ok Candidature")
             )
@@ -218,36 +252,38 @@ angular.module('memoire.controllers', ['memoire.services'])
 
     return true
 
-  """
+
   if(localStorage.id_token)
     #user get
     Users.one(localStorage.user_id).get().then((user) ->
+
+      if(user.username=="getoken")
+        user.username = ""
+
       $scope.user = user
+
+
       #user profile get
-      matches = user.profile.match(/\d+$/)
-      if matches
-        profile_id = matches[0]
-        Profiles.one(profile_id).get().then((profile) ->
-          $scope.profile = profile
-      )
-      #artist get
-      console.log(user)
+      if (user.profile)
+        matches = user.profile.match(/\d+$/)
+        if matches
+          profile_id = matches[0]
+          Profiles.one(profile_id).get().then((profile) ->
+            $scope.profile = profile
+        )
+        #artist get
+      """
       Artists.getList().then((artists) ->
-            for artist in artists
+          for artist in artists
               if(parseInt(artist.user.match(/\d+$/)[0]) == $scope.user.id)
                 $scope.artist = artist
 
             if($scope.artist == undefined)
               $scope.artist = Artists
 
-      )
+      )"""
 
     )
-    """
-    #console.log(user)
-
-
-
 
   # Birthdate minimum
   current_year = new Date().getFullYear()
@@ -280,7 +316,7 @@ angular.module('memoire.controllers', ['memoire.services'])
       {
         url: endpoint,
         data: {
-          photo: file,
+          "profile.photo": file
           #name: file.name
         }
         method: 'PATCH',
@@ -329,9 +365,13 @@ angular.module('memoire.controllers', ['memoire.services'])
         name:""
       });
 
-
   $scope.removeItem = (items, num) ->
     items.splice(num,1)
+
+
+
+  #first time application
+  $scope.application.first_time = "true"
 
 
   #gallery
