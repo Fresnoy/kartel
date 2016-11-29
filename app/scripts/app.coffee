@@ -250,8 +250,25 @@ angular.module('memoire',
                       controller: 'InitCandidatureController'
                   'main_content_view.application_breadcrumb_view':
                       templateUrl: 'views/candidature/breadcrumb.html'
-                      controller: 'CandidatureBreadCrumbController'
         )
+
+        # Candidature 01 - Resume or new App
+        $stateProvider.state('candidature.step1',
+                  url: '/1'
+                  views:
+                    # @ root view
+                    'main_content_view@':
+                        templateUrl: 'views/candidature/form.html'
+                        controller: 'CandidatureFormController2'
+
+                    'main_content_view.application_breadcrumb_view':
+                        templateUrl: 'views/candidature/breadcrumb.html'
+                        controller: 'CandidatureBreadCrumbController'
+        )
+
+
+
+
 
 
         # Candidature

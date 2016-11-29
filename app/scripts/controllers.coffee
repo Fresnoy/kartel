@@ -188,13 +188,17 @@ angular.module('memoire.controllers', ['memoire.services'])
 )
 
 
-.controller('InitCandidatureController', ($rootScope, $stateParams) ->
+.controller('CandidatureFormController2', ($rootScope, $stateParams) ->
 
-    $rootScope.step = []
-    $rootScope.step.current = 0
-    $rootScope.step.total = 12
-    $rootScope.step.next = 1
-    $rootScope.step.title = "Welcome"
+    console.log(localStorage)
+
+)
+
+.controller('InitCandidatureController', ($rootScope, $scope, $stateParams) ->
+
+    $scope.setLang = (lang) ->
+      console.log(lang)
+
 
 )
 
