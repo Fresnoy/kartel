@@ -39,7 +39,7 @@
 
         <label>Photo</label>
         <button type="file" ng-model="user.profile.photo" name="uPhoto"
-          ngf-select="upload(user.profile.photo, user.url)"
+          ngf-select="upload(user.profile.photo, user.profile.url)"
           accept="image/*" ngf-max-size="10MB">
           Choisir une photo</button>
           <span ng-show="form.uPhoto.$valid">
