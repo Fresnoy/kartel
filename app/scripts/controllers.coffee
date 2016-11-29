@@ -62,7 +62,10 @@ angular.module('memoire.controllers', ['memoire.services'])
 
 )
 
+
 .controller('PromotionController', ($scope, $stateParams, Students, Promotions) ->
+
+
   $scope.promotion = Promotions.one($stateParams.id).get().$object
 
   $scope.students = Students.getList({promotion: $stateParams.id, limit: 500}).$object
@@ -185,6 +188,30 @@ angular.module('memoire.controllers', ['memoire.services'])
 )
 
 
+.controller('InitCandidatureController', ($rootScope, $stateParams) ->
+
+    $rootScope.step = []
+    $rootScope.step.current = 0
+    $rootScope.step.total = 12
+    $rootScope.step.next = 1
+    $rootScope.step.title = "Welcome"
+
+)
+
+
+# Candidature
+.controller('CandidatureBreadCrumbController', ($rootScope, $stateParams) ->
+
+  if not $rootScope.step
+    $rootScope.step = []
+
+  $rootScope.step.current = $stateParams.step
+
+  $rootScope.step.next = $rootScope.step.current + 1
+
+  console.log($rootScope.step)
+
+)
 # Candidature Form
 
 .controller('CandidatureFormController', (
@@ -193,15 +220,12 @@ angular.module('memoire.controllers', ['memoire.services'])
         ISO3166, Upload,
   ) ->
 
-
   console.log($scope)
 
   $scope.application = Candidatures
   $scope.user = Users
   $scope.user.profile = []
   $scope.artist = Artists
-
-
 
   $scope.create = (form) ->
 
@@ -248,8 +272,6 @@ angular.module('memoire.controllers', ['memoire.services'])
 
     #update
   $scope.update = (user, form) ->
-
-
     return true
 
 
@@ -380,18 +402,9 @@ angular.module('memoire.controllers', ['memoire.services'])
   $scope.artwork_galleries.medias = []
 
   #console.log($scope.artwork_galleries)
-
-
-
-
-
-
-
 )
 
 .controller('AuthForm', ($scope, Authentification, jwtHelper, authManager) ->
-
-  console.log(authManager)
 
   $scope.login = (params) ->
     Authentification.post(params).then((auth) ->

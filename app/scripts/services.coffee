@@ -47,5 +47,6 @@ angular.module('memoire.services', ['restangular'])
       return Restangular.withConfig((RestangularConfigurer) ->
             RestangularConfigurer.setBaseUrl(config.ame_rest_uri);
             RestangularConfigurer.setDefaultRequestParams({key: config.ame_key});
+            RestangularConfigurer.setDefaultHeaders({""})
       )
 )

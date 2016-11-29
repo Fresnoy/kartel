@@ -27,6 +27,7 @@ angular.module('memoire',
 
               ])
 
+
 # CORS
 .config(['$httpProvider', ($httpProvider) ->
         $httpProvider.defaults.useXDomain = true
@@ -37,7 +38,7 @@ angular.module('memoire',
 # Tastypie
 .config((RestangularProvider) ->
         RestangularProvider.setBaseUrl(config.rest_uri)
-        #RestangularProvider.setRequestSuffix('?format=json');
+        # RestangularProvider.setRequestSuffix('?format=json');
         # RestangularProvider.setDefaultHeaders({"Authorization": "ApiKey pipo:46fbf0f29a849563ebd36176e1352169fd486787"});
         # Tastypie patch
         RestangularProvider.setResponseExtractor((response, operation, what, url) ->
@@ -46,9 +47,9 @@ angular.module('memoire',
                 if operation is "getList"
                         #V2
                         newResponse = response
-                        #V1
-                        #newResponse = response.objects
-                        #newResponse.metadata = response.meta
+                        # V1
+                        # newResponse = response.objects
+                        # newResponse.metadata = response.meta
                 else
                         newResponse = response
 
@@ -56,12 +57,12 @@ angular.module('memoire',
         )
 )
 
-#token
+# token
  .config(($httpProvider, jwtOptionsProvider, RestangularProvider) ->
-    #Please note we're annotating the function so that the $injector works when the file is minified
+    # Please note we're annotating the function so that the $injector works when the file is minified
     jwtOptionsProvider.config({
       tokenGetter: ['options', (options) ->
-        #myService.doSomething();
+        # myService.doSomething();
         return localStorage.getItem('id_token');
       ],
       unauthenticatedRedirectPath: '/login',
@@ -79,8 +80,8 @@ angular.module('memoire',
 )
 .run((authManager) ->
 
-    authManager.checkAuthOnRefresh()
-    authManager.redirectWhenUnauthenticated()
+    # authManager.checkAuthOnRefresh()
+    # authManager.redirectWhenUnauthenticated()
 
 )
 
@@ -94,8 +95,6 @@ angular.module('memoire',
   )
 
 ])
-
-
 
 
 .filter("isFresnoyUrl", ->
@@ -129,82 +128,144 @@ angular.module('memoire',
         $locationProvider.html5Mode(config.useHtml5Mode)
         $urlRouterProvider.otherwise("/")
 
+
         $stateProvider.state('home',
-                url: '/',
-                templateUrl: 'views/school.html'
-                controller: 'SchoolController'
-                data: {
-                  requiresLogin: true
-                }
+            url: '/'
+            views:
+              'navigation_view':
+                  templateUrl: 'views/partials/navigation.html'
+              'main_content_view':
+                  templateUrl: 'views/school.html'
+                  controller: 'SchoolController'
+
         )
 
         # SCHOOL
-
-
-
         $stateProvider.state('school',
-                url: '/school',
-                templateUrl: 'views/school.html'
-                controller: 'SchoolController'
+            url: '/school',
+            views:
+              'navigation_view':
+                  templateUrl: 'views/partials/navigation.html'
+              'main_content_view':
+                  templateUrl: 'views/school.html'
+                  controller: 'SchoolController'
         )
 
         $stateProvider.state('school.promotion',
-                url: '/promotion/:id',
-                templateUrl: 'views/promotion.html'
-                controller: 'PromotionController'
+              url: '/promotion/:id'
+              views:
+                'content_school_view':
+                    templateUrl: 'views/promotion.html'
+                    controller: 'PromotionController'
         )
 
         $stateProvider.state('school.student',
-                url: '/student/:id',
-                templateUrl: 'views/student.html'
-                controller: 'StudentController'
-        )
+              url: '/student/:id'
+              views:
+                'content_school_view':
+                    templateUrl: 'views/student.html'
+                    controller: 'StudentController'
 
-
-        # - Candidature
-        $stateProvider.state('candidature',
-                url: '/candidature',
-                templateUrl: 'views/candidature/home.html'
-                #controller: 'FormController'
-        )
-
-        $stateProvider.state('candidature-form',
-                  url: '/candidature/etape',
-                  templateUrl: 'views/candidature/form.html'
-                  controller: 'CandidatureFormController'
         )
 
         # ARTIST
-
         $stateProvider.state('artist',
-                url: '/artist?letter',
-                templateUrl: 'views/artists.html'
-                controller: 'ArtistListingController'
+                url: '/artist?letter'
+                views: {
+                  'navigation_view': {
+                      templateUrl: 'views/partials/navigation.html'
+                  }
+                  'main_content_view': {
+                    templateUrl: 'views/artists.html'
+                    controller: 'ArtistListingController'
+                  }
+                }
+
         )
 
         $stateProvider.state('artist.detail',
                 url: '/:id',
-                templateUrl: 'views/student.html'
-                controller: 'ArtistController'
+                views: {
+                  'navigation_view': {
+                      templateUrl: 'views/partials/navigation.html'
+                  }
+                  'school_content_view': {
+                    templateUrl: 'views/student.html'
+                    controller: 'ArtistController'
+                  }
+                }
+
         )
 
         # ARTWORK
 
         $stateProvider.state('genre',
                 url: '/artwork/?genre',
-                templateUrl: 'views/artworks.html'
-                controller: 'ArtworkGenreListingController'
+                views: {
+                  'navigation_view': {
+                      templateUrl: 'views/partials/navigation.html'
+                  }
+                  'main_content_view': {
+                      templateUrl: 'views/artworks.html'
+                      controller: 'ArtworkGenreListingController'
+                  }
+                }
         )
 
         $stateProvider.state('artwork',
                 url: '/artwork?letter&offset',
-                templateUrl: 'views/artworks.html'
-                controller: 'ArtworkListingController'
+                views: {
+                  'navigation_view': {
+                      templateUrl: 'views/partials/navigation.html'
+                  }
+                  'main_content_view': {
+                      templateUrl: 'views/artworks.html'
+                      controller: 'ArtworkListingController'
+                  }
+                }
+
         )
-        $stateProvider.state('artwork-detail',
-                url: '/artwork/:id',
-                templateUrl: 'views/artwork.html'
-                controller: 'ArtworkController'
+        $stateProvider.state('artwork-detail', {
+                url: '/artwork/:id'
+                views: {
+                  'navigation_view': {
+                      templateUrl: 'views/partials/navigation.html'
+                  }
+                  'main_content_view': {
+                      templateUrl: 'views/artwork.html'
+                      controller: 'ArtworkController'
+                  }
+                }
+            }
+        )
+
+        # - Candidature 00
+        $stateProvider.state('candidature',
+                url: '/candidature'
+                views:
+                  # 'navigation_view':
+                  #    templateUrl: 'views/partials/navigation-application.html'
+                  'main_content_view':
+                      templateUrl: 'views/candidature/home.html'
+                      controller: 'InitCandidatureController'
+                  'main_content_view.application_breadcrumb_view':
+                      templateUrl: 'views/candidature/breadcrumb.html'
+                      controller: 'CandidatureBreadCrumbController'
+        )
+
+
+        # Candidature
+        $stateProvider.state('candidature.step',
+                  url: '/:lang/:step'
+                  views:
+                    # @ root view
+                    'main_content_view@':
+                        templateUrl: 'views/candidature/form.html'
+                        controller: 'CandidatureFormController'
+
+                    'main_content_view.application_breadcrumb_view':
+                        templateUrl: 'views/candidature/breadcrumb.html'
+                        controller: 'CandidatureBreadCrumbController'
         )
 
 
