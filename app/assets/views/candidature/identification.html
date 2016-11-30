@@ -1,0 +1,55 @@
+    <h1>
+              Identification
+    </h1>
+
+
+    <form name="form" class="css-form" ng-submit="form.$valid && login()" novalidate>
+
+          <label>Username</label>
+          <input type="text" ng-model="user.username" name="uUserName" required />
+          <div ng-show="form.$submitted || form.uUserName.$touched">
+            <span ng-show="form.uUserName.$error.required">Tell us your name.</span>
+          </div>
+
+          <label>Nom / Name</label>
+          <input type="text" ng-model="user.last_name" name="uName" required />
+          <div ng-show="form.$submitted || form.uName.$touched">
+            <span ng-show="form.uName.$error.required">Tell us your name.</span>
+          </div>
+
+          <label>Prénom / First Name</label>
+          <input type="text" ng-model="user.first_name" name="uFirstName" required />
+          <div ng-show="form.$submitted || form.uFirstName.$touched">
+            <span ng-show="form.uFirstName.$error.required">Tell us your first-name.</span>
+          </div>
+
+          <label>E-mail</label>
+          <input type="email" ng-model="user.email" name="uEmail" required />
+          <div ng-show="form.$submitted || form.uEmail.$touched">
+            <span ng-show="form.uEmail.$error.required">Tell us your email.</span>
+            <span ng-show="form.uEmail.$error.email">E-mail non valid / This is not a valid email.</span>
+          </div>
+
+          <label>repeat your E-mail</label>
+          <input type="email" ng-model="email2" name="uEmail2" required />
+
+          <div ng-show="form.$submitted || form.uEmail2.$touched">
+            <span ng-show="form.uEmail2 != form.uEmail">Emails have to match !</span>
+          </div>
+          <div ng-if="form.error" class="alert alert-danger">{{form.error}}</div>
+
+
+          <div class="navigation">
+            <a class="btn" ui-sref="candidature.step1">
+              Retour
+            </a>
+            <a class="btn desabled"  ng-show="!form.$valid" class="btn">
+              Continue
+            </a>
+            <a class="btn"  ng-show="form.$valid" class="btn" ng-click="create(form, user)">
+              Continue
+            </a>
+
+          </div>
+
+      </form>

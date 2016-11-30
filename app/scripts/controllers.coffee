@@ -188,36 +188,79 @@ angular.module('memoire.controllers', ['memoire.services'])
 )
 
 
-.controller('CandidatureFormController2', ($rootScope, $stateParams) ->
 
-    console.log(localStorage)
-
-)
-
-.controller('InitCandidatureController', ($rootScope, $scope, $stateParams) ->
-
-    $scope.setLang = (lang) ->
-      console.log(lang)
-
-
-)
-
-
-# Candidature
-.controller('CandidatureBreadCrumbController', ($rootScope, $stateParams) ->
-
-  if not $rootScope.step
-    $rootScope.step = []
-
-  $rootScope.step.current = $stateParams.step
-
+.controller('ParentCandidatureController', ($rootScope, $scope) ->
+  # init step in parent controller
+  $rootScope.step = []
+  $rootScope.step.current = 0
   $rootScope.step.next = $rootScope.step.current + 1
+  $rootScope.step.total = 12
+  $rootScope.step.title = "welcom"
 
-  console.log($rootScope.step)
+  # set lang
+  $scope.setLang = (lang) ->
+    localStorage.setItem("language", lang)
+    $rootScope.language = localStorage.language
 
 )
-# Candidature Form
 
+.controller('LoginController', (
+                                  $rootScope, $scope,
+                                  Authentification, authManager, jwtHelper
+                                ) ->
+
+    $rootScope.step.current = 1
+    $rootScope.step.title = "Login"
+
+    $scope.login = (form, params) ->
+      if(form.$valid)
+            Authentification.post(params).then((auth) ->
+              authManager.authenticate()
+              tokenDecode = jwtHelper.decodeToken(auth.token)
+              localStorage.setItem('id_token', auth.token)
+              localStorage.setItem('user_id', tokenDecode.user_id)
+            , ->
+              #error
+              console.log("Error login");
+              params.error = "Error login"
+              $scope.logout()
+            )
+
+    $scope.logout = () ->
+      localStorage.removeItem("id_token")
+      localStorage.removeItem("user_id")
+      authManager.unauthenticate()
+)
+
+
+.controller('IdentificationController',($rootScope, $scope, $state, Users) ->
+
+      $rootScope.step.current = 2
+      $rootScope.step.title = "Identification"
+
+      $scope.create = (form, params) ->
+
+        params.profile = {birthplace_country: "", gender: "M"}
+
+        console.log(params)
+
+        Users.post(params).then((response) ->
+
+          console.log("create")
+          console.log(response)
+
+          $state.go('candidature.confirm-user')
+          
+        , (response) ->
+          console.log("Error Inscription");
+          console.log(response);
+          form.error = "Error Inscription " + JSON.stringify(response.data, null, '\t')
+
+        )
+)
+
+
+# Candidature Form
 .controller('CandidatureFormController', (
         $scope, $q, $state, $filter
         Users, Artists, Restangular, Candidatures,
@@ -406,31 +449,4 @@ angular.module('memoire.controllers', ['memoire.services'])
   $scope.artwork_galleries.medias = []
 
   #console.log($scope.artwork_galleries)
-)
-
-.controller('AuthForm', ($scope, Authentification, jwtHelper, authManager) ->
-
-  $scope.login = (params) ->
-    Authentification.post(params).then((auth) ->
-      #ok
-      authManager.authenticate()
-      tokenDecode = jwtHelper.decodeToken(auth.token)
-      localStorage.setItem('id_token', auth.token)
-      localStorage.setItem('user_id', tokenDecode.user_id)
-      console.log(localStorage)
-
-    , ->
-      #error
-      console.log("Error login");
-      $scope.logout()
-    )
-
-  $scope.logout = () ->
-
-    delete localStorage.id_token
-    delete localStorage.user_id
-
-
-    authManager.unauthenticate()
-
 )

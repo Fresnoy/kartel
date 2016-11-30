@@ -10,7 +10,7 @@ angular.module('memoire.services', ['restangular'])
 )
 
 .factory('Candidatures', (Restangular) ->
-        return Restangular.service('school/candidature')
+        return Restangular.service('school/student-application')
 )
 
 .factory('Students', (Restangular) ->

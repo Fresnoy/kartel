@@ -76,22 +76,22 @@ angular.module('memoire',
     })
 
     $httpProvider.interceptors.push('jwtInterceptor');
-    RestangularProvider.setDefaultHeaders({Authorization: "JWT "+localStorage.getItem('id_token')})
+    
+    if localStorage.getItem('id_token')
+      RestangularProvider.setDefaultHeaders({Authorization: "JWT "+ localStorage.getItem('id_token')})
 )
 .run((authManager) ->
 
-    # authManager.checkAuthOnRefresh()
-    # authManager.redirectWhenUnauthenticated()
+    authManager.checkAuthOnRefresh()
+    authManager.redirectWhenUnauthenticated()
 
 )
 
 .run(['$rootScope' ,'$state', ($rootScope, $state) ->
 
-  #console.log($rootScope)
-
   $rootScope.$on('tokenHasExpired', () ->
     console.log('Your session has expired!')
-    # $state.go('apps.candidature')
+    $state.go('candidature.login')
   )
 
 ])
@@ -246,24 +246,52 @@ angular.module('memoire',
                   # 'navigation_view':
                   #    templateUrl: 'views/partials/navigation-application.html'
                   'main_content_view':
+                      templateUrl: 'views/candidature/index.html'
+                      controller: 'ParentCandidatureController'
+
+                  'main_content_view.application_content_view':
                       templateUrl: 'views/candidature/home.html'
-                      controller: 'InitCandidatureController'
-                  'main_content_view.application_breadcrumb_view':
-                      templateUrl: 'views/candidature/breadcrumb.html'
+
+                  'main_content_view.application_step_view':
+                      templateUrl: 'views/candidature/partials/step-infos.html'
         )
 
         # Candidature 01 - Resume or new App
         $stateProvider.state('candidature.step1',
                   url: '/1'
                   views:
-                    # @ root view
-                    'main_content_view@':
-                        templateUrl: 'views/candidature/form.html'
-                        controller: 'CandidatureFormController2'
+                    'application_content_view':
+                        templateUrl: 'views/candidature/resume.html'
+                        controller: ($rootScope) ->
+                          $rootScope.step.current = 1
+        )
 
-                    'main_content_view.application_breadcrumb_view':
-                        templateUrl: 'views/candidature/breadcrumb.html'
-                        controller: 'CandidatureBreadCrumbController'
+        # Candidature 01 - Resume
+        $stateProvider.state('candidature.login',
+                  url: '/login'
+                  views:
+                    'application_content_view':
+                        templateUrl: 'views/candidature/login.html'
+                        controller: 'LoginController'
+        )
+
+
+        # Candidature 01 - Create User
+        $stateProvider.state('candidature.create-user',
+                  url: '/identification'
+                  views:
+                    'application_content_view':
+                        templateUrl: 'views/candidature/identification.html'
+                        controller: 'IdentificationController'
+        )
+
+        # Candidature 01 - Confirm User
+        $stateProvider.state('candidature.confirm-user',
+                  url: '/identification-confirmation'
+                  views:
+                    'application_content_view':
+                        templateUrl: 'views/candidature/identification-confirmation.html'
+                        controller: 'IdentificationController'
         )
 
 
