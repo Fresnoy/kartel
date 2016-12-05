@@ -76,7 +76,7 @@ angular.module('memoire',
     })
 
     $httpProvider.interceptors.push('jwtInterceptor');
-    
+
     if localStorage.getItem('id_token')
       RestangularProvider.setDefaultHeaders({Authorization: "JWT "+ localStorage.getItem('id_token')})
 )
@@ -124,29 +124,20 @@ angular.module('memoire',
 
 
 # URI config
-.config(['$locationProvider', '$stateProvider', '$urlRouterProvider', ($locationProvider, $stateProvider, $urlRouterProvider) ->
+.config(['$locationProvider', '$stateProvider', '$urlRouterProvider', ($locationProvider,
+                                                                      $stateProvider,
+                                                                      $urlRouterProvider) ->
+
         $locationProvider.html5Mode(config.useHtml5Mode)
-        $urlRouterProvider.otherwise("/")
-
-
-        $stateProvider.state('home',
-            url: '/'
-            views:
-              'navigation_view':
-                  templateUrl: 'views/partials/navigation.html'
-              'main_content_view':
-                  templateUrl: 'views/school.html'
-                  controller: 'SchoolController'
-
-        )
+        $urlRouterProvider.otherwise("/school")
 
         # SCHOOL
         $stateProvider.state('school',
             url: '/school',
             views:
-              'navigation_view':
-                  templateUrl: 'views/partials/navigation.html'
-              'main_content_view':
+              'main_view':
+                templateUrl: 'kartel.html'
+              'main_view.main_content_view':
                   templateUrl: 'views/school.html'
                   controller: 'SchoolController'
         )
@@ -171,72 +162,52 @@ angular.module('memoire',
         # ARTIST
         $stateProvider.state('artist',
                 url: '/artist?letter'
-                views: {
-                  'navigation_view': {
-                      templateUrl: 'views/partials/navigation.html'
-                  }
-                  'main_content_view': {
+                views:
+                  'main_view':
+                      templateUrl: 'kartel.html'
+                  'main_view.main_content_view':
                     templateUrl: 'views/artists.html'
                     controller: 'ArtistListingController'
-                  }
-                }
-
         )
 
         $stateProvider.state('artist.detail',
                 url: '/:id',
-                views: {
-                  'navigation_view': {
-                      templateUrl: 'views/partials/navigation.html'
-                  }
-                  'school_content_view': {
+                views:
+                  'school_content_view':
                     templateUrl: 'views/student.html'
                     controller: 'ArtistController'
-                  }
-                }
-
         )
 
         # ARTWORK
 
         $stateProvider.state('genre',
-                url: '/artwork/?genre',
-                views: {
-                  'navigation_view': {
-                      templateUrl: 'views/partials/navigation.html'
-                  }
-                  'main_content_view': {
+                url: '/artwork/?genre'
+                views:
+                  'main_view':
+                    templateUrl: 'kartel.html'
+                  'main_view.main_content_view':
                       templateUrl: 'views/artworks.html'
                       controller: 'ArtworkGenreListingController'
-                  }
-                }
         )
 
         $stateProvider.state('artwork',
-                url: '/artwork?letter&offset',
-                views: {
-                  'navigation_view': {
-                      templateUrl: 'views/partials/navigation.html'
-                  }
-                  'main_content_view': {
+                url: '/artwork?letter&offset'
+                views:
+                  'main_view':
+                      templateUrl: 'kartel.html'
+                  'main_view.main_content_view':
                       templateUrl: 'views/artworks.html'
                       controller: 'ArtworkListingController'
-                  }
-                }
-
         )
-        $stateProvider.state('artwork-detail', {
+
+        $stateProvider.state('artwork-detail',
                 url: '/artwork/:id'
-                views: {
-                  'navigation_view': {
-                      templateUrl: 'views/partials/navigation.html'
-                  }
-                  'main_content_view': {
+                views:
+                  'main_view':
+                    templateUrl: 'kartel.html'
+                  'main_view.main_content_view':
                       templateUrl: 'views/artwork.html'
                       controller: 'ArtworkController'
-                  }
-                }
-            }
         )
 
         # - Candidature 00
@@ -245,14 +216,14 @@ angular.module('memoire',
                 views:
                   # 'navigation_view':
                   #    templateUrl: 'views/partials/navigation-application.html'
-                  'main_content_view':
-                      templateUrl: 'views/candidature/index.html'
-                      controller: 'ParentCandidatureController'
+                  'main_view':
+                    templateUrl: 'views/candidature/index.html'
+                    controller: 'ParentCandidatureController'
 
-                  'main_content_view.application_content_view':
+                  'main_view.application_content_view':
                       templateUrl: 'views/candidature/home.html'
 
-                  'main_content_view.application_step_view':
+                  'main_view.application_step_view':
                       templateUrl: 'views/candidature/partials/step-infos.html'
         )
 

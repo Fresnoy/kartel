@@ -233,27 +233,24 @@ angular.module('memoire.controllers', ['memoire.services'])
 )
 
 
-.controller('IdentificationController',($rootScope, $scope, $state, Users) ->
+.controller('IdentificationController',($rootScope, $scope, $state, Registration) ->
 
       $rootScope.step.current = 2
       $rootScope.step.title = "Identification"
 
       $scope.create = (form, params) ->
-
-        params.profile = {birthplace_country: "", gender: "M"}
-
         console.log(params)
-
-        Users.post(params).then((response) ->
+        Registration.post(params).then((response) ->
 
           console.log("create")
           console.log(response)
 
           $state.go('candidature.confirm-user')
-          
+
         , (response) ->
           console.log("Error Inscription");
           console.log(response);
+          form.error = null
           form.error = "Error Inscription " + JSON.stringify(response.data, null, '\t')
 
         )
