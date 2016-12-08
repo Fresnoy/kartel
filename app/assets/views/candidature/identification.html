@@ -13,13 +13,13 @@
           </div>
 
           <label>Nom / Name</label>
-          <input type="text" ng-model="user.last_name" name="uName" required />
+          <input type="text" ng-change="setUserName(user)" ng-model="user.last_name" name="uName" required />
           <div ng-show="form.$submitted || form.uName.$touched">
             <span ng-show="form.uName.$error.required">Tell us your name.</span>
           </div>
 
           <label>Prénom / First Name</label>
-          <input type="text" ng-model="user.first_name" name="uFirstName" required />
+          <input type="text" ng-change="setUserName(user)" ng-model="user.first_name" name="uFirstName" required />
           <div ng-show="form.$submitted || form.uFirstName.$touched">
             <span ng-show="form.uFirstName.$error.required">Tell us your first-name.</span>
           </div>
@@ -44,7 +44,7 @@
             <a class="btn" ui-sref="candidature.step1">
               Retour
             </a>
-            <a class="btn desabled"  ng-show="!form.$valid" class="btn">
+            <a class="btn disabled"  ng-show="!form.$valid" class="btn">
               Continue
             </a>
             <a class="btn"  ng-show="form.$valid" class="btn" ng-click="create(form, user)">

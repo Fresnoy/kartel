@@ -233,33 +233,52 @@ angular.module('memoire.controllers', ['memoire.services'])
 )
 
 
-.controller('IdentificationController',($rootScope, $scope, $state, Registration, UserSearch) ->
+.controller('IdentificationController',($rootScope, $scope, $state, Registration, Users, UserSearch) ->
 
       $rootScope.step.current = 2
       $rootScope.step.title = "Identification"
 
-      """UserSearch.post(params).then((response) ->
-        console.log("search")
-        console.log(response)
-      )"""
+      # init user form
+      $scope.user = {last_name: '', first_name: ''}
+      # autogenerate username
+      $scope.setUserName = (user) ->
+        user.username = slug(user.first_name).toLowerCase().substr(0,1) + slug(user.last_name).toLowerCase()
 
+      if localStorage.user
+        Users.one(localStorage.user).get().then((response) ->
+            console(response)
+            # $state.go('candidature.confirm-user')
+          )
+
+      # create a new user
       $scope.create = (form, params) ->
-        console.log(params)
+        # console.log(params)
 
         Registration.post(params).then((response) ->
+          user =
+              username:response.username
+              first_name:response.first_name
+              last_name:response.last_name
+              email:response.email
 
-          console.log("create")
-          console.log(response)
+          localStorage.setItem("user", JSON.stringify(user))
 
+          # change location
           $state.go('candidature.confirm-user')
 
         , (response) ->
-          console.log("Error Inscription");
-          console.log(response);
-          form.error = null
-          form.error = "Error Inscription " + JSON.stringify(response.data, null, '\t')
+          # user creation error
+          # form.error = "Error Inscription " + JSON.stringify(response.error, null, '\t')
+          form.error = "Error Inscription " + response.error
 
         )
+
+      # identification confirmation update email
+      $scope.update = (form, params) ->
+        Registration.update(params).then((response) ->
+          return
+        )
+
 )
 
 

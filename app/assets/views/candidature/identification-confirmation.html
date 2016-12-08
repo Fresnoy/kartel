@@ -3,21 +3,41 @@
     </h1>
 
 
-                Merci de confimer la
+    <p>    Merci de confimer la
             création de votre compte
             en cliquant sur le lien de
             confimation envoyé sur
             l’email
 
+      <div class="">
+        <span class="" ng-show="!modifEmail" ng-click="modifEmail=true" > : {{user.email}} </span>
+        <span class="" ng-show="modifEmail">
+          <form name="form" class="" ng-submit="form.$valid && login()" novalidate>
+            <input type='email'  ng-value="user.email" />
+              <div ng-show="form.$submitted || form.uEmail.$touched">
+                <span ng-show="form.uEmail.$error.required">Tell us your email.</span>
+                <span ng-show="form.uEmail.$error.email">E-mail non valid / This is not a valid email.</span>
+              </div>
+              <div>
+                <a class="btn disabled"  ng-show="!form.$valid" class="btn">
+                  Renvoyer l'email
+                </a>
+                <a class="btn"  ng-show="form.$valid" class="btn" ng-click="update(form, user)">
+                  Renvoyer l'email
+                </a>
+              </div>
+          </form>
+        </span>
 
-      <span class="">{{user.email}}</span>
 
+      </div>
 
+    </p>
         <div class="navigation">
           <a class="btn" ui-sref="candidature.step1">
             Retour
           </a>
-          <a class="btn desabled"  ng-show="!isAuthenticated" class="btn">
+          <a class="btn disabled"  ng-show="!isAuthenticated" class="btn">
             Continue
           </a>
           <a class="btn"  ng-show="isAuthenticated" class="btn" ng-click="create(form)" ui-sref="candidature.user-profile">
