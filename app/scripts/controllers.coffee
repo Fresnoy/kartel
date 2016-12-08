@@ -233,13 +233,19 @@ angular.module('memoire.controllers', ['memoire.services'])
 )
 
 
-.controller('IdentificationController',($rootScope, $scope, $state, Registration) ->
+.controller('IdentificationController',($rootScope, $scope, $state, Registration, UserSearch) ->
 
       $rootScope.step.current = 2
       $rootScope.step.title = "Identification"
 
+      """UserSearch.post(params).then((response) ->
+        console.log("search")
+        console.log(response)
+      )"""
+
       $scope.create = (form, params) ->
         console.log(params)
+
         Registration.post(params).then((response) ->
 
           console.log("create")

@@ -6,9 +6,10 @@
     <form name="form" class="css-form" ng-submit="form.$valid && login()" novalidate>
 
           <label>Username</label>
-          <input type="text" ng-model="user.username" name="uUserName" required />
+          <input type="text" ng-model="user.username" name="uUserName" unique-username required />
           <div ng-show="form.$submitted || form.uUserName.$touched">
             <span ng-show="form.uUserName.$error.required">Tell us your name.</span>
+            <span ng-show="form.uUserName.$error.uniqueUsername">Not unique</span>
           </div>
 
           <label>Nom / Name</label>

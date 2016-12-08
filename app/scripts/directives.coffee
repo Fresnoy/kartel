@@ -61,3 +61,23 @@ angular.module('memoire.directives', ['memoire.services', 'bootstrapLightbox'])
       return '<img class="flag" ng-src="images/flags/' + scope.country + '.png" alt="{{ country }}"/>'
   }
 )
+
+.directive('uniqueUsername', (UserSearch) ->
+  toId = null
+  return {
+    restrict: 'A',
+    require: 'ngModel',
+    link: (scope, elem, attr, ctrl) ->
+      scope.$watch(attr.ngModel, (value) ->
+        if toId
+          clearTimeout(toId);
+        userName = {'username': value}
+        toId = setTimeout(() ->
+          # call to some API that returns { user: user } or { user: false }
+          UserSearch.post(userName).then((data) ->
+              ctrl.$setValidity('uniqueUsername', !data);
+          )
+        , 200)
+      )
+  }
+)
