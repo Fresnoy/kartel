@@ -253,13 +253,14 @@ angular.module('memoire.controllers', ['memoire.services'])
       # create a new user
       $scope.create = (form, params) ->
         # console.log(params)
+        form.disabled = true
 
         Registration.post(params).then((response) ->
           user =
-              username:response.username
-              first_name:response.first_name
-              last_name:response.last_name
-              email:response.email
+              username:$scope.username
+              first_name:$scope.first_name
+              last_name:$scope.last_name
+              email:$scope.email
 
           localStorage.setItem("user", JSON.stringify(user))
 
@@ -271,6 +272,7 @@ angular.module('memoire.controllers', ['memoire.services'])
           # form.error = "Error Inscription " + JSON.stringify(response.error, null, '\t')
           form.error = "Error Inscription " + response.error
 
+          form.disabled = false
         )
 
       # identification confirmation update email
