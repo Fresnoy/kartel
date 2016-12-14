@@ -233,7 +233,7 @@ angular.module('memoire.controllers', ['memoire.services'])
 )
 
 
-.controller('IdentificationController',($rootScope, $scope, $state, Registration, Users, UserSearch) ->
+.controller('IdentificationController',($rootScope, $scope, $state, Registration, Users) ->
 
       $rootScope.step.current = 2
       $rootScope.step.title = "Identification"
@@ -241,8 +241,10 @@ angular.module('memoire.controllers', ['memoire.services'])
       # init user form
       $scope.user = {last_name: '', first_name: ''}
       # autogenerate username
-      $scope.setUserName = (user) ->
+      $scope.setUserName = (form, user) ->
         user.username = slug(user.first_name).toLowerCase().substr(0,1) + slug(user.last_name).toLowerCase()
+        form.uUserName.$setTouched()
+        $scope.isUniqueUserField(form.uUserName, user.username)
 
       if localStorage.user
         Users.one(localStorage.user).get().then((response) ->

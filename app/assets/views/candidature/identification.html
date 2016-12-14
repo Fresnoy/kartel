@@ -6,29 +6,30 @@
     <form name="form" class="css-form" ng-submit="form.$valid && login()" novalidate>
 
           <label>Username</label>
-          <input type="text" ng-model="user.username" name="uUserName" unique-username required />
+          <input type="text" ng-model="user.username" name="uUserName" unique-user-field required />
           <div ng-show="form.$submitted || form.uUserName.$touched">
             <span ng-show="form.uUserName.$error.required">Tell us your name.</span>
-            <span ng-show="form.uUserName.$error.uniqueUsername">Not unique</span>
+            <span ng-show="form.uUserName.$error.uniqueUserField">Not unique</span>
           </div>
 
           <label>Nom / Name</label>
-          <input type="text" ng-change="setUserName(user)" ng-model="user.last_name" name="uName" required />
+          <input type="text" ng-change="setUserName(form, user)" ng-model="user.last_name" name="uName" required />
           <div ng-show="form.$submitted || form.uName.$touched">
             <span ng-show="form.uName.$error.required">Tell us your name.</span>
           </div>
 
           <label>Prénom / First Name</label>
-          <input type="text" ng-change="setUserName(user)" ng-model="user.first_name" name="uFirstName" required />
+          <input type="text" ng-change="setUserName(form, user)" ng-model="user.first_name" name="uFirstName" required />
           <div ng-show="form.$submitted || form.uFirstName.$touched">
             <span ng-show="form.uFirstName.$error.required">Tell us your first-name.</span>
           </div>
 
           <label>E-mail</label>
-          <input type="email" ng-model="user.email" name="uEmail" required />
+          <input type="email" ng-model="user.email" name="uEmail" unique-user-field required />
           <div ng-show="form.$submitted || form.uEmail.$touched">
             <span ng-show="form.uEmail.$error.required">Tell us your email.</span>
             <span ng-show="form.uEmail.$error.email">E-mail non valid / This is not a valid email.</span>
+            <span ng-show="form.uEmail.$error.uniqueUserField">Not unique</span>
           </div>
 
           <label>repeat your E-mail</label>

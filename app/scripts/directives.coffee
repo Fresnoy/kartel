@@ -62,20 +62,19 @@ angular.module('memoire.directives', ['memoire.services', 'bootstrapLightbox'])
   }
 )
 
-.directive('uniqueUsername', (UserSearch) ->
+.directive('uniqueUserField', (Users) ->
   toId = null
   return {
     restrict: 'A',
     require: 'ngModel',
     link: (scope, elem, attr, ctrl) ->
       scope.$watch(attr.ngModel, (value) ->
-        if toId
-          clearTimeout(toId);
-        userName = {'username': value}
-        toId = setTimeout(() ->
-          # call to some API that returns { user: user } or { user: false }
-          UserSearch.post(userName).then((data) ->
-              ctrl.$setValidity('uniqueUsername', !data);
+        scope.isUniqueUserField = (ctrl, value) ->
+        if ctrl.toId
+          clearTimeout(toId)
+        ctrl.toId = setTimeout(() ->
+          Users.getList({search: value}).then((data) ->
+              ctrl.$setValidity('uniqueUserField', !data.length);
           )
         , 200)
       )

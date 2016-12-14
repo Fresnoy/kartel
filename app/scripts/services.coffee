@@ -4,12 +4,11 @@ angular.module('memoire.services', ['restangular'])
 .factory('Users', (Restangular) ->
         return Restangular.service('people/user')
 )
+
 .factory('Registration', (Restangular) ->
         return Restangular.service('people/user/register')
 )
-.factory('UserSearch', (Restangular) ->
-        return Restangular.service('people/user/search')
-)
+
 .factory('Artists', (Restangular) ->
         return Restangular.service('people/artist')
 )
