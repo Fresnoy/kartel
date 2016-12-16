@@ -187,9 +187,60 @@ angular.module('memoire.controllers', ['memoire.services'])
   )
 )
 
+.controller('ParentAccountController', ($rootScope, $scope) ->
+  # init step in parent controller
+)
+
+.controller('AccountLoginController', ($rootScope, $scope) ->
+    console.log("TODO")
+)
+
+.controller('AccountResetPasswordController', ($rootScope, $scope) ->
+
+)
+
+.controller('AccountChangePasswordController', (
+        $rootScope, $scope, $stateParams,
+        $state, jwtHelper, RestAuth, Restangular
+) ->
+
+  if($stateParams.token)
+
+    tokenDecode = jwtHelper.decodeToken($stateParams.token)
+    route = $stateParams.route
+
+    console.log(tokenDecode)
+
+    localStorage.setItem('id_token', $stateParams.token)
+    localStorage.setItem('user_id', tokenDecode.user_id)
+
+    if !Restangular.defaultHeaders.Authorization
+      Restangular.setDefaultHeaders({Authorization: "JWT "+ $stateParams.token})
 
 
-.controller('ParentCandidatureController', ($rootScope, $scope) ->
+    $scope.submit = () ->
+
+      password_infos = {
+        new_password1: $scope.new_password1
+        new_password2: $scope.new_password2
+      }
+      #ChangePass = RestAuth.one("password").one("change")
+
+
+      RestAuth.one().customPOST(password_infos, "password/change/").then((response) ->
+              $state.go(route)
+
+            , (response) ->
+              $scope.form.error = "Error changement de mot de passe "
+      )
+
+
+
+)
+
+
+
+.controller('ParentCandidatureController', ($rootScope, $scope, Users) ->
   # init step in parent controller
   $rootScope.step = []
   $rootScope.step.current = 0
@@ -201,6 +252,25 @@ angular.module('memoire.controllers', ['memoire.services'])
   $scope.setLang = (lang) ->
     localStorage.setItem("language", lang)
     $rootScope.language = localStorage.language
+
+
+  $rootScope.loadInfos = (scope) ->
+
+    scope.user = []
+    scope.user.profile = []
+
+    Users.one(localStorage.user_id).get().then((user) ->
+      scope.birthdate = new Date(user.profile.birthdate)
+      # console.log(user.profile.birthdate)
+      scope.user = user
+    )
+
+  if localStorage.getItem('user_id')
+    $rootScope.loadInfos($rootScope)
+
+
+
+
 
 )
 
@@ -229,6 +299,7 @@ angular.module('memoire.controllers', ['memoire.services'])
     $scope.logout = () ->
       localStorage.removeItem("id_token")
       localStorage.removeItem("user_id")
+      $rootScope.user = []
       authManager.unauthenticate()
 )
 
@@ -282,6 +353,33 @@ angular.module('memoire.controllers', ['memoire.services'])
         Registration.update(params).then((response) ->
           return
         )
+)
+
+
+.controller('CivilStatusController', ($rootScope, $scope, $state, $filter, ISO3166) ->
+
+  if(!$scope.isAuthenticated)
+    $state.go("candidature")
+
+  $rootScope.loadInfos($rootScope)
+
+  $scope.save = (user) ->
+    user.profile.birthdate = $filter('date')($scope.birthdate, 'yyyy-MM-dd')
+    console.log(user.profile)
+    user.save()
+
+
+  # Birthdate minimum
+  current_year = new Date().getFullYear()
+  age_min = 18
+  age_max = 35
+  $scope.birthdateMax = new Date(current_year-age_min,11,31)
+  $scope.birthdateMin = new Date(current_year-age_max,11,31)
+
+  #country
+  $scope.countries = ISO3166.countryToCode
+
+
 
 )
 
@@ -292,8 +390,6 @@ angular.module('memoire.controllers', ['memoire.services'])
         Users, Artists, Restangular, Candidatures,
         ISO3166, Upload,
   ) ->
-
-  console.log($scope)
 
   $scope.application = Candidatures
   $scope.user = Users

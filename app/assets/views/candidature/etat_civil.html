@@ -1,0 +1,84 @@
+<h1>
+  Inscription
+</h1>
+
+    <form name="form" ng-submit="form.$valid && submit()" class="css-form" novalidate enctype="multipart/form-data">
+
+      <div class="control-group" ng-class="{error: myForm.name.$invalid}">
+
+          <label>Nom / Name</label>
+          <input type="text" ng-model="user.last_name" name="uName" required />
+          <div ng-show="form.$submitted || form.uName.$touched">
+            <span ng-show="form.uName.$error.required">Tell us your name.</span>
+          </div>
+
+          <label>Prénom / First Name</label>
+          <input type="text" ng-model="user.first_name" name="uFirstName" required />
+          <div ng-show="form.$submitted || form.uFirstName.$touched">
+            <span ng-show="form.uFirstName.$error.required">Tell us your first-name.</span>
+          </div>
+
+
+          <label>Genre</label>
+          <select ng-model="user.profile.gender" ng-change="save(user)" name="uGender" required>
+            <option value="">---Choisir / Please select---</option> <!-- not selected / blank option -->
+            <option value="M">Male</option>
+            <option value="F">Female</option>
+            <option value="T">Transgender</option>
+            <option value="O">Other</option>
+          </select>
+          <div ng-show="form.$submitted || form.uGender.$touched">
+            <span ng-show="form.uGender.$error.required">Tell us your gender.</span>
+            <span ng-show="form.uGender.$error.gender"> Value error </span>
+          </div>
+
+
+          <label>Date de naissance / Birthdate</label>
+          <input type="date" ng-change="save(user)"
+                 ng-model="birthdate" name="uBirthDate" required
+                 placeholder="{{birthdateMin | date:'yyyy-MM-dd'}}"
+                 min="{{birthdateMin | date:'yyyy-MM-dd'}}"
+                 max="{{birthdateMax | date:'yyyy-MM-dd'}}" />
+          <div ng-show="form.$submitted || form.uBirthDate.$touched">
+             <span ng-show="form.uBirthDate.$error.required">Tell us your Birthday.</span>
+             <span ng-show="form.uBirthDate.$error.min"> Il faut avoir moins de 35 ans (être nés avant  le {{birthdateMax | date:'dd MMMM yyyy'}}) </span>
+             <span ng-show="form.uBirthDate.$error.max"> Il faut être majeur (nés après le {{birthdateMax | date:'dd MMMM yyyy'}}) </span>
+          </div>
+
+
+          <label>Pays de naissance / Birth Place</label>
+          <select ng-change="save(user)" ng-model="user.profile.birthplace_country" name="uBirthCountry" required>
+            <option value="">-- Select a Country --</option>
+            <option ng-repeat="(country,code) in countries" value="{{code}}">{{country}}</option>
+          </select>
+
+          <div ng-show="form.$submitted || form.uBirthCountry.$touched">
+             <span ng-show="form.uBirthCountry.$error.required"> Tell us your Birth Place </span>
+             <span ng-show="form.uBirthCountry.$error.birthcountry">This must be a country code!</span>
+          </div>
+
+
+        <label>Numéro de téléphone pays d'origine   / Homeland Phone number</label>
+        <input ng-change="save(user)"  type="text" placeholder="+33-320283982" name="uHomelandPhone"
+          ng-pattern="phone_pattern" ng-model="user.profile.homeland_phone"
+          ng-minlength="10" ng-maxlength="15" required
+        />
+        <div ng-show="form.$submitted || form.uResidenceCountry.$touched">
+          <span class="block" ng-show="form.uHomelandPhone.$error.required">Required!</span>
+          <span class="block" ng-show="form.uHomelandPhone.$error.minlength">Phone no not less that 10 char.</span>
+          <span class="block" ng-show="form.uHomelandPhone.$error.maxlength">Phone no not more than 11 char.</span>
+          <span class="block" ng-show="form.uHomelandPhone.$error.pattern">Please match pattern [+33-123456789]</span>
+        </div>
+
+        <label>Numéro de sécurité sociale / Insurance number</label>
+        <input ng-change="save(user)" type="text"
+               placeholder="" name="uInsuranceNumber"
+               ng-model="user.profile.social_insurance_number" required />
+        <div ng-show="form.$submitted || form.uInsuranceNumber.$touched">
+          <span class="block" ng-show="form.uInsuranceNumber.$error.required">Required!</span>
+        </div>
+
+        <input type="submit" value="Continue" />
+
+      </div>
+</form>

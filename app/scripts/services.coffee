@@ -9,6 +9,10 @@ angular.module('memoire.services', ['restangular'])
         return Restangular.service('people/user/register')
 )
 
+.factory('RestAuth', (Restangular) ->
+        return Restangular.service('rest-auth')
+)
+
 .factory('Artists', (Restangular) ->
         return Restangular.service('people/artist')
 )

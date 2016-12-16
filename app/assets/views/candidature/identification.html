@@ -29,7 +29,9 @@
           <div ng-show="form.$submitted || form.uEmail.$touched">
             <span ng-show="form.uEmail.$error.required">Tell us your email.</span>
             <span ng-show="form.uEmail.$error.email">E-mail non valid / This is not a valid email.</span>
-            <span ng-show="form.uEmail.$error.uniqueUserField">Not unique</span>
+            <span ng-show="form.uEmail.$error.uniqueUserField">
+                Cet email est déjà associé à un utilisateur, <a ui-sref="candidature.login">connectez vous</a>
+            </span>
           </div>
 
           <label>repeat your E-mail</label>

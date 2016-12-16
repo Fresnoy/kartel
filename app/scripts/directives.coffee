@@ -80,3 +80,19 @@ angular.module('memoire.directives', ['memoire.services', 'bootstrapLightbox'])
       )
   }
 )
+
+.directive('sameValueAs', () ->
+    return {
+        require: "ngModel",
+        scope: {
+            otherModelValue: "=sameValueAs"
+        },
+        link: (scope, element, attributes, ngModel) ->
+            ngModel.$validators.sameValueAs = (modelValue) ->
+                return modelValue == scope.otherModelValue
+
+            scope.$watch(scope.otherModelValue, (value) ->
+                ngModel.$validate();
+            )
+    }
+)
