@@ -30,7 +30,7 @@
             <span ng-show="form.uEmail.$error.required">Tell us your email.</span>
             <span ng-show="form.uEmail.$error.email">E-mail non valid / This is not a valid email.</span>
             <span ng-show="form.uEmail.$error.uniqueUserField">
-                Cet email est déjà associé à un utilisateur, <a ui-sref="candidature.login">connectez vous</a>
+                Cet email est déjà associé à un utilisateur, <a ui-sref="candidature.account.login">connectez vous</a>
             </span>
           </div>
 
@@ -44,7 +44,7 @@
 
 
           <div class="navigation">
-            <a class="btn" ui-sref="candidature.step1">
+            <a class="btn" ui-sref="candidature.resume">
               Retour
             </a>
             <a class="btn disabled"  ng-show="!form.$valid" class="btn">

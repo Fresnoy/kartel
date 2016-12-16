@@ -218,41 +218,11 @@ angular.module('memoire',
                     templateUrl: 'views/account/index.html'
                     controller: 'ParentAccountController'
         )
-        $stateProvider.state('account.login',
-                url: '/login'
-                views:
-                  'account_content_view':
-                      templateUrl: 'views/account/login.html'
-                      controller: 'AccountLoginController'
-        )
-        $stateProvider.state('account.reset-password',
-                  url: '/reset-password'
-                  views:
-                    'account_content_view':
-                        templateUrl: 'views/account/reset_password.html'
-                        controller: 'AccountResetPasswordController'
-          )
-
-        $stateProvider.state('account.reset-password-with-token',
-                  url: '/reset-password/:token/:route'
-                  views:
-                    'account_content_view':
-                        templateUrl: 'views/account/reset_password.html'
-                        controller: 'AccountResetPasswordController'
-          )
 
 
-        $stateProvider.state('account.change-password-with-token',
-                  url: '/change-password/:token/:route'
-                  views:
-                    'account_content_view':
-                        templateUrl: 'views/account/change_password.html'
-                        controller: 'AccountChangePasswordController'
-          )
+        # - Candidature
 
-        # ACCOUNT
-
-        # - Candidature 00
+        # - Candidature Root
         $stateProvider.state('candidature',
                 url: '/candidature'
                 views:
@@ -268,43 +238,68 @@ angular.module('memoire',
                   'main_view.application_step_view':
                       templateUrl: 'views/candidature/partials/step-infos.html'
         )
-
-        # Create User
-        $stateProvider.state('candidature.create-user',
-                  url: '/identification'
+        # ACCOUNT
+        $stateProvider.state('candidature.account',
+                  url: '/account'
                   views:
                     'application_content_view':
-                        templateUrl: 'views/candidature/identification.html'
-                        controller: 'IdentificationController'
+                        templateUrl: 'views/candidature/account/index.html'
+                    'application_step_view':
+                        templateUrl: 'views/candidature/partials/step-infos.html'
+        )
+
+        $stateProvider.state('candidature.account.login',
+                url: '/login'
+                views:
+                  'account_content_view':
+                      templateUrl: 'views/candidature/account/login.html'
+                      controller: 'LoginController'
+        )
+
+        $stateProvider.state('candidature.account.reset-password',
+                  url: '/reset-password'
+                  views:
+                    'account_content_view':
+                        templateUrl: 'views/candidature/account/reset_password.html'
+                        controller: 'AccountResetPasswordController'
+        )
+
+        $stateProvider.state('candidature.account.change-password-with-token',
+                  url: '/change-password/:token/:route'
+                  views:
+                    'account_content_view':
+                        templateUrl: 'views/account/change_password.html'
+                        controller: 'AccountChangePasswordController'
+        )
+
+
+        # Create User
+        $stateProvider.state('candidature.account.create-user',
+                  url: '/identification'
+                  views:
+                    'account_content_view':
+                      templateUrl: 'views/candidature/account/identification.html'
+                      controller: 'IdentificationController'
         )
 
         # Candidature 01 - Confirm User
-        $stateProvider.state('candidature.confirm-user',
+        $stateProvider.state('candidature.account.confirm-user',
                   url: '/identification-confirmation'
                   views:
-                    'application_content_view':
+                    'account_content_view':
                         templateUrl: 'views/candidature/identification-confirmation.html'
                         controller: 'IdentificationController'
         )
 
 
         # Candidature 01 - Resume or new App
-        $stateProvider.state('candidature.step1',
-                  url: '/1'
+        $stateProvider.state('candidature.resume',
+                  url: '/resume'
                   views:
                     'application_content_view':
                         templateUrl: 'views/candidature/resume.html'
                         controller: ($rootScope) ->
                           $rootScope.step.current = 1
-        )
-
-        # Candidature 01 - Resume
-        $stateProvider.state('candidature.login',
-                  url: '/login'
-                  views:
-                    'application_content_view':
-                        templateUrl: 'views/candidature/login.html'
-                        controller: 'LoginController'
         )
 
 
