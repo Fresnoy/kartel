@@ -257,18 +257,18 @@ angular.module('memoire',
         )
 
         $stateProvider.state('candidature.account.reset-password',
-                  url: '/reset-password'
+                  url: '/reset-password/:token/:route'
                   views:
                     'account_content_view':
                         templateUrl: 'views/candidature/account/reset_password.html'
-                        controller: 'AccountResetPasswordController'
+                        controller: 'AccountChangePasswordController'
         )
 
         $stateProvider.state('candidature.account.change-password-with-token',
                   url: '/change-password/:token/:route'
                   views:
                     'account_content_view':
-                        templateUrl: 'views/account/change_password.html'
+                        templateUrl: 'views/candidature/account/change_password.html'
                         controller: 'AccountChangePasswordController'
         )
 
