@@ -219,13 +219,10 @@ angular.module('memoire.controllers', ['memoire.services'])
 
 
     $scope.submit = () ->
-
       password_infos = {
         new_password1: $scope.new_password1
         new_password2: $scope.new_password2
       }
-      #ChangePass = RestAuth.one("password").one("change")
-
 
       RestAuth.one().customPOST(password_infos, "password/change/").then((response) ->
               $state.go(route)
@@ -233,11 +230,18 @@ angular.module('memoire.controllers', ['memoire.services'])
             , (response) ->
               $scope.form.error = "Error changement de mot de passe "
       )
-
-
-
 )
 
+.controller('AccountPasswordAskController', ($rootScope, $scope, RestAuth) ->
+
+  $scope.submit = () ->
+      RestAuth.one().customPOST({email: $scope.email}, "password/reset/").then((response) ->
+        $scope.form.success = response.success
+      , (response) ->
+        $scope.form.error = "Erreur d'envoie de l'email"
+
+  )
+)
 
 
 .controller('ParentCandidatureController', ($rootScope, $scope, Users) ->
@@ -268,10 +272,6 @@ angular.module('memoire.controllers', ['memoire.services'])
   if localStorage.getItem('user_id')
     $rootScope.loadInfos($rootScope)
 
-
-
-
-
 )
 
 .controller('LoginController', (
@@ -291,7 +291,7 @@ angular.module('memoire.controllers', ['memoire.services'])
               localStorage.setItem('user_id', tokenDecode.user_id)
             , ->
               #error
-              console.log("Error login");
+              console.log("Error login")
               params.error = "Error login"
               $scope.logout()
             )

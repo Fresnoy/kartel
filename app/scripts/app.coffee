@@ -264,6 +264,15 @@ angular.module('memoire',
                         controller: 'AccountChangePasswordController'
         )
 
+        $stateProvider.state('candidature.account.password-forgot',
+                  url: '/passworg-forgot'
+                  views:
+                    'account_content_view':
+                        templateUrl: 'views/candidature/account/password_forgot.html'
+                        controller: 'AccountPasswordAskController'
+        )
+
+
         $stateProvider.state('candidature.account.change-password-with-token',
                   url: '/change-password/:token/:route'
                   views:

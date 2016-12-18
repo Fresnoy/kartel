@@ -21,6 +21,9 @@
           </div>
           <div ng-if="vm.error" class="alert alert-danger">{{vm.error}}</div>
       </form>
+      <div class="">
+        <a ui-sref="candidature.account.password-forgot">Password forgot</a>
+      </div>
 </div>
 <div ng-if="isAuthenticated">
   <button ng-click='logout()' >
