@@ -7,13 +7,13 @@
       <div class="control-group" ng-class="{error: myForm.name.$invalid}">
 
           <label>Nom / Name</label>
-          <input type="text" ng-model="user.last_name" name="uName" required />
+          <input type="text" ng-model="user.last_name" ng-change="save(user)" name="uName" required />
           <div ng-show="form.$submitted || form.uName.$touched">
             <span ng-show="form.uName.$error.required">Tell us your name.</span>
           </div>
 
           <label>Prénom / First Name</label>
-          <input type="text" ng-model="user.first_name" name="uFirstName" required />
+          <input type="text" ng-model="user.first_name" ng-change="save(user)" name="uFirstName" required />
           <div ng-show="form.$submitted || form.uFirstName.$touched">
             <span ng-show="form.uFirstName.$error.required">Tell us your first-name.</span>
           </div>
@@ -81,4 +81,7 @@
         <input type="submit" value="Continue" />
 
       </div>
+      <a class="btn" ui-sref="candidature.account.login">
+        Retour
+      </a>
 </form>

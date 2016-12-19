@@ -1,6 +1,9 @@
 <h2>Login</h2>
 
 <div ng-if="!isAuthenticated">
+  <a class="btn" ui-sref="candidature.account.create-user">
+    Créer un utilisateur
+  </a>
       <form name="form" ng-submit="form.$valid && vm.login()" novalidate>
           <div class="form-group" ng-class="{ 'has-error': form.$submitted && form.username.$invalid }">
               <label for="username">Username</label>
@@ -22,13 +25,18 @@
           <div ng-if="vm.error" class="alert alert-danger">{{vm.error}}</div>
       </form>
       <div class="">
-        <a ui-sref="candidature.account.password-forgot">Password forgot</a>
+        <a ui-sref="candidature.account.password-forgot">Mot de passe oublié</a>
       </div>
+
 </div>
+<a class="btn" ui-sref="candidature">
+  Retour
+</a>
 <div ng-if="isAuthenticated">
   <button ng-click='logout()' >
       Logout
   </button>
+
   <a class="btn" ui-sref="candidature.etat-civil-1">
     Continuer
   </a>

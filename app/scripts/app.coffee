@@ -296,7 +296,7 @@ angular.module('memoire',
                   url: '/identification-confirmation'
                   views:
                     'account_content_view':
-                        templateUrl: 'views/candidature/identification-confirmation.html'
+                        templateUrl: 'views/candidature/account/identification-confirmation.html'
                         controller: 'IdentificationController'
         )
 

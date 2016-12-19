@@ -275,7 +275,7 @@ angular.module('memoire.controllers', ['memoire.services'])
 )
 
 .controller('LoginController', (
-                                  $rootScope, $scope,
+                                  $rootScope, $scope, Restangular,
                                   Authentification, authManager, jwtHelper
                                 ) ->
 
@@ -289,6 +289,8 @@ angular.module('memoire.controllers', ['memoire.services'])
               tokenDecode = jwtHelper.decodeToken(auth.token)
               localStorage.setItem('id_token', auth.token)
               localStorage.setItem('user_id', tokenDecode.user_id)
+              # set header
+              Restangular.setDefaultHeaders({Authorization: "JWT "+ auth.token})
             , ->
               #error
               console.log("Error login")
@@ -365,7 +367,6 @@ angular.module('memoire.controllers', ['memoire.services'])
 
   $scope.save = (user) ->
     user.profile.birthdate = $filter('date')($scope.birthdate, 'yyyy-MM-dd')
-    console.log(user.profile)
     user.save()
 
 
