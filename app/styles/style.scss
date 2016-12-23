@@ -282,7 +282,12 @@ div.api-field {
  }
 
 form {
-  
+  .btn{
+    &.has-error{
+      opacity: 0.8;
+      pointer-events:none;
+    }
+  }
 }
 
 label{

@@ -195,6 +195,20 @@ angular.module('memoire.controllers', ['memoire.services'])
     console.log("TODO")
 )
 
+.controller('AccountBarController', ($rootScope, $scope, $state, authManager) ->
+    $scope.logout = () ->
+      localStorage.removeItem("id_token")
+      localStorage.removeItem("user_id")
+      $rootScope.user = []
+      authManager.unauthenticate()
+
+      $state.go("candidature.account.login")
+
+
+)
+
+
+
 .controller('AccountResetPasswordController', ($rootScope, $scope) ->
 
 )
@@ -204,31 +218,31 @@ angular.module('memoire.controllers', ['memoire.services'])
         $state, jwtHelper, RestAuth, Restangular
 ) ->
 
+  $scope.user_id = false
+
   if($stateParams.token)
 
-    tokenDecode = jwtHelper.decodeToken($stateParams.token)
+    tokenDecode = []
+    try tokenDecode = jwtHelper.decodeToken($stateParams.token)
+    catch e then tokenDecode.user_id = false
+
     route = $stateParams.route
-
-    console.log(tokenDecode)
-
-    localStorage.setItem('id_token', $stateParams.token)
-    localStorage.setItem('user_id', tokenDecode.user_id)
-
-    if !Restangular.defaultHeaders.Authorization
-      Restangular.setDefaultHeaders({Authorization: "JWT "+ $stateParams.token})
-
+    $scope.user_id = tokenDecode.user_id
 
     $scope.submit = () ->
-      password_infos = {
+      password_infos =
         new_password1: $scope.new_password1
         new_password2: $scope.new_password2
-      }
 
-      RestAuth.one().customPOST(password_infos, "password/change/").then((response) ->
+      headers =
+        Authorization: "JWT "+ $stateParams.token
+
+      RestAuth.one().customPOST(password_infos, "password/change/", "", headers).then((response) ->
               $state.go(route)
-
             , (response) ->
+
               $scope.form.error = "Error changement de mot de passe "
+
       )
 )
 
@@ -252,20 +266,22 @@ angular.module('memoire.controllers', ['memoire.services'])
   $rootScope.step.total = 12
   $rootScope.step.title = "welcom"
 
-  # set lang
+  #lang
+  if localStorage.getItem("language")
+    $rootScope.language = localStorage.getItem("language")
+
   $scope.setLang = (lang) ->
     localStorage.setItem("language", lang)
     $rootScope.language = localStorage.language
 
-
+  #load user infos
   $rootScope.loadInfos = (scope) ->
 
     scope.user = []
     scope.user.profile = []
 
     Users.one(localStorage.user_id).get().then((user) ->
-      scope.birthdate = new Date(user.profile.birthdate)
-      # console.log(user.profile.birthdate)
+      user.profile.birthdate = new Date(user.profile.birthdate)
       scope.user = user
     )
 
@@ -275,7 +291,7 @@ angular.module('memoire.controllers', ['memoire.services'])
 )
 
 .controller('LoginController', (
-                                  $rootScope, $scope, Restangular,
+                                  $rootScope, $scope, Restangular, $state,
                                   Authentification, authManager, jwtHelper
                                 ) ->
 
@@ -291,6 +307,10 @@ angular.module('memoire.controllers', ['memoire.services'])
               localStorage.setItem('user_id', tokenDecode.user_id)
               # set header
               Restangular.setDefaultHeaders({Authorization: "JWT "+ auth.token})
+
+              $state.go("candidature.resume")
+
+
             , ->
               #error
               console.log("Error login")
@@ -305,7 +325,15 @@ angular.module('memoire.controllers', ['memoire.services'])
       authManager.unauthenticate()
 )
 
+.controller('ResumeAppController',($rootScope, $scope, $state, Users, Candidatures) ->
 
+    console.log(Candidatures)
+    Candidatures.getList().then((candidatures) ->
+      console.log(candidatures)
+    )
+
+
+)
 .controller('IdentificationController',($rootScope, $scope, $state, Registration, Users) ->
 
       $rootScope.step.current = 2
@@ -346,7 +374,6 @@ angular.module('memoire.controllers', ['memoire.services'])
           # user creation error
           # form.error = "Error Inscription " + JSON.stringify(response.error, null, '\t')
           form.error = "Error Inscription " + response.error
-
           form.disabled = false
         )
 
@@ -358,16 +385,25 @@ angular.module('memoire.controllers', ['memoire.services'])
 )
 
 
-.controller('CivilStatusController', ($rootScope, $scope, $state, $filter, ISO3166) ->
+.controller('CivilStatusController', ($rootScope, $scope, $state, $filter, ISO3166, Restangular, Upload) ->
 
   if(!$scope.isAuthenticated)
     $state.go("candidature")
 
   $rootScope.loadInfos($rootScope)
 
-  $scope.save = (user) ->
-    user.profile.birthdate = $filter('date')($scope.birthdate, 'yyyy-MM-dd')
-    user.save()
+  $scope.save = (model) ->
+
+    # method 1 - copie du model et changement de valeurs sur des données "dirty"
+    model_copy =  Restangular.copy(model)
+
+    if model.profile.birthdate
+      model_copy.profile.birthdate = $filter('date')(model.profile.birthdate, 'yyyy-MM-dd')
+
+    if model_copy.profile.photo
+      delete model_copy.profile.photo
+
+    model_copy.save()
 
 
   # Birthdate minimum

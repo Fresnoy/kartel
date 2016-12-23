@@ -35,7 +35,7 @@
 
           <label>Date de naissance / Birthdate</label>
           <input type="date" ng-change="save(user)"
-                 ng-model="birthdate" name="uBirthDate" required
+                 ng-model="user.profile.birthdate" name="uBirthDate" required
                  placeholder="{{birthdateMin | date:'yyyy-MM-dd'}}"
                  min="{{birthdateMin | date:'yyyy-MM-dd'}}"
                  max="{{birthdateMax | date:'yyyy-MM-dd'}}" />
@@ -79,6 +79,9 @@
         </div>
 
         <input type="submit" value="Continue" />
+        <a ng-class="{ 'has-error': form.$invalid }" class="btn" ui-sref="candidature.account.login">
+          Continue
+        </a>
 
       </div>
       <a class="btn" ui-sref="candidature.account.login">

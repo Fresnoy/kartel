@@ -237,6 +237,10 @@ angular.module('memoire',
 
                   'main_view.application_step_view':
                       templateUrl: 'views/candidature/partials/step-infos.html'
+
+                  'main_view.application_account_view':
+                      templateUrl: 'views/candidature/account/account-status.html'
+                      controller: 'AccountBarController'
         )
         # ACCOUNT
         $stateProvider.state('candidature.account',
@@ -307,8 +311,7 @@ angular.module('memoire',
                   views:
                     'application_content_view':
                         templateUrl: 'views/candidature/resume.html'
-                        controller: ($rootScope) ->
-                          $rootScope.step.current = 1
+                        controller: 'ResumeAppController'
         )
 
 
