@@ -298,6 +298,10 @@ angular.module('memoire.controllers', ['memoire.services'])
     $rootScope.step.current = 1
     $rootScope.step.title = "Login"
 
+    if($scope.isAuthenticated)
+      console.log("isAuthenticated")
+      $state.go("candidature.resume")
+
     $scope.login = (form, params) ->
       if(form.$valid)
             Authentification.post(params).then((auth) ->
