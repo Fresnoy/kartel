@@ -301,7 +301,7 @@ angular.module('memoire',
                   views:
                     'account_content_view':
                         templateUrl: 'views/candidature/account/identification-confirmation.html'
-                        controller: 'IdentificationController'
+                        controller: 'AccountConfirmationController'
         )
 
 
@@ -325,6 +325,29 @@ angular.module('memoire',
                   requiresLogin: true
 
         )
+
+        # Candidature 03 - etat-civil_photo
+        $stateProvider.state('candidature.etat-civil-photo',
+                  url: '/photo'
+                  views:
+                    'application_content_view':
+                        templateUrl: 'views/candidature/etat_civil_photo.html'
+                        controller: 'ProfilePhotoController'
+                  requiresLogin: true
+
+        )
+
+        # Candidature 03 - etat-civil_photo
+        $stateProvider.state('candidature.cursus',
+                  url: '/cursus'
+                  views:
+                    'application_content_view':
+                        templateUrl: 'views/candidature/cursus.html'
+                        controller: 'CursusController'
+                  requiresLogin: true
+
+        )
+
 
         # Candidature
         $stateProvider.state('candidature.step',

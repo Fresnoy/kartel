@@ -265,13 +265,73 @@ div.api-field {
 
 
 // Candidature
-.css-form input.ng-invalid.ng-touched {
-    background-color: #FA787E;
- }
+body.logged {
+    padding-top:70px;
+}
 
- .css-form input.ng-valid.ng-touched {
-    background-color: #78FA89;
- }
+.student-app{
+
+    h1:after{
+        content:"";
+        margin: 5px;
+        height:5px;
+        width: 50px;
+        background: black;
+        display: block;
+    }
+    .content {
+      width: 75%;
+      max-width: 400px;
+      margin: 50px auto auto;
+      padding: 20px;
+      box-shadow: 0px 0px 5px black;
+    }
+    .btn{
+        background: black;
+        padding: 5px 10px;
+        color:white;
+        border-radius: 0px;
+        &.green {
+          background-color: green;
+        }
+        &.block{
+          display: block;
+        }
+        &.inv-btn{
+          background: none;
+          border: 1px solid black;
+        }
+        &.photo-remove{
+          margin: 10px 0px;
+        }
+    }
+    input, select{
+      width:100%;
+      margin: 5px 0px;
+      border: 0px;
+      border-bottom: 2px solid black;
+      &:focus{
+        outline:none;
+        background-color: rgba(0,0,0,.05)
+      }
+      &.ng-invalid.ng-touched{
+        background-color:none;
+      }
+
+    }
+    .photo-upload{
+      width: 150px;
+      height: 200px;
+      margin: auto;
+      background-size: cover;
+      cursor: pointer;
+
+
+    }
+
+}
+
+
 
  span[ng-show*="error"] {
     color:red;
@@ -284,16 +344,13 @@ div.api-field {
 form {
   .btn{
     &.has-error{
-      opacity: 0.8;
+      background-color:red;
       pointer-events:none;
     }
   }
 }
 
 label{
-
-  padding-top: 50px;
-
 }
 
  label,

@@ -1,0 +1,36 @@
+
+<div class="content">
+      <h1>
+        Photo
+      </h1>
+
+          <form name="form" ng-submit="form.$valid && submit()" class="css-form" novalidate enctype="multipart/form-data">
+
+            <div class="control-group" ng-class="{error: myForm.name.$invalid}">
+
+              <label>Photo</label>
+              <div class="photo-upload" ng-model="user.profile.photo" name="uPhoto"
+                ngf-select="picture(user.profile.photo)" ngf-capture="'camera'"
+                accept="image/*" ngf-max-size="10MB" ng-style="{'background-image':'url('+user.profile.photo+')'}">
+                Choisir une photo</div>
+                  <span ng-show="upload_percentage < 0"> {{ upload_percentage }} </span>
+                    <div ng-show="user.profile.photo"
+                        ng-click="picture('')" class="btn photo-remove block">Remove picture
+                    </div>
+
+              <div ng-show="form.$submitted || form.uPhoto.$touched">
+                  <span ng-show="form.uPhoto.$error.required">Give us a photo please</span>
+                  <span ng-show="form.uPhoto.$error.photo"> Value error </span>
+              </div>
+
+              <a class="btn" ui-sref="candidature.etat-civil-1">
+                Retour
+              </a>
+              <a ng-class="{ 'has-error': !user.profile.photo }" class="btn" ui-sref="candidature.cursus">
+                Continue
+              </a>
+
+            </div>
+        </form>
+
+</div>

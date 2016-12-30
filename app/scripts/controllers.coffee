@@ -203,11 +203,19 @@ angular.module('memoire.controllers', ['memoire.services'])
       authManager.unauthenticate()
 
       $state.go("candidature.account.login")
-
-
 )
 
+.controller("AccountConfirmationController", ($rootScope, $scope, Users) ->
 
+    if localStorage.user_temp
+
+        Users.one(localStorage.user_temp).get().then((response) ->
+          $scope.user = response
+          # $state.go('candidature.confirm-user')
+        )
+    else
+      console.log("pas de user")
+)
 
 .controller('AccountResetPasswordController', ($rootScope, $scope) ->
 
@@ -228,6 +236,8 @@ angular.module('memoire.controllers', ['memoire.services'])
 
     route = $stateParams.route
     $scope.user_id = tokenDecode.user_id
+    $scope.username = tokenDecode.username
+    console.log(tokenDecode)
 
     $scope.submit = () ->
       password_infos =
@@ -238,10 +248,10 @@ angular.module('memoire.controllers', ['memoire.services'])
         Authorization: "JWT "+ $stateParams.token
 
       RestAuth.one().customPOST(password_infos, "password/change/", "", headers).then((response) ->
+              delete localStorage.user_temp
               $state.go(route)
             , (response) ->
-
-              $scope.form.error = "Error changement de mot de passe "
+              $scope.form.error = "Erreur de changement de mot de passe"
 
       )
 )
@@ -258,7 +268,8 @@ angular.module('memoire.controllers', ['memoire.services'])
 )
 
 
-.controller('ParentCandidatureController', ($rootScope, $scope, Users) ->
+.controller('ParentCandidatureController', ($rootScope, $scope,
+            Restangular, Users, Candidatures, Artists, Galleries) ->
   # init step in parent controller
   $rootScope.step = []
   $rootScope.step.current = 0
@@ -279,14 +290,48 @@ angular.module('memoire.controllers', ['memoire.services'])
 
     scope.user = []
     scope.user.profile = []
+    scope.artist = []
+    scope.candidature = []
+    scope.candidature.administrative_galleries = []
+
+    if(scope.candidature.length)
+      return
 
     Users.one(localStorage.user_id).get().then((user) ->
       user.profile.birthdate = new Date(user.profile.birthdate)
       scope.user = user
+      Candidatures.getList().then((candidatures) ->
+
+        candidature = candidatures[0]
+        scope.candidature = candidature
+
+        #setup Galleries
+        if(!candidature.administrative_galleries.length)
+          gallery_infos =
+            label: "Cursus : "+ candidature.current_year_application_count + " | " + $scope.user.username
+            description: "Candidature's Gallery"
+
+
+
+          Galleries.one().customPOST(gallery_infos).then((response) ->
+            console.log("creation de la gallerie Cursus")
+            scope.candidature.administrative_galleries.push(response.url)
+            scope.candidature.save()
+          )
+
+        # get Artist
+        matches = candidature.artist.match(/\d+$/)
+        if matches
+          artist_id = matches[0]
+          # console.log(scope.candidature.plain())
+          Artists.one(artist_id).get().then((artist) ->
+              scope.artist = artist
+          )
+      )
     )
 
-  if localStorage.getItem('user_id')
-    $rootScope.loadInfos($rootScope)
+  # if localStorage.getItem('user_id')
+    # $rootScope.loadInfos($rootScope)
 
 )
 
@@ -299,7 +344,7 @@ angular.module('memoire.controllers', ['memoire.services'])
     $rootScope.step.title = "Login"
 
     if($scope.isAuthenticated)
-      console.log("isAuthenticated")
+      console.log("redirect")
       $state.go("candidature.resume")
 
     $scope.login = (form, params) ->
@@ -313,7 +358,6 @@ angular.module('memoire.controllers', ['memoire.services'])
               Restangular.setDefaultHeaders({Authorization: "JWT "+ auth.token})
 
               $state.go("candidature.resume")
-
 
             , ->
               #error
@@ -344,16 +388,20 @@ angular.module('memoire.controllers', ['memoire.services'])
       $rootScope.step.title = "Identification"
 
       # init user form
-      $scope.user = {last_name: '', first_name: ''}
+      if(!$scope.user)
+        $scope.user = {last_name: '', first_name: ''}
+
       # autogenerate username
       $scope.setUserName = (form, user) ->
         user.username = slug(user.first_name).toLowerCase().substr(0,1) + slug(user.last_name).toLowerCase()
         form.uUserName.$setTouched()
+        console.log(form)
         $scope.isUniqueUserField(form.uUserName, user.username)
 
-      if localStorage.user
-        Users.one(localStorage.user).get().then((response) ->
-            console(response)
+      if localStorage.user_temp
+        Users.one(localStorage.user_temp).get().then((response) ->
+            console.log(response)
+            $scope.user = response
             # $state.go('candidature.confirm-user')
           )
 
@@ -369,22 +417,18 @@ angular.module('memoire.controllers', ['memoire.services'])
               last_name:$scope.last_name
               email:$scope.email
 
-          localStorage.setItem("user", JSON.stringify(user))
+          console.log(response)
 
+          localStorage.setItem("user_temp", response)
           # change location
-          $state.go('candidature.confirm-user')
+          $state.go('candidature.account.confirm-user')
 
         , (response) ->
+          console.log(response)
           # user creation error
           # form.error = "Error Inscription " + JSON.stringify(response.error, null, '\t')
-          form.error = "Error Inscription " + response.error
+          form.error = "Error Inscription "
           form.disabled = false
-        )
-
-      # identification confirmation update email
-      $scope.update = (form, params) ->
-        Registration.update(params).then((response) ->
-          return
         )
 )
 
@@ -420,9 +464,86 @@ angular.module('memoire.controllers', ['memoire.services'])
   #country
   $scope.countries = ISO3166.countryToCode
 
+)
+
+.controller('ProfilePhotoController', ($rootScope, $scope, $state, $filter, ISO3166, Restangular, Upload) ->
+
+  if(!$scope.isAuthenticated)
+    $state.go("candidature")
+
+  $rootScope.loadInfos($rootScope)
+
+  #upload file
+  $scope.upload_percentage = 0
+  $scope.picture = (data) ->
+      Upload.upload(
+        {
+          url: $scope.user.url,
+          data: {
+            "profile.photo": data
+            #name: file.name
+          }
+          method: 'PATCH',
+          headers: { 'Authorization': 'JWT ' + localStorage.id_token },
+          #withCredentials: true
+        }
+      )
+      .then((resp) ->
+          console.log(resp)
+          $scope.user.profile.photo = resp.data.profile.photo
+        ,(resp) ->
+          console.log('Error status: ' + resp.status);
+        ,(evt) ->
+          $scope.upload_percentage = parseInt(100.0 * evt.loaded / evt.total);
+      )
+)
+
+
+
+#cursus
+.controller('CursusController', (
+        $rootScope, $scope, $q, $state, $filter
+        Users, Artists, Restangular, Candidatures, Galleries,
+        ISO3166, Upload,
+      ) ->
+
+      if(!$scope.isAuthenticated)
+        $state.go("candidature")
+
+      $rootScope.loadInfos($rootScope)
+
+      #cursus
+      year = new Date().getFullYear();
+      $scope.years = [];
+      $scope.years.push (year-i) for i in [1..35]
+
+      $scope.save = (model) ->
+
+
+
+      $scope.cursus = {}
+      $scope.cursus.items = []
+
+      $scope.addItem = (item) ->
+          item.push({
+            medias:[]
+            photo:"",
+            name:""
+          });
+
+      $scope.removeItem = (items, num) ->
+        items.splice(num,1)
+
+
+
+
 
 
 )
+
+
+
+
 
 
 # Candidature Form
@@ -438,11 +559,6 @@ angular.module('memoire.controllers', ['memoire.services'])
   $scope.artist = Artists
 
   $scope.create = (form) ->
-
-
-
-    console.log($scope.user)
-    console.log($scope.artist)
 
     if(!form.$valid)
           console.log("Formulaire incomplet")
@@ -607,7 +723,7 @@ angular.module('memoire.controllers', ['memoire.services'])
 
 
   #gallery
-  $scope.artwork_galleries = {}
+  $scope.artwork_galleries = []
   $scope.artwork_galleries.items = []
   $scope.artwork_galleries.medias = []
 

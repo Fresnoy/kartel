@@ -1,3 +1,5 @@
+<div class="content">
+
     <h1>
               Identification
     </h1>
@@ -18,8 +20,9 @@
           </div>
 
           <label>Username</label>
-          <input type="text" ng-model="user.username" name="uUserName" unique-user-field required />
+          <input type="text" ng-model="user.username" ng-minlength="4" name="uUserName" unique-user-field required />
           <div ng-show="form.$submitted || form.uUserName.$touched">
+            <span ng-show="form.uUserName.$error.minlength">Minimum 4 signes</span>
             <span ng-show="form.uUserName.$error.required">Tell us your name.</span>
             <span ng-show="form.uUserName.$error.uniqueUserField">Ce nom d'utilisateur est déjà utilisé, choisissez en un autre</span>
           </div>
@@ -43,17 +46,20 @@
           <div ng-if="form.error" class="alert alert-danger">{{form.error}}</div>
 
           <div class="navigation">
-            <a class="btn" ui-sref="candidature.account.login">
-              Retour
-            </a>
-            <a class="btn disabled" ng-show="!form.$valid && user.email != emailconfirm" class="btn">
-              Continue
-            </a>
-            <a class="btn" ng-show="form.$valid && user.email == emailconfirm" class="btn" ng-click="create(form, user)">
-              Continue
-            </a>
-            
+
+            <div>
+              <a class="btn" ui-sref="candidature.account.login">
+                Retour
+              </a>
+
+                <a class="btn" ng-class="{ 'has-error': form.$invalid }" ng-click="create(form, user)">
+                  Continue
+                </a>
+            </div>
+
+
 
           </div>
 
       </form>
+</div>

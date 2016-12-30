@@ -1,3 +1,5 @@
+<div class="confirmation content">
+
     <h1>
               Confirmation
     </h1>
@@ -7,40 +9,16 @@
             création de votre compte
             en cliquant sur le lien de
             confimation envoyé sur
-            l’email
+            l’email :
 
       <div class="">
-        <span class="" ng-show="!modifEmail" ng-click="modifEmail=true" > : {{user.email}} </span>
-        <span class="" ng-show="modifEmail">
-          <form name="form" class="" ng-submit="form.$valid && login()" novalidate>
-            <input type='email'  ng-value="user.email" />
-              <div ng-show="form.$submitted || form.uEmail.$touched">
-                <span ng-show="form.uEmail.$error.required">Tell us your email.</span>
-                <span ng-show="form.uEmail.$error.email">E-mail non valid / This is not a valid email.</span>
-              </div>
-              <div>
-                <a class="btn disabled"  ng-show="!form.$valid" class="btn">
-                  Renvoyer l'email
-                </a>
-                <a class="btn"  ng-show="form.$valid" class="btn" ng-click="update(form, user)">
-                  Renvoyer l'email
-                </a>
-              </div>
-          </form>
-        </span>
-
-
+        <h3 class=""> {{user.email}} </h3>
       </div>
 
     </p>
         <div class="navigation">
-          <a class="btn" ui-sref="candidature.resume">
-            Retour
-          </a>
-          <a class="btn disabled"  ng-show="!isAuthenticated" class="btn">
-            Continue
-          </a>
-          <a class="btn"  ng-show="isAuthenticated" class="btn" ng-click="create(form)" ui-sref="candidature.user-profile">
-            Continue
+          <a class="btn btn-inv" ui-sref="candidature.account.login">
+            Connection
           </a>
         </div>
+</div>
