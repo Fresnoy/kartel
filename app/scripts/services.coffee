@@ -45,6 +45,10 @@ angular.module('memoire.services', ['restangular'])
         return Restangular.service('assets/gallery')
 )
 
+.factory('Media', (Restangular) ->
+        return Restangular.service('assets/medium')
+)
+
 .factory('Partners', (Restangular) ->
         return Restangular.service('production/productionorganizationtask/')
 )

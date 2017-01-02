@@ -91,7 +91,7 @@ angular.module('memoire',
 
   $rootScope.$on('tokenHasExpired', () ->
     console.log('Your session has expired!')
-    $state.go('candidature.login')
+    $state.go('candidature.account.login')
   )
 
 ])

@@ -297,9 +297,10 @@ body.logged {
         &.block{
           display: block;
         }
-        &.inv-btn{
+        &.btn-inv{
           background: none;
           border: 1px solid black;
+          color:black;
         }
         &.photo-remove{
           margin: 10px 0px;

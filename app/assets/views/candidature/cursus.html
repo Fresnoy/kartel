@@ -7,49 +7,28 @@
           <form name="form" ng-submit="form.$valid && submit()" class="css-form" novalidate enctype="multipart/form-data">
 
             <label>Cursus</label>
+            <div ng-repeat="(index,item) in cursus_gallery.media | orderBy:'label'" ng-model="cursus_gallery.media" name="uCursus"  >
 
-            <select ng-model="cursus.year" ng-change="save(cursus)">
-              <option value="">-- Select Year --</option>
-              <option ng-repeat="year in years" value="{{year}}">{{year}}</option>
-            </select>
-            <input type="text" placeholder="Diplome" ng-change="save(cursus)" ng-model="cursus.label"  />
-            <input type="text" placeholder="ville " ng-model="cursus.description" ng-change="save(cursus)"  />
-            <button type="file" ng-model="cursus.medium_url"
-              ngf-select="upload(cursus.medium_url)"
-              accept="image/*" ngf-max-size="10MB" >
-              justificatif</button>
-            <img class="caption" ng-if="cursus.medium_url" ngf-thumbnail="cursus.medium_url">
-
-
-            <div>
-              <div ng-repeat="(index,item) in cursus.items" ng-model="cursus.items" name="uCursus"  >
-                <select ng-model="cursus.items.items[index].year">
+                <select ng-model="item.label" ng-change="save(item)">
                   <option value="">-- Select Year --</option>
                   <option ng-repeat="year in years" value="{{year}}">{{year}}</option>
                 </select>
-                <input type="text" placeholder="Diplome " ng-model="cursus.items[index].infos" >
-                <button type="file" ng-model="cursus.items[index].photo"
-                  ngf-select="upload(cursus.items[index].photo)"
-                  accept="image/*" ngf-max-size="10MB" >
-                  justificatif</button>
-                  <span class="student-card" >
-                    <span ng-show="upload_percentage < 100 "> {{ upload_percentage }} </span>
-                      <img class="caption" ng-if="cursus.items[index].photo" ngf-thumbnail="cursus.items[index].photo">
-                  </span>
-
-                </span>
-                <div class="inline"  ng-show="form.$submitted || user.cursus[index].$touched">
-                    <span ng-show="cursus[index].$error.required"> Give us a photo please</span>
-                    <span ng-show="cursus[index].$error.photo"> Value error </span>
+                <input type="text" placeholder="Diplome" ng-change="save(item)" ng-model="item.description"  />
+                <input type="text" placeholder="ville " ng-model="item.description2" ng-change="save(item)"  />
+                <div class="photo-upload" ng-model="item.picture"
+                  ngf-select="upload(item, 'picture', item.picture)" ngf-capture="'camera'"
+                  accept="image/*" ngf-max-size="10MB" ng-style="{'background-image':'url('+item.picture+')'}">
+                  Choisir une photo</div>
+                <span ng-show="upload_percentage < 0"> {{ upload_percentage }} </span>
+                <div class="inline"  ng-show="form.$submitted || item.$touched">
+                    <span ng-show="item.$error.required"> Give us a photo please</span>
+                    <span ng-show="item.$error.photo"> Value error </span>
                 </div>
+                    <a class="btn btn-inv inline" ng-click="removeItem(cursus_gallery.media, index)"> Remove </a>
 
-                <button class="inline" ng-click="removeItem(cursus.items,index)"> - </button>
-              </div>
             </div>
-            <button ng-click="addItem(cursus.items)"> + </button>
 
-
-
+              <a class="btn block" ng-click="addItem(cursus_gallery)"> Ajouter </a>
 
               <a class="btn" ui-sref="candidature.photo">
                 Retour
@@ -58,7 +37,6 @@
                 Continue
               </a>
 
-            </div>
         </form>
 
 </div>

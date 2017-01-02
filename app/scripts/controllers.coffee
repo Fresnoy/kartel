@@ -269,7 +269,8 @@ angular.module('memoire.controllers', ['memoire.services'])
 
 
 .controller('ParentCandidatureController', ($rootScope, $scope,
-            Restangular, Users, Candidatures, Artists, Galleries) ->
+            Restangular,
+            Users, Candidatures, Artists, Galleries, Media) ->
   # init step in parent controller
   $rootScope.step = []
   $rootScope.step.current = 0
@@ -293,31 +294,54 @@ angular.module('memoire.controllers', ['memoire.services'])
     scope.artist = []
     scope.candidature = []
     scope.candidature.administrative_galleries = []
+    scope.cursus_gallery = []
+    scope.cursus_gallery.id = []
+    scope.cursus_gallery.url = []
+    scope.cursus_gallery.media = []
 
-    if(scope.candidature.length)
-      return
+    # if(scope.candidature.length)
 
     Users.one(localStorage.user_id).get().then((user) ->
       user.profile.birthdate = new Date(user.profile.birthdate)
       scope.user = user
       Candidatures.getList().then((candidatures) ->
-
-        candidature = candidatures[0]
+        console.log("candidature")
+        candidature = candidatures.pop()
         scope.candidature = candidature
 
         #setup Galleries
         if(!candidature.administrative_galleries.length)
+          console.log("setup galleries")
           gallery_infos =
-            label: "Cursus : "+ candidature.current_year_application_count + " | " + $scope.user.username
+            label: "Cursus : "+ candidature.current_year_application_count + " | " + scope.user.username
             description: "Candidature's Gallery"
 
-
-
           Galleries.one().customPOST(gallery_infos).then((response) ->
-            console.log("creation de la gallerie Cursus")
             scope.candidature.administrative_galleries.push(response.url)
+            scope.cursus_gallery.url = response.url
             scope.candidature.save()
+
+            # Create one Media in the first admin gallery (cursus)
+            medium_infos =
+              gallery: response.url
+
+            Media.one().customPOST(medium_infos).then((response_media) ->
+              scope.cursus_gallery.media.push(response_media)
+            )
           )
+
+        # get Media
+        else
+          scope.cursus_gallery.url = scope.candidature.administrative_galleries[0]
+          Restangular.oneUrl('assets/gallery', scope.cursus_gallery.url).get()
+          .then((gall_response) ->
+              for medium in gall_response.media
+                  scope.cursus_gallery.media.push(
+                    Restangular.oneUrl('assets/medium', medium).get().$object
+                  )
+
+          )
+
 
         # get Artist
         matches = candidature.artist.match(/\d+$/)
@@ -442,6 +466,8 @@ angular.module('memoire.controllers', ['memoire.services'])
 
   $scope.save = (model) ->
 
+    # console.log($scope.form)
+
     # method 1 - copie du model et changement de valeurs sur des données "dirty"
     model_copy =  Restangular.copy(model)
 
@@ -503,41 +529,65 @@ angular.module('memoire.controllers', ['memoire.services'])
 #cursus
 .controller('CursusController', (
         $rootScope, $scope, $q, $state, $filter
-        Users, Artists, Restangular, Candidatures, Galleries,
+        Users, Artists, Restangular, Candidatures, Media, Galleries,
         ISO3166, Upload,
       ) ->
 
       if(!$scope.isAuthenticated)
         $state.go("candidature")
 
-      $rootScope.loadInfos($rootScope)
+      $rootScope.loadInfos($scope)
 
       #cursus
       year = new Date().getFullYear();
-      $scope.years = [];
+      $scope.years = []
       $scope.years.push (year-i) for i in [1..35]
 
+      # $scope.cursus_gallery = $rootScope.candidature.administrative_galleries
+
       $scope.save = (model) ->
+        model_copy = Restangular.copy(model)
+
+        if model_copy.picture
+          delete model_copy.picture
+
+        model_copy.save()
 
 
+      #upload file
+      $scope.upload_percentage = 0
+      $scope.upload = (model, field, data ) ->
 
-      $scope.cursus = {}
-      $scope.cursus.items = []
+          infos =
+            url: model.url,
+            data: {}
+            method: 'PATCH',
+            headers: { 'Authorization': 'JWT ' + localStorage.id_token },
+            #withCredentials: true
+          infos.data[field] = data
 
-      $scope.addItem = (item) ->
-          item.push({
-            medias:[]
-            photo:"",
-            name:""
-          });
+          Upload.upload(infos)
+          .then((resp) ->
+              model[field] = resp.data[field]
+            ,(resp) ->
+              console.log('Error status: ' + resp.status);
+            ,(evt) ->
+              $scope.upload_percentage = parseInt(100.0 * evt.loaded / evt.total);
+          )
 
-      $scope.removeItem = (items, num) ->
-        items.splice(num,1)
+      $scope.addItem = (gallery) ->
+        medium_infos =
+          gallery: gallery.url
 
+        Media.one().customPOST(medium_infos).then((response_media) ->
+          gallery.media.push(response_media)
+        )
 
-
-
-
+      $scope.removeItem = (media, index) ->
+        item = media[index]
+        item.remove().then((response) ->
+            media.splice(index,1)
+        )
 
 )
 
