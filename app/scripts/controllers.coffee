@@ -538,20 +538,42 @@ angular.module('memoire.controllers', ['memoire.services'])
 
       $rootScope.loadInfos($scope)
 
+
+      $scope.state =
+         selected: undefined
       #cursus
       year = new Date().getFullYear();
       $scope.years = []
       $scope.years.push (year-i) for i in [1..35]
 
-      # $scope.cursus_gallery = $rootScope.candidature.administrative_galleries
-
       $scope.save = (model) ->
+        # save medium
         model_copy = Restangular.copy(model)
 
         if model_copy.picture
           delete model_copy.picture
 
         model_copy.save()
+
+        $scope.state.selected = model.position
+        # save user profile cursus
+        cursus = ""
+        for item in $scope.cursus_gallery.media
+          cursus += item.label + " " + item.description
+          cursus += "\n"
+
+        $scope.user.profile.cursus = cursus
+        user_copy = Restangular.copy($scope.user)
+
+
+        if user_copy.profile.birthdate
+          user_copy.profile.birthdate = $filter('date')(user_copy.profile.birthdate, 'yyyy-MM-dd')
+
+        if user_copy.profile.photo
+          delete user_copy.profile.photo
+
+        user_copy.save()
+
 
 
       #upload file
@@ -578,9 +600,9 @@ angular.module('memoire.controllers', ['memoire.services'])
       $scope.addItem = (gallery) ->
         medium_infos =
           gallery: gallery.url
-
         Media.one().customPOST(medium_infos).then((response_media) ->
           gallery.media.push(response_media)
+          $scope.state.selected = 1
         )
 
       $scope.removeItem = (media, index) ->

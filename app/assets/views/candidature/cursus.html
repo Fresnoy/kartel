@@ -7,14 +7,37 @@
           <form name="form" ng-submit="form.$valid && submit()" class="css-form" novalidate enctype="multipart/form-data">
 
             <label>Cursus</label>
-            <div ng-repeat="(index,item) in cursus_gallery.media | orderBy:'label'" ng-model="cursus_gallery.media" name="uCursus"  >
-
-                <select ng-model="item.label" ng-change="save(item)">
+            <div ng-repeat="item in cursus_gallery.media | orderBy:'1*position'"
+                  ng-model="cursus_gallery.media"
+                  name="uCursus"
+                  class="item-list"
+                  ng-class="{ active: item.position == state.selected }"
+                  ng-click="state.selected = item.position"
+                  >
+              <div class="item-summary">
+                  <div ng-if="item.position>200">{{item.position}}</div>
+                  <div ng-if="item.position<200">Nouvelle entrée</div>
+              </div>
+              <div class="item-infos">
+                <select ng-model="item.position" ng-change="save(item)" required >
                   <option value="">-- Select Year --</option>
-                  <option ng-repeat="year in years" value="{{year}}">{{year}}</option>
+                  <option ng-selected="item.position==year" ng-repeat="year in years" value='{{year}}'>{{year}}</option>
                 </select>
-                <input type="text" placeholder="Diplome" ng-change="save(item)" ng-model="item.description"  />
-                <input type="text" placeholder="ville " ng-model="item.description2" ng-change="save(item)"  />
+
+                <input type="text" placeholder="label"
+                 ng-model="item.label"
+                 ng-model-options='{ debounce: 1000 }'
+                 ng-change="save(item)"
+                 required
+                  />
+
+                <input type="text" placeholder="ville "
+                  ng-model="item.description"
+                  ng-model-options='{ debounce: 1000 }'
+                  ng-change="save(item)"
+                  required
+                  />
+
                 <div class="photo-upload" ng-model="item.picture"
                   ngf-select="upload(item, 'picture', item.picture)" ngf-capture="'camera'"
                   accept="image/*" ngf-max-size="10MB" ng-style="{'background-image':'url('+item.picture+')'}">
@@ -24,18 +47,23 @@
                     <span ng-show="item.$error.required"> Give us a photo please</span>
                     <span ng-show="item.$error.photo"> Value error </span>
                 </div>
-                    <a class="btn btn-inv inline" ng-click="removeItem(cursus_gallery.media, index)"> Remove </a>
+                    <a class="btn btn-inv inline" ng-click="removeItem(cursus_gallery.media, $index)"> Remove </a>
+
 
             </div>
+          </div>
 
-              <a class="btn block" ng-click="addItem(cursus_gallery)"> Ajouter </a>
+          <div>
+            <a class="btn block" ng-click="addItem(cursus_gallery)"> Ajouter </a>
+          </div>
 
-              <a class="btn" ui-sref="candidature.photo">
-                Retour
-              </a>
-              <a ng-class="{ 'has-error': !user.profile.cursus }" class="btn" ui-sref="candidature.account.login">
-                Continue
-              </a>
+
+          <a class="btn" ui-sref="candidature.photo">
+            Retour
+          </a>
+          <a ng-class="{ 'has-error': form.$invalid }" class="btn" ui-sref="candidature.account.login">
+            Continue
+          </a>
 
         </form>
 

@@ -43,7 +43,7 @@
                          max="{{birthdateMax | date:'yyyy-MM-dd'}}" />
                   <div ng-show="form.$submitted || form.uBirthDate.$touched">
                      <span ng-show="form.uBirthDate.$error.required">Tell us your Birthday.</span>
-                     <span ng-show="form.uBirthDate.$error.min"> Il faut avoir moins de 35 ans (être nés avant  le {{birthdateMax | date:'dd MMMM yyyy'}}) </span>
+                     <span ng-show="form.uBirthDate.$error.min"> Il faut avoir moins de 35 ans (être nés avant  le {{birthdateMin | date:'dd MMMM yyyy'}}) </span>
                      <span ng-show="form.uBirthDate.$error.max"> Il faut être majeur (nés après le {{birthdateMax | date:'dd MMMM yyyy'}}) </span>
                   </div>
 

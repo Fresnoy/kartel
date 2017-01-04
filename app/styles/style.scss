@@ -326,9 +326,28 @@ body.logged {
       margin: auto;
       background-size: cover;
       cursor: pointer;
-
-
     }
+
+    .item-list.active{
+      .item-infos{
+        display:block;
+      }
+      .item-summary{
+        display:none;
+      }
+    }
+    .item-list{
+      .item-infos
+      {
+        display: none;
+      }
+      .item-summary{
+        background: grey;
+        cursor: pointer;
+      }
+      .item-infos{}
+    }
+
 
 }
 
