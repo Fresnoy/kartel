@@ -60,18 +60,7 @@
                   </div>
 
 
-                <label>Numéro de téléphone pays d'origine   / Homeland Phone number</label>
-                <input ng-change="save(user)"  type="text" placeholder="+33-320283982" name="uHomelandPhone"
-                  ng-pattern="phone_pattern" ng-model="user.profile.homeland_phone"
-                  ng-minlength="10" ng-maxlength="15" required
-                />
-                <div ng-show="form.$submitted || form.uResidenceCountry.$touched">
-                  <span class="block" ng-show="form.uHomelandPhone.$error.required">Required!</span>
-                  <span class="block" ng-show="form.uHomelandPhone.$error.minlength">Phone no not less that 10 char.</span>
-                  <span class="block" ng-show="form.uHomelandPhone.$error.maxlength">Phone no not more than 11 char.</span>
-                  <span class="block" ng-show="form.uHomelandPhone.$error.pattern">Please match pattern [+33-123456789]</span>
-                </div>
-
+                
                 <label>Numéro de sécurité sociale / Insurance number</label>
                 <input ng-change="save(user)" type="text"
                        placeholder="" name="uInsuranceNumber"
@@ -80,11 +69,11 @@
                   <span class="block" ng-show="form.uInsuranceNumber.$error.required">Required!</span>
                 </div>
 
-                <a class="btn" ui-sref="candidature.account.login">
+                <a class="btn" ui-sref="candidature.resume">
                   Retour
                 </a>
 
-                <a ng-class="{ 'has-error': form.$invalid }" class="btn" ui-sref="candidature.etat-civil-photo">
+                <a ng-class="{ 'has-error': form.$invalid }" class="btn" ui-sref="candidature.etat-civil-adress">
                   Continue
                 </a>
 

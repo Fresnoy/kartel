@@ -12,7 +12,9 @@
               <div class="photo-upload" ng-model="user.profile.photo" name="uPhoto"
                 ngf-select="picture(user.profile.photo)" ngf-capture="'camera'"
                 accept="image/*" ngf-max-size="10MB" ng-style="{'background-image':'url('+user.profile.photo+')'}">
-                Choisir une photo</div>
+                <span ng-if="!user.profile.photo">Choisir une photo</span>
+
+              </div>
                   <span ng-show="upload_percentage < 0"> {{ upload_percentage }} </span>
                     <div ng-show="user.profile.photo"
                         ng-click="picture('')" class="btn photo-remove block">Remove picture

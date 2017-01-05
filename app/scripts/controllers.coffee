@@ -307,6 +307,10 @@ angular.module('memoire.controllers', ['memoire.services'])
       Candidatures.getList().then((candidatures) ->
         console.log("candidature")
         candidature = candidatures.pop()
+        if(candidature.application_completed)
+          $state.go("candidature.completed")
+          return;
+
         scope.candidature = candidature
 
         #setup Galleries
@@ -402,6 +406,9 @@ angular.module('memoire.controllers', ['memoire.services'])
     console.log(Candidatures)
     Candidatures.getList().then((candidatures) ->
       console.log(candidatures)
+      $scope.current_candidature = candidatures[0]
+      if($scope.current_candidature.application_completed)
+        $state.go("candidature.completed")
     )
 
 
@@ -480,6 +487,7 @@ angular.module('memoire.controllers', ['memoire.services'])
     model_copy.save()
 
 
+
   # Birthdate minimum
   current_year = new Date().getFullYear()
   age_min = 18
@@ -492,6 +500,95 @@ angular.module('memoire.controllers', ['memoire.services'])
 
 )
 
+
+
+.controller('CivilStatusAdressController', ($rootScope, $q,
+            $scope, $state, $filter, ISO3166, Restangular, Upload) ->
+
+
+    $rootScope.loadInfos($rootScope)
+
+
+
+    $scope.adress =
+      street:''
+      zip:''
+      city:''
+
+    $scope.$watch("user.profile.homeland_address", (newValue, oldValue) ->
+
+      if(newValue!=oldValue)
+
+        console.log(newValue)
+        adress = newValue.split($scope.splitChar)
+
+        $scope.adress.street = ''
+        if(adress[0]!="undefined")
+          $scope.adress.street = adress[0]
+
+        $scope.adress.zip = ''
+        if(adress[1]!="undefined")
+          $scope.adress.zip = parseInt(adress[1])
+
+        $scope.adress.city = ''
+        if(adress[2]!="undefined")
+          $scope.adress.city = adress[2]
+
+
+    )
+
+    $scope.splitChar = "\n\r"
+
+    $scope.save = (model) ->
+      # console.log($scope.form)
+      model_copy =  Restangular.copy(model)
+
+      if model.profile.birthdate
+        model_copy.profile.birthdate = $filter('date')(model.profile.birthdate, 'yyyy-MM-dd')
+
+      if model_copy.profile.photo
+        delete model_copy.profile.photo
+
+      # save homeland adress
+      model_copy.profile.homeland_address = ""
+
+      for item, value of $scope.adress
+        if(value == undefined)
+          value = ""
+        model_copy.profile.homeland_address+= value + "" + $scope.splitChar
+        # model.profile.homeland_address+= value + $scope.splitChar
+
+        # console.log(value)
+
+      # console.log(model_copy.profile.homeland_address)
+
+      model_copy.save()
+
+
+    # phone pattern
+    $scope.phone_pattern = /^\+?\d{2}[-. ]?\d{9}$/
+
+
+    # country
+    $scope.countries = ISO3166.countryToCode
+
+
+    #adresse
+    $scope.paOptions = {
+    	updateModel : true
+    }
+    $scope.paTrigger = {}
+    $scope.paDetails = {}
+    $scope.placesCallback = (place) ->
+      console.log("hello")
+
+
+
+)
+
+.controller('CivilStatusLanguageController', ($rootScope, $scope, $state, $filter, ISO3166, Restangular, Upload) ->
+
+)
 .controller('ProfilePhotoController', ($rootScope, $scope, $state, $filter, ISO3166, Restangular, Upload) ->
 
   if(!$scope.isAuthenticated)
@@ -547,6 +644,7 @@ angular.module('memoire.controllers', ['memoire.services'])
       $scope.years.push (year-i) for i in [1..35]
 
       $scope.save = (model) ->
+        console.log($scope.form)
         # save medium
         model_copy = Restangular.copy(model)
 
@@ -579,7 +677,6 @@ angular.module('memoire.controllers', ['memoire.services'])
       #upload file
       $scope.upload_percentage = 0
       $scope.upload = (model, field, data ) ->
-
           infos =
             url: model.url,
             data: {}

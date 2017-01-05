@@ -1,7 +1,7 @@
 
 <div class="content">
       <h1>
-        Photo
+        Cursus
       </h1>
 
           <form name="form" ng-submit="form.$valid && submit()" class="css-form" novalidate enctype="multipart/form-data">
@@ -39,26 +39,34 @@
                   />
 
                 <div class="photo-upload" ng-model="item.picture"
-                  ngf-select="upload(item, 'picture', item.picture)" ngf-capture="'camera'"
-                  accept="image/*" ngf-max-size="10MB" ng-style="{'background-image':'url('+item.picture+')'}">
-                  Choisir une photo</div>
+                  ngf-select="upload(item, 'picture', item.picture)"
+                  ngf-capture="'camera'"
+                  accept="image/*"
+                  ng-style="{'background-image':'url('+item.picture+')'}">
+                  <span ng-if="!item.picture">Justificatif</span>
+
+                </div>
                 <span ng-show="upload_percentage < 0"> {{ upload_percentage }} </span>
                 <div class="inline"  ng-show="form.$submitted || item.$touched">
                     <span ng-show="item.$error.required"> Give us a photo please</span>
                     <span ng-show="item.$error.photo"> Value error </span>
                 </div>
-                    <a class="btn btn-inv inline" ng-click="removeItem(cursus_gallery.media, $index)"> Remove </a>
+                <a class="btn btn-inv block remove" ng-click="removeItem(cursus_gallery.media, $index)"> Efface ce diplome </a>
 
 
             </div>
           </div>
 
+          <div class="">
+              {{form.$$error}}
+          </div>
+
           <div>
-            <a class="btn block" ng-click="addItem(cursus_gallery)"> Ajouter </a>
+            <a class="btn block" ng-click="addItem(cursus_gallery)"> Ajouter un diplome </a>
           </div>
 
 
-          <a class="btn" ui-sref="candidature.photo">
+          <a class="btn" ui-sref="candidature.etat-civil-photo">
             Retour
           </a>
           <a ng-class="{ 'has-error': form.$invalid }" class="btn" ui-sref="candidature.account.login">

@@ -24,9 +24,7 @@ angular.module('memoire',
                   'ngAnimate', 'chieffancypants.loadingBar', 'ui.bootstrap',
                   'ngSanitize', 'markdown',
                   'iso-3166-country-codes', 'ngFileUpload', 'ngPlacesAutocomplete',
-
               ])
-
 
 # CORS
 .config(['$httpProvider', ($httpProvider) ->
@@ -326,7 +324,29 @@ angular.module('memoire',
 
         )
 
-        # Candidature 03 - etat-civil_photo
+        # Candidature 04 - Adresse
+        $stateProvider.state('candidature.etat-civil-adress',
+                    url: '/etat-civil-adress'
+                    views:
+                      'application_content_view':
+                          templateUrl: 'views/candidature/etat_civil_adress.html'
+                          controller: 'CivilStatusAdressController'
+                    requiresLogin: true
+
+        )
+
+        # Candidature 05 - Languages
+        $stateProvider.state('candidature.etat-civil-language',
+                    url: '/etat-civil-language'
+                    views:
+                      'application_content_view':
+                          templateUrl: 'views/candidature/etat_civil_language.html'
+                          controller: 'CivilStatusLanguageController'
+                    requiresLogin: true
+
+        )
+
+        # Candidature 06 - etat-civil_photo
         $stateProvider.state('candidature.etat-civil-photo',
                   url: '/photo'
                   views:
@@ -337,13 +357,24 @@ angular.module('memoire',
 
         )
 
-        # Candidature 03 - etat-civil_photo
+        # Candidature 03 - etat-cursus
         $stateProvider.state('candidature.cursus',
                   url: '/cursus'
                   views:
                     'application_content_view':
                         templateUrl: 'views/candidature/cursus.html'
                         controller: 'CursusController'
+                  requiresLogin: true
+
+        )
+
+        # Candidature FIN - completed
+        $stateProvider.state('candidature.completed',
+                  url: '/completed'
+                  views:
+                    'application_content_view':
+                        templateUrl: 'views/candidature/finish.html'
+                       # controller: 'CursusController'
                   requiresLogin: true
 
         )

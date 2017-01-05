@@ -268,6 +268,14 @@ div.api-field {
 body.logged {
     padding-top:70px;
 }
+body.fr {
+  .fr{display: inline-block;}
+  .en{display: none;}
+}
+body.en {
+  .en{display: inline-block;}
+  .fr{display: none;}
+}
 
 .student-app{
 
@@ -324,8 +332,10 @@ body.logged {
       width: 150px;
       height: 200px;
       margin: auto;
-      background-size: cover;
+      background-size: contain;
+      background-repeat: no-repeat;
       cursor: pointer;
+      background-color: #BBB;
     }
 
     .item-list.active{
@@ -337,6 +347,7 @@ body.logged {
       }
     }
     .item-list{
+      padding-bottom: 10px;
       .item-infos
       {
         display: none;
@@ -344,8 +355,12 @@ body.logged {
       .item-summary{
         background: grey;
         cursor: pointer;
+        padding: 10px 10px;
       }
       .item-infos{}
+      .remove{
+        margin: 10px 0px;
+      }
     }
 
 
