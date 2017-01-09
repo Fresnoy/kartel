@@ -6,7 +6,102 @@
 
             <form name="form" ng-submit="form.$valid && submit()" class="css-form" novalidate enctype="multipart/form-data">
 
-              LANGUAGE
+              <label for="family-status">
+                <span class="fr">
+                  Situation familiale
+                </span>
+                <span class="en">
+                  Family Status
+                </span>
+              </label>
+              <select id="family-status"
+              ng-change="save(user)"
+              name="uFamilyStatus"
+              ng-model="user.profile.family_status"
+              required
+              >
+              <option value="">--</option>
+              <option ng-repeat="(code, status) in FAMILY_STATUS_CHOICES" value="{{code}}">
+                {{status[language]}}
+              </option>
+              <div ng-show="form.$submitted || form.uFamilyStatus.$touched">
+                <span ng-show="form.uFamilyStatus.$error.required">
+                  <span class="fr">
+                    Champs requis
+                  </span>
+                  <span class="en">
+                    Tell us your Family status.
+                  </span>
+              </div>
+              </select>
+
+
+
+              <label for="mother-tongue">
+                <span class="fr">
+                 Langue maternelle
+                </span>
+                <span class="en">
+                  Mother Tongues
+                </span>
+              </label>
+
+              <select
+                id="mother-tongue"
+                ng-model="user.profile.mother_tongue"
+                name="uMotherTongue"
+                ng-change="save(user)"
+                required>
+                <option value="">{{languageSelectOption[language]}}</option>
+                <option ng-repeat="(name, item) in LANGUAGES" value="{{name.split('-')[0]}}">
+                  {{item.englishName}} ({{name}})
+                </option>
+              </select>
+              <div ng-show="form.$submitted || form.uMotherTongue.$touched">
+                <span ng-show="form.uFamilyStatus.$error.required">Tell us your Mother language.</span>
+                <span ng-show="form.uFamilyStatus.$error.gender"> Value error </span>
+              </div>
+
+
+
+              <label for="other-languages">
+                <span class="fr">
+                 Autres langues parlées
+                </span>
+                <span class="en">
+                  Other languages
+                </span>
+              </label>
+
+              <input
+                type="text"
+                id="other-languages"
+                ng-model="user.profile.other_language"
+                />
+
+
+
+              <div
+                ng-repeat="item in user.profile.other_language.split(splitChar)"
+                ng-init=""
+
+               >
+
+                <select
+                  ng-model="other_language[$index]"
+                  ng-change="user.profile.other_language = other_language.join(splitChar) + splitChar"
+                  >
+                  <option value="">{{languageSelectOption[language]}}</option>
+                  <option ng-repeat="(name, item) in LANGUAGES" value="{{name.split('-')[0]}}">
+                    {{item.englishName}} ({{name}})
+                  </option>
+                </select>
+
+              </div>
+
+
+
+
 
                 <a class="btn" ui-sref="candidature.etat-civil-adress">
                   Retour

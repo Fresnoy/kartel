@@ -588,6 +588,54 @@ angular.module('memoire.controllers', ['memoire.services'])
 
 .controller('CivilStatusLanguageController', ($rootScope, $scope, $state, $filter, ISO3166, Restangular, Upload) ->
 
+  $scope.FAMILY_STATUS_CHOICES =
+        "S":
+          fr: "Seul(e)"
+          en: "Single"
+        "E":
+          fr: "Fiancé(e)"
+          en: "Engaged"
+        "M":
+          fr: "Marié(e)"
+          en: "Married"
+        "D":
+          fr: "Divorcé(e)"
+          en: "Divorced"
+        "W":
+          fr:"Veuf(ve)"
+          en:"Widowed"
+        "C":
+          fr:"Union civile"
+          en:"Civil Union"
+
+    $scope.languageSelectOption =
+      fr:"Selectionner une langue"
+      en:"Select a Language"
+
+
+    $scope.LANGUAGES = languageMappingList
+    $scope.other_language = []
+    $scope.splitChar = " | "
+
+    $scope.$watch("user.profile.other_language", (newValue, oldValue) ->
+      console.log(newValue)
+      if(newValue == "" || newValue == null)
+        user.profile.other_language = $scope.splitChar
+    )
+    $rootScope.loadInfos($rootScope)
+
+    $scope.save = (model) ->
+        console.log($scope.form)
+        user_copy = Restangular.copy($scope.user)
+
+        if user_copy.profile.photo
+          delete user_copy.profile.photo
+
+        if user_copy.profile.birthdate
+          user_copy.profile.birthdate = $filter('date')(user_copy.profile.birthdate, 'yyyy-MM-dd')
+
+        user_copy.save()
+
 )
 .controller('ProfilePhotoController', ($rootScope, $scope, $state, $filter, ISO3166, Restangular, Upload) ->
 
@@ -663,9 +711,9 @@ angular.module('memoire.controllers', ['memoire.services'])
         $scope.user.profile.cursus = cursus
         user_copy = Restangular.copy($scope.user)
 
-
         if user_copy.profile.birthdate
           user_copy.profile.birthdate = $filter('date')(user_copy.profile.birthdate, 'yyyy-MM-dd')
+
 
         if user_copy.profile.photo
           delete user_copy.profile.photo
