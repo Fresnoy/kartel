@@ -77,26 +77,33 @@
                 type="text"
                 id="other-languages"
                 ng-model="user.profile.other_language"
+                ng-init = "initLanguages()"
+                hidden
                 />
 
-
-
               <div
-                ng-repeat="item in user.profile.other_language.split(splitChar)"
-                ng-init=""
-
+                ng-repeat="item in other_language"
                >
 
                 <select
                   ng-model="other_language[$index]"
-                  ng-change="user.profile.other_language = other_language.join(splitChar) + splitChar"
+                  ng-change="updateLanguages()"
                   >
                   <option value="">{{languageSelectOption[language]}}</option>
                   <option ng-repeat="(name, item) in LANGUAGES" value="{{name.split('-')[0]}}">
                     {{item.englishName}} ({{name}})
                   </option>
                 </select>
+                <a class="remove" ng-click="removeLangue($index)"></a>
 
+
+              </div>
+
+              <div>
+                <a class="btn btn-inv" ng-click="other_language.push(array())">
+                  <span class="fr">Ajouter une langue</span>
+                  <span class="en">Add a language</span>
+                </a>
               </div>
 
 

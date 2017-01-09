@@ -588,7 +588,7 @@ angular.module('memoire.controllers', ['memoire.services'])
 
 .controller('CivilStatusLanguageController', ($rootScope, $scope, $state, $filter, ISO3166, Restangular, Upload) ->
 
-  $scope.FAMILY_STATUS_CHOICES =
+    $scope.FAMILY_STATUS_CHOICES =
         "S":
           fr: "Seul(e)"
           en: "Single"
@@ -608,6 +608,7 @@ angular.module('memoire.controllers', ['memoire.services'])
           fr:"Union civile"
           en:"Civil Union"
 
+    $rootScope.loadInfos($rootScope)
     $scope.languageSelectOption =
       fr:"Selectionner une langue"
       en:"Select a Language"
@@ -615,14 +616,22 @@ angular.module('memoire.controllers', ['memoire.services'])
 
     $scope.LANGUAGES = languageMappingList
     $scope.other_language = []
-    $scope.splitChar = " | "
+    $scope.splitChar = ","
 
     $scope.$watch("user.profile.other_language", (newValue, oldValue) ->
-      console.log(newValue)
-      if(newValue == "" || newValue == null)
-        user.profile.other_language = $scope.splitChar
+      if(newValue)
+        $scope.other_language =   newValue.split($scope.splitChar)
     )
-    $rootScope.loadInfos($rootScope)
+
+    $scope.removeLangue = (index) ->
+      $scope.other_language.splice(index,1)
+      $scope.updateLanguages()
+
+
+    $scope.updateLanguages = () ->
+      $scope.user.profile.other_language = $scope.other_language.join($scope.splitChar)
+      $scope.save()
+
 
     $scope.save = (model) ->
         console.log($scope.form)
@@ -755,6 +764,17 @@ angular.module('memoire.controllers', ['memoire.services'])
         item.remove().then((response) ->
             media.splice(index,1)
         )
+
+)
+
+
+#cursus
+.controller('CursusController', (
+        $rootScope, $scope, $q, $state, $filter
+        Users, Artists, Restangular, Candidatures, Media, Galleries,
+        ISO3166, Upload,
+      ) ->
+
 
 )
 

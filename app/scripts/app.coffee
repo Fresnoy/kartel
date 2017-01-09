@@ -361,7 +361,7 @@ angular.module('memoire',
 
         )
 
-        # Candidature 03 - etat-cursus
+        # Candidature 07 - cursus
         $stateProvider.state('candidature.cursus',
                   url: '/cursus'
                   views:
@@ -371,6 +371,18 @@ angular.module('memoire',
                   requiresLogin: true
 
         )
+
+        # Candidature 08 - Media
+        $stateProvider.state('candidature.media',
+                    url: '/media'
+                    views:
+                      'application_content_view':
+                          templateUrl: 'views/candidature/media.html'
+                          controller: 'MediaController'
+                    requiresLogin: true
+
+        )
+
 
         # Candidature FIN - completed
         $stateProvider.state('candidature.completed',
