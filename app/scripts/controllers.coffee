@@ -293,6 +293,10 @@ angular.module('memoire.controllers', ['memoire.services'])
     scope.user.profile = []
     scope.artist = []
     scope.candidature = []
+    # Artworks
+    scope.candidature.artwork_galleries = []
+    scope.artworks = []
+    # Admin
     scope.candidature.administrative_galleries = []
     scope.cursus_gallery = []
     scope.cursus_gallery.id = []
@@ -305,7 +309,7 @@ angular.module('memoire.controllers', ['memoire.services'])
       user.profile.birthdate = new Date(user.profile.birthdate)
       scope.user = user
       Candidatures.getList().then((candidatures) ->
-        console.log("candidature")
+        # console.log("candidature")
         candidature = candidatures.pop()
         if(candidature.application_completed)
           $state.go("candidature.completed")
@@ -315,7 +319,7 @@ angular.module('memoire.controllers', ['memoire.services'])
 
         #setup Galleries
         if(!candidature.administrative_galleries.length)
-          console.log("setup galleries")
+          # console.log("setup galleries")
           gallery_infos =
             label: "Cursus : "+ candidature.current_year_application_count + " | " + scope.user.username
             description: "Candidature's Gallery"
@@ -333,8 +337,7 @@ angular.module('memoire.controllers', ['memoire.services'])
               scope.cursus_gallery.media.push(response_media)
             )
           )
-
-        # get Media
+        # get Media administrative gallery
         else
           scope.cursus_gallery.url = scope.candidature.administrative_galleries[0]
           Restangular.oneUrl('assets/gallery', scope.cursus_gallery.url).get()
@@ -346,6 +349,22 @@ angular.module('memoire.controllers', ['memoire.services'])
 
           )
 
+        if(scope.candidature.artwork_galleries)
+          # get infos scope.artworks
+          for gallery, index_gallery in scope.candidature.artwork_galleries
+            # get object gallery
+
+            Restangular.oneUrl('assets/gallery', gallery).get()
+            .then((gall_response) ->
+              # index est déjà passé
+              for medium, index_medium in gall_response.media
+                  gall_response.media[index_medium] = Restangular.oneUrl('assets/medium', medium).get().$object
+
+              find = scope.candidature.artwork_galleries.indexOf(gall_response.url)
+
+              scope.candidature.artwork_galleries[find] = gall_response
+
+            )
 
         # get Artist
         matches = candidature.artist.match(/\d+$/)
@@ -426,12 +445,10 @@ angular.module('memoire.controllers', ['memoire.services'])
       $scope.setUserName = (form, user) ->
         user.username = slug(user.first_name).toLowerCase().substr(0,1) + slug(user.last_name).toLowerCase()
         form.uUserName.$setTouched()
-        console.log(form)
         $scope.isUniqueUserField(form.uUserName, user.username)
 
       if localStorage.user_temp
         Users.one(localStorage.user_temp).get().then((response) ->
-            console.log(response)
             $scope.user = response
             # $state.go('candidature.confirm-user')
           )
@@ -769,12 +786,52 @@ angular.module('memoire.controllers', ['memoire.services'])
 
 
 #cursus
-.controller('CursusController', (
+.controller('MediaController', (
         $rootScope, $scope, $q, $state, $filter
         Users, Artists, Restangular, Candidatures, Media, Galleries,
         ISO3166, Upload,
       ) ->
 
+
+    if(!$scope.isAuthenticated)
+      $state.go("candidature")
+
+
+    $rootScope.loadInfos($scope)
+
+
+
+    $scope.addArtwork = () ->
+
+        gallery_infos =
+          label: "Artwork Title"
+          description: "Artwork desciption"
+
+        Galleries.one().customPOST(gallery_infos).then((response) ->
+
+          $scope.candidature.artwork_galleries.push(response)
+          $scope.candidature.save()
+
+        )
+    $scope.removeArtwork = (model, index) ->
+        item = model[index]
+        item.remove().then((response) ->
+            model.splice(index,1)
+        )
+
+    $scope.addMedium = (gallery) ->
+      # Create one Media in the first admin gallery (cursus)
+      medium_infos =
+        gallery: gallery.url
+
+      Media.one().customPOST(medium_infos).then((response_media) ->
+        gallery.media.push(response_media)
+      )
+
+    $scope.removeMedium = (medium, gallery, index) ->
+      medium.remove().then((response) ->
+          gallery.media.splice(index,1)
+      )
 
 )
 
