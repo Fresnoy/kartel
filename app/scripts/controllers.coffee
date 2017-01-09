@@ -353,16 +353,16 @@ angular.module('memoire.controllers', ['memoire.services'])
           # get infos scope.artworks
           for gallery, index_gallery in scope.candidature.artwork_galleries
             # get object gallery
-
             Restangular.oneUrl('assets/gallery', gallery).get()
             .then((gall_response) ->
-              # index est déjà passé
+              # index not good
+
               for medium, index_medium in gall_response.media
                   gall_response.media[index_medium] = Restangular.oneUrl('assets/medium', medium).get().$object
 
               find = scope.candidature.artwork_galleries.indexOf(gall_response.url)
 
-              scope.candidature.artwork_galleries[find] = gall_response
+              scope.artworks[find] = gall_response
 
             )
 
@@ -769,8 +769,10 @@ angular.module('memoire.controllers', ['memoire.services'])
           )
 
       $scope.addItem = (gallery) ->
+
         medium_infos =
           gallery: gallery.url
+
         Media.one().customPOST(medium_infos).then((response_media) ->
           gallery.media.push(response_media)
           $scope.state.selected = 1
@@ -808,30 +810,79 @@ angular.module('memoire.controllers', ['memoire.services'])
           description: "Artwork desciption"
 
         Galleries.one().customPOST(gallery_infos).then((response) ->
-
-          $scope.candidature.artwork_galleries.push(response)
+          $scope.candidature.artwork_galleries.push(response.url)
           $scope.candidature.save()
 
+          $scope.artworks.push(response)
+
+
         )
+
     $scope.removeArtwork = (model, index) ->
         item = model[index]
+        url = item.url
         item.remove().then((response) ->
-            model.splice(index,1)
+            find = $scope.candidature.artwork_galleries.indexOf(url)
+
+            $scope.candidature.artwork_galleries.splice(find,1)
+            model.splice(index, 1)
+
+            $scope.candidature.save()
+
+
         )
 
-    $scope.addMedium = (gallery) ->
-      # Create one Media in the first admin gallery (cursus)
-      medium_infos =
-        gallery: gallery.url
+    $scope.saveGalleryInfos = (gallery) ->
+      gallery.save()
 
-      Media.one().customPOST(medium_infos).then((response_media) ->
-        gallery.media.push(response_media)
-      )
+
 
     $scope.removeMedium = (medium, gallery, index) ->
+      console.log(index)
       medium.remove().then((response) ->
           gallery.media.splice(index,1)
       )
+
+
+    $scope.uploadFiles = (files, gallery) ->
+      if (files && files.length)
+        for file in files
+            $scope.upload(file, "photo", gallery)
+
+    $scope.upload = (data, field, gallery) ->
+
+            # Create one Media in the first admin gallery (cursus)
+          medium_infos =
+            gallery: gallery.url
+
+          if(!data.type.match('image.*'))
+            console.log("non image")
+            return
+
+          # create medium
+          Media.one().customPOST(medium_infos).then((response_media) ->
+
+            infos =
+              url: response_media.url,
+              data: {}
+              method: 'PATCH',
+              headers: { 'Authorization': 'JWT ' + localStorage.id_token },
+              #withCredentials: true
+            infos.data.picture = data
+
+            index_medium = gallery.media.length
+            gallery.media[index_medium] = response_media
+
+            Upload.upload(infos)
+            .then((resp) ->
+                gallery.media[index_medium] = Restangular.oneUrl('assets/medium', infos.url).get().$object
+
+              ,(resp) ->
+                console.log('Error status: ' + resp.status);
+              ,(evt) ->
+                $scope.upload_percentage = parseInt(100.0 * evt.loaded / evt.total);
+            )
+        )
 
 )
 

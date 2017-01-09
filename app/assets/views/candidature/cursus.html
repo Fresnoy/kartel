@@ -15,7 +15,7 @@
                   ng-click="state.selected = item.position"
                   >
               <div class="item-summary">
-                  <div ng-if="item.position>200">{{item.position}}</div>
+                  <div ng-if="item.position>200 ">{{item.position}}</div>
                   <div ng-if="item.position<200">Nouvelle entrée</div>
               </div>
               <div class="item-infos">
@@ -51,7 +51,7 @@
                     <span ng-show="item.$error.required"> Give us a photo please</span>
                     <span ng-show="item.$error.photo"> Value error </span>
                 </div>
-                <a class="btn btn-inv block remove" ng-click="removeItem(cursus_gallery.media, $index)"> Efface ce diplome </a>
+                <a class="btn btn-inv block remove" ng-click="removeItem(cursus_gallery.media, $index)">Efface ce diplome </a>
 
 
             </div>

@@ -7,7 +7,7 @@
           <form name="form" ng-submit="form.$valid && submit()" class="css-form" novalidate enctype="multipart/form-data">
 
 
-            <div ng-repeat="artwork in candidature.artwork_galleries"
+            <div ng-repeat="artwork in artworks"
 
 
             >
@@ -24,17 +24,69 @@
                   id="title-{{$index}}"
                   ng-model="artwork.label"
                   ng-model-options='{ debounce: 1000 }'
-                  ng-change="save(artwork)"
+                  ng-change="artwork.save()"
+                  required
+              />
+              <label for="description-{{$index}}">
+                <span class="fr">
+                  Description
+                </span>
+                <span class="en">
+                  Description
+                </span>
+              </label>
+
+              <textarea
+                  placeholder="Desciption"
+                  ng-model="artwork.description"
+                  ng-model-options='{ debounce: 1000 }'
+                  ng-change="artwork.save()"
                   required
               />
 
+              <div
+                class="mediabox"
+                ng-model="item.picture"
+                ngf-select="uploadFiles($files, artwork)"
+                ngf-drop="uploadFiles($files, artwork)"
+                ngf-drag-over-class="'dragover'"
+                multiple="multiple"
+                ngf-capture="'camera'"
+                accept="image/*"
+                >
+                <span class=""
+
+                >
+                  <span class="fr">
+                    Déposez vos média ici
+                  </span>
+                  <span class="en">
+                    Drop your Image here
+                  </span>
+                </span>
+
+              </div>
+              <a ng-click="addMedia">Ajouter un lien</a>
+              <div ng-repeat="(medium_index,medium) in artwork.media" class="inline">
+                  <a ng-if="medium.picture" class="icon image" href="{{medium.picture}}" >
+                    <img src="{{medium.picture}}" height="50px" />
+                  </a>
+                  <a ng-if="medium.medium_url" class="icon image" href="{{medium.medium_url}}" >
+                    url
+                  </a>
+                  <a class="btn remove" ng-click="removeMedium(medium, artwork, medium_index)" >
+
+                  </a>
+              </div>
+
+
               <a class="btn btn-inv block remove"
-                 ng-click="removeArtwork(candidature.artwork_galleries, $index)">
+                 ng-click="removeArtwork(artworks, $index)">
                  <span class="fr">
                    Efface cette oeuvre
                  </span>
                  <span class="en">
-                   Remove
+                   Remove artwork
                  </span>
               </a>
 
@@ -44,69 +96,10 @@
             <div>
               <a class="btn block" ng-click="addArtwork(artwork_gallery)">
                 <span class="fr">Ajouter un projet </span>
-                <span class="en">Add a project un diplome </span>
+                <span class="en">Add a project </span>
               </a>
             </div>
 
-
-            <label>Cursus</label>
-            <div ng-repeat="item in cursus_gallery.media | orderBy:'1*position'"
-                  ng-model="cursus_gallery.media"
-                  name="uCursus"
-                  class="item-list"
-                  ng-class="{ active: item.position == state.selected }"
-                  ng-click="state.selected = item.position"
-                  >
-              <div class="item-summary">
-                  <div ng-if="item.position>200">{{item.position}}</div>
-                  <div ng-if="item.position<200">Nouvelle entrée</div>
-              </div>
-              <div class="item-infos">
-                <select ng-model="item.position" ng-change="save(item)" required >
-                  <option value="">-- Select Year --</option>
-                  <option ng-selected="item.position==year" ng-repeat="year in years" value='{{year}}'>{{year}}</option>
-                </select>
-
-                <input type="text" placeholder="label"
-                 ng-model="item.label"
-                 ng-model-options='{ debounce: 1000 }'
-                 ng-change="save(item)"
-                 required
-                  />
-
-                <input type="text" placeholder="ville "
-                  ng-model="item.description"
-                  ng-model-options='{ debounce: 1000 }'
-                  ng-change="save(item)"
-                  required
-                  />
-
-                <div class="photo-upload" ng-model="item.picture"
-                  ngf-select="upload(item, 'picture', item.picture)"
-                  ngf-capture="'camera'"
-                  accept="image/*"
-                  ng-style="{'background-image':'url('+item.picture+')'}">
-                  <span ng-if="!item.picture">Justificatif</span>
-
-                </div>
-                <span ng-show="upload_percentage < 0"> {{ upload_percentage }} </span>
-                <div class="inline"  ng-show="form.$submitted || item.$touched">
-                    <span ng-show="item.$error.required"> Give us a photo please</span>
-                    <span ng-show="item.$error.photo"> Value error </span>
-                </div>
-                <a class="btn btn-inv block remove" ng-click="removeItem(cursus_gallery.media, $index)"> Efface ce diplome </a>
-
-
-            </div>
-          </div>
-
-          <div class="">
-              {{form.$$error}}
-          </div>
-
-          <div>
-            <a class="btn block" ng-click="addItem(cursus_gallery)"> Ajouter un diplome </a>
-          </div>
 
 
           <a class="btn" ui-sref="candidature.etat-civil-photo">
