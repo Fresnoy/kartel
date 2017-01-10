@@ -237,7 +237,6 @@ angular.module('memoire.controllers', ['memoire.services'])
     route = $stateParams.route
     $scope.user_id = tokenDecode.user_id
     $scope.username = tokenDecode.username
-    console.log(tokenDecode)
 
     $scope.submit = () ->
       password_infos =
@@ -268,7 +267,7 @@ angular.module('memoire.controllers', ['memoire.services'])
 )
 
 
-.controller('ParentCandidatureController', ($rootScope, $scope,
+.controller('ParentCandidatureController', ($rootScope, $scope, $state,
             Restangular,
             Users, Candidatures, Artists, Galleries, Media) ->
   # init step in parent controller
@@ -304,6 +303,8 @@ angular.module('memoire.controllers', ['memoire.services'])
     scope.cursus_gallery.media = []
 
     # if(scope.candidature.length)
+    if(!scope.isAuthenticated)
+      $state.go("candidature")
 
     Users.one(localStorage.user_id).get().then((user) ->
       user.profile.birthdate = new Date(user.profile.birthdate)
@@ -358,11 +359,16 @@ angular.module('memoire.controllers', ['memoire.services'])
               # index not good
 
               for medium, index_medium in gall_response.media
-                  gall_response.media[index_medium] = Restangular.oneUrl('assets/medium', medium).get().$object
 
-              find = scope.candidature.artwork_galleries.indexOf(gall_response.url)
+                  Restangular.oneUrl('assets/medium', medium).get().then((response_medium) ->
+                    find_medium = gall_response.media.indexOf(response_medium.url)
+                    gall_response.media[find_medium] = response_medium
 
-              scope.artworks[find] = gall_response
+                  )
+
+              find_gallery = scope.candidature.artwork_galleries.indexOf(gall_response.url)
+
+              scope.artworks[find_gallery] = gall_response
 
             )
 
@@ -605,6 +611,8 @@ angular.module('memoire.controllers', ['memoire.services'])
 
 .controller('CivilStatusLanguageController', ($rootScope, $scope, $state, $filter, ISO3166, Restangular, Upload) ->
 
+    $rootScope.loadInfos($rootScope)
+
     $scope.FAMILY_STATUS_CHOICES =
         "S":
           fr: "Seul(e)"
@@ -625,7 +633,7 @@ angular.module('memoire.controllers', ['memoire.services'])
           fr:"Union civile"
           en:"Civil Union"
 
-    $rootScope.loadInfos($rootScope)
+
     $scope.languageSelectOption =
       fr:"Selectionner une langue"
       en:"Select a Language"
@@ -663,10 +671,7 @@ angular.module('memoire.controllers', ['memoire.services'])
         user_copy.save()
 
 )
-.controller('ProfilePhotoController', ($rootScope, $scope, $state, $filter, ISO3166, Restangular, Upload) ->
-
-  if(!$scope.isAuthenticated)
-    $state.go("candidature")
+.controller('ProfilePhotoController', ($rootScope, $scope, $state, Restangular, Upload) ->
 
   $rootScope.loadInfos($rootScope)
 
@@ -707,7 +712,7 @@ angular.module('memoire.controllers', ['memoire.services'])
       if(!$scope.isAuthenticated)
         $state.go("candidature")
 
-      $rootScope.loadInfos($scope)
+      $rootScope.loadInfos($rootScope)
 
 
       $scope.state =
@@ -787,7 +792,7 @@ angular.module('memoire.controllers', ['memoire.services'])
 )
 
 
-#cursus
+# media
 .controller('MediaController', (
         $rootScope, $scope, $q, $state, $filter
         Users, Artists, Restangular, Candidatures, Media, Galleries,
@@ -799,21 +804,25 @@ angular.module('memoire.controllers', ['memoire.services'])
       $state.go("candidature")
 
 
-    $rootScope.loadInfos($scope)
+    $rootScope.loadInfos($rootScope)
 
+    $scope.state =
+         selected: undefined
 
 
     $scope.addArtwork = () ->
 
         gallery_infos =
-          label: "Artwork Title"
-          description: "Artwork desciption"
+          label: $scope.candidature.current_year_application_count+" | "
+          description: " Desciption de l'oeuvre "
 
         Galleries.one().customPOST(gallery_infos).then((response) ->
           $scope.candidature.artwork_galleries.push(response.url)
           $scope.candidature.save()
 
           $scope.artworks.push(response)
+
+          $scope.state.selected = response.id
 
 
         )
@@ -836,9 +845,17 @@ angular.module('memoire.controllers', ['memoire.services'])
       gallery.save()
 
 
+    # medium
+    $scope.addMediumLink = (gallery) ->
+      medium_infos =
+        gallery: gallery.url
+
+      index_medium = gallery.media.length
+      gallery.media[index_medium] = Media.one().customPOST(medium_infos).$object
+
+
 
     $scope.removeMedium = (medium, gallery, index) ->
-      console.log(index)
       medium.remove().then((response) ->
           gallery.media.splice(index,1)
       )
@@ -888,7 +905,43 @@ angular.module('memoire.controllers', ['memoire.services'])
 
 
 
+.controller('MessageController', (
+        $rootScope, $scope, $q, $state, $filter
+        Users, Artists, Restangular, Candidatures, Media, Galleries,
+        ISO3166, Upload,
+      ) ->
 
+    if(!$scope.isAuthenticated)
+      $state.go("candidature")
+
+
+    $rootScope.loadInfos($rootScope)
+)
+
+
+.controller('ConfirmationController', (
+        $rootScope, $scope, $state, Candidatures,
+      ) ->
+
+    if(!$scope.isAuthenticated)
+      $state.go("candidature")
+
+
+    $rootScope.loadInfos($rootScope)
+
+    $scope.validation = false
+
+
+    $scope.valideCandidature = (candidature) ->
+
+      candidature.application_completed = true
+      candidature.save()
+
+      $state.go("candidature.completed")
+
+
+
+)
 
 
 # Candidature Form

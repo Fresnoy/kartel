@@ -1,0 +1,52 @@
+
+<div class="content">
+      <h1>
+        Candidature
+      </h1>
+
+          <form name="form" ng-submit="form.$valid && submit()" class="css-form" novalidate enctype="multipart/form-data">
+
+
+              <p>
+                Votre candidature est
+                  maintenant complète.
+                  Pour la valider
+                  définitivement, cliquez
+                  sur le bouton ci-dessous
+              </p>
+
+                  <a class="block btn green" ng-show="!validation" ng-click="validation = !validation">
+                    Valider
+                  </a>
+
+                  <div class="" ng-if="validation" >
+
+                    <p class="text-danger">
+                      La validation est définitve.
+Vous ne pourrez plus la
+changer une fois validée.
+
+
+                    </p>
+                    <p class="text-danger">
+                      Cliquez sur le bouton ci-dessous pour
+                      confirmer:
+                    </p>
+                    <a class="block btn green" ng-click="valideCandidature(candidature)">
+                      J'ai compris<br/>
+                      Validation définitive
+                    </a>
+                  </div>
+
+
+
+
+
+          <a class="btn" ui-sref="candidature.media">
+            Retour
+          </a>
+
+
+        </form>
+
+</div>

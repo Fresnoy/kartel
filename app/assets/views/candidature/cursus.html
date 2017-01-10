@@ -15,8 +15,19 @@
                   ng-click="state.selected = item.position"
                   >
               <div class="item-summary">
-                  <div ng-if="item.position>200 ">{{item.position}}</div>
-                  <div ng-if="item.position<200">Nouvelle entrée</div>
+                  <div ng-if="item.position>200 ">
+                    <div class="row">
+                      <div class="info col-sm-9">
+                        {{item.position}} {{item.description}}<br/>
+                        {{item.label}}
+                      </div>
+                      <div class="info col-sm-3">
+                        <img ng-if="item.picture" src="{{item.picture}}" height="40px" />
+                      </div>
+                    </div>
+
+                </div>
+                <div ng-if="item.position<200">Nouvelle entrée</div>
               </div>
               <div class="item-infos">
                 <select ng-model="item.position" ng-change="save(item)" required >

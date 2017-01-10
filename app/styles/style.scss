@@ -326,6 +326,10 @@ body.en {
       &.ng-invalid.ng-touched{
         background-color:none;
       }
+      &[type='checkbox']{
+        width: 30px;
+        height: 30px
+      }
 
     }
     .photo-upload{
@@ -385,6 +389,11 @@ body.en {
       background-position: left;
       background-repeat: no-repeat;
       display: block;
+    }
+
+    .formElt{
+      margin: 50px 0px;
+
     }
 
 

@@ -383,6 +383,27 @@ angular.module('memoire',
 
         )
 
+        # Candidature 09 - Message
+        $stateProvider.state('candidature.message',
+                    url: '/message'
+                    views:
+                      'application_content_view':
+                          templateUrl: 'views/candidature/message.html'
+                          controller: 'MessageController'
+                    requiresLogin: true
+
+        )
+        # Candidature 10 - Confirmation
+        $stateProvider.state('candidature.confirmation',
+                    url: '/confirmation'
+                    views:
+                      'application_content_view':
+                          templateUrl: 'views/candidature/confirmation.html'
+                          controller: 'ConfirmationController'
+                    requiresLogin: true
+
+        )
+
 
         # Candidature FIN - completed
         $stateProvider.state('candidature.completed',
