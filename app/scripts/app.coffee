@@ -123,6 +123,14 @@ angular.module('memoire',
         return format.replace(/ss/, ss);
 )
 
+.filter('ageFilter', ->
+    return (birthday) ->
+      console.log(birthday)
+      ageDifMs = Date.now() - new Date(birthday).getTime();
+      ageDate = new Date(ageDifMs); # miliseconds from epoch
+      return Math.abs(ageDate.getUTCFullYear() - 1970)
+)
+
 
 
 # URI config
@@ -211,6 +219,28 @@ angular.module('memoire',
                       templateUrl: 'views/artwork.html'
                       controller: 'ArtworkController'
         )
+
+        # - Candidatures LISTS
+
+        $stateProvider.state('candidatures',
+                url: '/candidatures'
+                views:
+                  'main_view':
+                    templateUrl: 'kartel.html'
+                  'main_view.main_content_view':
+                      templateUrl: 'views/candidatures.html'
+                      controller: 'CandidaturesController'
+        )
+
+        $stateProvider.state('candidatures.candidat',
+                url: '/:id'
+                views:
+                  'main_content_view':
+                      templateUrl: 'views/candidat.html'
+                      controller: 'CandidatController'
+        )
+
+
 
         # ACCOUNT
         $stateProvider.state('account',

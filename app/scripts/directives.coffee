@@ -15,6 +15,7 @@ angular.module('memoire.directives', ['memoire.services', 'bootstrapLightbox'])
     },
     template: (x, scope) ->
       url = "http://media.lefresnoy.net/?url=http://api.lefresnoy.net/{{ url }}&w={{ width }}&h={{ height }}&fmt=jpg"
+      url = "{{ url }}"
       if scope.op
         url += "&op=#{ scope.op }"
       return "<img ng-src=\"#{url}\" />"
@@ -37,12 +38,24 @@ angular.module('memoire.directives', ['memoire.services', 'bootstrapLightbox'])
       openLightboxModal: '&'
     }
     templateUrl: "directives/gallery.html"
-    controller: ($scope, $sce, Lightbox) ->
-      for media in $scope.gallery.media
-        media.isvideo = false
-        if media.medium_url
-          media.isvideo =  new RegExp("aml|youtube|vimeo|mp4","gi").test(media.medium_url);
-          media.medium_url = $sce.trustAsResourceUrl(media.medium_url)
+    controller: ($scope, $sce, Lightbox, Galleries, Media) ->
+
+      gallery_id = $scope.gallery.match(/\d+$/)[0]
+      $scope.gallery = Galleries.one(gallery_id).get().then((gallery) ->
+        $scope.gallery = gallery
+        for medium in gallery.media
+          medium_id = medium.match(/\d+$/)[0]
+          Media.one(medium_id).get().then((media) ->
+            media_index = $scope.gallery.media.indexOf(media.url)
+
+            media.isvideo = false
+            if media.medium_url
+              media.isvideo =  new RegExp("aml|youtube|vimeo|mp4","gi").test(media.medium_url);
+              media.medium_url = $sce.trustAsResourceUrl(media.medium_url)
+
+            $scope.gallery.media[media_index] = media
+          )
+      )
 
 
       $scope.openLightboxModal = (index) ->

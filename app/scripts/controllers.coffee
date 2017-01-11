@@ -187,6 +187,83 @@ angular.module('memoire.controllers', ['memoire.services'])
   )
 )
 
+.controller('CandidaturesController', ($rootScope, $scope, Candidatures, Artists, Users) ->
+  # init
+
+  Candidatures.getList({limit: 500}).then((candidatures) ->
+    $scope.candidatures = candidatures
+    for candidature in candidatures
+      artist_id = candidature.artist.match(/\d+$/)[0]
+      Artists.one(artist_id).get().then((artist) ->
+          current_cantidature = _.filter(candidatures, (c) -> return c.artist == artist.url)
+          user_id = artist.user.match(/\d+$/)[0]
+          artist.user = Users.one(user_id).get().$object
+
+          current_cantidature[0].artist = artist
+      )
+
+
+  )
+
+)
+
+.controller('CandidatController', ($rootScope, $scope, $stateParams, Candidatures, Artists, Users, Galleries, Media, Lightbox) ->
+  # init
+
+  $scope.candidature = []
+  $scope.artist = []
+  $scope.user = []
+  $scope.administrative_galleries = []
+  $scope.artwork_galleries = []
+
+
+  loadGalleries = (galleries) ->
+
+    for gallery in galleries
+      gallery_id = gallery.match(/\d+$/)[0]
+      Galleries.one(gallery_id).get().then((gallery_infos) ->
+        gallery_index = galleries.indexOf(gallery_infos.url)
+        galleries[gallery_index] = gallery_infos
+
+        for medium in gallery_infos.media
+          medium_id = medium.match(/\d+$/)[0]
+          Media.one(medium_id).get().then((media) ->
+            media_index = galleries[gallery_index].media.indexOf(media.url)
+            gallery_infos.media[media_index] = media
+          )
+      )
+
+
+
+
+  $scope.lightbox = (gallery, index) ->
+    Lightbox.openModal(gallery, index)
+
+  Candidatures.one().one($stateParams.id).get().then((candidature) ->
+    $scope.candidature = candidature
+    artist_id = candidature.artist.match(/\d+$/)[0]
+
+    loadGalleries($scope.candidature.administrative_galleries)
+    loadGalleries($scope.candidature.artwork_galleries)
+
+
+
+
+    Artists.one(artist_id).get().then((artist) ->
+        $scope.artist = artist
+        user_id = artist.user.match(/\d+$/)[0]
+        $scope.user = Users.one(user_id).get().$object
+
+    )
+
+    console.log($scope.candidature.administrative_galleries)
+
+
+  )
+)
+
+
+
 .controller('ParentAccountController', ($rootScope, $scope) ->
   # init step in parent controller
 )
@@ -925,11 +1002,6 @@ angular.module('memoire.controllers', ['memoire.services'])
           "Spark Hire"
           "Other"
     ]
-
-
-    # "remote_interview": false,
-    #   "remote_interview_type": "",
-    #   "remote_interview_info": "",
 )
 
 
