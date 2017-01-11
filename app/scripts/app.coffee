@@ -383,7 +383,18 @@ angular.module('memoire',
 
         )
 
-        # Candidature 09 - Message
+        # Candidature 09 - Entretiens
+        $stateProvider.state('candidature.interview',
+                    url: '/interview'
+                    views:
+                      'application_content_view':
+                          templateUrl: 'views/candidature/interview.html'
+                          controller: 'InterviewController'
+                    requiresLogin: true
+
+        )
+
+        # Candidature 10 - Message
         $stateProvider.state('candidature.message',
                     url: '/message'
                     views:
@@ -393,7 +404,8 @@ angular.module('memoire',
                     requiresLogin: true
 
         )
-        # Candidature 10 - Confirmation
+
+        # Candidature 11 - Confirmation
         $stateProvider.state('candidature.confirmation',
                     url: '/confirmation'
                     views:

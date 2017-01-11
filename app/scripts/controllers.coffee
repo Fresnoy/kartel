@@ -397,7 +397,7 @@ angular.module('memoire.controllers', ['memoire.services'])
     $rootScope.step.title = "Login"
 
     if($scope.isAuthenticated)
-      console.log("redirect")
+      console.log("logged : resume candidature")
       $state.go("candidature.resume")
 
     $scope.login = (form, params) ->
@@ -433,7 +433,7 @@ angular.module('memoire.controllers', ['memoire.services'])
       console.log(candidatures)
       $scope.current_candidature = candidatures[0]
       if($scope.current_candidature.application_completed)
-        $state.go("candidature.completed")
+        $state.go("candidature.finish")
     )
 
 
@@ -902,6 +902,37 @@ angular.module('memoire.controllers', ['memoire.services'])
         )
 
 )
+
+
+.controller('InterviewController', (
+        $rootScope, $scope, $q, $state, $filter
+        Users, Artists, Restangular, Candidatures, Media, Galleries,
+        ISO3166, Upload,
+      ) ->
+
+    if(!$scope.isAuthenticated)
+      $state.go("candidature")
+
+    $rootScope.loadInfos($rootScope)
+
+    $scope.INTERVIEW_TYPES = [
+          "Skype"
+          "Hangouts"
+          "FaceTime"
+          "OOVOO"
+          "Facebook"
+          "ApperIn"
+          "Spark Hire"
+          "Other"
+    ]
+
+
+    # "remote_interview": false,
+    #   "remote_interview_type": "",
+    #   "remote_interview_info": "",
+)
+
+
 
 
 

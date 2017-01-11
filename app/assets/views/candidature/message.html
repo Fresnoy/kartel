@@ -9,12 +9,19 @@
 
               <p>
                 Si vous souhaitez laisser
-un message dans votre
-dossier de candidature.
+                un message dans votre
+                dossier de candidature.
 
               </p>
+                <label for="remark">
+                  <span class="fr">Informations complémentaires</span>
+                  <span class="en">Additionnal information</span>
+                </label>
+                <input
+
 
                   <textarea
+                    id="remark"
                       ng-model="candidature.remark"
                       ng-model-options='{ debounce: 1000 }'
                       ng-change="candidature.save()"

@@ -326,7 +326,7 @@ body.en {
       &.ng-invalid.ng-touched{
         background-color:none;
       }
-      &[type='checkbox']{
+      &[type='checkbox'],&[type='radio'] {
         width: 30px;
         height: 30px
       }
