@@ -189,17 +189,20 @@ angular.module('memoire.controllers', ['memoire.services'])
 
 .controller('CandidaturesController', ($rootScope, $scope, Candidatures, Artists, Users) ->
   # init
+  $scope.candidatures = []
 
   Candidatures.getList({limit: 500}).then((candidatures) ->
-    $scope.candidatures = candidatures
+
     for candidature in candidatures
       artist_id = candidature.artist.match(/\d+$/)[0]
-      Artists.one(artist_id).get().then((artist) ->
-          current_cantidature = _.filter(candidatures, (c) -> return c.artist == artist.url)
-          user_id = artist.user.match(/\d+$/)[0]
-          artist.user = Users.one(user_id).get().$object
+      if(candidature.application_completed)
+        $scope.candidatures.push(candidature)
+        Artists.one(artist_id).get().then((artist) ->
+            current_cantidature = _.filter(candidatures, (c) -> return c.artist == artist.url)
+            user_id = artist.user.match(/\d+$/)[0]
+            artist.user = Users.one(user_id).get().$object
 
-          current_cantidature[0].artist = artist
+            current_cantidature[0].artist = artist
       )
 
 
