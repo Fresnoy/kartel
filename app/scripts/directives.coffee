@@ -81,15 +81,17 @@ angular.module('memoire.directives', ['memoire.services', 'bootstrapLightbox'])
     restrict: 'A',
     require: 'ngModel',
     link: (scope, elem, attr, ctrl) ->
-      scope.$watch(attr.ngModel, (value) ->
-        scope.isUniqueUserField = (ctrl, value) ->
+      scope.isUniqueUserField = (ctrl, value) ->
         if ctrl.toId
           clearTimeout(toId)
         ctrl.toId = setTimeout(() ->
+          
           Users.getList({search: value}).then((data) ->
-              ctrl.$setValidity('uniqueUserField', data.length==0);
+              ctrl.$setValidity('uniqueUserField', data.length<1);
           )
         , 200)
+      scope.$watch(attr.ngModel, (value, value2) ->
+        scope.isUniqueUserField(ctrl, value)
       )
   }
 )
