@@ -87,7 +87,7 @@ angular.module('memoire.directives', ['memoire.services', 'bootstrapLightbox'])
           clearTimeout(toId)
         ctrl.toId = setTimeout(() ->
           Users.getList({search: value}).then((data) ->
-              ctrl.$setValidity('uniqueUserField', !data.length);
+              ctrl.$setValidity('uniqueUserField', data.length==0);
           )
         , 200)
       )
