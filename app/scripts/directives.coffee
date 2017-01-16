@@ -85,9 +85,11 @@ angular.module('memoire.directives', ['memoire.services', 'bootstrapLightbox'])
         if ctrl.toId
           clearTimeout(toId)
         ctrl.toId = setTimeout(() ->
-          
+          console.log("search : " + value)
+          if(!value)
+            return
           Users.getList({search: value}).then((data) ->
-              ctrl.$setValidity('uniqueUserField', data.length<1);
+              ctrl.$setValidity('uniqueUserField', data.length<1)
           )
         , 200)
       scope.$watch(attr.ngModel, (value, value2) ->

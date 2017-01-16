@@ -28,7 +28,10 @@
           </div>
 
           <label>E-mail</label>
-          <input type="email" ng-model="user.email" name="uEmail" unique-user-field required />
+          <input
+              type="email" ng-model="user.email" name="uEmail" 
+              unique-user-field required
+          />
           <div ng-show="form.$submitted || form.uEmail.$touched">
             <span ng-show="form.uEmail.$error.required">Tell us your email.</span>
             <span ng-show="form.uEmail.$error.email">E-mail non valid / This is not a valid email.</span>

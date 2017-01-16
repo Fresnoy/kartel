@@ -529,6 +529,9 @@ angular.module('memoire.controllers', ['memoire.services'])
 
       # autogenerate username
       $scope.setUserName = (form, user) ->
+        if (!user.first_name || !user.last_name)
+          return
+
         user.username = slug(user.first_name).toLowerCase().substr(0,1) + slug(user.last_name).toLowerCase()
         form.uUserName.$setTouched()
         $scope.isUniqueUserField(form.uUserName, user.username)
