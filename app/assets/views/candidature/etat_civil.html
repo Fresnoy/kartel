@@ -35,12 +35,21 @@
                   </div>
 
 
-                  <label>Date de naissance / Birthdate</label>
-                  <input type="date" ng-change="save(user)"
-                         ng-model="user.profile.birthdate" name="uBirthDate" required
-                         placeholder="{{birthdateMin | date:'yyyy-MM-dd'}}"
-                         min="{{birthdateMin | date:'yyyy-MM-dd'}}"
-                         max="{{birthdateMax | date:'yyyy-MM-dd'}}" />
+                  <label for="birthdate">Date de naissance / Birthdate</label>
+                  <datepicker
+                      date-format='yyyy-MM-dd'
+                      date-min-limit="{{birthdateMin}}"
+                      date-max-limit="{{birthdateMax}}"
+                  >
+                  <input id="birthdate"
+                         type="text"
+                         ng-model="user.profile.birthdate"
+                         ng-change='save(user)'
+                         name="uBirthDate"
+                         datepicker
+                         required
+                          />
+                  </datepicker>
                   <div ng-show="form.$submitted || form.uBirthDate.$touched">
                      <span ng-show="form.uBirthDate.$error.required">Tell us your Birthday.</span>
                      <span ng-show="form.uBirthDate.$error.min"> Il faut avoir moins de 35 ans (être nés avant  le {{birthdateMin | date:'dd MMMM yyyy'}}) </span>
@@ -60,7 +69,7 @@
                   </div>
 
 
-                
+
                 <label>Numéro de sécurité sociale / Insurance number</label>
                 <input ng-change="save(user)" type="text"
                        placeholder="" name="uInsuranceNumber"

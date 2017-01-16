@@ -387,7 +387,7 @@ angular.module('memoire.controllers', ['memoire.services'])
       $state.go("candidature")
 
     Users.one(localStorage.user_id).get().then((user) ->
-      user.profile.birthdate = new Date(user.profile.birthdate)
+
       scope.user = user
       Candidatures.getList().then((candidatures) ->
         # console.log("candidature")
@@ -581,9 +581,6 @@ angular.module('memoire.controllers', ['memoire.services'])
     # method 1 - copie du model et changement de valeurs sur des données "dirty"
     model_copy =  Restangular.copy(model)
 
-    if model.profile.birthdate
-      model_copy.profile.birthdate = $filter('date')(model.profile.birthdate, 'yyyy-MM-dd')
-
     if model_copy.profile.photo
       delete model_copy.profile.photo
 
@@ -595,8 +592,9 @@ angular.module('memoire.controllers', ['memoire.services'])
   current_year = new Date().getFullYear()
   age_min = 18
   age_max = 35
-  $scope.birthdateMax = new Date(current_year-age_min,11,31)
-  $scope.birthdateMin = new Date(current_year-age_max,11,31)
+  $scope.birthdateMax = $filter('date')(new Date(current_year-age_min,11,31), 'yyyy-MM-dd')
+  $scope.birthdateMin = $filter('date')(new Date(current_year-age_max,11,31), 'yyyy-MM-dd')
+
 
   #country
   $scope.countries = ISO3166.countryToCode
