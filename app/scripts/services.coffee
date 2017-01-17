@@ -1,6 +1,12 @@
 angular.module('memoire.services', ['restangular'])
 
 # Services
+.factory('RestangularV2', (Restangular) ->
+        return Restangular.withConfig((RestangularConfigurer) ->
+              RestangularConfigurer.setBaseUrl(config.rest_uri_v2)
+        )
+)
+
 .factory('Users', (Restangular) ->
         return Restangular.withConfig((RestangularConfigurer) ->
               RestangularConfigurer.setBaseUrl(config.rest_uri_v2)
@@ -73,7 +79,9 @@ angular.module('memoire.services', ['restangular'])
 )
 
 .factory('Authentification', (Restangular) ->
-        return Restangular.service('auth/')
+        return Restangular.withConfig((RestangularConfigurer) ->
+              RestangularConfigurer.setBaseUrl(config.rest_uri_v2)
+        ).service('auth/')
 )
 
 

@@ -347,7 +347,7 @@ angular.module('memoire.controllers', ['memoire.services'])
 
 
 .controller('ParentCandidatureController', ($rootScope, $scope, $state,
-            Restangular,
+            Restangular, RestangularV2,
             Users, Candidatures, ArtistsV2, Galleries, Media) ->
   # init step in parent controller
   $rootScope.step = []
@@ -420,11 +420,11 @@ angular.module('memoire.controllers', ['memoire.services'])
         # get Media administrative gallery
         else
           scope.cursus_gallery.url = scope.candidature.administrative_galleries[0]
-          Restangular.oneUrl('assets/gallery', scope.cursus_gallery.url).get()
+          RestangularV2.oneUrl('assets/gallery', scope.cursus_gallery.url).get()
           .then((gall_response) ->
               for medium in gall_response.media
                   scope.cursus_gallery.media.push(
-                    Restangular.oneUrl('assets/medium', medium).get().$object
+                    RestangularV2.oneUrl('assets/medium', medium).get().$object
                   )
 
           )
@@ -433,13 +433,13 @@ angular.module('memoire.controllers', ['memoire.services'])
           # get infos scope.artworks
           for gallery, index_gallery in scope.candidature.artwork_galleries
             # get object gallery
-            Restangular.oneUrl('assets/gallery', gallery).get()
+            RestangularV2.oneUrl('assets/gallery', gallery).get()
             .then((gall_response) ->
               # index not good
 
               for medium, index_medium in gall_response.media
 
-                  Restangular.oneUrl('assets/medium', medium).get().then((response_medium) ->
+                  RestangularV2.oneUrl('assets/medium', medium).get().then((response_medium) ->
                     find_medium = gall_response.media.indexOf(response_medium.url)
                     gall_response.media[find_medium] = response_medium
 
