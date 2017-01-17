@@ -875,7 +875,7 @@ angular.module('memoire.controllers', ['memoire.services'])
 # media
 .controller('MediaController', (
         $rootScope, $scope, $q, $state, $filter
-        Users, ArtistsV2, Restangular, Candidatures, Media, Galleries,
+        Users, ArtistsV2, Restangular, RestangularV2, Candidatures, Media, Galleries,
         ISO3166, Upload,
       ) ->
 
@@ -972,7 +972,7 @@ angular.module('memoire.controllers', ['memoire.services'])
 
             Upload.upload(infos)
             .then((resp) ->
-                gallery.media[index_medium] = Restangular.oneUrl('assets/medium', infos.url).get().$object
+                gallery.media[index_medium] = RestangularV2.oneUrl('assets/medium', infos.url).get().$object
 
               ,(resp) ->
                 console.log('Error status: ' + resp.status);
