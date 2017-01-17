@@ -468,7 +468,7 @@ angular.module('memoire.controllers', ['memoire.services'])
 )
 
 .controller('LoginController', (
-                                  $rootScope, $scope, Restangular, $state,
+                                  $rootScope, $scope, Restangular, RestangularV2, $state,
                                   Authentification, authManager, jwtHelper
                                 ) ->
 
@@ -488,6 +488,7 @@ angular.module('memoire.controllers', ['memoire.services'])
               localStorage.setItem('user_id', tokenDecode.user_id)
               # set header
               Restangular.setDefaultHeaders({Authorization: "JWT "+ auth.token})
+              RestangularV2.setDefaultHeaders({Authorization: "JWT "+ auth.token})
 
               $state.go("candidature.resume")
 
@@ -569,7 +570,7 @@ angular.module('memoire.controllers', ['memoire.services'])
 )
 
 
-.controller('CivilStatusController', ($rootScope, $scope, $state, $filter, ISO3166, Restangular, Upload) ->
+.controller('CivilStatusController', ($rootScope, $scope, $state, $filter, ISO3166, Restangular, RestangularV2, Upload) ->
 
   if(!$scope.isAuthenticated)
     $state.go("candidature")
@@ -581,7 +582,7 @@ angular.module('memoire.controllers', ['memoire.services'])
     # console.log($scope.form)
 
     # method 1 - copie du model et changement de valeurs sur des données "dirty"
-    model_copy =  Restangular.copy(model)
+    model_copy =  RestangularV2.copy(model)
 
     if model_copy.profile.photo
       delete model_copy.profile.photo
@@ -606,7 +607,7 @@ angular.module('memoire.controllers', ['memoire.services'])
 
 
 .controller('CivilStatusAdressController', ($rootScope, $q,
-            $scope, $state, $filter, ISO3166, Restangular, Upload) ->
+            $scope, $state, $filter, ISO3166, Restangular, RestangularV2, Upload) ->
 
 
     $rootScope.loadInfos($rootScope)
@@ -644,7 +645,7 @@ angular.module('memoire.controllers', ['memoire.services'])
 
     $scope.save = (model) ->
       # console.log($scope.form)
-      model_copy =  Restangular.copy(model)
+      model_copy =  RestangularV2.copy(model)
 
       if model.profile.birthdate
         model_copy.profile.birthdate = $filter('date')(model.profile.birthdate, 'yyyy-MM-dd')
@@ -689,7 +690,8 @@ angular.module('memoire.controllers', ['memoire.services'])
 
 )
 
-.controller('CivilStatusLanguageController', ($rootScope, $scope, $state, $filter, ISO3166, Restangular, Upload) ->
+.controller('CivilStatusLanguageController', ($rootScope, $scope, $state, $filter, ISO3166,
+    Restangular, RestangularV2, Upload) ->
 
     $rootScope.loadInfos($rootScope)
 
@@ -739,8 +741,8 @@ angular.module('memoire.controllers', ['memoire.services'])
 
 
     $scope.save = (model) ->
-        console.log($scope.form)
-        user_copy = Restangular.copy($scope.user)
+
+        user_copy = RestangularV2.copy($scope.user)
 
         if user_copy.profile.photo
           delete user_copy.profile.photo
@@ -785,7 +787,7 @@ angular.module('memoire.controllers', ['memoire.services'])
 #cursus
 .controller('CursusController', (
         $rootScope, $scope, $q, $state, $filter
-        Users, ArtistsV2, Restangular, Candidatures, Media, Galleries,
+        Users, ArtistsV2, Restangular, RestangularV2, Candidatures, Media, Galleries,
         ISO3166, Upload,
       ) ->
 
@@ -805,7 +807,7 @@ angular.module('memoire.controllers', ['memoire.services'])
       $scope.save = (model) ->
         console.log($scope.form)
         # save medium
-        model_copy = Restangular.copy(model)
+        model_copy = RestangularV2.copy(model)
 
         if model_copy.picture
           delete model_copy.picture
@@ -820,7 +822,7 @@ angular.module('memoire.controllers', ['memoire.services'])
           cursus += "\n"
 
         $scope.user.profile.cursus = cursus
-        user_copy = Restangular.copy($scope.user)
+        user_copy = RestangularV2.copy($scope.user)
 
         if user_copy.profile.birthdate
           user_copy.profile.birthdate = $filter('date')(user_copy.profile.birthdate, 'yyyy-MM-dd')
