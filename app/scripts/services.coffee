@@ -2,23 +2,38 @@ angular.module('memoire.services', ['restangular'])
 
 # Services
 .factory('Users', (Restangular) ->
-        return Restangular.service('people/user')
+        return Restangular.withConfig((RestangularConfigurer) ->
+              RestangularConfigurer.setBaseUrl(config.rest_uri_v2)
+        ).service('people/user')
 )
 
 .factory('Registration', (Restangular) ->
-        return Restangular.service('people/user/register')
+        return Restangular.withConfig((RestangularConfigurer) ->
+              RestangularConfigurer.setBaseUrl(config.rest_uri_v2)
+        ).service('people/user/register')
 )
 
 .factory('RestAuth', (Restangular) ->
-        return Restangular.service('rest-auth')
+        return Restangular.withConfig((RestangularConfigurer) ->
+              RestangularConfigurer.setBaseUrl(config.rest_uri_v2)
+        ).service('rest-auth')
 )
 
 .factory('Artists', (Restangular) ->
         return Restangular.service('people/artist')
 )
 
+.factory('ArtistsV2', (Restangular) ->
+        return Restangular.withConfig((RestangularConfigurer) ->
+              RestangularConfigurer.setBaseUrl(config.rest_uri_v2)
+        ).service('people/artist')
+)
+
+
 .factory('Candidatures', (Restangular) ->
-        return Restangular.service('school/student-application')
+        return Restangular.withConfig((RestangularConfigurer) ->
+              RestangularConfigurer.setBaseUrl(config.rest_uri_v2)
+        ).service('school/student-application')
 )
 
 .factory('Students', (Restangular) ->
@@ -42,11 +57,15 @@ angular.module('memoire.services', ['restangular'])
 )
 
 .factory('Galleries', (Restangular) ->
-        return Restangular.service('assets/gallery')
+        return Restangular.withConfig((RestangularConfigurer) ->
+              RestangularConfigurer.setBaseUrl(config.rest_uri_v2)
+        ).service('assets/gallery')
 )
 
 .factory('Media', (Restangular) ->
-        return Restangular.service('assets/medium')
+        return Restangular.withConfig((RestangularConfigurer) ->
+              RestangularConfigurer.setBaseUrl(config.rest_uri_v2)
+        ).service('assets/medium')
 )
 
 .factory('Partners', (Restangular) ->

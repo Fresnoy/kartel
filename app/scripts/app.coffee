@@ -41,10 +41,14 @@ angular.module('memoire',
         # Tastypie patch
         RestangularProvider.setResponseExtractor((response, operation, what, url) ->
                 newResponse = null;
-
                 if operation is "getList"
-                        #V2
-                        newResponse = response
+                        if(response.objects)
+                          newResponse = response.objects
+                          newResponse.metadata = response.meta
+                        else
+                          newResponse = response
+                        # V2
+                        # newResponse = response
                         # V1
                         # newResponse = response.objects
                         # newResponse.metadata = response.meta

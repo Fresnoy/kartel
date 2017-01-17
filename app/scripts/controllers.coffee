@@ -187,7 +187,7 @@ angular.module('memoire.controllers', ['memoire.services'])
   )
 )
 
-.controller('CandidaturesController', ($rootScope, $scope, Candidatures, Artists, Users) ->
+.controller('CandidaturesController', ($rootScope, $scope, Candidatures, ArtistsV2, Users) ->
   # init
   $scope.candidatures = []
 
@@ -197,11 +197,10 @@ angular.module('memoire.controllers', ['memoire.services'])
       artist_id = candidature.artist.match(/\d+$/)[0]
       if(candidature.application_completed)
         $scope.candidatures.push(candidature)
-        Artists.one(artist_id).get().then((artist) ->
+        ArtistsV2.one(artist_id).get().then((artist) ->
             current_cantidature = _.filter(candidatures, (c) -> return c.artist == artist.url)
             user_id = artist.user.match(/\d+$/)[0]
             artist.user = Users.one(user_id).get().$object
-
             current_cantidature[0].artist = artist
       )
 
@@ -210,7 +209,7 @@ angular.module('memoire.controllers', ['memoire.services'])
 
 )
 
-.controller('CandidatController', ($rootScope, $scope, $stateParams, Candidatures, Artists, Users, Galleries, Media, Lightbox) ->
+.controller('CandidatController', ($rootScope, $scope, $stateParams, Candidatures, ArtistsV2, Users, Galleries, Media, Lightbox) ->
   # init
 
   $scope.candidature = []
@@ -252,7 +251,7 @@ angular.module('memoire.controllers', ['memoire.services'])
 
 
 
-    Artists.one(artist_id).get().then((artist) ->
+    ArtistsV2.one(artist_id).get().then((artist) ->
         $scope.artist = artist
         user_id = artist.user.match(/\d+$/)[0]
         $scope.user = Users.one(user_id).get().$object
@@ -349,7 +348,7 @@ angular.module('memoire.controllers', ['memoire.services'])
 
 .controller('ParentCandidatureController', ($rootScope, $scope, $state,
             Restangular,
-            Users, Candidatures, Artists, Galleries, Media) ->
+            Users, Candidatures, ArtistsV2, Galleries, Media) ->
   # init step in parent controller
   $rootScope.step = []
   $rootScope.step.current = 0
@@ -457,7 +456,7 @@ angular.module('memoire.controllers', ['memoire.services'])
         if matches
           artist_id = matches[0]
           # console.log(scope.candidature.plain())
-          Artists.one(artist_id).get().then((artist) ->
+          ArtistsV2.one(artist_id).get().then((artist) ->
               scope.artist = artist
           )
       )
@@ -786,7 +785,7 @@ angular.module('memoire.controllers', ['memoire.services'])
 #cursus
 .controller('CursusController', (
         $rootScope, $scope, $q, $state, $filter
-        Users, Artists, Restangular, Candidatures, Media, Galleries,
+        Users, ArtistsV2, Restangular, Candidatures, Media, Galleries,
         ISO3166, Upload,
       ) ->
 
@@ -876,7 +875,7 @@ angular.module('memoire.controllers', ['memoire.services'])
 # media
 .controller('MediaController', (
         $rootScope, $scope, $q, $state, $filter
-        Users, Artists, Restangular, Candidatures, Media, Galleries,
+        Users, ArtistsV2, Restangular, Candidatures, Media, Galleries,
         ISO3166, Upload,
       ) ->
 
@@ -987,7 +986,7 @@ angular.module('memoire.controllers', ['memoire.services'])
 
 .controller('InterviewController', (
         $rootScope, $scope, $q, $state, $filter
-        Users, Artists, Restangular, Candidatures, Media, Galleries,
+        Users, ArtistsV2, Restangular, Candidatures, Media, Galleries,
         ISO3166, Upload,
       ) ->
 
@@ -1014,7 +1013,7 @@ angular.module('memoire.controllers', ['memoire.services'])
 
 .controller('MessageController', (
         $rootScope, $scope, $q, $state, $filter
-        Users, Artists, Restangular, Candidatures, Media, Galleries,
+        Users, ArtistsV2, Restangular, Candidatures, Media, Galleries,
         ISO3166, Upload,
       ) ->
 
@@ -1054,14 +1053,14 @@ angular.module('memoire.controllers', ['memoire.services'])
 # Candidature Form
 .controller('CandidatureFormController', (
         $scope, $q, $state, $filter
-        Users, Artists, Restangular, Candidatures,
+        Users, ArtistsV2, Restangular, Candidatures,
         ISO3166, Upload,
   ) ->
 
   $scope.application = Candidatures
   $scope.user = Users
   $scope.user.profile = []
-  $scope.artist = Artists
+  $scope.artist = []
 
   $scope.create = (form) ->
 
@@ -1090,7 +1089,7 @@ angular.module('memoire.controllers', ['memoire.services'])
 
       console.log($scope.artist)
 
-      Artists.post($scope.artist).then((recordedArtist) ->
+      ArtistsV2.post($scope.artist).then((recordedArtist) ->
 
             $scope.application.artist = recordedArtist.url
 
