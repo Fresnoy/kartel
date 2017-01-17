@@ -22,7 +22,7 @@ angular.module('memoire',
                   'memoire.controllers', 'memoire.directives', 'ui.router',
                   'restangular', 'angular-jwt',
                   'ngAnimate', 'chieffancypants.loadingBar', 'ui.bootstrap',
-                  'ngSanitize', 'markdown', '720kb.datepicker'
+                  'ngSanitize', 'markdown', '720kb.datepicker',
                   'iso-3166-country-codes', 'ngFileUpload', 'ngPlacesAutocomplete',
               ])
 
