@@ -83,7 +83,7 @@
                       ngf-drag-over-class="'dragover'"
                       multiple="multiple"
                       ngf-capture="'camera'"
-                      accept="image/*"
+                      accept="*"
                       >
 
                         <span class="fr">
@@ -101,7 +101,7 @@
                           <a ng-if="medium.picture" class="icon image" href="{{medium.picture}}" >
                             <img src="{{medium.picture}}" height="50px" />
                           </a>
-                          <div ng-if="!medium.picture">
+                          <div ng-if="medium.medium_url">
                             <label for="aGallery-{{artwork_index}}-aMedium{{medium_index}}">
                               URL
                             </label>
@@ -121,6 +121,9 @@
                                   </div>
 
 
+                          </div>
+                          <div ng-if="medium.file">
+                              <a href="{{medium.file}}"> {{medium.file}}</a>
                           </div>
                           <a class="btn remove" ng-click="removeMedium(medium, artwork, medium_index)" >
 

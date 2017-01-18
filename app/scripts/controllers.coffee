@@ -34,9 +34,7 @@ angular.module('memoire.controllers', ['memoire.services'])
 )
 
 .controller('NavController', ($scope, Candidatures, $state) ->
-
   $scope.candidatures = Candidatures.getList().$object
-
 )
 
 .controller('ArtistListingController', ($scope, Artists, $state) ->
@@ -960,9 +958,7 @@ angular.module('memoire.controllers', ['memoire.services'])
           medium_infos =
             gallery: gallery.url
 
-          if(!data.type.match('image.*'))
-            console.log("non image")
-            return
+
 
           # create medium
           Media.one().customPOST(medium_infos).then((response_media) ->
@@ -973,7 +969,11 @@ angular.module('memoire.controllers', ['memoire.services'])
               method: 'PATCH',
               headers: { 'Authorization': 'JWT ' + localStorage.id_token },
               #withCredentials: true
-            infos.data.picture = data
+
+            if(data.type.match('image.*'))
+              infos.data.picture = data
+            else
+                infos.data.file = data            
 
             index_medium = gallery.media.length
             gallery.media[index_medium] = response_media
