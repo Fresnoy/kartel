@@ -94,9 +94,11 @@ angular.module('memoire',
   $rootScope.$on('tokenHasExpired', () ->
     console.log('Your session has expired!')
     console.log($state)
-    setTimeout(() ->
-      $state.go('candidature.account.login')
-    ,200)
+
+    if($state.$urlRouter.location.indexOf("candidature"))
+      setTimeout(() ->
+        $state.go('candidature.account.login')
+      ,200)
 
   )
 
@@ -151,6 +153,7 @@ angular.module('memoire',
             views:
               'main_view':
                 templateUrl: 'kartel.html'
+                controller: 'NavController'
               'main_view.main_content_view':
                   templateUrl: 'views/school.html'
                   controller: 'SchoolController'
