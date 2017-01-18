@@ -88,8 +88,10 @@ angular.module('memoire.services', ['restangular'])
 # AME Service
 .factory('AmeRestangular', (Restangular) ->
       return Restangular.withConfig((RestangularConfigurer) ->
+            console.log("config.ame_rest_uri")
+            console.log(config.ame_rest_uri)
             RestangularConfigurer.setBaseUrl(config.ame_rest_uri);
             RestangularConfigurer.setDefaultRequestParams({key: config.ame_key});
-            RestangularConfigurer.setDefaultHeaders({""})
+            RestangularConfigurer.setDefaultHeaders({'Content-Type': 'charset=UTF-8'})
       )
 )
