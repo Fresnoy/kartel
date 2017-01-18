@@ -177,7 +177,7 @@ angular.module('memoire.controllers', ['memoire.services'])
       )
 
     # Fetch artworks
-    for artwork_uri in $scope.student.artworks
+    for artwork_uri in $scope.student.artist.artworks
       matches = artwork_uri.match(/\d+$/)
       if matches
         artwork_id = matches[0]
