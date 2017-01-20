@@ -473,15 +473,15 @@ angular.module('memoire.controllers', ['memoire.services'])
 
 .controller('LoginController', (
                                   $rootScope, $scope, Restangular, RestangularV2, $state,
-                                  Authentification, authManager, jwtHelper
+                                  Authentification, authManager, jwtHelper, VimeoUpload
                                 ) ->
 
     $rootScope.step.current = 1
     $rootScope.step.title = "Login"
-
+    
     if($scope.isAuthenticated)
       console.log("logged : resume candidature")
-      $state.go("candidature.resume")
+      # $state.go("candidature.resume")
 
     $scope.login = (form, params) ->
       if(form.$valid)
@@ -973,7 +973,7 @@ angular.module('memoire.controllers', ['memoire.services'])
             if(data.type.match('image.*'))
               infos.data.picture = data
             else
-                infos.data.file = data            
+                infos.data.file = data
 
             index_medium = gallery.media.length
             gallery.media[index_medium] = response_media

@@ -74,6 +74,12 @@ angular.module('memoire.services', ['restangular'])
         ).service('assets/medium')
 )
 
+.factory('VimeoUpload', (Restangular) ->
+        return Restangular.withConfig((RestangularConfigurer) ->
+              RestangularConfigurer.setBaseUrl(config.rest_uri_v2)
+        ).service('assets/vimeo/upload')
+)
+
 .factory('Partners', (Restangular) ->
         return Restangular.service('production/productionorganizationtask/')
 )
