@@ -80,6 +80,7 @@ angular.module('memoire.services', ['restangular'])
         ).service('assets/vimeo/upload/token')
 )
 
+
 .factory('Partners', (Restangular) ->
         return Restangular.service('production/productionorganizationtask/')
 )
