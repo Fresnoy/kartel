@@ -478,7 +478,16 @@ angular.module('memoire.controllers', ['memoire.services'])
 
     $rootScope.step.current = 1
     $rootScope.step.title = "Login"
-    
+    VimeoUpload.one().get().then((upload) ->
+        console.log("vimeoUpload")
+        console.log(upload)
+      , ->
+        # error
+        console.log("vimeoUploadError")
+
+
+    )
+
     if($scope.isAuthenticated)
       console.log("logged : resume candidature")
       # $state.go("candidature.resume")
