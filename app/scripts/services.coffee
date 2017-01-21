@@ -74,10 +74,17 @@ angular.module('memoire.services', ['restangular'])
         ).service('assets/medium')
 )
 
-.factory('VimeoUpload', (Restangular) ->
+.factory('VimeoToken', (Restangular) ->
         return Restangular.withConfig((RestangularConfigurer) ->
               RestangularConfigurer.setBaseUrl(config.rest_uri_v2)
         ).service('assets/vimeo/upload/token')
+)
+
+.factory('Vimeo', (Restangular) ->
+        return Restangular.withConfig((RestangularConfigurer) ->
+              RestangularConfigurer.setBaseUrl(config.vimeo_rest_url)
+              RestangularConfigurer.setDefaultHeaders({Authorization: "Bearer "+ localStorage.getItem('vimeo_upload_token')})
+        ).service('me/')
 )
 
 

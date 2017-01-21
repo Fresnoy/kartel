@@ -473,19 +473,22 @@ angular.module('memoire.controllers', ['memoire.services'])
 
 .controller('LoginController', (
                                   $rootScope, $scope, Restangular, RestangularV2, $state,
-                                  Authentification, authManager, jwtHelper, VimeoUpload
+                                  Authentification, authManager, jwtHelper, VimeoToken, Vimeo
                                 ) ->
 
     $rootScope.step.current = 1
     $rootScope.step.title = "Login"
-    VimeoUpload.one().get().then((upload) ->
+    VimeoToken.one().get().then((settings) ->
         console.log("vimeoUpload")
-        console.log(upload)
+        console.log(Vimeo)
+        localStorage.setItem('vimeo_upload_token',settings.token)
+        Vimeo.one().get().then((infos) ->
+          console.log(infos)
+        )
+
       , ->
         # error
         console.log("vimeoUploadError")
-
-
     )
 
     if($scope.isAuthenticated)
