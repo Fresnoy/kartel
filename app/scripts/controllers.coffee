@@ -478,22 +478,11 @@ angular.module('memoire.controllers', ['memoire.services'])
 
     $rootScope.step.current = 1
     $rootScope.step.title = "Login"
-    VimeoToken.one().get().then((settings) ->
-        console.log("vimeoUpload")
-        console.log(Vimeo)
-        localStorage.setItem('vimeo_upload_token',settings.token)
-        Vimeo.one().get().then((infos) ->
-          console.log(infos)
-        )
 
-      , ->
-        # error
-        console.log("vimeoUploadError")
-    )
 
     if($scope.isAuthenticated)
       console.log("logged : resume candidature")
-      # $state.go("candidature.resume")
+      $state.go("candidature.resume")
 
     $scope.login = (form, params) ->
       if(form.$valid)
@@ -894,7 +883,7 @@ angular.module('memoire.controllers', ['memoire.services'])
 .controller('MediaController', (
         $rootScope, $scope, $q, $state, $filter
         Users, ArtistsV2, Restangular, RestangularV2, Candidatures, Media, Galleries,
-        ISO3166, Upload,
+        ISO3166, Upload, VimeoToken, Vimeo
       ) ->
 
 
@@ -906,6 +895,94 @@ angular.module('memoire.controllers', ['memoire.services'])
 
     $scope.state =
          selected: undefined
+
+
+    uploadVimeo = (data, media) ->
+
+      # get Vimeo token api
+      VimeoToken.one().get().then((settings) ->
+          console.log("vimeoUpload")
+          localStorage.setItem('vimeo_upload_token',settings.token)
+          # connect to vimeo api
+          Vimeo.one("me").get().then((account_infos) ->
+            console.log((account_infos.data.upload_quota.space.free / 1073741824).toFixed(3) + " GB")
+
+            upload_settings =
+              type: "streaming"
+            # get an upload ticket
+
+            console.log(account_infos)
+
+
+
+            account_infos.data.customPOST(upload_settings,"videos").then((ticket) ->
+
+
+              upload_infos =
+                url:ticket.data.upload_link_secure
+                data: {data}
+                method: 'PUT'
+
+              # Upload.upload(upload_infos)
+              Upload.http({
+                  url: ticket.data.upload_link_secure,
+                  headers: {'Content-Type': data.type},
+                  data: data
+                  method: 'PUT'
+              })
+              .then((resp) ->
+
+                  console.log("OK successful upload VIMEO")
+                  console.log(ticket.data.complete_uri)
+                  #
+                  Vimeo.one(ticket.data.complete_uri).remove().then((remove) ->
+                    console.log("Vimeo Remove")
+
+                    location = remove.headers('Location')
+                    video_id = location.split('/')[2]
+                    video_info =
+                      name: data.name
+                      description: "Inscription - " + $scope.candidature.current_year_application_count
+
+                    Vimeo.one(location).patch(video_info).then((patch_response) ->
+
+                      console.log("patch")
+                      console.log(patch_response)
+
+                      # put video in album 4370111
+                      # PUThttps://api.vimeo.com/users/{user_id}/albums/{album_id}/videos/{video_id}
+                      Vimeo.one(account_infos.data.uri).customPUT({}, "albums/4370111/videos/"+video_id).then((response_album) ->
+
+                          console.log("SET ALBUM")
+                          console.log(response_album)
+
+
+                      )
+                    )
+
+
+                  )
+
+                , (error)->
+                  console.log("ERROR  upload VIMEO")
+                  console.log(error)
+                , (evt) ->
+
+                  console.log('progress: ' + parseInt(100.0 * evt.loaded / evt.total) + '% file :' + evt.config.data.name)
+
+              )
+
+
+            )
+
+
+          )
+
+        , ->
+          # error
+          console.log("vimeoUploadError")
+      )
+
 
 
     $scope.addArtwork = () ->
@@ -970,10 +1047,10 @@ angular.module('memoire.controllers', ['memoire.services'])
           medium_infos =
             gallery: gallery.url
 
-
-
           # create medium
           Media.one().customPOST(medium_infos).then((response_media) ->
+
+
 
             infos =
               url: response_media.url,
@@ -982,13 +1059,18 @@ angular.module('memoire.controllers', ['memoire.services'])
               headers: { 'Authorization': 'JWT ' + localStorage.id_token },
               #withCredentials: true
 
-            if(data.type.match('image.*'))
-              infos.data.picture = data
-            else
-                infos.data.file = data
-
             index_medium = gallery.media.length
             gallery.media[index_medium] = response_media
+
+            console.log("upload type " + data.type)
+
+            if(data.type.match('image.*'))
+              infos.data.picture = data
+            else if (data.type.match("video.*"))
+              uploadVimeo(data, gallery.media[index_medium])
+              return
+            else
+                infos.data.file = data
 
             Upload.upload(infos)
             .then((resp) ->
