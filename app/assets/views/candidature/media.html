@@ -92,6 +92,12 @@
                         <span class="en">
                           Drop your Image (gif, jpeg, png) here or click on it
                         </span>
+                        <div ng-if='upload_percentage<99'>
+                          {{upload_percentage}} %
+                          <br/>
+                          <img src='http://mupit.icm.jhu.edu/MuPIT_Interactive/images/load.gif' height="20px" />
+                        </div>
+
 
                     </div>
 
@@ -101,7 +107,7 @@
                           <a ng-if="medium.picture" class="icon image" href="{{medium.picture}}" >
                             <img src="{{medium.picture}}" height="50px" />
                           </a>
-                          <div ng-if="medium.medium_url">
+                          <div ng-if="!medium.picture && !medium.file">
                             <label for="aGallery-{{artwork_index}}-aMedium{{medium_index}}">
                               URL
                             </label>

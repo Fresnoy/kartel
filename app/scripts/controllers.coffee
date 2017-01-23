@@ -262,9 +262,6 @@ angular.module('memoire.controllers', ['memoire.services'])
 
     )
 
-    console.log($scope.candidature.administrative_galleries)
-
-
   )
 )
 
@@ -288,7 +285,7 @@ angular.module('memoire.controllers', ['memoire.services'])
       $state.go("candidature.account.login")
 )
 
-.controller("AccountConfirmationController", ($rootScope, $scope, Users) ->
+.controller("AccountConfirmationController", ($rootScope, $stateParams, $scope, Users) ->
 
     if localStorage.user_temp
 
@@ -558,8 +555,6 @@ angular.module('memoire.controllers', ['memoire.services'])
               first_name:$scope.first_name
               last_name:$scope.last_name
               email:$scope.email
-
-          console.log(response)
 
           localStorage.setItem("user_temp", response)
           # change location
@@ -897,6 +892,20 @@ angular.module('memoire.controllers', ['memoire.services'])
          selected: undefined
 
 
+    deleteVimeoVideo = (idVimeo) ->
+      # get Vimeo token api
+      VimeoToken.one().get().then((settings) ->
+          localStorage.setItem('vimeo_upload_token',settings.token)
+          video_uri = "videos/"+idVimeo
+          Vimeo.one(video_uri).remove().then((video_infos) ->
+            console.log("video_infos")
+            console.log(video_infos)
+
+          )
+      )
+
+
+
     uploadVimeo = (data, media) ->
 
       # get Vimeo token api
@@ -905,78 +914,54 @@ angular.module('memoire.controllers', ['memoire.services'])
           localStorage.setItem('vimeo_upload_token',settings.token)
           # connect to vimeo api
           Vimeo.one("me").get().then((account_infos) ->
-            console.log((account_infos.data.upload_quota.space.free / 1073741824).toFixed(3) + " GB")
+                # console.log(account_infos)
+              console.log((account_infos.data.upload_quota.space.free / 1073741824).toFixed(3) + " GB")
+              upload_settings =
+                type: "streaming"
+              # get an upload ticket
+              account_infos.data.customPOST(upload_settings,"videos").then((ticket) ->
+                    # http method because Vimeo crash when multipart upload
+                    Upload.http({
+                        url: ticket.data.upload_link_secure,
+                        headers: {'Content-Type': data.type},
+                        data: data
+                        method: 'PUT'
+                    })
+                    .then((resp) ->
+                        console.log("Successful upload VIMEO")
+                        # Complete the upload : complete_uri remove
+                        Vimeo.one(ticket.data.complete_uri).remove().then((remove) ->
+                          console.log("Ok Vimeo now video is complete")
+                          # get video id
+                          location = remove.headers('Location')
+                          video_id = location.split('/')[2]
+                          # save the media link
+                          media.label = data.name
+                          media.medium_url = "https://player.vimeo.com/video/"+video_id
+                          media.save()
+                          # rename the video
+                          video_info =
+                            name: data.name
+                            description: "Inscription - " + $scope.candidature.current_year_application_count + " | " + $scope.user.username
 
-            upload_settings =
-              type: "streaming"
-            # get an upload ticket
+                          Vimeo.one(location).patch(video_info).then((patch_response) ->
+                            console.log("Video set Title and description")
+                            # put video in album 4370111 (candidature 2017)
+                            album_id = 4370111
+                            Vimeo.one(account_infos.data.uri).customPUT({}, "albums/"+album_id+"/videos/"+video_id).then((response_album) ->
+                                console.log("Video in specific album : " + album_id)
+                            )
+                          )
+                        )
+                      , (error)->
+                        console.log("ERROR  upload VIMEO")
+                        console.log(error)
+                      , (evt) ->
+                        $scope.upload_percentage = parseInt(100.0 * evt.loaded / evt.total)
 
-            console.log(account_infos)
-
-
-
-            account_infos.data.customPOST(upload_settings,"videos").then((ticket) ->
-
-
-              upload_infos =
-                url:ticket.data.upload_link_secure
-                data: {data}
-                method: 'PUT'
-
-              # Upload.upload(upload_infos)
-              Upload.http({
-                  url: ticket.data.upload_link_secure,
-                  headers: {'Content-Type': data.type},
-                  data: data
-                  method: 'PUT'
-              })
-              .then((resp) ->
-
-                  console.log("OK successful upload VIMEO")
-                  console.log(ticket.data.complete_uri)
-                  #
-                  Vimeo.one(ticket.data.complete_uri).remove().then((remove) ->
-                    console.log("Vimeo Remove")
-
-                    location = remove.headers('Location')
-                    video_id = location.split('/')[2]
-                    video_info =
-                      name: data.name
-                      description: "Inscription - " + $scope.candidature.current_year_application_count
-
-                    Vimeo.one(location).patch(video_info).then((patch_response) ->
-
-                      console.log("patch")
-                      console.log(patch_response)
-
-                      # put video in album 4370111
-                      # PUThttps://api.vimeo.com/users/{user_id}/albums/{album_id}/videos/{video_id}
-                      Vimeo.one(account_infos.data.uri).customPUT({}, "albums/4370111/videos/"+video_id).then((response_album) ->
-
-                          console.log("SET ALBUM")
-                          console.log(response_album)
-
-
-                      )
                     )
-
-
                   )
-
-                , (error)->
-                  console.log("ERROR  upload VIMEO")
-                  console.log(error)
-                , (evt) ->
-
-                  console.log('progress: ' + parseInt(100.0 * evt.loaded / evt.total) + '% file :' + evt.config.data.name)
-
-              )
-
-
             )
-
-
-          )
 
         , ->
           # error
@@ -1012,8 +997,6 @@ angular.module('memoire.controllers', ['memoire.services'])
             model.splice(index, 1)
 
             $scope.candidature.save()
-
-
         )
 
     $scope.saveGalleryInfos = (gallery) ->
@@ -1026,11 +1009,15 @@ angular.module('memoire.controllers', ['memoire.services'])
         gallery: gallery.url
 
       index_medium = gallery.media.length
-      gallery.media[index_medium] = Media.one().customPOST(medium_infos).$object
-
+      Media.one().customPOST(medium_infos).then((medium_response) ->
+          gallery.media[index_medium] = medium_response
+      )
 
 
     $scope.removeMedium = (medium, gallery, index) ->
+      if(medium.medium_url && medium.medium_url.match("vimeo.*"))
+        deleteVimeoVideo(medium.medium_url.split("/").pop())
+
       medium.remove().then((response) ->
           gallery.media.splice(index,1)
       )
@@ -1043,43 +1030,45 @@ angular.module('memoire.controllers', ['memoire.services'])
 
     $scope.upload = (data, field, gallery) ->
 
-            # Create one Media in the first admin gallery (cursus)
           medium_infos =
             gallery: gallery.url
 
           # create medium
           Media.one().customPOST(medium_infos).then((response_media) ->
 
-
-
-            infos =
-              url: response_media.url,
-              data: {}
-              method: 'PATCH',
-              headers: { 'Authorization': 'JWT ' + localStorage.id_token },
-              #withCredentials: true
-
+            # set created medium in gallery
             index_medium = gallery.media.length
             gallery.media[index_medium] = response_media
 
             console.log("upload type " + data.type)
 
-            if(data.type.match('image.*'))
+            infos =
+                url: response_media.url,
+                data: {}
+                method: 'PATCH',
+                headers: { 'Authorization': 'JWT ' + localStorage.id_token },
+                # withCredentials: true
+
+            if (data.type.match("video.*"))
+                uploadVimeo(data, gallery.media[index_medium])
+                #
+                return
+            else if(data.type.match('image.*'))
               infos.data.picture = data
-            else if (data.type.match("video.*"))
-              uploadVimeo(data, gallery.media[index_medium])
-              return
+
             else
                 infos.data.file = data
 
+            # upload on server
             Upload.upload(infos)
             .then((resp) ->
+                # set media
                 gallery.media[index_medium] = RestangularV2.oneUrl('assets/medium', infos.url).get().$object
 
               ,(resp) ->
                 console.log('Error status: ' + resp.status);
               ,(evt) ->
-                $scope.upload_percentage = parseInt(100.0 * evt.loaded / evt.total);
+                $scope.upload_percentage = parseInt(100.0 * evt.loaded / evt.total)
             )
         )
 
