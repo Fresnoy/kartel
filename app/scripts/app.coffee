@@ -331,18 +331,8 @@ angular.module('memoire',
                   views:
                     'account_content_view':
                       templateUrl: 'views/candidature/account/identification.html'
-                      controller: 'IdentificationController'
+                      controller: 'CreateAccountController'
         )
-
-        # Candidature 01 - Confirm User
-        $stateProvider.state('candidature.account.confirm-user',
-                  url: '/identification-confirmation'
-                  views:
-                    'account_content_view':
-                        templateUrl: 'views/candidature/account/identification-confirmation.html'
-                        controller: 'AccountConfirmationController'
-        )
-
 
         # Candidature 01 - Resume or new App
         $stateProvider.state('candidature.resume',

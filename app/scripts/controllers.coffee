@@ -286,15 +286,7 @@ angular.module('memoire.controllers', ['memoire.services'])
 )
 
 .controller("AccountConfirmationController", ($rootScope, $stateParams, $scope, Users) ->
-
-    if localStorage.user_temp
-
-        Users.one(localStorage.user_temp).get().then((response) ->
-          $scope.user = response
-          # $state.go('candidature.confirm-user')
-        )
-    else
-      console.log("pas de user")
+    $scope.email = localStorage.getItem("email")
 )
 
 .controller('AccountResetPasswordController', ($rootScope, $scope) ->
@@ -327,7 +319,6 @@ angular.module('memoire.controllers', ['memoire.services'])
         Authorization: "JWT "+ $stateParams.token
 
       RestAuth.one().customPOST(password_infos, "password/change/", "", headers).then((response) ->
-              delete localStorage.user_temp
               $state.go(route)
             , (response) ->
               $scope.form.error = "Erreur de changement de mot de passe"
@@ -520,14 +511,20 @@ angular.module('memoire.controllers', ['memoire.services'])
 
 
 )
-.controller('IdentificationController',($rootScope, $scope, $state, Registration, Users) ->
+.controller('CreateAccountController',($rootScope, $scope, $state, Registration, Users) ->
+      # inscription
+
+      $scope.user_created = false
 
       $rootScope.step.current = 2
       $rootScope.step.title = "Identification"
 
       # init user form
       if(!$scope.user)
-        $scope.user = {last_name: '', first_name: ''}
+        $scope.user =
+            last_name: ''
+            first_name: ''
+            email: ''
 
       # autogenerate username
       $scope.setUserName = (form, user) ->
@@ -536,36 +533,20 @@ angular.module('memoire.controllers', ['memoire.services'])
 
         user.username = slug(user.first_name).toLowerCase().substr(0,1) + slug(user.last_name).toLowerCase()
         form.uUserName.$setTouched()
-        $scope.isUniqueUserField(form.uUserName, user.username)
-
-      if localStorage.user_temp
-        Users.one(localStorage.user_temp).get().then((response) ->
-            $scope.user = response
-            # $state.go('candidature.confirm-user')
-          )
+        # $scope.isUniqueUserField(form.uUserName, user.username)
 
       # create a new user
       $scope.create = (form, params) ->
-        # console.log(params)
-        form.disabled = true
+        console.log(params)
 
         Registration.post(params).then((response) ->
-          user =
-              username:$scope.username
-              first_name:$scope.first_name
-              last_name:$scope.last_name
-              email:$scope.email
-
-          localStorage.setItem("user_temp", response)
-          # change location
-          $state.go('candidature.account.confirm-user')
-
+          $scope.user_created = true
         , (response) ->
           console.log(response)
           # user creation error
           # form.error = "Error Inscription " + JSON.stringify(response.error, null, '\t')
           form.error = "Error Inscription "
-          form.disabled = false
+
         )
 )
 
@@ -1136,191 +1117,4 @@ angular.module('memoire.controllers', ['memoire.services'])
 
       $state.go("candidature.completed")
 
-
-
-)
-
-
-# Candidature Form
-.controller('CandidatureFormController', (
-        $scope, $q, $state, $filter
-        Users, ArtistsV2, Restangular, Candidatures,
-        ISO3166, Upload,
-  ) ->
-
-  $scope.application = Candidatures
-  $scope.user = Users
-  $scope.user.profile = []
-  $scope.artist = []
-
-  $scope.create = (form) ->
-
-    if(!form.$valid)
-          console.log("Formulaire incomplet")
-          console.log(form)
-          return
-
-    # change date after validation
-    $scope.user.profile.birthdate = $filter('date')($scope.profile.birthdate, 'yyyy-MM-dd')
-
-    # change other_language
-    $scope.user.profile.other_language = $scope.user.profile.other_language.join(",")
-
-    # cursus to txt
-    $scope.user.profile.cursus = ""
-    for item in $scope.cursus.items
-      $scope.user.profile.cursus += item.year+ " - "+
-       item.infos+"\r\n"
-
-    Users.post($scope.user).then((recordedUser) ->
-
-      console.log($scope.artist)
-      console.log(recordedUser)
-      $scope.artist.user = recordedUser.url
-
-      console.log($scope.artist)
-
-      ArtistsV2.post($scope.artist).then((recordedArtist) ->
-
-            $scope.application.artist = recordedArtist.url
-
-            Candidatures.post($scope.application).then((candidature) ->
-              console.log("ok Candidature")
-            )
-        )
-  )
-
-
-    #update
-  $scope.update = (user, form) ->
-    return true
-
-
-  if(localStorage.id_token)
-    #user get
-    Users.one(localStorage.user_id).get().then((user) ->
-
-      if(user.username=="getoken")
-        user.username = ""
-
-      $scope.user = user
-
-
-      #user profile get
-      if (user.profile)
-        matches = user.profile.match(/\d+$/)
-        if matches
-          profile_id = matches[0]
-          Profiles.one(profile_id).get().then((profile) ->
-            $scope.profile = profile
-        )
-        #artist get
-      """
-      Artists.getList().then((artists) ->
-          for artist in artists
-              if(parseInt(artist.user.match(/\d+$/)[0]) == $scope.user.id)
-                $scope.artist = artist
-
-            if($scope.artist == undefined)
-              $scope.artist = Artists
-
-      )"""
-
-    )
-
-  # Birthdate minimum
-  current_year = new Date().getFullYear()
-  age_min = 18
-  age_max = 35
-  $scope.birthdateMax = new Date(current_year-age_min,11,31)
-  $scope.birthdateMin = new Date(current_year-age_max,11,31)
-
-  #country
-  $scope.countries = ISO3166.countryToCode
-
-  #phone patterne
-  $scope.phone_pattern = /^\+?\d{2}[-. ]?\d{9}$/
-
-  #upload file
-  $scope.upload_percentage = 0
-  $scope.$watch('files', ->
-        $scope.uploadMulty($scope.files);
-  )
-  $scope.uploadMulty = (files) ->
-    if (files && files.length)
-      for file in files
-        if (!file.$error)
-          $scope.upload(file)
-
-
-  $scope.upload = (file, endpoint) ->
-
-    Upload.upload(
-      {
-        url: endpoint,
-        data: {
-          "profile.photo": file
-          #name: file.name
-        }
-        method: 'PATCH',
-        headers: { 'Authorization': 'JWT ' + localStorage.id_token },
-        #withCredentials: true
-      }
-    )
-    .then((resp) ->
-        #console.log('Success ' + resp.config.data.file.name + ' uploaded');
-        console.log('Success');
-        console.log(resp);
-      ,(resp) ->
-        console.log('Error status: ' + resp.status);
-      ,(evt) ->
-        #$scope.upload_percentage = parseInt(100.0 * evt.loaded / evt.total);
-        #console.log('progress: ' + $scope.upload_percentage + '% ' + evt.config.data.file.name);
-    )
-
-  #adresse
-  $scope.paOptions = {
-  	updateModel : true
-  }
-  $scope.paTrigger = {}
-  $scope.paDetails = {}
-  $scope.placesCallback = (place) ->
-    console.log("hello")
-
-  #languages
-  $scope.LANGUAGES = languageMappingList
-
-
-  #cursus
-  year = new Date().getFullYear();
-  $scope.years = [];
-  $scope.years.push (year-i) for i in [1..age_max]
-
-  $scope.cursus = {}
-  $scope.cursus.items = []
-
-
-
-  $scope.addItem = (item) ->
-      item.push({
-        medias:[]
-        photo:"",
-        name:""
-      });
-
-  $scope.removeItem = (items, num) ->
-    items.splice(num,1)
-
-
-
-  #first time application
-  $scope.application.first_time = "true"
-
-
-  #gallery
-  $scope.artwork_galleries = []
-  $scope.artwork_galleries.items = []
-  $scope.artwork_galleries.medias = []
-
-  #console.log($scope.artwork_galleries)
 )
