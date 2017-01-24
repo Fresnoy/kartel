@@ -501,13 +501,7 @@ angular.module('memoire.controllers', ['memoire.services'])
 
 .controller('ResumeAppController',($rootScope, $scope, $state, Users, Candidatures) ->
 
-    console.log(Candidatures)
-    Candidatures.getList().then((candidatures) ->
-      console.log(candidatures)
-      $scope.current_candidature = candidatures[0]
-      if($scope.current_candidature.application_completed)
-        $state.go("candidature.finish")
-    )
+    $rootScope.loadInfos($rootScope)
 
 
 )
