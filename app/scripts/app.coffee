@@ -60,27 +60,33 @@ angular.module('memoire',
 )
 
 # token
- .config(($httpProvider, jwtOptionsProvider, RestangularProvider) ->
-    # Please note we're annotating the function so that the $injector works when the file is minified
+ .config(($httpProvider, jwtOptionsProvider, RestangularProvider, jwtInterceptorProvider) ->
+
     jwtOptionsProvider.config({
       tokenGetter: ['options', (options) ->
-        # myService.doSomething();
-        return localStorage.getItem('id_token');
+         return localStorage.getItem('token');
       ],
+      authHeader: "Authorization"
+      authPrefix: ""
       # unauthenticatedRedirectPath: '/login',
       unauthenticatedRedirector: ['$state', ($state) ->
         console.log("unauthenticatedRedirector")
         # $state.go('candidature.login');
 
       ],
-      whiteListedDomains: ['api.lefresnoy.net', 'localhost']
+      whiteListedDomains: ['api.lefresnoy.net', 'localhost', 'vimeo.com']
 
     })
 
-    $httpProvider.interceptors.push('jwtInterceptor');
+    # jwtInterceptorProvider.tokenGetter = () ->
+    #   return localStorage.getItem('token')
 
-    if localStorage.getItem('id_token')
-      RestangularProvider.setDefaultHeaders({Authorization: "JWT "+ localStorage.getItem('id_token')})
+
+    $httpProvider.interceptors.push('jwtInterceptor')
+
+    if localStorage.getItem('token')
+        $httpProvider.defaults.headers.common.Authorization = "JWT "+ localStorage.getItem('token')
+
 )
 .run((authManager) ->
 
@@ -91,14 +97,15 @@ angular.module('memoire',
 
 .run(['$rootScope' ,'$state', ($rootScope, $state) ->
 
+
   $rootScope.$on('tokenHasExpired', () ->
     console.log('Your session has expired!')
     console.log($state)
 
-    if($state.$urlRouter.location.indexOf("candidature"))
+    if($state.$urlRouter.location.indexOf("candidature/"))
       setTimeout(() ->
         $state.go('candidature.account.login')
-      ,200)
+      , 200)
 
   )
 
@@ -289,6 +296,8 @@ angular.module('memoire',
                         templateUrl: 'views/candidature/account/index.html'
                     'application_step_view':
                         templateUrl: 'views/candidature/partials/step-infos.html'
+
+
         )
 
         $stateProvider.state('candidature.account.login',

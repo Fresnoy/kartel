@@ -67,27 +67,53 @@
 
       <div ng-if="user_created ">
 
-          <h1>
-                    Confirmation
-          </h1>
-
-
-          <p>    Merci de confimer la
+        <h1>
+                  Confirmation
+        </h1>
+        <p>    Merci de confimer la
                   création de votre compte
                   en cliquant sur le lien de
                   confimation envoyé sur
                   l’email :
+        </p>
 
-            <div class="">
-              <h3 class=""> {{user.email}} </h3>
-            </div>
+          <form name="formConfirmation">
 
-          </p>
-              <div class="navigation">
-                <a class="btn btn-inv" ui-sref="candidature.account.login">
-                  Connection
-                </a>
-              </div>
+                <div ng-click="edit_email = true"  >
+                  <a ng-show="!edit_email" > - {{user.email}} </a>
+                </div>
+                <div ng-show="edit_email">
+                    <input
+                        type="email" ng-model="user.email" name="uEmail"
+                        required
+                    />
+
+                      <div ng-show="formConfirmation.$submitted || formConfirmation.uEmail.$touched">
+                        <span ng-show="formConfirmation.uEmail.$error.required">Tell us your email.</span>
+                        <span ng-show="formConfirmation.uEmail.$error.email">E-mail non valid / This is not a valid email.</span>
+                      </div>
+
+                    <a class="btn" ng-click="edit_email = false" ng-class="{ 'has-error': formConfirmation.$invalid }" >
+                      OK
+                    </a>
+                </div>
+                <div ng-show="send_email<1">
+                  Vous ne pouvez plus renvoyer d'email
+                </div>
+
+                <div ng-if="form.error" class="alert alert-danger">{{formConfirmation.error}}</div>
+
+                  <div class="navigation">
+                    <a class="btn btn-inv" ui-sref="candidature.account.login">
+                      Connection
+                    </a>
+                    <a class="btn btn-inv" ng-click="update_infos(formConfirmation, user)" ng-class="{ 'has-error': (formConfirmation.$invalid || send_email<1) }" >
+                      Renvoyer l'email
+                    </a>
+
+                  </div>
+
+          </form>
       </div>
 
 

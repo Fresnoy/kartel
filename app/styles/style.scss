@@ -313,6 +313,10 @@ body.en {
         &.photo-remove{
           margin: 10px 0px;
         }
+        &.has-error{
+          background-color:red;
+          pointer-events:none;
+        }
     }
     input, select, textarea{
       width:100%;

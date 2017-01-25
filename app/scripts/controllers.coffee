@@ -275,18 +275,17 @@ angular.module('memoire.controllers', ['memoire.services'])
     console.log("TODO")
 )
 
-.controller('AccountBarController', ($rootScope, $scope, $state, authManager) ->
+.controller('AccountBarController', ($rootScope, $http, $scope, $state, authManager, RestangularV2) ->
     $scope.logout = () ->
-      localStorage.removeItem("id_token")
-      localStorage.removeItem("user_id")
+      localStorage.removeItem("token")
       $rootScope.user = []
+      delete $http.defaults.headers.common.Authorization
       authManager.unauthenticate()
-
       $state.go("candidature.account.login")
 )
 
 .controller("AccountConfirmationController", ($rootScope, $stateParams, $scope, Users) ->
-    $scope.email = localStorage.getItem("email")
+
 )
 
 .controller('AccountResetPasswordController', ($rootScope, $scope) ->
@@ -338,8 +337,8 @@ angular.module('memoire.controllers', ['memoire.services'])
 )
 
 
-.controller('ParentCandidatureController', ($rootScope, $scope, $state,
-            Restangular, RestangularV2,
+.controller('ParentCandidatureController', ($rootScope, $scope, $state, jwtHelper,
+            Restangular, RestangularV2, Vimeo,
             Users, Candidatures, ArtistsV2, Galleries, Media) ->
   # init step in parent controller
   $rootScope.step = []
@@ -355,6 +354,7 @@ angular.module('memoire.controllers', ['memoire.services'])
   $scope.setLang = (lang) ->
     localStorage.setItem("language", lang)
     $rootScope.language = localStorage.language
+
 
   #load user infos
   $rootScope.loadInfos = (scope) ->
@@ -377,12 +377,15 @@ angular.module('memoire.controllers', ['memoire.services'])
     if(!scope.isAuthenticated)
       $state.go("candidature")
 
-    Users.one(localStorage.user_id).get().then((user) ->
-
+    user_id = jwtHelper.decodeToken(localStorage.getItem('token')).user_id
+    console.log(user_id)
+    Users.one(user_id).get().then((user) ->
       scope.user = user
+
       Candidatures.getList().then((candidatures) ->
-        # console.log("candidature")
-        candidature = candidatures.pop()
+        console.log(candidatures)
+        candidature = candidatures[candidatures.length-1]
+        console.log(candidature)
         if(candidature.application_completed)
           $state.go("candidature.completed")
           return;
@@ -460,30 +463,33 @@ angular.module('memoire.controllers', ['memoire.services'])
 )
 
 .controller('LoginController', (
-                                  $rootScope, $scope, Restangular, RestangularV2, $state,
+                                  $rootScope, $scope, Restangular, RestangularV2, $state, $http
                                   Authentification, authManager, jwtHelper, VimeoToken, Vimeo
+
                                 ) ->
 
     $rootScope.step.current = 1
     $rootScope.step.title = "Login"
 
 
+
+
     if($scope.isAuthenticated)
       console.log("logged : resume candidature")
-      $state.go("candidature.resume")
+      # $state.go("candidature.resume")
 
     $scope.login = (form, params) ->
       if(form.$valid)
             Authentification.post(params).then((auth) ->
-              authManager.authenticate()
-              tokenDecode = jwtHelper.decodeToken(auth.token)
-              localStorage.setItem('id_token', auth.token)
-              localStorage.setItem('user_id', tokenDecode.user_id)
-              # set header
-              Restangular.setDefaultHeaders({Authorization: "JWT "+ auth.token})
-              RestangularV2.setDefaultHeaders({Authorization: "JWT "+ auth.token})
 
-              $state.go("candidature.resume")
+              localStorage.setItem('token', auth.token)
+              console.log(jwtHelper.decodeToken(auth.token))
+              # set header
+              $http.defaults.headers.common.Authorization = "JWT "+ localStorage.getItem('token')
+              authManager.authenticate()
+
+
+
 
             , ->
               #error
@@ -493,22 +499,25 @@ angular.module('memoire.controllers', ['memoire.services'])
             )
 
     $scope.logout = () ->
-      localStorage.removeItem("id_token")
-      localStorage.removeItem("user_id")
-      $rootScope.user = []
+      localStorage.removeItem("token")
+      console.log(localStorage)
+      delete $http.defaults.headers.common.Authorization
+      $rootScope.user = $scope.user = []
       authManager.unauthenticate()
+
 )
 
-.controller('ResumeAppController',($rootScope, $scope, $state, Users, Candidatures) ->
+.controller('ResumeAppController',($rootScope, $scope, $state, Users, Restangular, RestangularV2) ->
 
     $rootScope.loadInfos($rootScope)
 
-
 )
-.controller('CreateAccountController',($rootScope, $scope, $state, Registration, Users) ->
+.controller('CreateAccountController',($rootScope, $scope, $state, Registration, RestangularV2, Users) ->
       # inscription
 
       $scope.user_created = false
+      $scope.edit_email = false
+      $scope.send_email = 2
 
       $rootScope.step.current = 2
       $rootScope.step.title = "Identification"
@@ -525,13 +534,19 @@ angular.module('memoire.controllers', ['memoire.services'])
         if (!user.first_name || !user.last_name)
           return
 
+
         user.username = slug(user.first_name).toLowerCase().substr(0,1) + slug(user.last_name).toLowerCase()
         form.uUserName.$setTouched()
+
         # $scope.isUniqueUserField(form.uUserName, user.username)
 
       # create a new user
       $scope.create = (form, params) ->
         console.log(params)
+        if(params.lengh)
+          params = params[0]
+          console.log("params is array")
+          console.log(params)
 
         Registration.post(params).then((response) ->
           $scope.user_created = true
@@ -542,6 +557,21 @@ angular.module('memoire.controllers', ['memoire.services'])
           form.error = "Error Inscription "
 
         )
+
+      $scope.update_infos = (form, params) ->
+        console.log(params)
+        RestangularV2.all('people/user/resend_activation_email').post(params).then((response) ->
+          $scope.send_email--
+        , (response) ->
+          console.log(response)
+          # user creation error
+          # form.error = "Error Inscription " + JSON.stringify(response.error, null, '\t')
+          form.error = "Error send mail "
+
+        )
+
+
+
 )
 
 
@@ -743,7 +773,7 @@ angular.module('memoire.controllers', ['memoire.services'])
             #name: file.name
           }
           method: 'PATCH',
-          headers: { 'Authorization': 'JWT ' + localStorage.id_token },
+          headers: { 'Authorization': 'JWT ' + localStorage.token },
           #withCredentials: true
         }
       )
@@ -817,7 +847,7 @@ angular.module('memoire.controllers', ['memoire.services'])
             url: model.url,
             data: {}
             method: 'PATCH',
-            headers: { 'Authorization': 'JWT ' + localStorage.id_token },
+            headers: { 'Authorization': 'JWT ' + localStorage.token },
             #withCredentials: true
           infos.data[field] = data
 
@@ -870,7 +900,7 @@ angular.module('memoire.controllers', ['memoire.services'])
     deleteVimeoVideo = (idVimeo) ->
       # get Vimeo token api
       VimeoToken.one().get().then((settings) ->
-          localStorage.setItem('vimeo_upload_token',settings.token)
+          Vimeo.setDefaultHeaders({Authorization: "Bearer "+ settings.token})
           video_uri = "videos/"+idVimeo
           Vimeo.one(video_uri).remove().then((video_infos) ->
             console.log("video_infos")
@@ -880,28 +910,35 @@ angular.module('memoire.controllers', ['memoire.services'])
       )
 
 
-
     uploadVimeo = (data, media) ->
 
       # get Vimeo token api
       VimeoToken.one().get().then((settings) ->
           console.log("vimeoUpload")
-          localStorage.setItem('vimeo_upload_token',settings.token)
+          # localStorage.setItem('vimeo_upload_token',settings.token)
+          Vimeo.setDefaultHeaders({Authorization: "Bearer "+ settings.token})
+          # console.log(Vimeo)
           # connect to vimeo api
           Vimeo.one("me").get().then((account_infos) ->
-                # console.log(account_infos)
-              console.log((account_infos.data.upload_quota.space.free / 1073741824).toFixed(3) + " GB")
+              # console.log(account_infos)
+              # console.log((account_infos.data.upload_quota.space.free / 1073741824).toFixed(3) + " GB")
               upload_settings =
                 type: "streaming"
               # get an upload ticket
               account_infos.data.customPOST(upload_settings,"videos").then((ticket) ->
+                    # console.log("ticket")
+                    # console.log(ticket)
+
                     # http method because Vimeo crash when multipart upload
-                    Upload.http({
-                        url: ticket.data.upload_link_secure,
-                        headers: {'Content-Type': data.type},
-                        data: data
-                        method: 'PUT'
-                    })
+                    #  send no Authorization
+                    upload_config =
+                      url: ticket.data.upload_link_secure
+                      headers:
+                        'Content-type': data.type
+                        'Authorization': undefined
+                      data: data
+                      method: 'PUT'
+                    Upload.http(upload_config)
                     .then((resp) ->
                         console.log("Successful upload VIMEO")
                         # Complete the upload : complete_uri remove
@@ -1021,7 +1058,7 @@ angular.module('memoire.controllers', ['memoire.services'])
                 url: response_media.url,
                 data: {}
                 method: 'PATCH',
-                headers: { 'Authorization': 'JWT ' + localStorage.id_token },
+                headers: { 'Authorization': 'JWT ' + localStorage.token },
                 # withCredentials: true
 
             if (data.type.match("video.*"))
