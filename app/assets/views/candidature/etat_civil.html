@@ -24,7 +24,7 @@
                   <label>Genre</label>
                   <select ng-model="user.profile.gender" ng-change="save(user)" name="uGender" required>
                     <option value="">---Choisir / Please select---</option> <!-- not selected / blank option -->
-                    <option value="M">Male</option>
+                    <option value="M">Homme / Male</option>
                     <option value="F">Female</option>
                     <option value="T">Transgender</option>
                     <option value="O">Other</option>
@@ -57,6 +57,64 @@
                   </div>
 
 
+
+
+
+                  <label for="nationality">
+                    <span class="fr">
+                     Nationalité
+                    </span>
+                    <span class="en">
+                      Nationality
+                    </span>
+                  </label>
+
+                  <input
+                    type="text"
+                    id="nationality"
+                    ng-model="user.profile.nationality"
+                    required
+                    hidden
+                    />
+
+                  <div
+                    ng-repeat="item in nationality"
+                   >
+
+                    <select
+                      ng-model="nationality[$index]"
+                      ng-change="updateNationality()"
+                      >
+
+                        <option value="">-- Select a Country --</option>
+                        <option ng-repeat="(country, code) in countries" value="{{code}}">{{country}}</option>
+
+                    </select>
+                    <div class="remove" ng-show="!removeConfirmation[$index]"
+                         ng-init='removeConfirmation[$index]=false'
+                         ng-click="removeConfirmation[$index]=!removeConfirmation[$index]">
+
+                    </div>
+                    <div class="remove-confirm" ng-show="removeConfirmation[$index]"
+                         ng-click="removeConfirmation[$index]=!removeConfirmation[$index]"
+                    >
+                      <a class="yes" ng-click="removeNationality($index)">V</a>
+                    </div>
+
+                  </div>
+
+                  <div>
+                    <a class="btn btn-inv" ng-click="nationality.push(array())">
+                      <span class="fr">Ajouter une nationalité</span>
+                      <span class="en">Add a nationality</span>
+                    </a>
+                  </div>
+
+
+
+
+
+
                   <label>Pays de naissance / Birth Place</label>
                   <select ng-change="save(user)" ng-model="user.profile.birthplace_country" name="uBirthCountry" required>
                     <option value="">-- Select a Country --</option>
@@ -66,6 +124,36 @@
                   <div ng-show="form.$submitted || form.uBirthCountry.$touched">
                      <span ng-show="form.uBirthCountry.$error.required"> Tell us your Birth Place </span>
                      <span ng-show="form.uBirthCountry.$error.birthcountry">This must be a country code!</span>
+                  </div>
+
+
+
+                  <label>Justificatif identité (image ou pdf)</label>
+                  <div class="btn"
+                    ng-model="candidature.identity_card"
+                    name="jID"
+                    ngf-select="uploadFile(candidature.identity_card, candidature, 'identity_card') " ngf-capture="'camera'"
+                    accept="image/*, application/pdf"
+                    required
+                    >
+                    <span ng-show="!candidature.identity_card">envoyer</span>
+                    <span ng-show="candidature.identity_card" >Changer</span>
+                  </div>
+                  <a target='_blank'
+                    href="{{candidature.identity_card}}">
+                    <img ng-show="candidature.identity_card.indexOf('pdf')>0" height="30px" src="http://iconbug.com/data/5b/507/52ff0e80b07d28b590bbc4b30befde52.png" />
+                    <img ng-show="candidature.identity_card.indexOf('jpg')>0" height="30px"  src="http://www.fitright.co.in/images/generic-image-file-icon-hi.png" />
+                  </a>
+                  <br>
+                  <div ng-if="photo_justification.media[0].picture || photo_justification.media[0].file" class="btn btn-inv"
+                      ng-click="removeMedia(photo_justification, 0)"
+                    >supprimer le justificatif</a>
+                  </div>
+                      <span ng-show="upload_percentage < 98"> {{ upload_percentage }} </span>
+
+                  <div ng-show="form.jPhoto.$error">
+                      <span ng-show="form.jID.$error.required">Give us a justification</span>
+                      <span ng-show="form.jID.$error.identity_card"> Value error </span>
                   </div>
 
 

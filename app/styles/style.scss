@@ -383,17 +383,36 @@ body.en {
       }
     }
 
-    .remove {
+    .remove, .remove-confirm {
       cursor: pointer;
       height: 30px;
       width: 100%;
       background-color: #f88;
+      opacity: 0.5;
       background-image: url(http://icon-icons.com/icons2/934/PNG/512/trash-can-black-symbol_icon-icons.com_72914.png);
       background-size: auto 20px;
-      background-position: left;
+      background-position: center;
       background-repeat: no-repeat;
       display: block;
     }
+    .remove-confirm {
+      opacity:1;
+      background-position: left;
+      text-align: center;
+      .yes, .no {
+        color:black;
+        content:"V";
+        width:20px;
+        display: inline-block;
+        :hover{
+          opacity: "0.8"
+        }
+      }
+      .no {
+        content:"X";
+      }
+    }
+
 
     .formElt{
       margin: 50px 0px;

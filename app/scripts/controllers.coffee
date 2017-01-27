@@ -339,7 +339,7 @@ angular.module('memoire.controllers', ['memoire.services'])
 
 .controller('ParentCandidatureController', ($rootScope, $scope, $state, jwtHelper,
             Restangular, RestangularV2, Vimeo,
-            Users, Candidatures, ArtistsV2, Galleries, Media) ->
+            Users, Candidatures, ArtistsV2, Galleries, Media, Upload) ->
   # init step in parent controller
   $rootScope.step = []
   $rootScope.step.current = 0
@@ -356,6 +356,61 @@ angular.module('memoire.controllers', ['memoire.services'])
     $rootScope.language = localStorage.language
 
 
+
+  createNewGallery = (scope, model, array_galleries_name, gallerie_label, gallerie_description, return_var) ->
+      gallery_infos =
+        label: gallerie_label
+        description: gallerie_description
+        # "Candidature's Gallery"
+      Galleries.one().customPOST(gallery_infos).then((response_gallerie) ->
+        # scope.candidature.administrative_galleries.push(response.url)
+        if(model[array_galleries_name] instanceof Array)
+          model[array_galleries_name].push(response_gallerie.url)
+        else
+          model[array_galleries_name] = response_gallerie.url
+        return_var = response_gallerie
+        infos = {}
+        infos[array_galleries_name] =  model[array_galleries_name]
+
+        model.patch(infos)
+        # model.save()
+      )
+
+
+
+
+  getGalleryWithMedia = (gallery_url, return_var) ->
+      RestangularV2.oneUrl('assets/gallery', gallery_url).get()
+      .then((gall_response) ->
+          return_var.url = gall_response.url
+          for medium in gall_response.media
+              RestangularV2.oneUrl('assets/medium', medium).get().then((response_medium) ->
+                  find_medium = gall_response.media.indexOf(response_medium.url)
+                  return_var.media[find_medium] = response_medium
+              )
+
+      )
+
+  $rootScope.upload = (data, model, field) ->
+
+      infos =
+        url: model.url,
+        data: {}
+        method: 'PATCH',
+        headers: { 'Authorization': 'JWT ' + localStorage.token },
+        #withCredentials: true
+
+      infos.data[field] = data
+
+      Upload.upload(infos)
+      .then((resp) ->
+          model[field] = resp.data[field]
+        ,(resp) ->
+          console.log('Error status: ' + resp.status);
+        ,(evt) ->
+          $scope.upload_percentage = parseInt(100.0 * evt.loaded / evt.total);
+      )
+
   #load user infos
   $rootScope.loadInfos = (scope) ->
 
@@ -363,88 +418,44 @@ angular.module('memoire.controllers', ['memoire.services'])
     scope.user.profile = []
     scope.artist = []
     scope.candidature = []
-    # Artworks
-    scope.candidature.artwork_galleries = []
+
     scope.artworks = []
     # Admin
-    scope.candidature.administrative_galleries = []
-    scope.cursus_gallery = []
-    scope.cursus_gallery.id = []
-    scope.cursus_gallery.url = []
-    scope.cursus_gallery.media = []
+    scope.candidature.cursus_justifications = []
+    scope.cursus_justifications = []
+    scope.cursus_justifications.id = []
+    scope.cursus_justifications.url = []
+    scope.cursus_justifications.media = []
 
     # if(scope.candidature.length)
     if(!scope.isAuthenticated)
       $state.go("candidature")
 
     user_id = jwtHelper.decodeToken(localStorage.getItem('token')).user_id
-    console.log(user_id)
     Users.one(user_id).get().then((user) ->
       scope.user = user
 
       Candidatures.getList().then((candidatures) ->
-        console.log(candidatures)
         candidature = candidatures[candidatures.length-1]
-        console.log(candidature)
         if(candidature.application_completed)
           $state.go("candidature.completed")
-          return;
+          return
 
         scope.candidature = candidature
 
-        #setup Galleries
-        if(!candidature.administrative_galleries.length)
-          # console.log("setup galleries")
-          gallery_infos =
-            label: "Cursus : "+ candidature.current_year_application_count + " | " + scope.user.username
-            description: "Candidature's Gallery"
 
-          Galleries.one().customPOST(gallery_infos).then((response) ->
-            scope.candidature.administrative_galleries.push(response.url)
-            scope.cursus_gallery.url = response.url
-            scope.candidature.save()
-
-            # Create one Media in the first admin gallery (cursus)
-            medium_infos =
-              gallery: response.url
-
-            Media.one().customPOST(medium_infos).then((response_media) ->
-              scope.cursus_gallery.media.push(response_media)
-            )
-          )
-        # get Media administrative gallery
+        if(scope.candidature.cursus_justifications)
+          getGalleryWithMedia(scope.candidature.cursus_justifications, scope.cursus_justifications)
         else
-          scope.cursus_gallery.url = scope.candidature.administrative_galleries[0]
-          RestangularV2.oneUrl('assets/gallery', scope.cursus_gallery.url).get()
-          .then((gall_response) ->
-              for medium in gall_response.media
-                  scope.cursus_gallery.media.push(
-                    RestangularV2.oneUrl('assets/medium', medium).get().$object
-                  )
-
+          #
+          createNewGallery(
+            scope,
+            scope.candidature,
+            "cursus_justifications",
+            "Cursus",
+            "Candidatures de "+ user.last_name + " " + user.first_name + " | " + candidature.current_year_application_count,
+            scope.cursus_justifications
           )
-
-        if(scope.candidature.artwork_galleries)
-          # get infos scope.artworks
-          for gallery, index_gallery in scope.candidature.artwork_galleries
-            # get object gallery
-            RestangularV2.oneUrl('assets/gallery', gallery).get()
-            .then((gall_response) ->
-              # index not good
-
-              for medium, index_medium in gall_response.media
-
-                  RestangularV2.oneUrl('assets/medium', medium).get().then((response_medium) ->
-                    find_medium = gall_response.media.indexOf(response_medium.url)
-                    gall_response.media[find_medium] = response_medium
-
-                  )
-
-              find_gallery = scope.candidature.artwork_galleries.indexOf(gall_response.url)
-
-              scope.artworks[find_gallery] = gall_response
-
-            )
 
         # get Artist
         matches = candidature.artist.match(/\d+$/)
@@ -575,7 +586,8 @@ angular.module('memoire.controllers', ['memoire.services'])
 )
 
 
-.controller('CivilStatusController', ($rootScope, $scope, $state, $filter, ISO3166, Restangular, RestangularV2, Upload) ->
+.controller('CivilStatusController', ($rootScope, $scope, $state, $filter, ISO3166,
+        Restangular, RestangularV2, Media, Upload) ->
 
   if(!$scope.isAuthenticated)
     $state.go("candidature")
@@ -592,6 +604,7 @@ angular.module('memoire.controllers', ['memoire.services'])
     if model_copy.profile.photo
       delete model_copy.profile.photo
 
+
     model_copy.save()
 
 
@@ -606,6 +619,31 @@ angular.module('memoire.controllers', ['memoire.services'])
 
   #country
   $scope.countries = ISO3166.countryToCode
+
+  # nationality
+  $scope.nationality = []
+  $scope.splitChar = ", "
+
+  $scope.$watch("user.profile.nationality", (newValue, oldValue) ->
+    if(newValue)
+      $scope.nationality = newValue.split($scope.splitChar)
+  )
+
+  $scope.removeNationality = (index) ->
+    $scope.nationality.splice(index,1)
+    $scope.updateNationality()
+
+  $scope.updateNationality = () ->
+    $scope.user.profile.nationality = $scope.nationality.join($scope.splitChar)
+    $scope.save($scope.user)
+
+
+  # justif photo
+  $scope.photo_justification_file = null
+
+  $scope.uploadFile = (data, model, field) ->
+    $rootScope.upload(data, model, field)
+    console.log($scope.form)
 
 )
 
@@ -799,69 +837,42 @@ angular.module('memoire.controllers', ['memoire.services'])
       if(!$scope.isAuthenticated)
         $state.go("candidature")
 
-      $rootScope.loadInfos($rootScope)
 
+
+      $rootScope.loadInfos($rootScope)
 
       $scope.state =
          selected: undefined
       #cursus
-      year = new Date().getFullYear();
+      year = new Date().getFullYear()
       $scope.years = []
       $scope.years.push (year-i) for i in [1..35]
 
-      $scope.save = (model) ->
-        console.log($scope.form)
-        # save medium
-        model_copy = RestangularV2.copy(model)
+      #patch Medium
 
-        if model_copy.picture
-          delete model_copy.picture
-
-        model_copy.save()
-
-        $scope.state.selected = model.position
-        # save user profile cursus
-        cursus = ""
-        for item in $scope.cursus_gallery.media
-          cursus += item.label + " " + item.description
-          cursus += "\n"
-
-        $scope.user.profile.cursus = cursus
-        user_copy = RestangularV2.copy($scope.user)
-
-        if user_copy.profile.birthdate
-          user_copy.profile.birthdate = $filter('date')(user_copy.profile.birthdate, 'yyyy-MM-dd')
-
-
-        if user_copy.profile.photo
-          delete user_copy.profile.photo
-
-        user_copy.save()
-
-
+      #patch User
+      $scope.saveCursus = (value) ->
+        infos =
+          profile:
+             cursus: value
+        $scope.user.patch(infos)
 
       #upload file
       $scope.upload_percentage = 0
-      $scope.upload = (model, field, data ) ->
-          infos =
-            url: model.url,
-            data: {}
-            method: 'PATCH',
-            headers: { 'Authorization': 'JWT ' + localStorage.token },
-            #withCredentials: true
-          infos.data[field] = data
+      $scope.uploadFile = (data, model ) ->
 
-          Upload.upload(infos)
-          .then((resp) ->
-              model[field] = resp.data[field]
-            ,(resp) ->
-              console.log('Error status: ' + resp.status);
-            ,(evt) ->
-              $scope.upload_percentage = parseInt(100.0 * evt.loaded / evt.total);
-          )
+          field = "picture"
+          if (data.type.match("image.*"))
+            field = "picture"
+          if (data.type.match("pdf"))
+            field = "file"
 
+          $rootScope.upload(data, model, field)
+
+
+      # ITEM ADD
       $scope.addItem = (gallery) ->
-
+        console.log(gallery)
         medium_infos =
           gallery: gallery.url
 
@@ -874,6 +885,7 @@ angular.module('memoire.controllers', ['memoire.services'])
         item = media[index]
         item.remove().then((response) ->
             media.splice(index,1)
+            $scope.saveUser($scope.user)
         )
 
 )

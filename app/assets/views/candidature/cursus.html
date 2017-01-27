@@ -6,66 +6,84 @@
 
           <form name="form" ng-submit="form.$valid && submit()" class="css-form" novalidate enctype="multipart/form-data">
 
-            <label>Cursus</label>
-            <div ng-repeat="item in cursus_gallery.media | orderBy:'1*position'"
-                  ng-model="cursus_gallery.media"
+            <div>
+              <label for="master-degree">
+                <span class="fr">
+                  J'ai un master (bac + 5)
+                </span>
+                <span class="en">
+                  Master degree
+                </span>
+              </label>
+              <input type="checkbox"
+                id="master-degree"
+                ng-model="candidature.master_degree"
+                ng-change="candidature.patch({master_degree: candidature.master_degree})"
+                name="cMaster"
+                ng-value="true"
+              />
+              <span class="fr">Oui</span>
+              <span class="en">yes</span>
+            </div>
+
+
+            <label for="cursus">
+              <span class="fr">Cursus</span>
+              <span class="en">Cursus</span>
+            </label>
+
+
+
+              <textarea
+                id="cursus"
+                  ng-model="user.profile.cursus"
+                  ng-model-options='{ debounce: 1000 }'
+                  ng-change="saveCursus(user.profile.cursus)"
+                  placeholder="2010 -  2012"
+                  rows="10"
+              />
+
+            <div ng-repeat="item in cursus_justifications.media | orderBy:'1*position' track by $index"
+                  ng-model="cursus_justifications.media"
                   name="uCursus"
                   class="item-list"
-                  ng-class="{ active: item.position == state.selected }"
-                  ng-click="state.selected = item.position"
                   >
-              <div class="item-summary">
-                  <div ng-if="item.position>200 ">
-                    <div class="row">
-                      <div class="info col-sm-9">
-                        {{item.position}} {{item.description}}<br/>
-                        {{item.label}}
-                      </div>
-                      <div class="info col-sm-3">
-                        <img ng-if="item.picture" src="{{item.picture}}" height="40px" />
-                      </div>
-                    </div>
 
-                </div>
-                <div ng-if="item.position<200">Nouvelle entrée</div>
-              </div>
-              <div class="item-infos">
-                <select ng-model="item.position" ng-change="save(item)" required >
-                  <option value="">-- Select Year --</option>
-                  <option ng-selected="item.position==year" ng-repeat="year in years" value='{{year}}'>{{year}}</option>
-                </select>
 
-                <input type="text" placeholder="label"
+
+                <input type="text" placeholder="Titre"
                  ng-model="item.label"
                  ng-model-options='{ debounce: 1000 }'
-                 ng-change="save(item)"
+                 ng-change="item.patch({label: item.label})"
+
                  required
                   />
 
-                <input type="text" placeholder="ville "
-                  ng-model="item.description"
-                  ng-model-options='{ debounce: 1000 }'
-                  ng-change="save(item)"
-                  required
-                  />
-
-                <div class="photo-upload" ng-model="item.picture"
-                  ngf-select="upload(item, 'picture', item.picture)"
+                <div ng-model="file[$index]"
+                  ngf-select="uploadFile(file[$index], item)"
                   ngf-capture="'camera'"
-                  accept="image/*"
-                  ng-style="{'background-image':'url('+item.picture+')'}">
-                  <span ng-if="!item.picture">Justificatif</span>
-
+                  accept="image/*, application/pdf"
+                  >
+                  <span ng-show="!item.picture && !item.file" class="btn" >Fichier</span>
                 </div>
+                <img ng-show="item.picture" height="30px" src="{{item.picture}}" />
+                <a target='_blank' ng-show="item.file"
+                  href="{{item.file}}">
+                  <img ng-show="candidature.identity_card.indexOf('pdf')>0" height="30px" src="http://iconbug.com/data/5b/507/52ff0e80b07d28b590bbc4b30befde52.png" />
+                  <img ng-show="candidature.identity_card.indexOf('jpg')>0" height="30px"  src="http://www.fitright.co.in/images/generic-image-file-icon-hi.png" />
+
+
+                </a>
                 <span ng-show="upload_percentage < 0"> {{ upload_percentage }} </span>
                 <div class="inline"  ng-show="form.$submitted || item.$touched">
                     <span ng-show="item.$error.required"> Give us a photo please</span>
                     <span ng-show="item.$error.photo"> Value error </span>
                 </div>
-                <a class="btn btn-inv block remove" ng-click="removeItem(cursus_gallery.media, $index)">Efface ce diplome </a>
 
+                <a class="btn btn-inv block remove" ng-click="removeItem(cursus_justifications.media, $index)">
+                  Efface ce justificatif
+                </a>
 
-            </div>
           </div>
 
           <div class="">
@@ -73,8 +91,9 @@
           </div>
 
           <div>
-            <a class="btn block" ng-click="addItem(cursus_gallery)"> Ajouter un diplome </a>
+            <a class="btn block" ng-click="addItem(cursus_justifications)"> Ajouter un justificatif </a>
           </div>
+
 
 
           <a class="btn" ui-sref="candidature.etat-civil-photo">
