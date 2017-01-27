@@ -277,11 +277,13 @@ angular.module('memoire.controllers', ['memoire.services'])
 
 .controller('AccountBarController', ($rootScope, $http, $scope, $state, authManager, RestangularV2) ->
     $scope.logout = () ->
-      localStorage.removeItem("token")
-      $rootScope.user = []
-      delete $http.defaults.headers.common.Authorization
-      authManager.unauthenticate()
-      $state.go("candidature.account.login")
+      Authentification.one("logout/").post().then((auth) ->
+          localStorage.removeItem("token")
+          $rootScope.user = []
+          delete $http.defaults.headers.common.Authorization
+          authManager.unauthenticate()
+          $state.go("candidature.account.login")
+      )
 )
 
 .controller("AccountConfirmationController", ($rootScope, $stateParams, $scope, Users) ->
@@ -482,8 +484,10 @@ angular.module('memoire.controllers', ['memoire.services'])
     $rootScope.step.current = 1
     $rootScope.step.title = "Login"
 
-
-
+    $scope.vm =
+      username:""
+      email:""
+      password:""
 
     if($scope.isAuthenticated)
       console.log("logged : resume candidature")
@@ -491,16 +495,12 @@ angular.module('memoire.controllers', ['memoire.services'])
 
     $scope.login = (form, params) ->
       if(form.$valid)
-            Authentification.post(params).then((auth) ->
-
+            Authentification.one("login/").customPOST(params).then((auth) ->
               localStorage.setItem('token', auth.token)
-              console.log(jwtHelper.decodeToken(auth.token))
+              # console.log(jwtHelper.decodeToken(auth.token))
               # set header
               $http.defaults.headers.common.Authorization = "JWT "+ localStorage.getItem('token')
               authManager.authenticate()
-
-
-
 
             , ->
               #error
@@ -510,11 +510,13 @@ angular.module('memoire.controllers', ['memoire.services'])
             )
 
     $scope.logout = () ->
-      localStorage.removeItem("token")
-      console.log(localStorage)
-      delete $http.defaults.headers.common.Authorization
-      $rootScope.user = $scope.user = []
-      authManager.unauthenticate()
+      Authentification.one("logout/").post().then((auth) ->
+          localStorage.removeItem("token")
+          console.log(localStorage)
+          delete $http.defaults.headers.common.Authorization
+          $rootScope.user = $scope.user = []
+          authManager.unauthenticate()
+      )
 
 )
 

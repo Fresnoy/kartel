@@ -11,13 +11,15 @@
         <div ng-if="!isAuthenticated">
 
               <form name="form" ng-submit="form.$valid && vm.login()" novalidate>
-                      <label for="username">Username</label>
-                      <input type="text" name="username" ng-model="vm.username" required />
-                      <div ng-messages="form.$submitted && form.username.$error" class="help-block">
-                          <div ng-message="required">Username is required</div>
+                      <label for="username">User name</label>
+                      <input id="username" type="text" name="email" ng-model="vm.username" required />
+                      <div ng-messages="form.$submitted && form.email.$error" class="help-block">
+                          <div ng-message="required">Email is required</div>
+                          <span ng-show="form.email.$error.email">E-mail non valid / This is not a valid email.</span>
                       </div>
                       <label for="password">Password</label>
-                      <input type="password" name="password"2 ng-model="vm.password" required />
+                      <input id="password" type="password" name="password" ng-model="vm.password" required />
+
                       <div ng-messages="form.$submitted && form.password.$error" class="help-block">
                           <div ng-message="required">Password is required</div>
                       </div>

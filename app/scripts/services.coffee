@@ -96,7 +96,7 @@ angular.module('memoire.services', ['restangular'])
 .factory('Authentification', (Restangular) ->
         return Restangular.withConfig((RestangularConfigurer) ->
               RestangularConfigurer.setBaseUrl(config.rest_uri_v2)
-        ).service('auth/')
+        ).service('rest-auth')
 )
 
 
