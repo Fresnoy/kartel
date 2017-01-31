@@ -1,0 +1,141 @@
+<div class="content landing-page">
+
+  <div class="navigation header">
+    <ul class="list-inline small"><li class="help"><a ng-click='help("option")'>Aide</a></li> | <li><a ng-click="logout()">Déconnection</a></li></ul>
+  </div>
+
+  <h1>Selection</h1>
+  <div class="data-writing" ng-show="writingData"><span class="fr">Enregistrement</span><span class="en">Save data</span></div>
+
+  <div class="" >
+
+
+    <h2>Cursus</h2>
+
+    <form name="form" ng-submit="form.$valid && submit()" class="css-form" novalidate enctype="multipart/form-data">
+            <div class="field">
+
+                    <input type="checkbox"
+                      id="master-degree"
+                      ng-model="candidature.master_degree"
+                      ng-change="candidature.patch({master_degree: candidature.master_degree})"
+                      name="cMaster"
+                      ng-value="true"
+                      class="one"
+                    />
+                    <label for="master-degree" class="checkbox one big">
+                      <span class="fr">J'ai un master (bac + 5)</span>
+                      <span class="en">Master degree</span>
+                    </label>
+
+            </div>
+
+
+
+            <div class="field">
+
+
+                    <textarea
+                      id="cursus"
+                        ng-model="user.profile.cursus"
+                        ng-model-options='{ debounce: 1000 }'
+                        ng-change="user.patch({profile : {'cursus': user.profile.cursus}})"
+                        placeholder="2003 - Master de philosophie Lille3
+        2005 - Résidence  New York
+        2008 - "
+                        rows="10"
+                        name=uCursus
+                        required
+                    />
+                    <div ng-show="form.uCursus.$touched && form.uCursus.$invalid" ng-messages="form.uCursus.$error" class="help-block error">
+                      <div ng-message="required">
+                        <span class="fr">Obligatoire</span>
+                        <span class="en">required</span>
+                      </div>
+                    </div>
+                    <label for="cursus">
+                      <span class="field-state required"></span>
+                      <span class="fr">Cursus</span>
+                      <span class="en">Cursus</span>
+                    </label>
+            </div>
+
+
+            <div class="field">
+
+                  <div ng-repeat="item in cursus_justifications.media | orderBy:'1*position' track by $index"
+                        ng-model="cursus_justifications.media"
+                        name="uCursus"
+                        class="item-list"
+                        >
+
+                      <input type="text" placeholder="Titre"
+                       ng-model="item.label"
+                       ng-model-options='{ debounce: 1000 }'
+                       ng-change="item.patch({label: item.label})"
+
+                       required
+                        />
+
+                      <div ng-model="file[$index]"
+                        ngf-select="uploadFile(file[$index], item)"
+                        ngf-capture="'camera'"
+                        accept="image/*, application/pdf"
+                        >
+                        <span ng-show="!item.picture && !item.file" class="btn" >Ajouter un fichier image ou pdf</span>
+                      </div>
+
+                      <a target='_blank' ng-show="item.file || item.picture"
+                        href="{{item.file || item.picture}}">
+                        <img ng-show="item.file" height="30px" src="http://iconbug.com/data/5b/507/52ff0e80b07d28b590bbc4b30befde52.png" />
+                        <img ng-show="item.picture" height="30px" src="http://www.fitright.co.in/images/generic-image-file-icon-hi.png" />
+                      </a>
+                      <span ng-if='upload_percentage<99'>
+                        <img src='http://mupit.icm.jhu.edu/MuPIT_Interactive/images/load.gif' height="20px" /> {{upload_percentage}} / 100
+                      </span>
+
+                      <div class="inline"  ng-show="form.$submitted || item.$touched">
+                          <span ng-show="item.$error.required"> Give us a photo please</span>
+                          <span ng-show="item.$error.photo"> Value error </span>
+                      </div>
+
+                      <div class="remove" ng-show="!removeConfirmation[$index]"
+                           ng-init='removeConfirmation[$index]=false'
+                           ng-click="removeConfirmation[$index]=!removeConfirmation[$index]">
+                      </div>
+                      <div class="remove-confirm" ng-show="removeConfirmation[$index]"
+                           ng-click="removeConfirmation[$index]=!removeConfirmation[$index]"
+                      >
+                        <a class="no">Cancel</a>
+                        <a class="yes" ng-click="removeItem(cursus_justifications.media, $index)">Ok</a>
+                      </div>
+
+                    </div>
+
+                    <div>
+                      <a class="btn block" ng-click="addItem(cursus_justifications)"> Ajouter un justificatif </a>
+                    </div>
+
+                    <p></p>
+
+
+              </div>
+      </form>
+
+      <div class="navigation">
+        <a class="btn" ui-sref="candidature.personnal-infos">
+          Retour
+        </a>
+        <a class="btn" ui-sref="candidature.documents">
+          Continue
+        </a>
+      </div>
+
+
+
+  </div>
+
+
+
+
+</div>

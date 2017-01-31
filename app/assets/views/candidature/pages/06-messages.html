@@ -1,0 +1,180 @@
+<div class="content landing-page">
+
+  <div class="navigation header">
+    <ul class="list-inline small"><li class="help"><a ng-click='help("option")'>Aide</a></li> | <li><a ng-click="logout()">Déconnection</a></li></ul>
+  </div>
+
+  <h1>Selection</h1>
+  <div class="data-writing" ng-show="writingData"><span class="fr">Enregistrement</span><span class="en">Save data</span></div>
+
+  <div ng-show="navigation_inter_page == 0" >
+
+    <form name="form" ng-submit="form.$valid && submit()" class="css-form" novalidate enctype="multipart/form-data">
+
+
+          <div class="field">
+            <input
+              type="checkbox"
+              id="remote-interview"
+              ng-model="candidature.remote_interview"
+              ng-change="candidature.patch({remote_interview: candidature.remote_interview})"
+              name="cInterview"
+              class="one"
+              />
+              <label for="remote-interview" class="checkbox one">
+                <span class="fr">
+                  J'habite hors du continent Européen
+                </span>
+                <span class="en">
+                  I can go to Le Fresnoy for interviews :
+                </span>
+              </label>
+
+              <div class="" ng-if="candidature.remote_interview">
+
+
+                <select id="remote_interview_type"
+                  ng-change="candidature.patch({remote_interview_type : candidature.remote_interview_type})"
+                  name="cInterviewType"
+                  ng-model="candidature.remote_interview_type"
+                  required
+                >
+                <option value="">--</option>
+                <option ng-repeat="value in INTERVIEW_TYPES" value="{{value}}">
+                  {{value}}
+                </option>
+                <div ng-show="form.$submitted || form.cInterviewType.$touched">
+                  <span ng-show="form.cInterviewType.$error.required">
+                    <span class="fr">
+                      Champs requis
+                    </span>
+                    <span class="en">
+                      required
+                    </span>
+                </div>
+                </select>
+                <label>
+                  <span class="fr">Entretien via</span>
+                  <span class="en">Remote interview Type</span>
+                </label>
+
+                <div class="" ng-if="candidature.remote_interview_type">
+
+                  <input
+                    id="remote-interview-info"
+                    type="text"
+                    ng-model="candidature.remote_interview_info"
+                    ng-change="candidature.patch({remote_interview_info : candidature.remote_interview_info})"
+                    ng-model-options='{ debounce: 1000 }'
+                    name="cInterviewInfos"
+                    placeholder = "URL / ID / infos"
+                    required
+                    />
+                    <label for="remote-interview-info">
+                      <span class="fr">Identifiants</span>
+                      <span class="en">Identifiants</span>
+                    </label>
+
+                </div>
+
+
+              </div>
+
+
+          </div>
+
+
+          <div class="field">
+            <input
+              type="checkbox"
+              id="asynchronous-element"
+              ng-model="candidature.physical_content"
+              ng-change="candidature.patch({physical_content: candidature.physical_content})"
+              name="aAsynchone"
+              class="one"
+              />
+              <label class="checkbox one" for='asynchronous-element'>
+                <span class="fr">Je vous envoie des éléments par courrier</span>
+                <span class="en">Send Element by mail</span>
+              </label>
+              <div ng-show="candidature.physical_content" class="alert" >
+                <textarea
+                    ng-model="candidature.physical_content_description"
+                    ng-model-options='{ debounce: 1000 }'
+                    ng-change="candidature.patch({physical_content_description: candidature.physical_content_description})"
+                    placeholder="Desciption des éléments"
+                />
+                <span class="fr"> N'oubliez pas de précisez votre numéro de cadidature : </span>
+                <span class="en"> Don't forget to give us your application number </span>
+                  <strong>{{candidature.current_year_application_count}}</strong>
+
+              </div>
+            </div>
+
+
+
+
+
+  </form>
+
+
+
+
+      <div class="navigation">
+        <a class="btn" ui-sref="candidature.documents">
+          Retour
+        </a>
+        <a class="btn" ng-click="navigation_inter_page = 1">
+          Continue
+        </a>
+      </div>
+
+
+
+  </div>
+
+
+  <div ng-show="navigation_inter_page == 1" >
+
+    <h2>Message</h2>
+    <p>
+      Vous pouvez laisser
+      un message dans votre
+      dossier de candidature.
+
+    </p>
+
+        <textarea
+          id="remark"
+            ng-model="candidature.remark"
+            ng-model-options='{ debounce: 1000 }'
+            ng-change="candidature.patch({remark: candidature.remark})"
+            placeholder="Message"
+            rows="10"
+        />
+        <label for="remark">
+          <span class="fr">Informations complémentaires</span>
+          <span class="en">Additionnal information</span>
+        </label>
+
+
+
+
+      <div class="navigation">
+        <a class="btn" ng-click="navigation_inter_page = 0">
+          Retour
+        </a>
+        <a class="btn" ng-click="navigation_inter_page = 2">
+          Continue
+        </a>
+      </div>
+
+
+
+  </div>
+
+
+
+
+
+</div>

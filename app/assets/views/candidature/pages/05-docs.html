@@ -1,0 +1,399 @@
+<div class="content landing-page">
+
+  <div class="navigation header">
+    <ul class="list-inline small"><li class="help"><a ng-click='help("option")'>Aide</a></li> | <li><a ng-click="logout()">Déconnection</a></li></ul>
+  </div>
+
+  <h1>Selection</h1>
+  <div class="data-writing" ng-show="writingData"><span class="fr">Enregistrement</span><span class="en">Save data</span></div>
+
+  <div class="" ng-show='navigation_inter_page == 0' >
+
+    <h2>CV / BIO / Motivations</h2>
+
+    <form name="form" ng-submit="form.$valid && submit()" class="css-form" novalidate enctype="multipart/form-data">
+          <div class="field">
+
+                  <input type="checkbox"
+                    id="firstime"
+                    ng-model="candidature.first_time"
+                    ng-change="candidature.patch({first_time: candidature.first_time})"
+                    name="cFirst"
+                    ng-value="true"
+                    class="one"
+                  />
+                  <label for="firstime" class="checkbox one big">
+                    <span class="fr">J'ai déjà postulé au Fresnoy</span>
+                    <span class="en"></span>
+                  </label>
+                  <div ng-if='candidature.first_time'>
+                    <span>En quelle année ?</span>
+                    <input type="number"
+                      id="last-candidature"
+                      ng-model="candidature.last_application_year"
+                      ng-change="candidature.patch({last_application_year: candidature.last_application_year})"
+                      name="cLastCandidature"
+                      class="one"
+                      ng-show=candidature.first_time
+                      required
+                    />
+                    <label for="last-candidature" class="checkbox">
+                      <span class="field-state required" ></span>
+                      <span class="fr">Année</span>
+                      <span class="en">Year</span>
+                    </label>
+                  </div>
+
+          </div>
+
+
+          <div class="field">
+                  <input name="cJustification" ng-model="candidature.justification_letter" hidden required />
+                  <div id="justification-letter" class="btn btn-inv"
+                    ng-model="candidature.justification_letter"
+                    name="cJustification"
+                    ngf-select="uploadFile(candidature.justification_letter, candidature, 'justification_letter') " ngf-capture="'camera'"
+                    accept="application/pdf"
+                    required
+                    >
+                    <span ng-show="!candidature.justification_letter">envoyer PDF</span>
+                    <span ng-show="candidature.justification_letter" >Changer</span>
+                  </div>
+                  <span ng-if='upload_percentage<99'>
+                    <img src='http://mupit.icm.jhu.edu/MuPIT_Interactive/images/load.gif' height="20px" /> {{upload_percentage}} / 100
+                  </span>
+
+                  <a target='_blank'
+                    href="{{candidature.justification_letter}}">
+                    <img ng-show="candidature.justification_letter" height="30px" src="http://iconbug.com/data/5b/507/52ff0e80b07d28b590bbc4b30befde52.png" />
+                  </a>
+
+                  <div ng-show="form.cJustification.$touched && form.cJustification.$invalid" ng-messages="form.cJustification.$error" class="help-block error">
+                    <div ng-message="required">
+                      <span class="fr">Obligatoire</span>
+                      <span class="en">Required</span>
+                    </div>
+                    <div ng-message="justification_letter">
+                      <span class="fr">Valeur éronnée</span>
+                      <span class="en">Value Error</span>
+                    </div>
+                  </div>
+                  <label class="topborder" for="id-justification">
+                    <span class="field-state required"></span>
+                    <span class="fr">Lettre de motivation / note intention</span>
+                    <span class="en">Lettre de motivation / note intention</span>
+                  </label>
+
+          </div>
+
+          <div class="field">
+                  <input name="cCV" ng-model="candidature.curriculum_vitae" hidden required />
+                  <div id="cv" class="btn btn-inv"
+                    ng-model="candidature.curriculum_vitae"
+                    name="cJustification"
+                    ngf-select="uploadFile(candidature.curriculum_vitae, candidature, 'curriculum_vitae') " ngf-capture="'camera'"
+                    accept="application/pdf"
+                    required
+                    >
+                    <span ng-show="!candidature.curriculum_vitae">envoyer PDF</span>
+                    <span ng-show="candidature.curriculum_vitae" >Changer</span>
+                  </div>
+                  <span ng-if='upload_percentage<99'>
+                    <img src='http://mupit.icm.jhu.edu/MuPIT_Interactive/images/load.gif' height="20px" /> {{upload_percentage}} / 100
+                  </span>
+
+                  <a target='_blank'
+                    href="{{candidature.curriculum_vitae}}">
+                    <img ng-show="candidature.curriculum_vitae" height="30px" src="http://iconbug.com/data/5b/507/52ff0e80b07d28b590bbc4b30befde52.png" />
+                  </a>
+
+                  <div ng-show="form.cCV.$touched && form.cJustification.$invalid" ng-messages="form.cCV.$error" class="help-block error">
+                    <div ng-message="required">
+                      <span class="fr">Obligatoire</span>
+                      <span class="en">Required</span>
+                    </div>
+                    <div ng-message="justification_letter">
+                      <span class="fr">Valeur éronnée</span>
+                      <span class="en">Value Error</span>
+                    </div>
+                  </div>
+                  <label class="topborder" for="cv">
+                    <span class="field-state required"></span>
+                    <span class="fr">Bio / CV</span>
+                    <span class="en">Bio / CV</span>
+                  </label>
+
+          </div>
+    </form>
+
+    <div class="navigation">
+      <a class="btn" ui-sref="candidature.cursus">
+        Retour
+      </a>
+      <a class="btn" ng-click="navigation_inter_page = 1">
+        Continue
+      </a>
+    </div>
+  </div>
+
+
+  <div ng-show='navigation_inter_page == 1'>
+    <form name="form" ng-submit="form.$valid && submit()" class="css-form" novalidate enctype="multipart/form-data">
+        <h2>Project</h2>
+        <h3>Première année</h3>
+        <div class="field">
+                <input name="cProject1" ng-model="candidature.considered_project_1" hidden required />
+                <div id="considered-project-1" class="btn btn-inv"
+                  ng-model="candidature.justification_letter"
+                  name="cJustification"
+                  ngf-select="uploadFile(candidature.considered_project_1, candidature, 'considered_project_1') " ngf-capture="'camera'"
+                  accept="application/pdf"
+                  required
+                  >
+                  <span ng-show="!candidature.considered_project_1">envoyer PDF</span>
+                  <span ng-show="candidature.considered_project_1" >Changer</span>
+                </div>
+                <span ng-if='upload_percentage<99'>
+                  <img src='http://mupit.icm.jhu.edu/MuPIT_Interactive/images/load.gif' height="20px" /> {{upload_percentage}} / 100
+                </span>
+
+                <a target='_blank'
+                  href="{{candidature.considered_project_1}}">
+                  <img ng-show="candidature.considered_project_1" height="30px" src="http://iconbug.com/data/5b/507/52ff0e80b07d28b590bbc4b30befde52.png" />
+                </a>
+
+                <div ng-show="form.cProject1.$touched && form.cProject1.$invalid" ng-messages="form.cProject1.$error" class="help-block error">
+                  <div ng-message="required">
+                    <span class="fr">Obligatoire</span>
+                    <span class="en">Required</span>
+                  </div>
+                  <div ng-message="considered_project_1">
+                    <span class="fr">Valeur éronnée</span>
+                    <span class="en">Value Error</span>
+                  </div>
+                </div>
+                <label class="topborder" for="considered-project-1">
+                  <span class="field-state required"></span>
+                  <span class="fr">Projet envisagé <br/>pour la première année (1 page)</span>
+                  <span class="en"> </span>
+                </label>
+
+        </div>
+
+        <div class="field">
+                <textarea
+                  id="artistic-referencies-project-1"
+                    ng-model="candidature.artistic_referencies_project_1"
+                    ng-model-options='{ debounce: 1000 }'
+                    ng-change="candidature.patch({artistic_referencies_project_1 : candidature.artistic_referencies_project_1})"
+                    placeholder=""
+                    rows="20"
+                    name=cARP1
+                    required
+                />
+                <div ng-show="form.cARP1.$touched && form.cARP1.$invalid" ng-messages="form.cARP1.$error" class="help-block error">
+                  <div ng-message="required">
+                    <span class="fr">Obligatoire</span>
+                    <span class="en">required</span>
+                  </div>
+                  <div ng-message="maxlength">
+                    <span class="fr">maxlength</span>
+                    <span class="en">maxlength</span>
+                  </div>
+                </div>
+                <label for="artistic-referencies-project-1">
+                  <span class="field-state required"></span>
+                  <span class="fr">Références artistiques (20 lignes) </span>
+                  <span class="en">Artistic references for the first year's project</span>
+                </label>
+        </div>
+
+
+
+
+
+        <h3>Deuxième année</h3>
+        <div class="field">
+                <input name="cProject2" ng-model="candidature.considered_project_2" hidden required />
+                <div id="considered-project-1" class="btn btn-inv"
+                  ng-model="candidature.justification_letter"
+                  name="cJustification"
+                  ngf-select="uploadFile(candidature.considered_project_2, candidature, 'considered_project_2') " ngf-capture="'camera'"
+                  accept="application/pdf"
+                  required
+                  >
+                  <span ng-show="!candidature.considered_project_2">envoyer PDF</span>
+                  <span ng-show="candidature.considered_project_2" >Changer</span>
+                </div>
+                <span ng-if='upload_percentage<99'>
+                  <img src='http://mupit.icm.jhu.edu/MuPIT_Interactive/images/load.gif' height="20px" /> {{upload_percentage}} / 100
+                </span>
+
+                <a target='_blank'
+                  href="{{candidature.considered_project_2}}">
+                  <img ng-show="candidature.considered_project_2" height="30px" src="http://iconbug.com/data/5b/507/52ff0e80b07d28b590bbc4b30befde52.png" />
+                </a>
+
+                <div ng-show="form.cProject2.$touched && form.cProject2.$invalid" ng-messages="form.cProject2.$error" class="help-block error">
+                  <div ng-message="required">
+                    <span class="fr">Obligatoire</span>
+                    <span class="en">Required</span>
+                  </div>
+                  <div ng-message="considered_project_2">
+                    <span class="fr">Valeur éronnée</span>
+                    <span class="en">Value Error</span>
+                  </div>
+                </div>
+                <label class="topborder" for="considered-project-2">
+                  <span class="field-state required"></span>
+                  <span class="fr">Projet envisagé <br/>pour la première année (1 page) </span>
+                  <span class="en"> </span>
+                </label>
+          </div>
+          <div class="field">
+                  <textarea
+                    id="artistic-referencies-project-2"
+                      ng-model="candidature.artistic_referencies_project_2"
+                      ng-model-options='{ debounce: 1000 }'
+                      ng-change="candidature.patch({artistic_referencies_project_2 : candidature.artistic_referencies_project_2})"
+                      placeholder=""
+                      rows="20"
+                      name=cARP2
+                      required
+                  />
+                  <div ng-show="form.cARP2.$touched && form.cARP2.$invalid" ng-messages="form.cARP2.$error" class="help-block error">
+                    <div ng-message="required">
+                      <span class="fr">Obligatoire</span>
+                      <span class="en">required</span>
+                    </div>
+                    <div ng-message="maxlength">
+                      <span class="fr">maxlength</span>
+                      <span class="en">maxlength</span>
+                    </div>
+                  </div>
+                  <label for="artistic-referencies-project-2">
+                    <span class="field-state required"></span>
+                    <span class="fr">Références artistiques <br/>pour la deuxième année (20 lignes)</span>
+                    <span class="en">Artistic references for the second year's project</span>
+                  </label>
+          </div>
+      </form>
+
+
+      <div class="navigation">
+        <a class="btn" ng-click="navigation_inter_page == 0">
+          Retour
+        </a>
+        <a class="btn" ng-click="navigation_inter_page = 2">
+                    Continue
+        </a>
+      </div>
+
+  </div>
+
+
+  <div ng-show='navigation_inter_page == 2'>
+
+
+          <h2>Élement Visuel</h2>
+          <form name="form" ng-submit="form.$valid && submit()" class="css-form" novalidate>
+                <div class="field">
+                        <input
+                          type="url"
+                          id = "video"
+                          name = "cVideo"
+                          ng-model="candidature.presentation_video"
+                          ng-model-options='{ debounce: 1000 }'
+                          ng-change="candidature.patch({presentation_video : candidature.presentation_video})"
+                          placeholder="Url"
+                          required
+                              />
+                          <div ng-show="form.cVideo.$touched && form.cVideo.$invalid" ng-messages="form.cVideo.$error" class="help-block error">
+                            <div ng-message="required">
+                              <span class="fr">Obligatoire</span>
+                              <span class="en">required</span>
+                            </div>
+                            <div ng-message="url">
+                              <span class="fr">URL mal formatée</span>
+                              <span class="en">Error url</span>
+                            </div>
+                          </div>
+                          <label for="video">
+                            <span class="field-state required"></span>
+                            <span class="fr">Lien vidéo (8 minutes maximum)</span>
+                            <span class="en">Video Links</span>
+                          </label>
+                </div>
+                <p>Si vous n'avez pas de lien, envoyez nous la vidéo : </p>
+                <span ng-if='upload_percentage<99'>
+                  <img src='http://mupit.icm.jhu.edu/MuPIT_Interactive/images/load.gif' height="20px" /> {{upload_percentage}} / 100
+                </span>
+
+
+                <button ng-model="video" name="uVideo"
+                  ngf-select="uploadVimeo(video, candidature, 'presentation_video')"
+                  ngf-capture="'camera'"
+                  accept="video/*"
+                  ng-show="candidature.presentation_video.indexOf('player.vimeo.com/video')<0"
+                  >
+                  Uploader une vidéo</button>
+                  <div ng-show="form.uVideo.$invalid" ng-messages="form.uVideo.$error" class="help-block error">
+                    <div ng-message="pattern">
+                      <span class="fr">Fichier non reconnu comme étant une vidéo</span>
+                      <span class="en">No vidéo file</span>
+                    </div>
+                  </div>
+                  <a class="btn" ng-show="candidature.presentation_video.indexOf('player.vimeo.com/video')>0" ng-click='deleteVimeoVideo(candidature.presentation_video.split("/").pop(), candidature, "presentation_video")'>
+                      Effacer la vidéo
+                  </a>
+
+
+                <h3>Autres éléments</h3>
+
+                <div class="field">
+                  <input
+                    type="checkbox"
+                    id="asynchronous-element"
+                    ng-model="candidature.physical_content"
+                    ng-change="candidature.patch({physical_content: candidature.physical_content})"
+                    name="aAsynchone"
+                    class="one"
+                    />
+                    <label class="checkbox one" for='asynchronous-element'>
+                      <span class="fr">Je vous envoie des éléments par courrier</span>
+                      <span class="en">Send Element by mail</span>
+                    </label>
+                    <div ng-show="candidature.physical_content" class="alert" >
+                      <textarea
+                          ng-model="candidature.physical_content_description"
+                          ng-model-options='{ debounce: 1000 }'
+                          ng-change="candidature.patch({physical_content_description: candidature.physical_content_description})"
+                          placeholder="Desciption des éléments"
+                      />
+                      <span class="fr"> N'oubliez pas de précisez votre numéro de cadidature : </span>
+                      <span class="en"> Don't forget to give us your application number </span>
+                        <strong>{{candidature.current_year_application_count}}</strong>
+
+                    </div>
+                  </div>
+          </form>
+
+
+
+
+          <div class="navigation">
+            <a class="btn" ng-click="navigation_inter_page == 2">
+              Retour
+            </a>
+            <a class="btn" ui-sref="candidature.messages">
+              Continue
+            </a>
+          </div>
+
+
+  </div>
+
+
+
+
+</div>

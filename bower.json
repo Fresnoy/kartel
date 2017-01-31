@@ -45,7 +45,8 @@
     "angular-jwt":"~0.1.8",
     "auth0-lock":"~10.6.1",
     "auth0-angular":"~4.2.7",
-    "angularjs-datepicker":"~2.1.9"
+    "angularjs-datepicker":"~2.1.9",
+    "angular-messages":"~1.6.1"
   },
   "overrides": {
     "lodash": {

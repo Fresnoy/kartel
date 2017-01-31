@@ -1,0 +1,56 @@
+<div class="content landing-page">
+
+  <div class="navigation header">
+    <ul class="list-inline small"><li class="help"><a ng-click='help("option")'>Aide</a></li> | <li><a ng-click="logout()">Déconnection</a></li></ul>
+  </div>
+
+  <h1>Selection</h1>
+  <div ng-show="navigation_inter_page == 0" class="" >
+
+
+      <p>
+
+        Cette année deux choix s'offrent à vous
+
+      </p>
+
+      <a class="btn grey" ng-click="navigation_inter_page = 1" >Postuler par courrier</a>
+      <a class="btn green" ui-sref="candidature.personnal-infos">Postuler en ligne</a>
+
+
+  </div>
+
+
+  <div ng-show="navigation_inter_page == 1" class="">
+
+
+    <div class="" >
+      Voici votre numéro d'inscription qu'il faudra indiquer sur chaque envoie:
+      <div>
+          {{ candidature.current_year_application_count}}
+      </div>
+
+    </div>
+    <a class="btn green" target="_blank" href="http://www.lefresnoy.net/sites/prod/files/2017/downloads/basic-page/inscription//procedure-admission-2017.pdf" >
+      Télécharger le PDF
+    </a>
+    <a class="btn grey" ng-click="candidature.patch({application_completed: true})" ui-sref="candidature.account.login" >
+
+
+      Confirmer l'inscription par Courrier
+
+    </a>
+    <a class="btn" ui-sref="candidature.account.login" >
+      retour
+
+    </a>
+
+
+
+  </div>
+
+
+
+
+
+</div>

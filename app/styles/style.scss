@@ -278,21 +278,22 @@ body.en {
 }
 
 .student-app{
-
-    h1:after{
-        content:"";
-        margin: 5px;
-        height:5px;
-        width: 50px;
-        background: black;
-        display: block;
+    h1{
+      margin-top: 0px;
+      &:after{
+          content:"";
+          margin: 5px;
+          height:5px;
+          width: 50px;
+          background: black;
+          display: block;
+      }
     }
     .content {
-      width: 75%;
-      max-width: 400px;
-      margin: 50px auto auto;
-      padding: 20px;
+      margin-top: 50px;
+      padding: 40px;
       box-shadow: 0px 0px 5px black;
+      position: relative;
     }
     .btn{
         background: black;
@@ -313,31 +314,122 @@ body.en {
         &.photo-remove{
           margin: 10px 0px;
         }
-        &.has-error{
-          background-color:red;
-          pointer-events:none;
-        }
     }
     input, select, textarea{
       width:100%;
       margin: 5px 0px;
       border: 0px;
-      border-bottom: 2px solid black;
+      border-bottom: 3px solid black;
+      margin:0px;
+      margin-top: 20px;
       &:focus{
         outline:none;
         background-color: rgba(0,0,0,.05)
       }
       &.ng-invalid.ng-touched{
         background-color:none;
+        ~label .field-state{
+          background: red;
+        }
+      }
+      &.ng-valid-required, &.ng-invalid-required{
+        ~label .field-state{
+          background: orange;
+        }
+      }
+      &.ng-valid{
+        ~label .field-state{
+          background: green;
+        }
       }
       &[type='checkbox'],&[type='radio'] {
-        width: 30px;
-        height: 30px
-      }
+        /*
+         width: 30px;
+         height: 30px;
+         */
+         width: auto;
+         display: inline-block;
+        &.one{
+          margin: 20px;
+          ~ label {
+            width: 75%;
+            vertical-align: top;
+            text-align: left;
+            display:inline-block;
+            &.big{
+              font-size: 1.1em
+            }
+          }
+        }
 
+      }
+      ~ .help-block{
+        text-align: right;
+        margin: 0px;
+        &.error{
+          color: red;
+        }
+      }
     }
+    label.topborder{
+      border-top: 3px solid black;
+    }
+    label {
+
+      text-align: right;
+      font-weight: normal;
+      text-transform: uppercase;
+      font-size: 0.7em;
+      color:grey;
+      display: inline-block;
+      width: 100%;
+
+      .field-state{
+        width:7px;
+        height: 7px;
+        background: black;
+        display: inline-block;
+      }
+    }
+    .navigation{
+      margin: 30px 0px;
+      &.footer {
+        position: absolute;
+        bottom:-10px;
+        right: 5px;
+      }
+      &.header{
+        position: absolute;
+        margin: 0px 0px;
+        top:-20px;
+        right: 0px;
+        a{
+          font-size: 0.8em;
+          color: grey;
+        }
+      }
+    }
+    .data-writing{
+        position: absolute;
+        right: 10px;
+        background: green;
+        color: white;
+        border-radius: 5px;
+        padding: 2px 5px;
+
+        -webkit-transition: 0.1s linear all;
+      	transition: 0.1s linear all;
+      	opacity: 1;
+        &.ng-hide{
+          opacity:0;
+        }
+        &.ng-hide{
+          display: inline-block !important;
+        }
+    }
+
     .photo-upload{
-      width: 150px;
+      width: 100%;
       height: 200px;
       margin: auto;
       background-size: contain;
@@ -401,8 +493,7 @@ body.en {
       text-align: center;
       .yes, .no {
         color:black;
-        content:"V";
-        width:20px;
+        width:50px;
         display: inline-block;
         :hover{
           opacity: "0.8"
@@ -423,7 +514,6 @@ body.en {
 }
 
 
-
  span[ng-show*="error"] {
     color:red;
  }
@@ -432,16 +522,27 @@ body.en {
    opacity: 0.2
  }
 
-form {
-  .btn{
-    &.has-error{
-      background-color:red;
-      pointer-events:none;
-    }
+.btn{
+  &.has-error{
+    opacity: 0.2;
+    pointer-events:none;
+  }
+  &.green, &.grey{
+    color: white;
+    display: block;
+    text-align: center;
+    text-transform: uppercase;
+  }
+  &.green{
+    background: green;
+  }
+  &.grey{
+    background: grey;
   }
 }
 
 label{
+
 }
 
  label,

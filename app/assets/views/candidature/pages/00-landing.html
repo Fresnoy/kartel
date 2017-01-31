@@ -1,0 +1,136 @@
+<div class="content landing-page" ng-init='navigation_inter_page = 0'>
+
+  <div ng-show="navigation_inter_page == 0" class="" >
+      <h1>Selection</h1>
+
+      <p>
+
+      </p>
+
+      <div class="navigation">
+              <a class="btn"
+                 ng-click="setLang('fr'); navigation_inter_page=1">
+                    Français
+              </a>
+              <a class="btn"
+                 ng-click="setLang('en'); navigation_inter_page=1">
+                    English
+              </a>
+      </div>
+  </div>
+
+
+  <div ng-show="navigation_inter_page == 1" class="">
+      <h1>Procédure de sélection</h1>
+
+      <h2>Condition d'accès</h2>
+      <p>La procédure de sélection est ouverte à tous
+les candidats, sans distinction de sexe ou
+de nationalité, âgés de 35 ans au plus au 1er janvier
+de l’année du concours (nés après le 31 décembre <span ng-bind="(current_year-36)" />) -
+         <strong>
+           Un justificatif vous sera demander dans les prochaines pages
+         </strong>
+
+          </p>
+
+          <p>Les candidats doivent pouvoir justifier :<br/>
+            • soit du Baccalauréat (ou équivalence reconnue)
+            et 5 années d’études attestées par un titre ou diplôme,<br/>
+            • soit du Baccalauréat (ou équivalence reconnue) et
+            7 années d’expérience artistique ou professionnelle,
+            et sous réserve de joindre au dossier d’inscription
+            administrative un argumentaire, une page maximum,
+            précisant en quoi leur expérience les a préparés
+            au cursus du Fresnoy.</p>
+            <p>Les candidatures présentées sous cette deuxième
+            condition auront fait l’objet d’un examen par une
+            commission spéciale, apte à les évaluer et à les
+            valider, et dont les décisions sont sans appel.
+            </p>
+            <p>La participation à la procédure de sélection est
+            gratuite. Les frais de voyage et de séjour des
+            candidats pour les épreuves d’admission sont
+            à la charge des candidats.</p>
+
+            <form>
+                <input type="checkbox"
+                  class="one"
+                  id="accept"
+                  ng-model="accept"
+                  name="cAccept"
+                  ng-value="true"
+                  ng-init='accept=false'
+                  required
+                />
+                <label for="accept" class="checkbox one">
+                  J'ai pris connaissance des conditions d'accès, je suis né apèrs le le 31 décembre <span ng-bind="(current_year-35)" />
+                </label>
+            </form>
+
+                <div class="navigation">
+
+                        <a class="btn next" ng-class="{ 'has-error': accept == false }"
+                           ng-click="navigation_inter_page=2">
+                              Continuer
+                        </a>
+                </div>
+
+  </div>
+
+
+  <div ng-show="navigation_inter_page == 2" class="">
+
+    <h1>Procédure de sélection</h1>
+
+    <h2>Compétences linguistiques</h2>
+
+    <p>
+      Les candidats doivent posséder une connaissance
+      du français et de l’anglais parlés. Toutes les étapes
+      de la procédure de sélection (dossier et entretien
+      oral), se font en français ou en anglais, au choix
+      du candidat. Il est rappelé aux candidats admis que
+      les études au Fresnoy se font ensuite en français.
+    </p>
+
+
+    <h2>Calendrier</h2>
+    <p>
+      La sélection des étudiants est annuelle et se
+      déroulera en une seule session selon les étapes
+      et le calendrier suivants :<br/>
+      • Inscription administrative et envoi ou dépôt
+      du dossier artistique au plus tard le {{  deadline_text }}
+     (le cachet de la poste faisant foi),
+     <br/>
+      • Présélection sur dossier, du lundi 16 au vendredi
+      20 mai 2016, annonce des résultats le mardi
+      24 mai 2016,
+      <br/>
+      • Entretiens oraux du lundi 4 au vendredi 8 juillet
+       2016, annonce des résultats le lundi 11 juillet 2016.
+     </p>
+
+
+     <div class="navigation">
+             <a class="btn next" ng-class="{ 'has-error': accept == false }"
+                ui-sref="candidature.account.create-user">
+                   Continuer
+             </a>
+     </div>
+
+
+
+
+
+
+
+
+  </div>
+
+
+
+
+
+</div>

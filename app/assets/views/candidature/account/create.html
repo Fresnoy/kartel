@@ -1,0 +1,211 @@
+<div class="content">
+
+    <div ng-if="!user_created">
+          <h1>
+                    Candidature
+          </h1>
+
+
+            <form name="form" class="css-form" ng-submit="form.$valid && login()" novalidate>
+
+                <div class="field">
+                  <input id="name" type="text" ng-change="setUserName(form, user)" ng-model="user.last_name" name="uName" required />
+                  <div ng-show="form.uName.$touched && form.uName.$invalid" ng-messages="form.uName.$error" class="help-block error">
+                    <div ng-message="required">
+                      <span class="fr">Nom requis</span>
+                      <span class="en">required</span>
+                    </div>
+                  </div>
+                  <label for="name">
+                    <span class="field-state required" ng-class="{ 'error': form.uName.$error, 'valid':form.uName.$valid, 'touched': form.uName.$touched }"></span>
+                    <span class="fr">Nom</span>
+                    <span class="en">Name</span>
+                  </label>
+                </div>
+
+
+
+                <div class="field">
+                  <input id="firstname" type="text"  ng-change="setUserName(form, user)" ng-model="user.first_name" name="uFirstName" required />
+                  <div ng-show="form.uFirstName.$touched  && form.uFirstName.$invalid" ng-messages="form.uFirstName.$error" class="help-block error">
+                    <div ng-message="required">
+                      <span class="fr">Prénom requis</span>
+                      <span class="en">required</span>
+                    </div>
+                  </div>
+                  <label for="firstname">
+                    <span class="field-state required" ng-class="{ 'error': form.uFirstName.$error, 'valid':form.uFirstName.$valid, 'touched': form.uFirstName.$touched }"></span>
+                    <span class="fr">Prénom</span>
+                    <span class="en">First Name</span>
+                  </label>
+                </div>
+
+
+                <div class="field">
+                  <input type="text" id="username" ng-model="user.username" ng-minlength="4" name="uUserName" unique-user-field required />
+                  <div ng-show="form.uUserName.$viewValue.length>0" ng-messages="form.uUserName.$error" class="help-block error">
+                    <div ng-message="minlength">
+                      <span class="fr">Minimum 4 signes</span>
+                      <span class="en">4 char min</span>
+                    </div>
+                    <div ng-message="required">
+                      <span class="fr">Nom requis</span>
+                      <span class="en">required</span>
+                    </div>
+                    <div ng-message="uniqueUserField">
+                      <span class="fr">Ce nom d'utilisateur est déjà utilisé, choisissez en un autre</span>
+                      <span class="en">Username already taken</span>
+                    </div>
+                  </div>
+                  <label for="username">
+                    <span class="field-state required" ng-class="{ 'error': form.uUserName.$error, 'valid':form.uUserName.$valid, 'touched': form.uUserName.$touched }"></span>
+                    <span class="fr">Nom d'utilisateur</span>
+                    <span class="en">User name</span>
+                  </label>
+                </div>
+
+
+
+                <div class="field">
+                    <input id="email" type="email" ng-model="user.email" name="uEmail" unique-user-field required />
+                    <div ng-show="form.uEmail.$touched  && form.uEmail.$invalid" ng-messages="form.uEmail.$error" class="help-block error">
+                      <div ng-message="required">
+                        <span class="fr">Requis</span>
+                        <span class="en">required</span>
+                      </div>
+                      <div ng-message="email">
+                        <span class="fr">E-mail non valide</span>
+                        <span class="en">This is not a valid email</span>
+                      </div>
+                      <div ng-message="uniqueUserField">
+                        <span class="fr">Cet email est déjà associé à un utilisateur, <a ui-sref="candidature.account.login">connectez vous</a></span>
+                        <span class="en">Email is already use by an account, <a ui-sref="candidature.account.login">connect you</a></span>
+                      </div>
+                    </div>
+                    <label for="email">
+                      <span class="field-state required" ng-class="{ 'error': form.uEmail.$error, 'valid':form.uEmail.$valid, 'touched': form.uEmail.$touched }"></span>
+                      <span class="fr">E-mail</span>
+                      <span class="en">Email</span>
+                    </label>
+                </div>
+                <div class="field">
+                    <input id="email-confirm" type="email" ng-model="emailconfirm" name="uEmailComfim" same-value-as="user.email" required />
+                    <div ng-show="form.uEmailComfim.$touched  && form.uEmailComfim.$invalid" ng-messages="form.uEmailComfim.$error" class="help-block error">
+                      <div ng-message="required">
+                        <span class="fr">Prénom requis</span>
+                        <span class="en">required</span>
+                      </div>
+                      <div ng-message="email">
+                        <span class="fr">E-mail non valide</span>
+                        <span class="en">This is not a valid email</span>
+                      </div>
+                      <div ng-message="sameValueAs">
+                        <span class="fr">Les deux emails doivent être les mêmes</span>
+                        <span class="en">Emails not same</span>
+                      </div>
+                    </div>
+                    <label for="email-confirm">
+                      <span class="field-state required" ng-class="{ 'error': form.uEmail.$error, 'valid':form.uEmail.$valid, 'touched': form.uEmail.$touched }"></span>
+                      <span class="fr">Confirmez votre E-mail</span>
+                      <span class="en">Email confirm</span>
+                    </label>
+                </div>
+
+
+                <div>
+                    <div ng-show="form.$error  && form.$invalid" ng-messages="form.$error" class="help-block error">
+                        {{form.error}}
+                    </div>
+                </div>
+
+              </form>
+
+              <div class="btn green" ng-class="{ 'has-error': form.$invalid }" ng-click="create(form, user)">
+                Créer un compte
+              </div>
+
+              <div class="navigation">
+
+                    <span class="fr">J'ai déjà un compte</span>
+                    <span class="en">A completer</span>
+
+                  <div class="btn grey" ui-sref="candidature.account.login">
+                    Login
+                  </div>
+              </div>
+
+
+      </div>
+
+      <div ng-if="user_created ">
+
+        <h1>
+                  Confirmation
+        </h1>
+        <p>    Merci de confimer la
+                  création de votre compte
+                  en cliquant sur le lien de
+                  confimation envoyé sur
+                  l’email :
+        </p>
+
+          <form name="formConfirmation">
+
+                <div ng-click="edit_email = true"  >
+                  <a ng-show="!edit_email" > - {{user.email}} </a>
+                </div>
+                <div ng-show="edit_email">
+                  <input id="email" type="email" ng-model="user.email" name="uEmail" unique-user-field required />
+                  <div ng-show="formConfirmation.uEmail.$touched  && formConfirmation.uEmail.$invalid" ng-messages="formConfirmation.uEmail.$error" class="help-block error">
+                    <div ng-message="required">
+                      <span class="fr">Requis</span>
+                      <span class="en">required</span>
+                    </div>
+                    <div ng-message="email">
+                      <span class="fr">E-mail non valide</span>
+                      <span class="en">This is not a valid email</span>
+                    </div>
+                    <div ng-message="uniqueUserField">
+                      <span class="fr">Cet email est déjà associé à un utilisateur, <a ui-sref="candidature.account.login">connectez vous</a></span>
+                      <span class="en">Email is already use by an account, <a ui-sref="candidature.account.login">connect you</a></span>
+                    </div>
+                  </div>
+                  <label for="email">
+                    <span class="field-state required" ng-class="{ 'error': form.uEmail.$error, 'valid':form.uEmail.$valid, 'touched': form.uEmail.$touched }"></span>
+                    <span class="fr">E-mail</span>
+                    <span class="en">Email</span>
+                  </label>
+                  <a class="btn" ng-click="edit_email = false" ng-class="{ 'has-error': formConfirmation.$invalid }" >
+                    Valider l'email
+                  </a>
+                </div>
+
+          </form>
+          <p>
+            vous pouvez encore modifier l'email de réception en cliquant sur celui ci puis renvoyer, il vous reste {{ send_email }} essais
+          </p>
+
+
+                <div ng-show="formConfirmation.uEmail.$invalid && formConfirmation.$submitted" ng-messages="formConfirmation.$error" class="alert alert-danger">
+                  <div ng-message="first_name">
+                    <span class="fr">Prénom : {{formConfirmation.$error.first_name[0]}}</span>
+                    <span class="en">First Name : {{formConfirmation.$error.first_name[0]}}</span>
+                  </div>
+                  <div ng-message="last_name">
+                    <span class="fr">Nom : {{formConfirmation.$error.last_name[0]}}</span>
+                    <span class="en">Name : {{formConfirmation.$error.first_name[0]}}</span>
+                  </div>
+                  <div ng-message="usernmae">
+                    <span class="fr">Username : {{formConfirmation.$error.usernmae[0]}}</span>
+                    <span class="en">Username : {{formConfirmation.$error.usernmae[0]}}</span>
+                  </div>
+                </div>
+                <div class="navigation">
+                    <a class="btn btn-inv" ng-click="update_infos(formConfirmation, user)" ng-class="{ 'has-error': (formConfirmation.$invalid || send_email<1 || edit_email) }" >
+                      Renvoyer l'email
+                    </a>
+                  </div>
+      </div>
+
+
+</div>

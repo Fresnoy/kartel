@@ -1,10 +1,11 @@
 <div class="student-app">
-  <div ui-view="application_account_view"></div>
     <div class="row">
-      <div class="col-md-1 sidebar">
-          <a href="http://www.lefresnoy.net">Le fresnoy</a>
+      <div class="col-md-2 sidebar">
+          <a href="http://www.lefresnoy.net" target="_blank">
+            <img src="images/candidature/fresnoy-bandeau.jpg"  />
+          </a>
       </div>
-      <div class="col-md-5 col-sd-11" ui-view="application_content_view"></div>
-      <div class="col-md-5 visible-md" ui-view="application_step_view"></div>
+      <div class="col-md-4 col-sd-12" ui-view="application_content_view"></div>
+      <div class="col-md-6 visible-md" ui-view="application_step_view"></div>
     </div>
 </div>

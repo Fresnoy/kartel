@@ -1,0 +1,584 @@
+<div class="content landing-page">
+
+  <div class="navigation header">
+    <ul class="list-inline small"><li class="help"><a ng-click='help("option")'>Aide</a></li> | <li><a ng-click="logout()">Déconnection</a></li></ul>
+  </div>
+
+  <h1>Selection</h1>
+  <div class="data-writing" ng-show="writingData"><span class="fr">Enregistrement</span><span class="en">Save data</span></div>
+
+  <div ng-show="navigation_inter_page == 0" class="" >
+
+          <form name="form" ng-submit="form.$valid && submit()" class="css-form" novalidate enctype="multipart/form-data">
+
+                        <div class="field">
+                          <input id="name" type="text"  ng-model="user.last_name" ng-model-options='{ debounce: 1000 }' ng-change="save(user)" name="uName" required />
+                          <div ng-show="form.uName.$touched && form.uName.$invalid" ng-messages="form.uName.$error" class="help-block error">
+                            <div ng-message="required">
+                              <span class="fr">Obligatoire</span>
+                              <span class="en">required</span>
+                            </div>
+                          </div>
+                          <label for="name">
+                            <span class="field-state required"></span>
+                            <span class="fr">Nom</span>
+                            <span class="en">Name</span>
+                          </label>
+                        </div>
+
+
+                        <div class="field">
+                          <input id="first-name" type="text"  ng-model="user.first_name" ng-model-options='{ debounce: 1000 }' ng-change="save(user)" name="uFirstName" required />
+                          <div ng-show="form.uName.$touched && form.uFirstName.$invalid" ng-messages="form.uFirstName.$error" class="help-block error">
+                            <div ng-message="required">
+                              <span class="fr">Obligatoire</span>
+                              <span class="en">Required</span>
+                            </div>
+                          </div>
+                          <label for="first-name">
+                            <span class="field-state required"></span>
+                            <span class="fr">Prénom</span>
+                            <span class="en">First Name</span>
+                          </label>
+                        </div>
+
+
+                        <div class="field">
+                          <select id="gender" ng-model="user.profile.gender" ng-change="save(user)" name="uGender" required>
+                            <option value="">------</option> <!-- not selected / blank option -->
+                            <option ng-repeat="(code, value) in gender" value="{{code}}">{{value[language]}}</option>
+                          </select>
+                          <div ng-show="form.uGender.$touched && form.uGender.$invalid" ng-messages="form.uGender.$error" class="help-block error">
+                            <div ng-message="required">
+                              <span class="fr">Obligatoire</span>
+                              <span class="en">Required</span>
+                            </div>
+                            <div ng-message="gender">
+                              <span class="fr">Valeur éronnée</span>
+                              <span class="en">Value Error</span>
+                            </div>
+                          </div>
+                          <label for="gender">
+                            <span class="field-state required" ng-class="{ 'error': form.uGender.$error, 'valid':form.uGender.$valid, 'touched': form.uGender.$touched }"></span>
+                            <span class="fr">Genre</span>
+                            <span class="en">Gender</span>
+                          </label>
+                        </div>
+
+
+
+                        <div class="field">
+                          <input hidden type="text" ng-model="user.profile.birthdate" name="uBirthDate" required />
+                          <datepicker id="birthdate"
+                              date-format='yyyy-MM-dd'
+                              date-min-limit="{{birthdateMin}}"
+                              date-max-limit="{{birthdateMax}}"
+                          >
+                              <input type="text" ng-model="user.profile.birthdate" ng-change="save(user)" required />
+                          </datepicker>
+                          <div ng-show="form.uBirthDate.$touched && form.uBirthDate.$invalid" ng-messages="form.uBirthDate.$error" class="help-block error">
+                            <div ng-message="required">
+                              <span class="fr">Obligatoire</span>
+                              <span class="en">Required</span>
+                            </div>
+                            <div ng-message="min">
+                              <span class="fr">Il faut avoir moins de 35 ans (être nés avant  le {{deadline_text}}) </span>
+                              <span class="en">to be completed</span>
+                            </div>
+                            <div ng-message="max">
+                              <span class="fr">Il faut être majeur pour s'inscrire</span>
+                              <span class="en">to be completed</span>
+                            </div>
+                          </div>
+                          <label for="birthdate">
+                            <span class="field-state required"></span>
+                            <span class="fr">Date de naissance</span>
+                            <span class="en">Birthdate</span>
+                          </label>
+                        </div>
+
+
+
+
+                      <div class="field">
+                        <input hidden name='uNationality' id="nationality" type="text" ng-model="user.profile.nationality"  required />
+                        <div ng-repeat="item in nationality track by $index" >
+                          <select
+                            ng-model="nationality[$index]"
+                            ng-change="user.patch({'profile':{'nationality': nationality.join(splitChar)}}); user.profile.nationality = nationality.join(splitChar);"
+                            >
+                              <option value="">----</option>
+                              <option ng-repeat="(country, code) in countries" value="{{code}}">{{country}} ({{code}})</option>
+                          </select>
+                          <div class="remove" ng-show="!removeConfirmation[$index]"
+                               ng-init='removeConfirmation[$index]=false'
+                               ng-click="removeConfirmation[$index]=!removeConfirmation[$index]">
+                          </div>
+                          <div class="remove-confirm" ng-show="removeConfirmation[$index]"
+                               ng-click="removeConfirmation[$index]=!removeConfirmation[$index]"
+                          >
+                            <a class="no">Cancel</a>
+                            <a class="yes" ng-click="nationality.splice($index,1); user.profile.nationality = nationality.join(splitChar); user.patch({'profile':{'nationality': nationality.join(splitChar)}})">Ok</a>
+                          </div>
+                        </div>
+
+                        <div>
+                          <a class="btn" ng-click="nationality.push(array())">
+                            <span class="fr"> + </span>
+                            <span class="en"> + </span>
+                          </a>
+                        </div>
+
+
+                        <div ng-show="form.uNationality.$touched && form.uNationality.$invalid" ng-messages="form.uNationality.$error" class="help-block error">
+                          <div ng-message="required">
+                            <span class="fr">Obligatoire</span>
+                            <span class="en">Required</span>
+                          </div>
+                        </div>
+                        <label class="topborder" for="nationality">
+                          <span class="field-state required"></span>
+                          <span class="fr">Nationalité</span>
+                          <span class="en">Nationality</span>
+                        </label>
+                      </div>
+
+
+
+
+                      <div class="field">
+                        <select id="birth-country" ng-change="save(user)" ng-model="user.profile.birthplace_country" name="uBirthCountry" required>
+                          <option value="">-- Select a Country --</option>
+                          <option ng-repeat="(country,code) in countries" value="{{code}}">{{country}}</option>
+                        </select>
+                        <div ng-show="form.uBirthCountry.$touched && form.uBirthCountry.$invalid" ng-messages="form.uBirthCountry.$error" class="help-block error">
+                          <div ng-message="required">
+                            <span class="fr">Obligatoire</span>
+                            <span class="en">Required</span>
+                          </div>
+                          <div ng-message="birthcountry">
+                            <span class="fr">Valeur éronnée</span>
+                            <span class="en">Value Error</span>
+                          </div>
+                        </div>
+                        <label for="birth-country">
+                          <span class="field-state required" ng-class="{ 'error': form.uGender.$error, 'valid':form.uGender.$valid, 'touched': form.uGender.$touched }"></span>
+                          <span class="fr">Pays de naissance</span>
+                          <span class="en">Gender</span>
+                        </label>
+                      </div>
+
+
+                      <div class="field">
+                        <input name="jID" ng-model="candidature.identity_card" hidden required />
+                        <div id="id-justification" class="btn"
+                          ng-model="candidature.identity_card"
+                          name="jID"
+                          ngf-select="uploadFile(candidature.identity_card, candidature, 'identity_card') " ngf-capture="'camera'"
+                          accept="image/*, application/pdf"
+                          required
+                          >
+                          <span ng-show="!candidature.identity_card">envoyer</span>
+                          <span ng-show="candidature.identity_card" >Changer</span>
+
+                        </div>
+                        <span ng-if='upload_percentage<99'>
+                          <img src='http://mupit.icm.jhu.edu/MuPIT_Interactive/images/load.gif' height="20px" /> {{upload_percentage}} / 100
+                        </span>
+
+                        <a target='_blank'
+                          href="{{candidature.identity_card}}">
+                          <img ng-show="candidature.identity_card.indexOf('pdf')>0" height="30px" src="http://iconbug.com/data/5b/507/52ff0e80b07d28b590bbc4b30befde52.png" />
+                          <img ng-show="candidature.identity_card.indexOf('jpg')>0" height="30px"  src="http://www.fitright.co.in/images/generic-image-file-icon-hi.png" />
+                        </a>
+
+                        <div ng-show="form.jID.$touched && form.jID.$invalid" ng-messages="form.jID.$error" class="help-block error">
+                          <div ng-message="required">
+                            <span class="fr">Obligatoire</span>
+                            <span class="en">Required</span>
+                          </div>
+                          <div ng-message="identity_card">
+                            <span class="fr">Valeur éronnée</span>
+                            <span class="en">Value Error</span>
+                          </div>
+                        </div>
+                        <label class="topborder" for="id-justification">
+                          <span class="field-state required" ng-class="{ 'error': form.jID.$error, 'valid':form.jID.$valid, 'touched': form.jID.$touched }"></span>
+                          <span class="fr">Justificatif d'identité (JPG / PDF)</span>
+                          <span class="en">Justification (JPG / PDF)</span>
+                        </label>
+
+                      </div>
+
+
+                      <div class="field">
+                        <input ng-change="save(user)" type="text"
+                               placeholder="" name="uInsuranceNumber"
+                               ng-model="user.profile.social_insurance_number" required />
+                        <div ng-show="form.uInsuranceNumber.$touched && form.uInsuranceNumber.$invalid" ng-messages="form.uInsuranceNumber.$error" class="help-block error">
+                          <div ng-message="required">
+                            <span class="fr">Obligatoire</span>
+                            <span class="en">Required</span>
+                          </div>
+                        </div>
+                        <label for="insurance-number">
+                          <span class="field-state"></span>
+                          <span class="fr">Numéro de sécurité sociale</span>
+                          <span class="en">Insurance number</span>
+                        </label>
+                      </div>
+
+
+                      <div class="navigation">
+                        <a class="btn" ui-sref="candidature.option">
+                          Retour
+                        </a>
+                        <a class="btn" ng-click='navigation_inter_page = 1'>
+                          Continue
+                        </a>
+                      </div>
+
+
+              </form>
+
+
+
+  </div>
+
+
+  <div ng-show="navigation_inter_page == 1" class="">
+
+
+    <form name="form" ng-submit="form.$valid && submit()" class="css-form" novalidate>
+
+        <div class="field">
+            <textarea
+               name="uHomelandAdress"
+               ng-model="adress.street"
+               id="homeland_country"
+               placeholder="23 rue de J. KENNEDY
+    APPT 12"
+              ng-change="save(user)"
+              ng-model-options='{ debounce: 1000 }'
+              required
+            /></textarea>
+            <div ng-show="form.uHomelandAdress.$touched && form.uHomelandAdress.$invalid" ng-messages="form.uHomelandAdress.$error" class="help-block error">
+              <div ng-message="required">
+                <span class="fr">Obligatoire</span>
+                <span class="en">Required</span>
+              </div>
+            </div>
+            <label for="homeland_country">
+              <span class="field-state"></span>
+              <span class="fr">Adresse</span>
+              <span class="en">Adress</span>
+            </label>
+        </div>
+
+
+
+        <div class="field">
+
+            <input type="number"
+               name="uHomelandZip"
+               id="homeland_zip"
+               ng-model="adress.zip"
+               ng-model-options='{ debounce: 1000 }'
+               ng-change="save(user)"
+               required
+            />
+            <div ng-show="form.uHomelandZip.$touched && form.uHomelandZip.$invalid" ng-messages="form.uHomelandZip.$error" class="help-block error">
+              <div ng-message="required">
+                <span class="fr">Obligatoire</span>
+                <span class="en">Required</span>
+              </div>
+            </div>
+            <label for="homeland_zip">
+              <span class="field-state"></span>
+              <span class="fr">Code postal</span>
+              <span class="en">Zip code</span>
+            </label>
+        </div>
+
+
+        <div class="field">
+
+            <input type="text"
+               name="uHomelandCity"
+               id="homeland_city"
+               ng-model="adress.city"
+               ng-change="save(user)"
+               ng-model-options='{ debounce: 1000 }'
+               required
+            />
+            <div ng-show="form.uHomelandCity.$touched && form.uHomelandCity.$invalid" ng-messages="form.uHomelandCity.$error" class="help-block error">
+              <div ng-message="required">
+                <span class="fr">Obligatoire</span>
+                <span class="en">Required</span>
+              </div>
+            </div>
+            <label for="homeland_city">
+              <span class="field-state"></span>
+              <span class="fr">Ville</span>
+              <span class="en">City</span>
+            </label>
+        </div>
+
+        <div class="field">
+
+              <select ng-model="user.profile.homeland_country"
+                      id="homeland_country"
+                      name="uHomelandCountry"
+                      ng-change="save(user)"
+                      required
+                      >
+                <option value="">-- Select a Country --</option>
+                <option ng-repeat="(country,code) in countries" value="{{code}}">{{country}}</option>
+              </select>
+              <div ng-show="form.uHomelandCountry.$touched && form.uHomelandCountry.$invalid" ng-messages="form.uHomelandCountry.$error" class="help-block error">
+                <div ng-message="required">
+                  <span class="fr">Obligatoire</span>
+                  <span class="en">Required</span>
+                </div>
+              </div>
+              <label for="homeland_country">
+                <span class="field-state"></span>
+                <span class="fr">Pays</span>
+                <span class="en">Homeland Country</span>
+              </label>
+        </div>
+
+        <div class="field">
+
+              <input
+                id="phone"
+                type="text"
+                ng-change="save(user)"
+                placeholder="+33-320283982"
+                name="uHomelandPhone"
+                ng-pattern="phone_pattern"
+                ng-model="user.profile.homeland_phone"
+                ng-minlength="10" ng-maxlength="15" required
+              />
+              <div ng-show="form.uHomelandPhone.$touched && form.uHomelandPhone.$invalid" ng-messages="form.uHomelandPhone.$error" class="help-block error">
+                <div ng-message="required">
+                  <span class="fr">Obligatoire</span>
+                  <span class="en">Required</span>
+                </div>
+                <div ng-message="maxlength">
+                  <span class="fr">Pas plus de 11 signes</span>
+                  <span class="en">Phone no not more than 11 char</span>
+                </div>
+                <div ng-message="pattern">
+                  <span class="fr">Le numéro doit être du type [+33-123456789]</span>
+                  <span class="en">Number type [+33-123456789]</span>
+                </div>
+              </div>
+              <label for="phone">
+                <span class="field-state"></span>
+                <span class="fr">Numéro de téléphone</span>
+                <span class="en">Phone number</span>
+              </label>
+        </div>
+
+
+      </form>
+
+
+      <div class="navigation">
+        <a class="btn" ng-click="navigation_inter_page = 0">
+          Retour
+        </a>
+        <a class="btn" ng-click='navigation_inter_page = 2'>
+          Continue
+        </a>
+      </div>
+
+
+
+
+  </div>
+
+
+  <div ng-show="navigation_inter_page == 2" class="">
+
+    <form name="form" ng-submit="form.$valid && submit()" class="css-form" novalidate>
+
+
+      <div class="field">
+          <select id="family-status"
+            ng-change="save(user)"
+            name="uFamilyStatus"
+            ng-model="user.profile.family_status"
+            required
+          >
+            <option value="">--</option>
+            <option ng-repeat="(code, status) in FAMILY_STATUS_CHOICES" value="{{code}}">
+              {{status[language]}}
+            </option>
+
+          </select>
+          <div ng-show="form.uFamilyStatus.$invalid" ng-messages="form.uFamilyStatus.$error" class="help-block error">
+            <div ng-message="required">
+              <span class="fr">Obligatoire</span>
+              <span class="en">Required</span>
+            </div>
+          </div>
+          <label for="family-status">
+            <span class="field-state"></span>
+            <span class="fr">Situation familiale</span>
+            <span class="en">
+              Family Status
+            </span>
+          </label>
+      </div>
+
+
+      <div class="field">
+
+            <select
+              id="mother-tongue"
+              ng-model="user.profile.mother_tongue"
+              name="uMotherTongue"
+              ng-change="save(user)"
+              required>
+              <option value="">{{languageSelectOption[language]}}</option>
+              <option ng-repeat="(name, item) in LANGUAGES" value="{{name.split('-')[0]}}">
+                {{item.englishName}} ({{name}})
+              </option>
+            </select>
+            <div ng-show="form.uMotherTongue.$touched && form.uMotherTongue.$invalid" ng-messages="form.uMotherTongue.$error" class="help-block error">
+              <div ng-message="required">
+                <span class="fr">Obligatoire</span>
+                <span class="en">Required</span>
+              </div>
+            </div>
+            <label for="mother-tongue">
+              <span class="field-state"></span>
+              <span class="fr">Langue maternelle</span>
+              <span class="en">Mother Tongues</span>
+            </label>
+
+      </div>
+
+
+
+      <div class="field">
+
+
+            <input
+              type="text"
+              id="other-languages"
+              ng-model="user.profile.other_language"
+              ng-init = "initLanguages()"
+              hidden
+              />
+
+            <div
+              ng-repeat="item in other_language"
+             >
+
+              <select
+                ng-model="other_language[$index]"
+                ng-change="user.patch({'profile':{'other_language': other_language.join(splitChar)}}); user.profile.other_language = other_language.join(splitChar);"
+                >
+                <option value="">{{languageSelectOption[language]}}</option>
+                <option ng-repeat="(name, item) in LANGUAGES" value="{{name.split('-')[0]}}">
+                  {{item.englishName}} ({{name}})
+                </option>
+              </select>
+              <div class="remove" ng-show="!removeConfirmation[$index]"
+                   ng-init='removeConfirmation[$index]=false'
+                   ng-click="removeConfirmation[$index]=!removeConfirmation[$index]">
+              </div>
+              <div class="remove-confirm" ng-show="removeConfirmation[$index]"
+                   ng-click="removeConfirmation[$index]=!removeConfirmation[$index]"
+              >
+                <a class="no">Cancel</a>
+                <a class="yes" ng-click="other_language.splice($index,1); user.profile.other_language = other_language.join(splitChar); user.patch({'profile':{'other_language': other_language.join(splitChar)}})">Ok</a>
+              </div>
+
+              </div>
+
+            <div>
+              <a class="btn" ng-click="other_language.push(array())">
+                <span class="fr">Ajouter une langue</span>
+                <span class="en">Add a language</span>
+              </a>
+            </div>
+            <label class="topborder" for="other-languages">
+              <span class="field-state"></span>
+              <span class="fr">Autres langues parlées</span>
+              <span class="en">Other languages</span>
+            </label>
+
+      </div>
+      </form>
+
+
+      <div class="navigation">
+        <a class="btn" ng-click="navigation_inter_page = 2">
+          Retour
+        </a>
+        <a class="btn" ng-click="navigation_inter_page = 4">
+          Continue
+        </a>
+      </div>
+
+
+  </div>
+
+
+  <div ng-show="navigation_inter_page == 4" class="" >
+
+    <form name="form" ng-submit="form.$valid && submit()" class="css-form" novalidate enctype="multipart/form-data">
+
+
+        <div class="field">
+                <input id="photo" ng-model="user.profile.photo" required hidden />
+                <div class="photo-upload" ng-model="user.profile.photo"
+                  ngf-select="uploadFile(user.profile.photo, user, form)" name="uPhoto"  ngf-capture="'camera'"
+                  accept="image/*" ngf-max-size="10MB" ng-style="{'background-image':'url('+user.profile.photo+')'}"
+                  >
+                  <span ng-if="!user.profile.photo">Choisir une photo</span>
+                </div>
+                <span ng-if='upload_percentage<99'>
+                  <img src='http://mupit.icm.jhu.edu/MuPIT_Interactive/images/load.gif' height="20px" /> {{upload_percentage}} / 100
+                </span>
+
+                <label class="topborder" for="photo">
+                  <div ng-show="form.uPhoto.$invalid" ng-messages="form.uPhoto.$error" class="help-block error">
+                    <div ng-message="maxSize">
+                      <span class="fr">Photo trop importante < 10MB</span>
+                      <span class="en">Photo trop importante < 10MB</span>
+                    </div>
+                    <div ng-message="required">
+                      <span class="fr">Obligatoire</span>
+                      <span class="en">Required</span>
+                    </div>
+                  </div>
+                  <span class="field-state"></span>
+                  <span class="fr">Photo d'identité (image)</span>
+                  <span class="en">Id Photo (image only) </span>
+                </label>
+        </div>
+
+
+      </form>
+      <div class="navigation">
+        <a class="btn" ng-click="navigation_inter_page = 3">
+          Retour
+        </a>
+        <a class="btn" ui-sref="candidature.cursus">
+          Continue
+        </a>
+      </div>
+
+
+
+  </div>
+
+
+
+
+</div>

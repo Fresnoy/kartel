@@ -21,7 +21,7 @@ angular.module('memoire',
               [
                   'memoire.controllers', 'memoire.directives', 'ui.router',
                   'restangular', 'angular-jwt',
-                  'ngAnimate', 'chieffancypants.loadingBar', 'ui.bootstrap',
+                  'ngAnimate', 'chieffancypants.loadingBar', 'ui.bootstrap', 'ngMessages',
                   'ngSanitize', 'markdown', '720kb.datepicker',
                   'iso-3166-country-codes', 'ngFileUpload', 'ngPlacesAutocomplete',
               ])
@@ -143,6 +143,26 @@ angular.module('memoire',
       ageDate = new Date(ageDifMs); # miliseconds from epoch
       return Math.abs(ageDate.getUTCFullYear() - 1970)
 )
+
+# catch write data
+.factory('httpInterceptor', ['$q', '$rootScope', ($q, $rootScope) ->
+        return {
+            request: (config) ->
+                if(config.method == "PUT" || config.method == "PATCH")
+                    $rootScope.$broadcast('data:write')
+                $rootScope.$broadcast('loading:start')
+                return config || $q.when(config)
+            response: (response)  ->
+                $rootScope.$broadcast('data:read')
+                return response || $q.when(response)
+            responseError: (response)  ->
+                $rootScope.$broadcast('data:read')
+                return response || $q.when(response)
+        }
+])
+.config(['$httpProvider', ($httpProvider) ->
+    $httpProvider.interceptors.push('httpInterceptor')
+])
 
 
 
@@ -272,21 +292,19 @@ angular.module('memoire',
         $stateProvider.state('candidature',
                 url: '/candidature'
                 views:
-                  # 'navigation_view':
-                  #    templateUrl: 'views/partials/navigation-application.html'
                   'main_view':
                     templateUrl: 'views/candidature/index.html'
                     controller: 'ParentCandidatureController'
 
                   'main_view.application_content_view':
-                      templateUrl: 'views/candidature/home.html'
+                      templateUrl: 'views/candidature/pages/00-landing.html'
 
                   'main_view.application_step_view':
                       templateUrl: 'views/candidature/partials/step-infos.html'
-
-                  'main_view.application_account_view':
-                      templateUrl: 'views/candidature/account/account-status.html'
-                      controller: 'AccountBarController'
+                  #
+                  # 'main_view.application_account_view':
+                  #     templateUrl: 'views/candidature/account/account-status.html'
+                  #     controller: 'AccountBarController'
         )
         # ACCOUNT
         $stateProvider.state('candidature.account',
@@ -325,110 +343,73 @@ angular.module('memoire',
         )
 
 
-        $stateProvider.state('candidature.account.change-password-with-token',
-                  url: '/change-password/:token/:route'
+        $stateProvider.state('candidature.account.init-password-with-token',
+                  url: '/init-password/:token/:route'
                   views:
                     'account_content_view':
-                        templateUrl: 'views/candidature/account/change_password.html'
+                        templateUrl: 'views/candidature/account/init_password.html'
                         controller: 'AccountChangePasswordController'
         )
 
 
         # Create User
         $stateProvider.state('candidature.account.create-user',
-                  url: '/identification'
+                  url: '/create'
                   views:
                     'account_content_view':
-                      templateUrl: 'views/candidature/account/identification.html'
+                      templateUrl: 'views/candidature/account/create.html'
                       controller: 'CreateAccountController'
         )
 
-        # Candidature 01 - Resume or new App
-        $stateProvider.state('candidature.resume',
-                  url: '/resume'
-                  views:
-                    'application_content_view':
-                        templateUrl: 'views/candidature/resume.html'
-                        controller: 'ResumeAppController'
-        )
-
-
-        # Candidature 03 - etat-civil
-        $stateProvider.state('candidature.etat-civil-1',
-                  url: '/etat-civil-1'
-                  views:
-                    'application_content_view':
-                        templateUrl: 'views/candidature/etat_civil.html'
-                        controller: 'CivilStatusController'
-                  requiresLogin: true
-
-        )
-
-        # Candidature 04 - Adresse
-        $stateProvider.state('candidature.etat-civil-adress',
-                    url: '/etat-civil-adress'
+        # Candidature 02 - Choose type of candidature
+        $stateProvider.state('candidature.option',
+                    url: '/option'
                     views:
                       'application_content_view':
-                          templateUrl: 'views/candidature/etat_civil_adress.html'
-                          controller: 'CivilStatusAdressController'
-                    requiresLogin: true
+                          templateUrl: 'views/candidature/pages/02-option.html',
+                          controller: ($rootScope) -> $rootScope.loadInfos($rootScope)
+          )
 
+          # Candidature 03 - Choose type of candidature
+        $stateProvider.state('candidature.personnal-infos',
+                      url: '/personnnal-infos'
+                      views:
+                        'application_content_view':
+                            templateUrl: 'views/candidature/pages/03-personnal_infos.html',
+                            controller: 'PersonnalInfosController'
         )
 
-        # Candidature 05 - Languages
-        $stateProvider.state('candidature.etat-civil-language',
-                    url: '/etat-civil-language'
-                    views:
-                      'application_content_view':
-                          templateUrl: 'views/candidature/etat_civil_language.html'
-                          controller: 'CivilStatusLanguageController'
-                    requiresLogin: true
 
-        )
 
-        # Candidature 06 - etat-civil_photo
-        $stateProvider.state('candidature.etat-civil-photo',
-                  url: '/photo'
-                  views:
-                    'application_content_view':
-                        templateUrl: 'views/candidature/etat_civil_photo.html'
-                        controller: 'ProfilePhotoController'
-                  requiresLogin: true
-
-        )
-
-        # Candidature 07 - cursus
+        # Candidature 04 - cursus
         $stateProvider.state('candidature.cursus',
                   url: '/cursus'
                   views:
                     'application_content_view':
-                        templateUrl: 'views/candidature/cursus.html'
+                        templateUrl: 'views/candidature/pages/04-cursus.html'
                         controller: 'CursusController'
-                  requiresLogin: true
 
         )
 
-        # Candidature 08 - Media
-        $stateProvider.state('candidature.media',
-                    url: '/media'
+        # Candidature 05 - documents
+        $stateProvider.state('candidature.documents',
+                  url: '/documents'
+                  views:
+                    'application_content_view':
+                        templateUrl: 'views/candidature/pages/05-docs.html'
+                        controller: 'MediaController'
+
+        )
+        # Candidature 09 - Messages / entretiens
+        $stateProvider.state('candidature.messages',
+                    url: '/messages'
                     views:
                       'application_content_view':
-                          templateUrl: 'views/candidature/media.html'
+                          templateUrl: 'views/candidature/pages/06-messages.html'
                           controller: 'MediaController'
-                    requiresLogin: true
 
         )
 
-        # Candidature 09 - Entretiens
-        $stateProvider.state('candidature.interview',
-                    url: '/interview'
-                    views:
-                      'application_content_view':
-                          templateUrl: 'views/candidature/interview.html'
-                          controller: 'InterviewController'
-                    requiresLogin: true
-
-        )
 
         # Candidature 10 - Message
         $stateProvider.state('candidature.message',
