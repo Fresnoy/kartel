@@ -400,7 +400,7 @@ angular.module('memoire',
                         controller: 'MediaController'
 
         )
-        # Candidature 09 - Messages / entretiens
+        # Candidature 06 - Messages / entretiens
         $stateProvider.state('candidature.messages',
                     url: '/messages'
                     views:
@@ -410,56 +410,26 @@ angular.module('memoire',
 
         )
 
-
-        # Candidature 10 - Message
-        $stateProvider.state('candidature.message',
-                    url: '/message'
-                    views:
-                      'application_content_view':
-                          templateUrl: 'views/candidature/message.html'
-                          controller: 'MessageController'
-                    requiresLogin: true
-
-        )
-
-        # Candidature 11 - Confirmation
-        $stateProvider.state('candidature.confirmation',
+        # Candidature 07 - finalisation / confiramtion
+        $stateProvider.state('candidature.finalization',
                     url: '/confirmation'
                     views:
                       'application_content_view':
-                          templateUrl: 'views/candidature/confirmation.html'
-                          controller: 'ConfirmationController'
+                          templateUrl: 'views/candidature/pages/07-validation-finale.html'
+                          controller: ($rootScope) -> $rootScope.loadInfos($rootScope)
                     requiresLogin: true
-
         )
-
 
         # Candidature FIN - completed
         $stateProvider.state('candidature.completed',
                   url: '/completed'
                   views:
                     'application_content_view':
-                        templateUrl: 'views/candidature/finish.html'
-                       # controller: 'CursusController'
+                        templateUrl: 'views/candidature/pages/08-completed.html'
+                        controller: ($rootScope) -> $rootScope.loadInfos($rootScope)
                   requiresLogin: true
 
         )
-
-
-        # Candidature
-        $stateProvider.state('candidature.step',
-                  url: '/:lang/:step'
-                  views:
-                    # @ root view
-                    'main_content_view@':
-                        templateUrl: 'views/candidature/form.html'
-                        controller: 'CandidatureFormController'
-
-                    'main_content_view.application_breadcrumb_view':
-                        templateUrl: 'views/candidature/breadcrumb.html'
-                        controller: 'CandidatureBreadCrumbController'
-        )
-
 
 ])
 

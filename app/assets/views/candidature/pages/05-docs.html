@@ -139,7 +139,12 @@
 
   <div ng-show='navigation_inter_page == 1'>
     <form name="form" ng-submit="form.$valid && submit()" class="css-form" novalidate enctype="multipart/form-data">
-        <h2>Project</h2>
+        <h2>Projets envisagés durant le cursus du Fresnoy</h2>
+        <p><strong>1re année </strong>Travail sur les supports traditionnels,
+    argentiques et électroniques, du cinéma, de la
+    photographie, de la vidéo et des arts visuels.<br>
+    <strong>2e année</strong> Travail sur les supports de la création
+    numérique et sur les écritures digitales.</p>
         <h3>Première année</h3>
         <div class="field">
                 <input name="cProject1" ng-model="candidature.considered_project_1" hidden required />
@@ -186,7 +191,7 @@
                     ng-model="candidature.artistic_referencies_project_1"
                     ng-model-options='{ debounce: 1000 }'
                     ng-change="candidature.patch({artistic_referencies_project_1 : candidature.artistic_referencies_project_1})"
-                    placeholder=""
+                    placeholder="Références artistiques (20 lignes)"
                     rows="20"
                     name=cARP1
                     required
@@ -246,7 +251,7 @@
                 </div>
                 <label class="topborder" for="considered-project-2">
                   <span class="field-state required"></span>
-                  <span class="fr">Projet envisagé <br/>pour la première année (1 page) </span>
+                  <span class="fr">Projet envisagé <br/>pour la deuxieme année (1 page) </span>
                   <span class="en"> </span>
                 </label>
           </div>
@@ -256,7 +261,7 @@
                       ng-model="candidature.artistic_referencies_project_2"
                       ng-model-options='{ debounce: 1000 }'
                       ng-change="candidature.patch({artistic_referencies_project_2 : candidature.artistic_referencies_project_2})"
-                      placeholder=""
+                      placeholder="Références artistiques (20 lignes)"
                       rows="20"
                       name=cARP2
                       required
@@ -295,7 +300,11 @@
   <div ng-show='navigation_inter_page == 2'>
 
 
-          <h2>Élement Visuel</h2>
+          <h2>Élements Visuels</h2>
+          <p>Une œuvre ou un ensemble d’extraits d’œuvres
+réalisés par le candidat et lui paraissant
+particulièrement représentatif de sa démarche
+artistique ou de son travail. </p>
           <form name="form" ng-submit="form.$valid && submit()" class="css-form" novalidate>
                 <div class="field">
                         <input
@@ -320,11 +329,12 @@
                           </div>
                           <label for="video">
                             <span class="field-state required"></span>
-                            <span class="fr">Lien vidéo (8 minutes maximum)</span>
+                            <span class="fr">Lien vidéo (8 minutes maximum) format mp4</span>
                             <span class="en">Video Links</span>
                           </label>
                 </div>
-                <p>Si vous n'avez pas de lien, envoyez nous la vidéo : </p>
+                <p>Si vous n'avez pas de lien, envoyez nous la vidéo, nous la convertirons <a href='https://vimeo.com/help/compression' target='_blank'>
+                  voir les spécifications pour un rendu optimal</a>  : </p>
                 <span ng-if='upload_percentage<99'>
                   <img src='http://mupit.icm.jhu.edu/MuPIT_Interactive/images/load.gif' height="20px" /> {{upload_percentage}} / 100
                 </span>
@@ -343,9 +353,12 @@
                       <span class="en">No vidéo file</span>
                     </div>
                   </div>
+                  <iframe height="100px" width="200px" ng-if="candidature.presentation_video" src="{{trustSrc(candidature.presentation_video)}}" />
                   <a class="btn" ng-show="candidature.presentation_video.indexOf('player.vimeo.com/video')>0" ng-click='deleteVimeoVideo(candidature.presentation_video.split("/").pop(), candidature, "presentation_video")'>
                       Effacer la vidéo
                   </a>
+
+
 
 
                 <h3>Autres éléments</h3>

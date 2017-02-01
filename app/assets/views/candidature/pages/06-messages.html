@@ -9,9 +9,21 @@
 
   <div ng-show="navigation_inter_page == 0" >
 
+
     <form name="form" ng-submit="form.$valid && submit()" class="css-form" novalidate enctype="multipart/form-data">
 
-
+        <h2>Entrevue</h2>
+        <p>À l’issue de la présélection, 65 candidats au
+maximum sont invités à se présenter aux épreuves
+d’admission. Les épreuves de la sélection finale
+se déroulent au Fresnoy - Studio national.
+Les candidats présélectionnés sont conviés à
+un entretien avec un jury entre le lundi 3 et
+le vendredi 7 juillet 2017.<br>
+Les candidats hors continent européen, ont la
+possibilité de passer l’entretien oral au Fresnoy
+ou par skype (Le Fresnoy ne peut être tenu pour
+responsable en cas de problème technique).</p>
           <div class="field">
             <input
               type="checkbox"
@@ -83,7 +95,8 @@
 
           </div>
 
-
+          <h2>Eléments supplémentaires</h2>
+          <p>Texte élément suplémentaire</p>
           <div class="field">
             <input
               type="checkbox"
@@ -164,7 +177,7 @@
         <a class="btn" ng-click="navigation_inter_page = 0">
           Retour
         </a>
-        <a class="btn" ng-click="navigation_inter_page = 2">
+        <a class="btn" ui-sref="candidature.finalization">
           Continue
         </a>
       </div>

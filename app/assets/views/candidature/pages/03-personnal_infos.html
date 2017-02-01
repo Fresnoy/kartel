@@ -537,7 +537,7 @@
         <div class="field">
                 <input id="photo" ng-model="user.profile.photo" required hidden />
                 <div class="photo-upload" ng-model="user.profile.photo"
-                  ngf-select="uploadFile(user.profile.photo, user, form)" name="uPhoto"  ngf-capture="'camera'"
+                  ngf-select="uploadPhoto(user.profile.photo, user, form)" name="uPhoto"  ngf-capture="'camera'"
                   accept="image/*" ngf-max-size="10MB" ng-style="{'background-image':'url('+user.profile.photo+')'}"
                   >
                   <span ng-if="!user.profile.photo">Choisir une photo</span>

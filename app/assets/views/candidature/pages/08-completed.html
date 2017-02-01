@@ -1,0 +1,67 @@
+<div class="content complete">
+
+  <div class="navigation header">
+    <ul class="list-inline small"><li class="help"><a ng-click='help("option")'>Aide</a></li> | <li><a ng-click="logout()">Déconnection</a></li></ul>
+  </div>
+
+            <div class="green">
+                  <h1>
+                    Candidature
+                  </h1>
+
+                  <p>
+                    VOTRE
+            CANDIDATURE
+            A BIEN ÉTÉ
+            TRANSMISE.
+            N° {{candidature.current_year_application_count}}
+                  </p>
+
+            </div>
+
+            <div ng-if="!candidature.application_complete">
+              <p>Nous n'avons pas encore validé cette candidature, vous en serez informer très bientot</p>
+            </div>
+            <div ng-if="candidature.application_complete">
+              <p>Nous considérons que cette candidature est complete</p>
+            </div>
+
+            <h2>Entretiens</h2>
+            <p>Les candidats présélectionnés sont conviés à
+        un entretien avec un jury entre le lundi 3 et
+        le vendredi 7 juillet 2017. </p>
+
+          <h2>Annonce des résultats</h2>
+          <p>La liste des 24 admis sera affichée au Fresnoy
+        et mise en ligne sur son site www.lefresnoy.net,
+        le lundi 10 juillet 2017. Les résultats peuvent être
+        communiqués par téléphone le jour même de
+        14h00 à 18h00 au +33(0)3 20 28 38 53.<br>
+        Les admissions sont valables pour l’année scolaire
+        2017–2018. Aucun candidat admis ne peut
+        prétendre différer son intégration, ni se prévaloir
+        de son admission pour une autre année scolaire.</p>
+            <div ng-show="candidature.physical_content">
+              <h2>Réception des envois postaux</h2>
+              <div ng-if="candidature.physical_content_description">
+                Voici ce que vous nous avez envoyez :
+                <p ng-bind="candidature.physical_content_description"></p>
+              </div>
+              <div ng-if="!candidature.physical_content_received">
+                <p>x Nous n'avons pas encore reçus de courrier de votre part</p>
+              </div>
+              <div ng-if="candidature.physical_content_received">
+                <p>√ Nous avons reçu ce courrier</p>
+              </div>
+
+
+
+            </div>
+
+
+
+
+
+
+
+</div>

@@ -553,11 +553,11 @@ angular.module('memoire.controllers', ['memoire.services'])
 
       Candidatures.getList().then((candidatures) ->
         candidature = candidatures[candidatures.length-1]
+        scope.candidature = candidature
         if(candidature.application_completed)
           $state.go("candidature.completed")
           return
 
-        scope.candidature = candidature
         if(scope.candidature.cursus_justifications)
           getGalleryWithMedia(scope.candidature.cursus_justifications, scope.cursus_justifications)
         else
@@ -697,7 +697,7 @@ angular.module('memoire.controllers', ['memoire.services'])
   )
 
 
-  $scope.uploadFile = (data, model, form) ->
+  $scope.uploadPhoto = (data, model, form) ->
 
     infos =
       url: model.url,
@@ -716,21 +716,12 @@ angular.module('memoire.controllers', ['memoire.services'])
       ,(evt) ->
         $rootScope.upload_percentage = parseInt(100.0 * evt.loaded / evt.total);
     )
-
-
-
-
-
-
-
-
-
 )
 
 
 #cursus
 .controller('CursusController', (
-        $rootScope, $scope, $q, $state, $filter
+        $rootScope, $scope, $q, $state, $filter,
         Users, ArtistsV2, Restangular, RestangularV2, Candidatures, Media, Galleries,
         ISO3166, Upload,
       ) ->
@@ -780,19 +771,15 @@ angular.module('memoire.controllers', ['memoire.services'])
 
 # media
 .controller('MediaController', (
-        $rootScope, $scope, $q, $state, $filter
+        $rootScope, $scope, $q, $state, $filter, $sce,
         Users, ArtistsV2, Restangular, RestangularV2, Candidatures, Media, Galleries,
         ISO3166, Upload, VimeoToken, Vimeo
       ) ->
 
-
-    if(!$scope.isAuthenticated)
-      $state.go("candidature.account.login")
-
-
     $rootScope.loadInfos($rootScope)
 
-
+    $scope.trustSrc = (src) ->
+      return $sce.trustAsResourceUrl(src);
 
 
     $scope.deleteVimeoVideo = (idVimeo, model, field) ->
@@ -900,29 +887,5 @@ angular.module('memoire.controllers', ['memoire.services'])
           "Spark Hire"
           "Other"
     ]
-
-)
-
-
-
-.controller('ConfirmationController', (
-        $rootScope, $scope, $state, Candidatures,
-      ) ->
-
-    if(!$scope.isAuthenticated)
-      $state.go("candidature")
-
-
-    $rootScope.loadInfos($rootScope)
-
-    $scope.validation = false
-
-
-    $scope.valideCandidature = (candidature) ->
-
-      candidature.application_completed = true
-      candidature.save()
-
-      $state.go("candidature.completed")
 
 )
