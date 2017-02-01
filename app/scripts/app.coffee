@@ -64,7 +64,7 @@ angular.module('memoire',
 
     jwtOptionsProvider.config({
       tokenGetter: ['options', (options) ->
-        return localStorage.getItem('token')        
+        return localStorage.getItem('token')
       ],
       authHeader: "Authorization"
       authPrefix: ""
@@ -157,7 +157,7 @@ angular.module('memoire',
                 return response || $q.when(response)
             responseError: (response)  ->
                 $rootScope.$broadcast('data:read')
-                return response || $q.when(response)
+                return $q.reject(response);
         }
 ])
 .config(['$httpProvider', ($httpProvider) ->

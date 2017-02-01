@@ -333,7 +333,7 @@ angular.module('memoire.controllers', ['memoire.services'])
                                 ) ->
 
     # localStorage.clear()
-    console.log(localStorage)
+    # console.log(localStorage)
 
     $rootScope.step.current = 1
     $rootScope.step.title = "Login"
@@ -350,11 +350,6 @@ angular.module('memoire.controllers', ['memoire.services'])
     $scope.login = (form, params) ->
       Login.post(params)
       .then((auth) ->
-            console.log("OK LOGIN")
-            console.log(auth)
-            if(!auth.token)
-              params.error = "Error login"
-              return
             localStorage.setItem('token', auth.token)
             # set header
             $http.defaults.headers.common.Authorization = "JWT "+ localStorage.getItem('token')
