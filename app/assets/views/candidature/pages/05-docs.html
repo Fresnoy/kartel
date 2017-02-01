@@ -344,7 +344,7 @@ artistique ou de son travail. </p>
                   ngf-select="uploadVimeo(video, candidature, 'presentation_video')"
                   ngf-capture="'camera'"
                   accept="video/*"
-                  ng-show="candidature.presentation_video.indexOf('player.vimeo.com/video')<0"
+                  ng-show="!candidature.presentation_video"
                   >
                   Uploader une vidéo</button>
                   <div ng-show="form.uVideo.$invalid" ng-messages="form.uVideo.$error" class="help-block error">
