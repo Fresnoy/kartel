@@ -93,10 +93,16 @@ angular.module('memoire.services', ['restangular'])
         return Restangular.service('production/productionorganizationtask/')
 )
 
-.factory('Authentification', (Restangular) ->
+.factory('Authentification', (RestangularV2) ->
+        return RestangularV2.withConfig((RestangularConfigurer) ->
+              # RestangularConfigurer.setBaseUrl(config.rest_uri_v2)
+        ).service('rest-auth')
+)
+
+.factory('Login', (Restangular) ->
         return Restangular.withConfig((RestangularConfigurer) ->
               RestangularConfigurer.setBaseUrl(config.rest_uri_v2)
-        ).service('rest-auth')
+        ).service('rest-auth/login/')
 )
 
 

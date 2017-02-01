@@ -328,9 +328,12 @@ angular.module('memoire.controllers', ['memoire.services'])
 )
 
 .controller('LoginController', (
-                                  $rootScope, $scope, Restangular, RestangularV2, $state, $http
-                                  Authentification, authManager, jwtHelper, VimeoToken, Vimeo
+  $rootScope, $scope, RestangularV2, $state, $http, Login,
+  Authentification, authManager, jwtHelper
                                 ) ->
+
+    # localStorage.clear()
+    console.log(localStorage)
 
     $rootScope.step.current = 1
     $rootScope.step.title = "Login"
@@ -345,18 +348,23 @@ angular.module('memoire.controllers', ['memoire.services'])
       $state.go("candidature.option")
 
     $scope.login = (form, params) ->
-        Authentification.one("login/").customPOST(params).then((auth) ->
-              localStorage.setItem('token', auth.token)
-              # set header
-              $http.defaults.headers.common.Authorization = "JWT "+ localStorage.getItem('token')
-              authManager.authenticate()
-              $state.go("candidature.option")
-            , (error)->
-              #error
-              console.log(error)
+      Login.post(params)
+      .then((auth) ->
+            console.log("OK LOGIN")
+            console.log(auth)
+            if(!auth.token)
               params.error = "Error login"
-              $scope.logout()
-        )
+              return
+            localStorage.setItem('token', auth.token)
+            # set header
+            $http.defaults.headers.common.Authorization = "JWT "+ localStorage.getItem('token')
+            authManager.authenticate()
+            $state.go("candidature.option")
+          , () ->
+            console.log("error")
+            params.error = "Error login"
+            $scope.logout()
+     )
 
     $scope.logout = () ->
       Authentification.one("logout/").post().then((auth) ->

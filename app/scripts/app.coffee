@@ -64,7 +64,7 @@ angular.module('memoire',
 
     jwtOptionsProvider.config({
       tokenGetter: ['options', (options) ->
-         return localStorage.getItem('token');
+        return localStorage.getItem('token')        
       ],
       authHeader: "Authorization"
       authPrefix: ""
