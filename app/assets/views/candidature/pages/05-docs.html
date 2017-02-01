@@ -56,7 +56,7 @@
                     accept="application/pdf"
                     required
                     >
-                    <span ng-show="!candidature.justification_letter">envoyer PDF</span>
+                    <span ng-show="!candidature.justification_letter">envoyer votre lettre de motivation au format pdf</span>
                     <span ng-show="candidature.justification_letter" >Changer</span>
                   </div>
                   <span ng-if='upload_percentage<99'>
@@ -95,7 +95,7 @@
                     accept="application/pdf"
                     required
                     >
-                    <span ng-show="!candidature.curriculum_vitae">envoyer PDF</span>
+                    <span ng-show="!candidature.curriculum_vitae">envoyer votre Biographie PDF</span>
                     <span ng-show="candidature.curriculum_vitae" >Changer</span>
                   </div>
                   <span ng-if='upload_percentage<99'>
@@ -155,7 +155,7 @@
                   accept="application/pdf"
                   required
                   >
-                  <span ng-show="!candidature.considered_project_1">envoyer PDF</span>
+                  <span ng-show="!candidature.considered_project_1">Project envisagé au format PDF</span>
                   <span ng-show="candidature.considered_project_1" >Changer</span>
                 </div>
                 <span ng-if='upload_percentage<99'>
@@ -191,7 +191,7 @@
                     ng-model="candidature.artistic_referencies_project_1"
                     ng-model-options='{ debounce: 1000 }'
                     ng-change="candidature.patch({artistic_referencies_project_1 : candidature.artistic_referencies_project_1})"
-                    placeholder="Références artistiques (20 lignes)"
+                    placeholder="Références artistiques (20 lignes max)"
                     rows="20"
                     name=cARP1
                     required
@@ -227,7 +227,7 @@
                   accept="application/pdf"
                   required
                   >
-                  <span ng-show="!candidature.considered_project_2">envoyer PDF</span>
+                  <span ng-show="!candidature.considered_project_2">Project envisagé au format PDF</span>
                   <span ng-show="candidature.considered_project_2" >Changer</span>
                 </div>
                 <span ng-if='upload_percentage<99'>
@@ -261,7 +261,7 @@
                       ng-model="candidature.artistic_referencies_project_2"
                       ng-model-options='{ debounce: 1000 }'
                       ng-change="candidature.patch({artistic_referencies_project_2 : candidature.artistic_referencies_project_2})"
-                      placeholder="Références artistiques (20 lignes)"
+                      placeholder="Références artistiques (20 lignes max)"
                       rows="20"
                       name=cARP2
                       required
