@@ -523,6 +523,7 @@ angular.module('memoire.controllers', ['memoire.services'])
 
       Upload.upload(infos)
       .then((resp) ->
+          console.log(resp)
           model[field] = resp.data[field]
         ,(resp) ->
           console.log('Error status: ' + resp.status);

@@ -149,7 +149,7 @@
         <div class="field">
                 <input name="cProject1" ng-model="candidature.considered_project_1" hidden required />
                 <div id="considered-project-1" class="btn btn-inv"
-                  ng-model="candidature.justification_letter"
+                  ng-model="candidature.considered_project_1"
                   name="cJustification"
                   ngf-select="uploadFile(candidature.considered_project_1, candidature, 'considered_project_1') " ngf-capture="'camera'"
                   accept="application/pdf"
@@ -220,8 +220,8 @@
         <h3>Deuxième année</h3>
         <div class="field">
                 <input name="cProject2" ng-model="candidature.considered_project_2" hidden required />
-                <div id="considered-project-1" class="btn btn-inv"
-                  ng-model="candidature.justification_letter"
+                <div id="considered-project-2" class="btn btn-inv"
+                  ng-model="candidature.considered_project_2"
                   name="cJustification"
                   ngf-select="uploadFile(candidature.considered_project_2, candidature, 'considered_project_2') " ngf-capture="'camera'"
                   accept="application/pdf"
