@@ -297,7 +297,8 @@ angular.module('memoire',
                     controller: 'ParentCandidatureController'
 
                   'main_view.application_content_view':
-                      templateUrl: 'views/candidature/pages/00-landing.html'
+                      templateUrl: 'views/candidature/pages/00-landing.html',
+                      controller: () -> localStorage.clear()
 
                   'main_view.application_step_view':
                       templateUrl: 'views/candidature/partials/step-infos.html'
