@@ -1,5 +1,8 @@
 <div class="content landing-page" ng-init='navigation_inter_page = 0'>
 
+
+  <ng-include src="'views/candidature/partials/navigation-header.html'"></ng-include>
+
   <div ng-show="navigation_inter_page == 0" class="" >
       <h1>Selection</h1>
 
@@ -22,7 +25,7 @@
 
   <div ng-show="navigation_inter_page == 1" class="">
       <h1>Procédure de sélection</h1>
-      
+
 
       <h2>Condition d'accès</h2>
       <p>La procédure de sélection est ouverte à tous

@@ -1,8 +1,6 @@
 <div class="content landing-page">
 
-  <div class="navigation header">
-    <ul class="list-inline small"><li class="help"><a ng-click='help("option")'>Aide</a></li> | <li><a ng-click="logout()">Déconnection</a></li></ul>
-  </div>
+  <ng-include src="'views/candidature/partials/navigation-header.html'"></ng-include>
 
   <h1>Selection</h1>
   <div ng-show="navigation_inter_page == 0" class="" >
