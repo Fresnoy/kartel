@@ -13,7 +13,22 @@
       </p>
 
       <a class="btn grey" ng-click="navigation_inter_page = 1" >Postuler par courrier</a>
-      <a class="btn green" ui-sref="candidature.personnal-infos">Postuler en ligne</a>
+
+        <span ng-if="user.profile.birthdate">
+          <a class="btn green" ui-sref="candidature.finalization">
+            <span class="fr">Continuer l'inscription en ligne</span>
+            <span class="en">Resumer applicaiton</span>
+          </a>
+        </span>
+        <span ng-if="!user.profile.birthdate">
+          <a class="btn green" ui-sref="candidature.personnal-infos">
+                <span class="fr">Postuler en ligne</span>
+                <span class="en">Online application</span>
+          </a>
+        </span>
+
+
+
 
 
   </div>
