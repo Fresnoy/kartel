@@ -1,11 +1,24 @@
-<div class="student-app">
+<div class="student-app container-fluid">
     <div class="row">
-      <div class="col-xs-2 col-md-1 sidebar">
+      <div class="visible-md visible-lg col-md-1 sidebar ">
           <a href="http://www.lefresnoy.net" target="_blank">
             <img src="images/candidature/fresnoy-bandeau.jpg"  />
           </a>
       </div>
-      <div class="col-xs-9 col-md-5" ui-view="application_content_view"></div>
-      <div class="col-xs-1 col-md-6 visible-md" ui-view="application_step_view"></div>
+      <div class="col-xs-offset-1 col-xs-10 col-md-offset-0 col-md-5 col-lg-4" ui-view="application_content_view"></div>
+      <div class="col-md-6 col-lg-7 right-screen">
+        <div class="">
+          <div class="bg" style="background-image:url('images/candidature/artworks/{{current_display_screen.image}}')">
+
+              <div class="step-infos">
+                    <div class="current">{{step.current}}</div>
+                    <div class="total">/ {{step.total}}</div>
+                    <div class="title">{{step.title}}</div>
+              </div>
+
+          </div>
+        </div>
+
+      </div>
     </div>
 </div>

@@ -378,8 +378,9 @@ angular.module('memoire.controllers', ['memoire.services'])
       $scope.edit_email = false
       $scope.send_email = 2
 
-      $rootScope.step.current = 2
+      $rootScope.step.current = "02"
       $rootScope.step.title = "Identification"
+      $rootScope.current_display_screen = $rootScope.screen.login
 
       # init user form
       if(!$scope.user)
@@ -430,12 +431,35 @@ angular.module('memoire.controllers', ['memoire.services'])
 
   $rootScope.__cache = new Date().getTime()
 
+  # Media
+  $rootScope.screen = []
+  $rootScope.screen =
+      home:
+        image:"renaud_duval_sealine_excroissance_i.jpg"
+        copyright:"Abtin Sarabi 2017"
+        position: {x:0,y:0}
+      login:
+        image:"clea-coudsy40.jpg"
+        copyright:"Abtin Sarabi 2017"
+        position: {x:0,y:0}
+      option:
+        image:"abtin-sarabi_si-l’homme-a-temps-avait-ouvert-ses-yeux-egares_2016_1.jpg"
+        copyright:"Abtin Sarabi 2017"
+        position: {x:0,y:0}
+      personnal:
+        image:"baptiste-rabichon_diamonds_2016"
+        copyright:"Abtin Sarabi 2017"
+        position: {x:0,y:0}
+
+
+  $rootScope.current_display_screen = $rootScope.screen.home
+  console.log($rootScope.screen)
+
   # init step in parent controller
   $rootScope.step = []
-  $rootScope.step.current = 0
-  $rootScope.step.next = $rootScope.step.current + 1
+  $rootScope.step.current = "00"
   $rootScope.step.total = 12
-  $rootScope.step.title = "welcom"
+  $rootScope.step.title = "Welcome"
 
   # navigation
   $rootScope.navigation_inter_page = 0
@@ -443,9 +467,7 @@ angular.module('memoire.controllers', ['memoire.services'])
   # Dates
   $rootScope.current_year = new Date().getFullYear()
   $rootScope.age_min = 18
-  $rootScope.age_max = 35
-  $rootScope.deadline = new Date(2017, 4, 29, 23, 59, 59)
-  $rootScope.deadline_text = "vendredi 29 avril 2017 minuit"
+  $rootScope.age_max = 36
 
 
   # write data var
@@ -601,6 +623,7 @@ angular.module('memoire.controllers', ['memoire.services'])
   $rootScope.loadInfos($rootScope)
 
   $scope.save = (model) ->
+
     model_copy =  RestangularV2.copy(model)
     if model_copy.profile.photo
       delete model_copy.profile.photo
@@ -613,8 +636,8 @@ angular.module('memoire.controllers', ['memoire.services'])
     model_copy.save()
 
 
-  $scope.birthdateMax = $filter('date')(new Date($rootScope.current_year-$rootScope.age_min,11,31), 'yyyy-MM-dd')
-  $scope.birthdateMin = $filter('date')(new Date($rootScope.current_year-$rootScope.age_max+1,11,31), 'yyyy-MM-dd')
+  $scope.birthdateMin = $filter('date')(new Date($rootScope.current_year-$rootScope.age_min,11,31), 'yyyy-MM-dd')
+  $scope.birthdateMax = $filter('date')(new Date($rootScope.current_year-$rootScope.age_max,0,0), 'yyyy-MM-dd')
 
   # Gender
   $scope.gender =
