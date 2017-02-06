@@ -441,7 +441,18 @@ angular.module('memoire',
         $rootScope.$state = $state
         $rootScope.$stateParams = $stateParams
         # $rootScope.loginService = loginService
+
+
+
 ])
+
+.run(($rootScope, $templateCache) ->
+  # remove cache HTML template (for update)
+  $rootScope.$on('$viewContentLoaded', () ->
+    $templateCache.removeAll();
+  )
+)
+
 
 .run(['AmeRestangular', (AmeRestangular) ->
   AmeRestangular.setErrorInterceptor((response) ->
