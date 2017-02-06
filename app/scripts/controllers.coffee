@@ -428,6 +428,8 @@ angular.module('memoire.controllers', ['memoire.services'])
             Restangular, RestangularV2, Vimeo, Authentification, $http, cfpLoadingBar, authManager,
             Users, Candidatures, ArtistsV2, Galleries, Media, Upload) ->
 
+  $rootScope.__cache = new Date().getTime()
+
   # init step in parent controller
   $rootScope.step = []
   $rootScope.step.current = 0

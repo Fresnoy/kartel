@@ -291,7 +291,6 @@ angular.module('memoire',
         # - Candidature Root
         $stateProvider.state('candidature',
                 url: '/candidature'
-                cache: false
                 views:
                   'main_view':
                     templateUrl: 'views/candidature/index.html'
