@@ -148,8 +148,14 @@ angular.module('memoire',
 .factory('httpInterceptor', ['$q', '$rootScope', ($q, $rootScope) ->
         return {
             request: (config) ->
+                # disable html cache
+                if(config.url.match(".html") && !config.cached)
+                  config.url +="?"+new Date().getTime().toString().slice(-2)
+                  config.cached = true
+                # broadcast message on save model
                 if(config.method == "PUT" || config.method == "PATCH")
                     $rootScope.$broadcast('data:write')
+                #
                 $rootScope.$broadcast('loading:start')
                 return config || $q.when(config)
             response: (response)  ->
