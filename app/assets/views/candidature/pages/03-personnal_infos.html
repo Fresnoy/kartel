@@ -176,7 +176,8 @@
                           ng-model="candidature.identity_card"
                           ngf-select="uploadFile(candidature.identity_card, candidature, 'identity_card') " ngf-capture="'camera'"
                           ngf-accept="'image/*, application/pdf'"
-                          ngf-pattern="'.pdf,.jpg,.gif,.png'"
+                          ngf-pattern="'image/*,application/pdf'"
+                          ngf-model-invalid="invalidFileJustification"
                           name="jID"
                           required
                           >
@@ -190,9 +191,11 @@
 
                         <a target='_blank'
                           href="{{candidature.identity_card}}">
-                          <img ng-show="candidature.identity_card.indexOf('pdf')>0" height="30px"
+                          <img ng-show="candidature.identity_card.toLowerCase().indexOf('pdf')>0" height="30px"
                            src="images/file-pdf.png" />
-                          <img ng-show="candidature.identity_card.indexOf('jpg')>0" height="30px"
+                          <img ng-show="candidature.identity_card.toLowerCase().indexOf('png') ||
+                          candidature.identity_card.toLowerCase().indexOf('gif')
+                          || candidature.identity_card.toLowerCase().indexOf('jpg')" height="30px"
                            src="images/file-image.png" />
                         </a>
 
@@ -201,6 +204,9 @@
                             <span class="fr">Obligatoire</span>
                             <span class="en">Required</span>
                           </div>
+                        </div>
+                        <div ng-show="invalidFileJustification.$errorMessages" ng-messages="invalidFileJustification.$errorMessages" class="help-block error">
+
                           <div ng-message="pattern">
                             <span class="fr">Formats accepés : jpg / png / gif / pdf</span>
                             <span class="en">Required</span>
@@ -263,7 +269,7 @@
         <div class="field">
             <textarea
                name="uHomelandAdress"
-               ng-model="adress.street"
+               ng-model="user.profile.homeland_address"
                id="homeland_country"
                placeholder="23 rue de J. KENNEDY
     APPT 12"
@@ -288,10 +294,10 @@
 
         <div class="field">
 
-            <input type="number"
+            <input type="text"
                name="uHomelandZip"
                id="homeland_zip"
-               ng-model="adress.zip"
+               ng-model="user.profile.homeland_zipcode"
                ng-model-options='{ debounce: 1000 }'
                ng-change="save(user)"
                required
@@ -315,7 +321,7 @@
             <input type="text"
                name="uHomelandCity"
                id="homeland_city"
-               ng-model="adress.city"
+               ng-model="user.profile.homeland_town"
                ng-change="save(user)"
                ng-model-options='{ debounce: 1000 }'
                required
@@ -363,24 +369,41 @@
                 id="phone"
                 type="text"
                 ng-change="save(user)"
-                placeholder="+33-320283982"
+                placeholder="+33320283982"
                 name="uHomelandPhone"
                 ng-pattern="phone_pattern"
                 ng-model="user.profile.homeland_phone"
-                ng-minlength="10" ng-maxlength="15" required
+                ng-change="save(user)"
+                ng-minlength="10" ng-maxlength="20" required
+                hidden
               />
-              <div ng-show="form2.uHomelandPhone.$touched && form2.uHomelandPhone.$invalid" ng-messages="form2.uHomelandPhone.$error" class="help-block error">
+              <input
+                type="text"
+                placeholder="33"
+                class="inline-block phone_code"
+                ng-model="phone_country"
+                ng-change="user.profile.homeland_phone = '+' + phone_country +' '+ phone_number;"
+              />
+              <input
+                type="text"
+                placeholder="123456789"
+                ng-model="phone_number"
+                ng-change="user.profile.homeland_phone = '+' + phone_country + ' ' + phone_number;"
+                class="inline-block phone_number"
+              />
+
+              <div ng-show="user.profile.homeland_phone && form2.uHomelandPhone.$invalid" ng-messages="form2.uHomelandPhone.$error" class="help-block error">
                 <div ng-message="required">
                   <span class="fr">Obligatoire</span>
                   <span class="en">Required</span>
                 </div>
                 <div ng-message="maxlength">
-                  <span class="fr">Pas plus de 11 signes</span>
-                  <span class="en">Phone no not more than 11 char</span>
+                  <span class="fr">Pas plus de 20 signes</span>
+                  <span class="en">Phone no not more than 20 char</span>
                 </div>
                 <div ng-message="pattern">
-                  <span class="fr">Le numéro doit être du type [+33-123456789]</span>
-                  <span class="en">Number type [+33-123456789]</span>
+                  <span class="fr">Le numéro doit être du type [+33 123456789]</span>
+                  <span class="en">Number type [+33 123456789]</span>
                 </div>
               </div>
               <label for="phone">
@@ -415,18 +438,12 @@
 
 
       <div class="field">
-          <select id="family-status"
-            ng-change="save(user)"
-            name="uFamilyStatus"
-            ng-model="user.profile.family_status"
-            required
-          >
-            <option value="">--</option>
-            <option ng-repeat="(code, status) in FAMILY_STATUS_CHOICES" value="{{code}}">
-              {{status[language]}}
-            </option>
-
-          </select>
+        <input
+          type="text"
+          ng-model="user.profile.family_status"
+          ng-change="save(user)"
+          name="uFamilyStatus"
+         />
           <div ng-show="form3.uFamilyStatus.$invalid" ng-messages="form3.uFamilyStatus.$error" class="help-block error">
             <div ng-message="required">
               <span class="fr">Obligatoire</span>

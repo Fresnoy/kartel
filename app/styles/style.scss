@@ -366,6 +366,18 @@ body.en {
         }
 
       }
+      &.inline-block{
+        display: inline-block;
+        width: auto;
+        &.phone_code{
+          width: 20%;
+          background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' height='16px' width='85px'><text x='0' y='15' fill='gray' font-size='12' font-family='arial'>+</text></svg>");
+          padding-left: 12px;
+        }
+        &.phone_number{
+          width: 75%;
+        }
+      }
       ~ .help-block{
         text-align: right;
         margin: 0px;

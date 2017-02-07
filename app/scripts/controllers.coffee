@@ -544,10 +544,8 @@ angular.module('memoire.controllers', ['memoire.services'])
         #withCredentials: true
 
       infos.data[field] = data
-
       Upload.upload(infos)
       .then((resp) ->
-          console.log(resp)
           model[field] = resp.data[field]
         ,(resp) ->
           console.log('Error status: ' + resp.status);
@@ -627,16 +625,10 @@ angular.module('memoire.controllers', ['memoire.services'])
   $rootScope.loadInfos($rootScope)
 
   $scope.save = (model) ->
-
     model_copy =  RestangularV2.copy(model)
     if model_copy.profile.photo
       delete model_copy.profile.photo
-    # save homeland adress
-    model_copy.profile.homeland_address = ""
-    for item, value of $scope.adress
-      if(value == undefined)
-        value = ""
-      model_copy.profile.homeland_address+= value + $scope.splitChar2
+
     model_copy.save()
 
 
@@ -664,50 +656,16 @@ angular.module('memoire.controllers', ['memoire.services'])
       $scope.nationality = newValue.split($scope.splitChar)
 
   )
-
-  $scope.adress =
-    street:''
-    zip:''
-    city:''
-
-  $scope.$watch("user.profile.homeland_address", (newValue, oldValue) ->
-    if(newValue!=oldValue)
-      adress = newValue.split($scope.splitChar2)
-      $scope.adress.street = ''
-      if(adress[0]!="undefined")
-        $scope.adress.street = adress[0]
-      $scope.adress.zip = ''
-      if(adress[1]!="undefined")
-        $scope.adress.zip = parseInt(adress[1])
-      $scope.adress.city = ''
-      if(adress[2]!="undefined")
-        $scope.adress.city = adress[2]
-  )
-  $scope.splitChar2 = "|\n\r|"
-
   # phone pattern
-  $scope.phone_pattern = /^\+?\d{2}[-. ]?\d{9}$/
-
-
-  $scope.FAMILY_STATUS_CHOICES =
-      "S":
-        fr: "Seul(e)"
-        en: "Single"
-      "E":
-        fr: "Fiancé(e)"
-        en: "Engaged"
-      "M":
-        fr: "Marié(e)"
-        en: "Married"
-      "D":
-        fr: "Divorcé(e)"
-        en: "Divorced"
-      "W":
-        fr:"Veuf(ve)"
-        en:"Widowed"
-      "C":
-        fr:"Union civile"
-        en:"Civil Union"
+  # $scope.phone_pattern = /^\+?\d{2,5}[-. ]?\d{9,15}$/
+  $scope.phone_pattern = /^\+?[0-9-]{2,5}[-. ]?\d{5,12}$/
+  $scope.$watch("user.profile.homeland_phone", (newValue, oldValue) ->
+    if(newValue)
+      $scope.phone_number = newValue.split(" ").pop()
+      $scope.phone_country = newValue.split(" ").shift().substr(1)
+      if($scope.form2.uHomelandPhone.$valid)
+        $scope.save($scope.user)
+  )
 
   $scope.languageSelectOption =
     fr:"Selectionner une langue"
@@ -727,13 +685,10 @@ angular.module('memoire.controllers', ['memoire.services'])
   $scope.photo_justification_file = null
 
   $scope.uploadFile = (data, model, field, type) ->
-
-
-
     $rootScope.upload(data, model, field)
-    console.log("$scope.form")
-    console.log($scope.form1.jID)
 
+
+  # specific upload Photo
   $scope.uploadPhoto = (data, model, form) ->
 
     infos =
