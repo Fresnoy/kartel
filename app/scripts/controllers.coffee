@@ -335,7 +335,7 @@ angular.module('memoire.controllers', ['memoire.services'])
     # localStorage.clear()
     # console.log(localStorage)
 
-    $rootScope.step.current = 1
+    $rootScope.step.current = "01"
     $rootScope.step.title = "Login"
 
     $scope.vm =
@@ -453,7 +453,6 @@ angular.module('memoire.controllers', ['memoire.services'])
 
 
   $rootScope.current_display_screen = $rootScope.screen.home
-  console.log($rootScope.screen)
 
   # init step in parent controller
   $rootScope.step = []
@@ -607,7 +606,11 @@ angular.module('memoire.controllers', ['memoire.services'])
               scope.artist = artist
           )
       )
+    , (userInfos_error) ->
+      console.log("error user infos")
+      $state.go("candidature.error")
     )
+
 
 
 )

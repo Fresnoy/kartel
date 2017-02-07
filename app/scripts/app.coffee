@@ -319,6 +319,13 @@ angular.module('memoire',
                   views:
                       'application_content_view':
                           templateUrl: 'views/candidature/pages/faq.html',
+        )
+        # Error
+        $stateProvider.state('candidature.error',
+                  url: '/error'
+                  views:
+                      'application_content_view':
+                          templateUrl: 'views/candidature/pages/error.html',
 
 
         )
