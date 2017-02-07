@@ -348,7 +348,8 @@ angular.module('memoire.controllers', ['memoire.services'])
       $state.go("candidature.option")
 
     $scope.login = (form, params) ->
-      Login.post(params)
+
+      Login.post(params, [headers={}])
       .then((auth) ->
             localStorage.setItem('token', auth.token)
             # set header
