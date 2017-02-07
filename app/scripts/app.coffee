@@ -147,17 +147,17 @@ angular.module('memoire',
 # catch write data
 .factory('httpInterceptor', ['$q', '$rootScope', ($q, $rootScope) ->
         return {
-            request: (config) ->
+            request: (response) ->
                 # disable html cache
-                if(config.url.match(".html") && !config.cached)
-                  config.url +="?"+new Date().getTime().toString().slice(-2)
-                  config.cached = true
+                if(response.url.match(".html") && !response.htmlnocache)
+                  response.url +="?"+new Date().getTime().toString().slice(-2)
+                  response.htmlnocache = true
                 # broadcast message on save model
-                if(config.method == "PUT" || config.method == "PATCH")
+                if(response.method == "PUT" || response.method == "PATCH")
                     $rootScope.$broadcast('data:write')
                 #
                 $rootScope.$broadcast('loading:start')
-                return config || $q.when(config)
+                return response
             response: (response)  ->
                 $rootScope.$broadcast('data:read')
                 return response || $q.when(response)
@@ -312,6 +312,16 @@ angular.module('memoire',
                   # 'main_view.application_account_view':
                   #     templateUrl: 'views/candidature/account/account-status.html'
                   #     controller: 'AccountBarController'
+        )
+        # FAQ
+        $stateProvider.state('candidature.faq',
+                  url: '/frequently-asked-questions'
+                  views:
+                      'application_content_view':
+                          templateUrl: 'views/candidature/pages/faq.html',
+                          controller: ($rootScope) -> $rootScope.loadInfos($rootScope)
+
+
         )
         # ACCOUNT
         $stateProvider.state('candidature.account',
