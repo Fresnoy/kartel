@@ -319,7 +319,6 @@ angular.module('memoire',
                   views:
                       'application_content_view':
                           templateUrl: 'views/candidature/pages/faq.html',
-                          controller: ($rootScope) -> $rootScope.loadInfos($rootScope)
 
 
         )
