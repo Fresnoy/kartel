@@ -7,11 +7,11 @@
 
   <div ng-show="navigation_inter_page == 0" class="" >
 
-          <form name="form" ng-submit="form.$valid && submit()" class="css-form" novalidate enctype="multipart/form-data">
+          <form name="form1" ng-submit="form1.$valid && submit()" class="css-form" novalidate enctype="multipart/form-data">
 
                         <div class="field">
                           <input id="name" type="text"  ng-model="user.last_name" ng-model-options='{ debounce: 1000 }' ng-change="save(user)" name="uName" required />
-                          <div ng-show="form.uName.$touched && form.uName.$invalid" ng-messages="form.uName.$error" class="help-block error">
+                          <div ng-show="form1.uName.$touched && form1.uName.$invalid" ng-messages="form1.uName.$error" class="help-block error">
                             <div ng-message="required">
                               <span class="fr">Obligatoire</span>
                               <span class="en">required</span>
@@ -27,7 +27,7 @@
 
                         <div class="field">
                           <input id="first-name" type="text"  ng-model="user.first_name" ng-model-options='{ debounce: 1000 }' ng-change="save(user)" name="uFirstName" required />
-                          <div ng-show="form.uName.$touched && form.uFirstName.$invalid" ng-messages="form.uFirstName.$error" class="help-block error">
+                          <div ng-show="form1.uName.$touched && form1.uFirstName.$invalid" ng-messages="form1.uFirstName.$error" class="help-block error">
                             <div ng-message="required">
                               <span class="fr">Obligatoire</span>
                               <span class="en">Required</span>
@@ -46,7 +46,7 @@
                             <option value="">------</option> <!-- not selected / blank option -->
                             <option ng-repeat="(code, value) in gender" value="{{code}}">{{value[language]}}</option>
                           </select>
-                          <div ng-show="form.uGender.$touched && form.uGender.$invalid" ng-messages="form.uGender.$error" class="help-block error">
+                          <div ng-show="form1.uGender.$touched && form1.uGender.$invalid" ng-messages="form1.uGender.$error" class="help-block error">
                             <div ng-message="required">
                               <span class="fr">Obligatoire</span>
                               <span class="en">Required</span>
@@ -57,7 +57,7 @@
                             </div>
                           </div>
                           <label for="gender">
-                            <span class="field-state required" ng-class="{ 'error': form.uGender.$error, 'valid':form.uGender.$valid, 'touched': form.uGender.$touched }"></span>
+                            <span class="field-state required" ng-class="{ 'error': form1.uGender.$error, 'valid':form1.uGender.$valid, 'touched': form1.uGender.$touched }"></span>
                             <span class="fr">Genre</span>
                             <span class="en">Gender</span>
                           </label>
@@ -77,7 +77,7 @@
                           >
                               <input readonly type="text" ng-model="user.profile.birthdate" ng-change="save(user)" required />
                           </datepicker>
-                          <div ng-show="form.uBirthDate.$touched && form.uBirthDate.$invalid" ng-messages="form.uBirthDate.$error" class="help-block error">
+                          <div ng-show="form1.uBirthDate.$touched && form1.uBirthDate.$invalid" ng-messages="form1.uBirthDate.$error" class="help-block error">
                             <div ng-message="required">
                               <span class="fr">Obligatoire</span>
                               <span class="en">Required</span>
@@ -131,7 +131,7 @@
                         </div>
 
 
-                        <div ng-show="form.uNationality.$touched && form.uNationality.$invalid" ng-messages="form.uNationality.$error" class="help-block error">
+                        <div ng-show="form1.uNationality.$touched && form1.uNationality.$invalid" ng-messages="form1.uNationality.$error" class="help-block error">
                           <div ng-message="required">
                             <span class="fr">Obligatoire</span>
                             <span class="en">Required</span>
@@ -152,7 +152,7 @@
                           <option value="">-- Select a Country --</option>
                           <option ng-repeat="(country,code) in countries" value="{{code}}">{{country}}</option>
                         </select>
-                        <div ng-show="form.uBirthCountry.$touched && form.uBirthCountry.$invalid" ng-messages="form.uBirthCountry.$error" class="help-block error">
+                        <div ng-show="form1.uBirthCountry.$touched && form1.uBirthCountry.$invalid" ng-messages="form1.uBirthCountry.$error" class="help-block error">
                           <div ng-message="required">
                             <span class="fr">Obligatoire</span>
                             <span class="en">Required</span>
@@ -163,7 +163,7 @@
                           </div>
                         </div>
                         <label for="birth-country">
-                          <span class="field-state required" ng-class="{ 'error': form.uGender.$error, 'valid':form.uGender.$valid, 'touched': form.uGender.$touched }"></span>
+                          <span class="field-state required" ng-class="{ 'error': form1.uGender.$error, 'valid':form1.uGender.$valid, 'touched': form1.uGender.$touched }"></span>
                           <span class="fr">Pays de naissance</span>
                           <span class="en">Gender</span>
                         </label>
@@ -171,12 +171,13 @@
 
 
                       <div class="field">
-                        <input name="jID" ng-model="candidature.identity_card" hidden required />
+                        <input  ng-model="candidature.identity_card" hidden required />
                         <div id="id-justification" class="btn"
                           ng-model="candidature.identity_card"
-                          name="jID"
                           ngf-select="uploadFile(candidature.identity_card, candidature, 'identity_card') " ngf-capture="'camera'"
-                          accept="image/*, application/pdf"
+                          ngf-accept="'image/*, application/pdf'"
+                          ngf-pattern="'.pdf,.jpg,.gif,.png'"
+                          name="jID"
                           required
                           >
                           <span ng-show="!candidature.identity_card">envoyer</span>
@@ -184,18 +185,24 @@
 
                         </div>
                         <span ng-if='upload_percentage<99'>
-                          <img src='http://mupit.icm.jhu.edu/MuPIT_Interactive/images/load.gif' height="20px" /> {{upload_percentage}} / 100
+                          <img src='images/load.gif' height="20px" /> {{upload_percentage}} / 100
                         </span>
 
                         <a target='_blank'
                           href="{{candidature.identity_card}}">
-                          <img ng-show="candidature.identity_card.indexOf('pdf')>0" height="30px" src="http://iconbug.com/data/5b/507/52ff0e80b07d28b590bbc4b30befde52.png" />
-                          <img ng-show="candidature.identity_card.indexOf('jpg')>0" height="30px"  src="http://www.fitright.co.in/images/generic-image-file-icon-hi.png" />
+                          <img ng-show="candidature.identity_card.indexOf('pdf')>0" height="30px"
+                           src="images/file-pdf.png" />
+                          <img ng-show="candidature.identity_card.indexOf('jpg')>0" height="30px"
+                           src="images/file-image.png" />
                         </a>
 
-                        <div ng-show="form.jID.$touched && form.jID.$invalid" ng-messages="form.jID.$error" class="help-block error">
+                        <div ng-show="form1.jID.$invalid" ng-messages="form1.jID.$error" class="help-block error">
                           <div ng-message="required">
                             <span class="fr">Obligatoire</span>
+                            <span class="en">Required</span>
+                          </div>
+                          <div ng-message="pattern">
+                            <span class="fr">Formats accepés : jpg / png / gif / pdf</span>
                             <span class="en">Required</span>
                           </div>
                           <div ng-message="identity_card">
@@ -204,7 +211,7 @@
                           </div>
                         </div>
                         <label class="topborder" for="id-justification">
-                          <span class="field-state required" ng-class="{ 'error': form.jID.$error, 'valid':form.jID.$valid, 'touched': form.jID.$touched }"></span>
+                          <span class="field-state required" ng-class="{ 'error': form1.jID.$error, 'valid':form1.jID.$valid, 'touched': form1.jID.$touched }"></span>
                           <span class="fr">Justificatif d'identité (JPG / PDF)</span>
                           <span class="en">Justification (JPG / PDF)</span>
                         </label>
@@ -215,8 +222,9 @@
                       <div class="field">
                         <input ng-change="save(user)" type="text"
                                placeholder="" name="uInsuranceNumber"
-                               ng-model="user.profile.social_insurance_number" required />
-                        <div ng-show="form.uInsuranceNumber.$touched && form.uInsuranceNumber.$invalid" ng-messages="form.uInsuranceNumber.$error" class="help-block error">
+                               ng-model="user.profile.social_insurance_number"
+                              />
+                        <div ng-show="form1.uInsuranceNumber.$touched && form1.uInsuranceNumber.$invalid" ng-messages="form1.uInsuranceNumber.$error" class="help-block error">
                           <div ng-message="required">
                             <span class="fr">Obligatoire</span>
                             <span class="en">Required</span>
@@ -250,7 +258,7 @@
   <div ng-show="navigation_inter_page == 1" class="">
 
 
-    <form name="form" ng-submit="form.$valid && submit()" class="css-form" novalidate>
+    <form name="form2" ng-submit="form2.$valid && submit()" class="css-form" novalidate>
 
         <div class="field">
             <textarea
@@ -263,7 +271,7 @@
               ng-model-options='{ debounce: 1000 }'
               required
             /></textarea>
-            <div ng-show="form.uHomelandAdress.$touched && form.uHomelandAdress.$invalid" ng-messages="form.uHomelandAdress.$error" class="help-block error">
+            <div ng-show="form2.uHomelandAdress.$touched && form2.uHomelandAdress.$invalid" ng-messages="form2.uHomelandAdress.$error" class="help-block error">
               <div ng-message="required">
                 <span class="fr">Obligatoire</span>
                 <span class="en">Required</span>
@@ -288,7 +296,7 @@
                ng-change="save(user)"
                required
             />
-            <div ng-show="form.uHomelandZip.$touched && form.uHomelandZip.$invalid" ng-messages="form.uHomelandZip.$error" class="help-block error">
+            <div ng-show="form2.uHomelandZip.$touched && form2.uHomelandZip.$invalid" ng-messages="form2.uHomelandZip.$error" class="help-block error">
               <div ng-message="required">
                 <span class="fr">Obligatoire</span>
                 <span class="en">Required</span>
@@ -312,7 +320,7 @@
                ng-model-options='{ debounce: 1000 }'
                required
             />
-            <div ng-show="form.uHomelandCity.$touched && form.uHomelandCity.$invalid" ng-messages="form.uHomelandCity.$error" class="help-block error">
+            <div ng-show="form2.uHomelandCity.$touched && form2.uHomelandCity.$invalid" ng-messages="form2.uHomelandCity.$error" class="help-block error">
               <div ng-message="required">
                 <span class="fr">Obligatoire</span>
                 <span class="en">Required</span>
@@ -336,7 +344,7 @@
                 <option value="">-- Select a Country --</option>
                 <option ng-repeat="(country,code) in countries" value="{{code}}">{{country}}</option>
               </select>
-              <div ng-show="form.uHomelandCountry.$touched && form.uHomelandCountry.$invalid" ng-messages="form.uHomelandCountry.$error" class="help-block error">
+              <div ng-show="form2.uHomelandCountry.$touched && form2.uHomelandCountry.$invalid" ng-messages="form2.uHomelandCountry.$error" class="help-block error">
                 <div ng-message="required">
                   <span class="fr">Obligatoire</span>
                   <span class="en">Required</span>
@@ -361,7 +369,7 @@
                 ng-model="user.profile.homeland_phone"
                 ng-minlength="10" ng-maxlength="15" required
               />
-              <div ng-show="form.uHomelandPhone.$touched && form.uHomelandPhone.$invalid" ng-messages="form.uHomelandPhone.$error" class="help-block error">
+              <div ng-show="form2.uHomelandPhone.$touched && form2.uHomelandPhone.$invalid" ng-messages="form2.uHomelandPhone.$error" class="help-block error">
                 <div ng-message="required">
                   <span class="fr">Obligatoire</span>
                   <span class="en">Required</span>
@@ -403,7 +411,7 @@
 
   <div ng-show="navigation_inter_page == 2" class="">
 
-    <form name="form" ng-submit="form.$valid && submit()" class="css-form" novalidate>
+    <form name="form3" ng-submit="form3.$valid && submit()" class="css-form" novalidate>
 
 
       <div class="field">
@@ -419,7 +427,7 @@
             </option>
 
           </select>
-          <div ng-show="form.uFamilyStatus.$invalid" ng-messages="form.uFamilyStatus.$error" class="help-block error">
+          <div ng-show="form3.uFamilyStatus.$invalid" ng-messages="form3.uFamilyStatus.$error" class="help-block error">
             <div ng-message="required">
               <span class="fr">Obligatoire</span>
               <span class="en">Required</span>
@@ -448,7 +456,7 @@
                 {{item.englishName}} ({{name}})
               </option>
             </select>
-            <div ng-show="form.uMotherTongue.$touched && form.uMotherTongue.$invalid" ng-messages="form.uMotherTongue.$error" class="help-block error">
+            <div ng-show="form3.uMotherTongue.$touched && form3.uMotherTongue.$invalid" ng-messages="form3.uMotherTongue.$error" class="help-block error">
               <div ng-message="required">
                 <span class="fr">Obligatoire</span>
                 <span class="en">Required</span>
@@ -532,7 +540,7 @@
 
   <div ng-show="navigation_inter_page == 4" class="" >
 
-    <form name="form" ng-submit="form.$valid && submit()" class="css-form" novalidate enctype="multipart/form-data">
+    <form name="form4" ng-submit="form4.$valid && submit()" class="css-form" novalidate enctype="multipart/form-data">
 
 
         <div class="field">
@@ -548,7 +556,7 @@
                 </span>
 
                 <label class="topborder" for="photo">
-                  <div ng-show="form.uPhoto.$invalid" ng-messages="form.uPhoto.$error" class="help-block error">
+                  <div ng-show="form4.uPhoto.$invalid" ng-messages="form4.uPhoto.$error" class="help-block error">
                     <div ng-message="maxSize">
                       <span class="fr">Photo trop importante < 10MB</span>
                       <span class="en">Photo trop importante < 10MB</span>

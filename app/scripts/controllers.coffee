@@ -665,13 +665,6 @@ angular.module('memoire.controllers', ['memoire.services'])
 
   )
 
-
-  # justif photo
-  $scope.photo_justification_file = null
-
-  $scope.uploadFile = (data, model, field) ->
-    $rootScope.upload(data, model, field)
-
   $scope.adress =
     street:''
     zip:''
@@ -729,6 +722,17 @@ angular.module('memoire.controllers', ['memoire.services'])
       $scope.other_language =   newValue.split($scope.splitChar)
   )
 
+
+  # justif photo
+  $scope.photo_justification_file = null
+
+  $scope.uploadFile = (data, model, field, type) ->
+
+
+
+    $rootScope.upload(data, model, field)
+    console.log("$scope.form")
+    console.log($scope.form1.jID)
 
   $scope.uploadPhoto = (data, model, form) ->
 
