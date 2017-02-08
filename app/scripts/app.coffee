@@ -332,6 +332,15 @@ angular.module('memoire',
 
 
         )
+        # Error ADMIN
+        $stateProvider.state('candidature.error_admin_user',
+                  url: '/error_admin'
+                  views:
+                      'application_content_view':
+                          templateUrl: 'views/candidature/pages/error_admin.html',
+
+
+        )
         # Expired
         $stateProvider.state('candidature.expired',
                   url: '/expired'

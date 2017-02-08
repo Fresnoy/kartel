@@ -578,6 +578,10 @@ angular.module('memoire.controllers', ['memoire.services'])
       scope.user = user
 
       Candidatures.getList().then((candidatures) ->
+        console.log(candidatures.length)
+        if (candidatures.length >= 2)
+          $state.go("candidature.error_admin_user")
+
         candidature = candidatures[candidatures.length-1]
         scope.candidature = candidature
         if(candidature.application_completed)
