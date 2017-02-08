@@ -145,7 +145,7 @@ angular.module('memoire',
 )
 
 # catch write data
-.factory('httpInterceptor', ['$q', '$rootScope', ($q, $rootScope) ->
+.factory('httpInterceptor', ['$q', '$rootScope', '$state', ($q, $rootScope, $state) ->
         return {
             request: (response) ->
                 # disable html cache
@@ -163,6 +163,9 @@ angular.module('memoire',
                 return response || $q.when(response)
             responseError: (response)  ->
                 $rootScope.$broadcast('data:read')
+                # candidature expired
+                if(response.data.candidature == "expired")
+                  $state.go("candidature.expired")
                 return $q.reject(response);
         }
 ])
@@ -326,6 +329,15 @@ angular.module('memoire',
                   views:
                       'application_content_view':
                           templateUrl: 'views/candidature/pages/error.html',
+
+
+        )
+        # Expired
+        $stateProvider.state('candidature.expired',
+                  url: '/expired'
+                  views:
+                      'application_content_view':
+                          templateUrl: 'views/candidature/pages/expired.html',
 
 
         )
