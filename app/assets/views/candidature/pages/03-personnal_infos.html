@@ -193,9 +193,9 @@
                           href="{{candidature.identity_card}}">
                           <img ng-show="candidature.identity_card.toLowerCase().indexOf('pdf')>0" height="30px"
                            src="images/file-pdf.png" />
-                          <img ng-show="candidature.identity_card.toLowerCase().indexOf('png') ||
-                          candidature.identity_card.toLowerCase().indexOf('gif')
-                          || candidature.identity_card.toLowerCase().indexOf('jpg')" height="30px"
+                          <img ng-show="(candidature.identity_card.toLowerCase().indexOf('.png')>0 ||
+                          candidature.identity_card.toLowerCase().indexOf('.gif')>0
+                          || candidature.identity_card.toLowerCase().indexOf('.jpg')>0)" height="30px"
                            src="images/file-image.png" />
                         </a>
 
