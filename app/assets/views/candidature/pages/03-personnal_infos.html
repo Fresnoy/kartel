@@ -543,10 +543,10 @@
 
 
       <div class="navigation">
-        <a class="btn" ng-click="navigation_inter_page = 2">
+        <a class="btn" ng-click="navigation_inter_page = 1">
           Retour
         </a>
-        <a class="btn" ng-click="navigation_inter_page = 4">
+        <a class="btn" ng-click="navigation_inter_page = 3">
           Continue
         </a>
       </div>
@@ -555,7 +555,7 @@
   </div>
 
 
-  <div ng-show="navigation_inter_page == 4" class="" >
+  <div ng-show="navigation_inter_page == 3" class="" >
 
     <form name="form4" ng-submit="form4.$valid && submit()" class="css-form" novalidate enctype="multipart/form-data">
 
@@ -607,7 +607,7 @@
 
       </form>
       <div class="navigation">
-        <a class="btn" ng-click="navigation_inter_page = 3">
+        <a class="btn" ng-click="navigation_inter_page = 2">
           Retour
         </a>
         <a class="btn" ui-sref="candidature.cursus">
