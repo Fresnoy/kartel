@@ -335,8 +335,9 @@ angular.module('memoire.controllers', ['memoire.services'])
     # localStorage.clear()
     # console.log(localStorage)
 
-    $rootScope.step.current = "01"
+    $rootScope.step.current = "02"
     $rootScope.step.title = "Login"
+    $rootScope.current_display_screen = $rootScope.screen.login
 
     $scope.vm =
       username:""
@@ -381,7 +382,7 @@ angular.module('memoire.controllers', ['memoire.services'])
 
       $rootScope.step.current = "02"
       $rootScope.step.title = "Identification"
-      $rootScope.current_display_screen = $rootScope.screen.login
+      $rootScope.current_display_screen = $rootScope.screen.create_user
 
       # init user form
       if(!$scope.user)
@@ -439,6 +440,10 @@ angular.module('memoire.controllers', ['memoire.services'])
         image:"renaud_duval_sealine_excroissance_i.jpg"
         copyright:"Abtin Sarabi 2017"
         position: {x:0,y:0}
+      create_user:
+        image:"junkai-chen_correspondances_2016_3.jpg"
+        copyright:"Abtin Sarabi 2017"
+        position: {x:0,y:0}
       login:
         image:"clea-coudsy40.jpg"
         copyright:"Abtin Sarabi 2017"
@@ -483,7 +488,7 @@ angular.module('memoire.controllers', ['memoire.services'])
 
 
   # logout
-  $scope.logout = () ->
+  $rootScope.logout = () ->
     Authentification.one("logout/").post().then((auth) ->
         localStorage.removeItem("token")
         $rootScope.user = []
@@ -637,7 +642,7 @@ angular.module('memoire.controllers', ['memoire.services'])
 
 
   $scope.birthdateMin = $filter('date')(new Date($rootScope.current_year-$rootScope.age_min,11,31), 'yyyy-MM-dd')
-  $scope.birthdateMax = $filter('date')(new Date($rootScope.current_year-$rootScope.age_max,0,0), 'yyyy-MM-dd')
+  $scope.birthdateMax = $filter('date')(new Date($rootScope.current_year-$rootScope.age_max+1,1,1), 'yyyy-MM-dd')
 
   # Gender
   $scope.gender =
@@ -645,7 +650,6 @@ angular.module('memoire.controllers', ['memoire.services'])
     F: fr: "Femme", en: "Female"
     T: fr: "Transgenre", en: "Transgender"
     O: fr: "Autre", en: "Other"
-
 
   #country
   $scope.countries = ISO3166.countryToCode
@@ -673,7 +677,7 @@ angular.module('memoire.controllers', ['memoire.services'])
 
   $scope.languageSelectOption =
     fr:"Selectionner une langue"
-    en:"Select a Language"
+    en:"Select a language"
 
 
   $scope.LANGUAGES = languageMappingList

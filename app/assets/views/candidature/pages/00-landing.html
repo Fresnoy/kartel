@@ -3,12 +3,13 @@
 
   <ng-include src="'views/candidature/partials/navigation-header.html'"></ng-include>
 
+
+
   <div ng-show="navigation_inter_page == 0" class="" >
-      <h1>Selection</h1>
-
-      <p>
-
-      </p>
+    <h1>
+      <span class="fr">Procédure de sélection</span>
+      <span class="en"></span>
+    </h1>
 
       <div class="navigation">
               <a class="btn"
@@ -23,99 +24,98 @@
   </div>
 
 
-  <div ng-show="navigation_inter_page == 1" class="">
-      <h1>Procédure de sélection</h1>
+  <div ng-show="navigation_inter_page == 1" ng-init="step.current = '02';step.title = 'Test';current_display_screen = $rootscope.screen.create_user" class="">
+      <h1>
+        <span class="fr">Procédure de sélection</span>
+        <span class="en">Selection procedure</span>
+      </h1>
 
+      <h2>
+          <span class="fr">Condition d'accès</span>
+          <span class="en">Conditions for participation</span>
 
-      <h2>Condition d'accès</h2>
-      <p>La procédure de sélection est ouverte à tous
-les candidats, sans distinction de sexe ou
-de nationalité, âgés de 35 ans au plus au 1er janvier
-de l’année du concours (nés après le 31 décembre <span ng-bind="(current_year-age_max)" />) -
-         <strong>
-           Un justificatif vous sera demander dans les prochaines pages
-         </strong>
-
+      </h2>
+      <div class="fr">
+          <p>La procédure de sélection est ouverte à tous les candidats, sans distinction de sexe ou de nationalité, âgés de 35 ans au plus au 1er janvier de l’année du concours (nés après le 31 décembre <span ng-bind="(current_year-age_max)" />) -
+             <strong>Un justificatif vous sera demander dans les prochaines pages</strong>
           </p>
-
-          <p>Les candidats doivent pouvoir justifier :<br/>
-            • soit du Baccalauréat (ou équivalence reconnue)
-            et 5 années d’études attestées par un titre ou diplôme,<br/>
-            • soit du Baccalauréat (ou équivalence reconnue) et
-            7 années d’expérience artistique ou professionnelle,
-            et sous réserve de joindre au dossier d’inscription
-            administrative un argumentaire, une page maximum,
-            précisant en quoi leur expérience les a préparés
-            au cursus du Fresnoy.</p>
-            <p>Les candidatures présentées sous cette deuxième
-            condition auront fait l’objet d’un examen par une
-            commission spéciale, apte à les évaluer et à les
-            valider, et dont les décisions sont sans appel.
-            </p>
-            <p>La participation à la procédure de sélection est
-            gratuite. Les frais de voyage et de séjour des
-            candidats pour les épreuves d’admission sont
-            à la charge des candidats.</p>
-
-            <form>
-                <input type="checkbox"
-                  class="one"
-                  id="accept"
-                  ng-model="accept"
-                  name="cAccept"
-                  ng-value="true"
-                  ng-init='accept=false'
-                  required
-                />
-                <label for="accept" class="checkbox one">
-                  J'ai pris connaissance des conditions d'accès, je suis né après le le 31 décembre <span ng-bind="(current_year-age_max)" />
-                </label>
-            </form>
-
-                <div class="navigation">
-
-                        <a class="btn next" ng-class="{ 'has-error': accept == false }"
-                           ng-click="navigation_inter_page=2">
-                              Continuer
-                        </a>
-                </div>
+          <p>Les candidats doivent pouvoir justifier :</p>
+          <ul><li>soit du Baccalauréat (ou équivalence reconnue) et 5 années d’études attestées par un titre ou diplôme,</li>
+              <li>soit du Baccalauréat (ou équivalence reconnue) et 7 années d’expérience artistique ou professionnelle, et sous réserve de joindre au dossier d’inscription administrative un argumentaire, une page maximum, précisant en quoi leur expérience les a préparés au cursus du Fresnoy.</li>
+          </ul>
+            <p>Les candidatures présentées sous cette deuxième condition auront fait l’objet d’un examen par une commission spéciale, apte à les évaluer et à les valider, et dont les décisions sont sans appel.</p>
+            <p>La participation à la procédure de sélection est gratuite. Les frais de voyage et de séjour des candidats pour les épreuves d’admission sont à la charge des candidats.</p>
+        </div>
+      <div class="en">
+          <p>The selection procedure is open to all candidates, of any sex or nationality, aged 35 years maximum on 1st January of the current year (i.e. born after 31st December <span ng-bind="(current_year-age_max)" />).</p>
+          <p>The candidates must be able to provide proof of:</p>
+          </ul><li>A levels or Baccalauréat (or recognized equivalent) and 5 years of study validated by a diploma; (or)</li>
+          <li>A levels or Baccalauréat (or recognized equivalent) and 7 years of artistic or professional experience; in this case, a one page argument should be sent with the administrative application to explain how this experience is relevant to the course at Le Fresnoy. </li>
+          </ul>
+          <p>The candidates in the second case will sit a specific examination set by a special committee, who will judge and validate their application. Their decision is final. Participation in the selection procedure is free. Travel costs and living expenses of candidates during the entrance examinations are at the charge of the candidate.</p>
+      </div>
+      <form>
+          <input type="checkbox"
+            class="one "
+            id="accept"
+            ng-model="accept"
+            name="cAccept"
+            ng-value="true"
+            ng-init='accept=false'
+            required
+          />
+          <label for="accept" class="checkbox one pointer">
+            <span class="fr">J'ai pris connaissance des conditions d'accès, je suis né après le le 31 décembre <span ng-bind="(current_year-age_max)" /></span>
+            <span class="en">///////////////// <span ng-bind="(current_year-age_max)" /></span>
+          </label>
+      </form>
+      <div class="navigation">
+                <a class="btn next" ng-class="{ 'has-error': accept == false }"
+                   ng-click="navigation_inter_page=2">
+                   <span class="fr">Continuer</span>
+                   <span class="en">Continue</span>
+                </a>
+      </div>
 
   </div>
-
-
   <div ng-show="navigation_inter_page == 2" class="">
+    <h1>
+      <span class="fr">Procédure de sélection</span>
+      <span class="en">Selection procedure</span>
+    </h1>
+    <h2>
+      <span class="fr">Compétences linguistiques</span>
+      <span class="en">Language skills</span></h2>
+    <div class="fr">
+        <p>Les candidats doivent posséder une connaissance du français et de l’anglais parlés. Toutes les étapes de la procédure de sélection (dossier et entretien oral), se font en français ou en anglais, au choix du candidat.
+          <br/> Il est rappelé aux candidats admis que les études au Fresnoy se font ensuite en français.</p>
+    </div>
+    <div class="en">
+      <p>Candidates must have knowledge of spoken French and English. All the stages of the selection procedure (application and interviews) are in French or English, as the candidate wishes.
+      <br/>Candidates admitted to Le Fresnoy are reminded that the course is carried out in French. </p>
+   </div>
 
-    <h1>Procédure de sélection</h1>
-
-    <h2>Compétences linguistiques</h2>
-
-    <p>
-      Les candidats doivent posséder une connaissance
-      du français et de l’anglais parlés. Toutes les étapes
-      de la procédure de sélection (dossier et entretien
-      oral), se font en français ou en anglais, au choix
-      du candidat. Il est rappelé aux candidats admis que
-      les études au Fresnoy se font ensuite en français.
-    </p>
-
-
-    <h2>Calendrier</h2>
-    <p>
-      La sélection des étudiants est annuelle et se
-      déroulera en une seule session selon les étapes
-      et le calendrier suivants :<br/>
-      • Inscription administrative et envoi ou dépôt
-      du dossier artistique au plus tard le vendredi 28 avril 2017 minuit
-     (le cachet de la poste faisant foi),
-     <br/>
-      • Présélection sur dossier, du lundi 15 au vendredi 19 mai 2017, annonce des résultats le mardi 23 mai 2017
-      <br/>
-      • Entretiens oraux du lundi 3 au vendredi 7 juillet 2017, annonce des résultats le lundi 10 juillet 2017
-     </p>
+    <h2><span class="fr">Calendrier</span>
+    <span class="en">Schedule</span></h2>
+    <div class="fr">
+        <p>
+          La sélection des étudiants est annuelle et se déroulera en une seule session selon les étapes et le calendrier suivants :</p>
+          <ul><li>Inscription administrative et envoi ou dépôt du dossier artistique au plus tard le vendredi 28 avril 2017 minuit (le cachet de la poste faisant foi),</li>
+            <li>Présélection sur dossier, du lundi 15 au vendredi 19 mai 2017, annonce des résultats le mardi 23 mai 2017</li>
+            <li>Entretiens oraux du lundi 3 au vendredi 7 juillet 2017, annonce des résultats le lundi 10 juillet 2017</li>
+          </ul>
+    </div>
+    <div class="en">
+      <p>"The selection process is annual; it will take place according to the following schedule:</p>
+      <ul><li>Administrative registration and dispatch of artistic dossier no later than midnight on Friday April 28, 2017(as per postmark),
+        <li>1st Selection of applications from Monday May 15 to Friday May 19, 2017 list made public and on line on Tuesday May 23, 2017,</li>
+        <li>Interviews, from Monday July 3 to Friday July 7, 2017 list made public and on line on Monday July 10, 2017.</li>
+      </ul>
+    </div>
 
 
      <div class="navigation">
-             <a class="btn next" ng-class="{ 'has-error': accept == false }"
+             <a class="btn next" ng-class=""
                 ui-sref="candidature.account.create-user">
                    Continuer
              </a>

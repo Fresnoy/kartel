@@ -116,9 +116,9 @@
                                ng-click="removeConfirmation[$index]=!removeConfirmation[$index]">
                           </div>
                           <div class="remove-confirm" ng-show="removeConfirmation[$index]"
-                               ng-click="removeConfirmation[$index]=!removeConfirmation[$index]"
-                          >
-                            <a class="no">Cancel</a>
+                               ng-click="removeConfirmation[$index]=!removeConfirmation[$index]">
+                            <span class="fr">Supprimer ? </span><span class="en">Delete ?</span>
+                            <a class="no"><span class="fr">Annuler</span><span class="en">Cancel</span></a>
                             <a class="yes" ng-click="nationality.splice($index,1); user.profile.nationality = nationality.join(splitChar); user.patch({'profile':{'nationality': nationality.join(splitChar)}})">Ok</a>
                           </div>
                         </div>

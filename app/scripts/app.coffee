@@ -17,6 +17,8 @@ You should have received a copy of the GNU Affero General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 ###
 
+# https://github.com/CommonsDev/map/blob/master/scripts/app.js
+
 angular.module('memoire',
               [
                   'memoire.controllers', 'memoire.directives', 'ui.router',
@@ -307,7 +309,7 @@ angular.module('memoire',
 
                   'main_view.application_content_view':
                       templateUrl: 'views/candidature/pages/00-landing.html',
-                      controller: () -> localStorage.clear()
+                      # controller: () -> localStorage.clear()
 
                   'main_view.application_step_view':
                       templateUrl: 'views/candidature/partials/step-infos.html'
