@@ -19,9 +19,12 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 # https://github.com/CommonsDev/map/blob/master/scripts/app.js
 
-angular.module('memoire',
+angular.module('candidature', ['candidature.controllers'])
+angular.module('memoire', ['memoire.controllers', 'memoire.directives'])
+
+angular.module('kartel',
               [
-                  'memoire.controllers', 'memoire.directives', 'ui.router',
+                  'memoire', 'candidature', 'ui.router',
                   'restangular', 'angular-jwt',
                   'ngAnimate', 'chieffancypants.loadingBar', 'ui.bootstrap', 'ngMessages',
                   'ngSanitize', 'markdown', '720kb.datepicker',

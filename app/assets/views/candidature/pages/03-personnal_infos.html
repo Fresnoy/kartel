@@ -563,8 +563,14 @@
         <div class="field">
                 <input id="photo" ng-model="user.profile.photo" required hidden />
                 <div class="photo-upload" ng-model="user.profile.photo"
-                  ngf-select="uploadPhoto(user.profile.photo, user, form)" name="uPhoto"  ngf-capture="'camera'"
-                  accept="image/*" ngf-max-size="10MB" ng-style="{'background-image':'url('+user.profile.photo+')'}"
+                  ngf-select="uploadPhoto(user.profile.photo, user, form)"
+                  name="uPhoto"
+                  ngf-capture="'camera'"
+                  ngf-max-size="1MB"
+                  ng-style="{'background-image':'url('+user.profile.photo+')','background-color':'transparent'}"
+                  ngf-accept="'image/*'"
+                  ngf-pattern="'image/*'"
+                  ngf-model-invalid="invalidPhoto"
                   >
                   <span ng-if="!user.profile.photo">Choisir une photo</span>
                 </div>
@@ -574,13 +580,22 @@
 
                 <label class="topborder" for="photo">
                   <div ng-show="form4.uPhoto.$invalid" ng-messages="form4.uPhoto.$error" class="help-block error">
-                    <div ng-message="maxSize">
-                      <span class="fr">Photo trop importante < 10MB</span>
-                      <span class="en">Photo trop importante < 10MB</span>
-                    </div>
+
                     <div ng-message="required">
                       <span class="fr">Obligatoire</span>
                       <span class="en">Required</span>
+                    </div>
+                  </div>
+                  <div ng-show="invalidPhoto.$errorMessages" ng-messages="invalidPhoto.$errorMessages"
+                       class="help-block error">
+
+                    <div ng-message="pattern">
+                      <span class="fr">Formats accepés : jpg / png / gif / pdf</span>
+                      <span class="en">Required</span>
+                    </div>
+                    <div ng-message="maxSize">
+                      <span class="fr">Photo trop importante < 10MB</span>
+                      <span class="en">max size 10MB</span>
                     </div>
                   </div>
                   <span class="field-state"></span>
