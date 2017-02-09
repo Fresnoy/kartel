@@ -1,0 +1,28 @@
+<div class="navigation breadcrumb">
+  <ul class="list-inline small">
+    <li ng-class="{'current': $state.current.name == 'candidature.personnal-infos'}"><a class="pointer" ui-sref="candidature.personnal-infos">
+      <span class="square"></span>
+      <div class="rollover"><span class="fr">Informations personnels</span><span class="en">/////</span></div>
+    </a></li>
+    <li ng-class="{'current': $state.current.name == 'candidature.cursus'}">
+      <a class="pointer" ui-sref="candidature.cursus">
+      <span class="square"></span>
+      <div class="rollover"><span class="fr">Cursus</span><span class="en">////</span></div>
+    </a></li>
+    <li ng-class="{'current': ($state.current.name == 'candidature.documents')}">
+     <a class="pointer" ui-sref="candidature.documents">
+     <span class="square"></span>
+     <div class="rollover"><span class="fr">Documents</span><span class="en">////</span></div>
+    </a></li>
+    <li ng-class="{'current': $state.current.name == 'candidature.messages'}">
+      <a class="pointer" ui-sref="candidature.messages">
+     <span class="square"></span>
+     <div class="rollover"><span class="fr">Messages</span><span class="en">////</span></div>
+    </a></li>
+    <li ng-class="{'current': $state.current.name == 'candidature.finalization'}">
+      <a class="pointer" ui-sref="candidature.finalization">
+     <span class="square"></span>
+     <div class="rollover"><span class="fr">Finalisation</span><span class="en">////</span></div>
+    </a></li>
+  </ul>
+</div>

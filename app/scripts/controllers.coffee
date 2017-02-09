@@ -631,6 +631,8 @@ angular.module('memoire.controllers', ['memoire.services'])
   if(!$scope.isAuthenticated)
     $state.go("candidature")
 
+  console.log($state.current)
+
   $rootScope.loadInfos($rootScope)
 
   $scope.save = (model) ->

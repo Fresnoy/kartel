@@ -442,6 +442,46 @@ body.en {
           color: grey;
         }
       }
+      &.breadcrumb{
+        position: absolute;
+        background: none;
+        z-index: 2;
+        margin: 10px 0px;
+        width: 100%;
+        a{
+          color: grey;
+        }
+        .square{
+          width: 7px;
+          height: 7px;
+          display: block;
+          background: grey;
+        }
+        li.current .square{
+          background: black;
+        }
+        .rollover{
+          display: none;
+          position: absolute;
+          margin-top: -25px;
+          margin-left: -100px;
+          text-align: center;
+          pointer-events: none;
+          width: 200px;
+
+        }
+        li{
+          margin: 0% 3%;
+          &:hover {
+            .square{
+              background: black;
+            }
+            .rollover{
+              display: block;
+            }
+          }
+        }
+      }
     }
     .data-writing{
         position: absolute;
