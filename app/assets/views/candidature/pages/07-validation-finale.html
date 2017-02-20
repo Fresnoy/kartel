@@ -7,20 +7,111 @@
 
     <form name="form" ng-submit="form.$valid && submit()" class="css-form" novalidate>
 
-        <h2>Personnal Information</h2>
-        <div><span class="fr">Nom</span><span class="en">Name</span> : <input type="text" ng-model="user.last_name" readonly required/><span class="isvalid"></div>
-        <div><span class="fr">Prénom</span><span class="en">First name</span> : <input type="text" ng-model="user.first_name" readonly required/><span class="isvalid"></div>
-        <div><span class="fr">Genre</span><span class="en">Gender</span> : <input type="text" ng-model="user.profile.gender" readonly required/><span class="isvalid"></div>
-        <div><span class="fr">Date de Naissance</span><span class="en">Bithdate</span> : <input type="text" ng-model="user.profile.birthdate" readonly required/><span class="isvalid"></div>
-        <div><span class="fr">Nationalité(s)</span><span class="en">Nationality</span> : <input type="text" ng-model="user.profile.nationality" readonly required/><span class="isvalid"></div>
-        <div><span class="fr">Pays de naissance</span><span class="en">Birth Country</span> : <input type="text" ng-model="user.profile.birthplace_country" readonly required/><span class="isvalid"></div>
-        <div><span class="fr">Téléchargement de la carte d'identité</span><span class="en">Upload Id Card</span> <input class="hidden" type="text" ng-model="candidature.identity_card" readonly required hidden /><span class="isvalid"></div>
+        <h4><span class="fr">Informations personnels</span><span class="en">Personnal Information</span></h4>
+        <div class="row">
+          <div class="col-xs-12 col-md-7 col-lg-7">
+            <div><label><span class="fr">Nom</span><span class="en">Name</span></label>  <input type="text" ng-model="user.last_name" readonly required/><span class="isvalid"/></div>
+            <div><label><span class="fr">Prénom</span><span class="en">First name</span></label> <input type="text" ng-model="user.first_name" readonly required/><span class="isvalid"/></div>
+            <div><label><span class="fr">Genre</span><span class="en">Gender</span></label>   <input type="text" ng-model="user.profile.gender" readonly required/><span class="isvalid"/></div>
+            <div><label><span class="fr">Date de Naissance</span><span class="en">Bithdate</span></label>   <input type="text" ng-model="user.profile.birthdate" readonly required/><span class="isvalid"/></div>
+            <div><label><span class="fr">Justificatif de carte d'identité</span><span class="en">Upload Id Card</span></label> <input class="hidden" type="text" ng-model="candidature.identity_card" readonly required /><span class="isvalid"/></div>
+            <div><label><span class="fr">Nationalité(s)</span><span class="en">Nationality</span></label>   <input type="text" ng-model="user.profile.nationality" readonly required/><span class="isvalid"/></div>
+            <div><label><span class="fr">Pays de naissance</span><span class="en">Birth Country</span></label>   <input type="text" ng-model="user.profile.birthplace_country" readonly required/><span class="isvalid"/></div>
+          </div>
+          <div class="col-xs-12 col-md-5 col-lg-5">
+            <div><label><span class="fr">Photo </span><span class="en">photo </span></label> <input class="hidden" ng-model="user.profile.photo" type="text" readonly required  /><span class="isvalid"/></div>
 
-        <a ui-sref="candidature.personnal-infos">modifier les information</a>
-        <h2>Cursus</h2>
-        <div><span class="fr">Master</span><span class="en">Master</span> : <input type="text" ng-model="candidature.master_degree" readonly required/><span class="isvalid"></div>
+            <div><label><span class="fr">Tel </span><span class="en">Phone </span></label>   <input class="" ng-pattern="phone_pattern" ng-model="user.profile.homeland_phone" type="text" readonly required  /><span class="isvalid"/></div>
+            <div><label><span class="fr">Langue </span><span class="en">language </span></label> <input class="" ng-model="user.profile.mother_tongue" type="text" readonly required  /><span class="isvalid"/></div>
+            <div ng-show="user.profile.other_language"><span class="fr">Langues </span><span class="en">languages </span></label>   <input class="" ng-model="user.profile.other_language" type="text" readonly /><span class="isvalid"/></div>
 
-        <a ui-sref="candidature.cursus">modifier les information</a>
+
+            <div><label><span class="fr">Adresse</span><span class="en">Adress</span></label>
+              <br/>
+              <input class="" type="text" ng-model="user.profile.homeland_address" readonly required  /><span class="isvalid"/>
+              <input class="" type="text" ng-model="user.profile.homeland_zipcode" readonly required  /><span class="isvalid"/>
+              <input class="" type="text" ng-model="user.profile.homeland_town" readonly required  /><span class="isvalid"/>
+              <input class="" type="text" ng-model="user.profile.homeland_country" readonly required  /><span class="isvalid"/>
+              </div>
+
+          </div>
+
+        </div>
+
+
+        <p>
+          <a class="edit" ui-sref="candidature.personnal-infos">modifier les information</a>
+        </p>
+        <hr>
+        <h4>Cursus</h4>
+        <div class="row">
+          <div class="col-xs-12 col-md-6 col-lg-6">
+            <div><label><span class="fr">Master</span><span class="en">Master</span></label>   <input class="hidden" type="text" ng-model="candidature.master_degree" readonly required/><span class="isvalid"></div>
+              <div><label><span class="fr">Cursus</span><span class="en">Cursus</span></label>
+                  <input class="" type="text" ng-model="user.profile.cursus" readonly required/><span class="isvalid">
+              </div>
+          </div>
+          <div class="col-xs-12 col-md-6 col-lg-6">
+            <div>
+                <div ng-if="cursus_justifications.media.length">
+                  <label><span class="fr">Documents</span><span class="en">Documents</span></label>
+                  <div ng-repeat="item in cursus_justifications.media" ng-model="cursus_justifications.media">
+                    <input type="text" ng-model="(item.picture || item.file) && item.label" readonly required /><span class="isvalid"/>
+                  </div>
+                </div>
+            </div>
+          </div>
+        </div>
+          <p>
+          <a class="edit" ui-sref="candidature.cursus">modifier les information</a>
+        </p>
+        <hr>
+        <div class="row">
+          <div class="col-xs-12 col-md-6 col-lg-6">
+            Projet première année
+            <div><label><span class="fr">Description</span><span class="en">Description</span></label> <input class="hidden" type="text" ng-model="candidature.considered_project_1" readonly required/><span class="isvalid"></div>
+            <div><label><span class="fr">Références artistiques</span><span class="en">Art referencies</span></label> <input class="hidden" type="text" ng-model="candidature.artistic_referencies_project_1" readonly required/><span class="isvalid"></div>
+            <br/>
+            <div><label><span class="fr">Lettre de motivation</span><span class="en">Cover letter</span></label> <input class="hidden" type="text" ng-model="candidature.justification_letter" readonly required/><span class="isvalid"></div>
+            <div><label><span class="fr">CV / BIO</span><span class="en">Bio / CV</span></label> <input class="hidden" type="text" ng-model="candidature.curriculum_vitae" readonly required/><span class="isvalid"></div>
+
+
+          </div>
+          <div class="col-xs-12 col-md-6 col-lg-6">
+
+            Projet deuxième année
+            <div><label><span class="fr">Description</span><span class="en">Description</span></label> <input class="hidden" type="text" ng-model="candidature.considered_project_2" readonly required/><span class="isvalid"></div>
+            <div><label><span class="fr">Références artistiques</span><span class="en"> Art referencies</span></label> <input class="hidden" type="text" ng-model="candidature.artistic_referencies_project_2" readonly required/><span class="isvalid"></div>
+            <br/>
+            <div><label><span class="fr">Vidéo de présentation</span><span class="en">presentation video</span></label> <input class="hidden" type="url" ng-model="candidature.presentation_video" readonly required/><span class="isvalid"></div>
+          </div>
+        </div>
+
+
+
+        <p>
+
+          <a class="edit"ui-sref="candidature.documents">modifier les information</a>
+        </p>
+
+        <hr/>
+        <div class="row">
+          <div class="col-xs-12 col-md-12 col-lg-12">
+            <div ng-if="candidature.remote_interview">
+              <h4><span class="fr">Entrevue à distance</span><span class="en">remote interview</span><br/></h4>
+              <div><label><span class="fr">Via</span><span class="en">Type</span></label> <input class="" type="text" ng-model="candidature.remote_interview_type" readonly required/><span class="isvalid"></div>
+              <div><label><span class="fr">ID/URL</span><span class="en">ID/URL</span></label> <input class="" type="text" ng-model="candidature.remote_interview_info" readonly required/><span class="isvalid"></div>
+            </div>
+            <h4><span class="fr">Message</span><span class="en">Message</span><br/></h4>
+            <div><input class="" type="text" ng-model="candidature.remark" readonly /><span class="isvalid"></div>
+          </div>
+        </div>
+
+        <p>
+          <br/>
+        <a class="edit"ui-sref="candidature.messages">modifier les information</a>
+        </p>
+
 
 
     </form>

@@ -211,6 +211,9 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
   $rootScope.age_min = 18
   $rootScope.age_max = 36
 
+  # phone
+  $rootScope.phone_pattern = /^\+?[0-9-]{2,5}[-. ]?\d{5,12}$/
+
 
   # write data var
   $rootScope.writingData = false
@@ -406,7 +409,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
   )
   # phone pattern
   # $scope.phone_pattern = /^\+?\d{2,5}[-. ]?\d{9,15}$/
-  $scope.phone_pattern = /^\+?[0-9-]{2,5}[-. ]?\d{5,12}$/
+
   $scope.$watch("user.profile.homeland_phone", (newValue, oldValue) ->
     if(newValue)
       $scope.phone_number = newValue.split(" ").pop()
