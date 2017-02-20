@@ -1,7 +1,7 @@
 # -*- tab-width: 2 -*-
 "use strict"
 
-angular.module('candidature.controllers', ['memoire.services'])
+angular.module('candidature.controllers', ['memoire.services', 'candidature.services'])
 
 .controller('ParentAccountController', ($rootScope, $scope) ->
   # init step in parent controller
