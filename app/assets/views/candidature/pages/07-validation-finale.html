@@ -1,7 +1,4 @@
-<div class="content summary">
-
-  <ng-include src="'views/candidature/partials/navigation-header.html'"></ng-include>
-
+<div class="summary">
   <h1>Selection</h1>
   <div class="data-writing" ng-show="writingData"><span class="fr">Enregistrement</span><span class="en">Save data</span></div>
 
@@ -16,9 +13,8 @@
         <div><span class="fr">Genre</span><span class="en">Gender</span> : <input type="text" ng-model="user.profile.gender" readonly required/><span class="isvalid"></div>
         <div><span class="fr">Date de Naissance</span><span class="en">Bithdate</span> : <input type="text" ng-model="user.profile.birthdate" readonly required/><span class="isvalid"></div>
         <div><span class="fr">Nationalité(s)</span><span class="en">Nationality</span> : <input type="text" ng-model="user.profile.nationality" readonly required/><span class="isvalid"></div>
-        <div><span class="fr">Pays de naissance</span><span class="en">Bith Country</span> : <input type="text" ng-model="user.profile.birthplace_country" readonly required/><span class="isvalid"></div>
-        <div><span class="fr">Numéro de sécurité social</span><span class="en">Social insurance number</span> : <input type="text" ng-model="user.profile.social_insurance_number" readonly required/><span class="isvalid"></div>
-        <div><span class="fr">Téléchargement de la carte d'identité</span><span class="en">Upload Id Card</span> : <input type="text" ng-model="candidature.identity_card" readonly required/><span class="isvalid"></div>
+        <div><span class="fr">Pays de naissance</span><span class="en">Birth Country</span> : <input type="text" ng-model="user.profile.birthplace_country" readonly required/><span class="isvalid"></div>
+        <div><span class="fr">Téléchargement de la carte d'identité</span><span class="en">Upload Id Card</span> <input class="hidden" type="text" ng-model="candidature.identity_card" readonly required hidden /><span class="isvalid"></div>
 
         <a ui-sref="candidature.personnal-infos">modifier les information</a>
         <h2>Cursus</h2>
@@ -88,4 +84,3 @@ changer une fois validée.
 
   </div>
 </div>
-<ng-include src="'views/candidature/partials/navigation-breadcrumb.html'"></ng-include>

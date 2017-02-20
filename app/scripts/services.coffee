@@ -90,6 +90,11 @@ angular.module('memoire.services', ['restangular'])
               RestangularConfigurer.setBaseUrl(config.rest_uri_v2)
         ).service('rest-auth/login/')
 )
+.factory('Logout', (Restangular) ->
+        return Restangular.withConfig((RestangularConfigurer) ->
+              RestangularConfigurer.setBaseUrl(config.rest_uri_v2)
+        ).service('rest-auth/logout/')
+)
 
 
 # AME Service

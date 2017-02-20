@@ -1,36 +1,22 @@
-<div class="content landing-page">
-
-  <ng-include src="'views/candidature/partials/navigation-header.html'"></ng-include>
-
+<div class="option">
   <h1>Selection</h1>
   <div ng-show="navigation_inter_page == 0" class="" >
-
-
-      <p>
-
-        Cette année deux choix s'offrent à vous
-
-      </p>
-
-      <a class="btn grey" ng-click="navigation_inter_page = 1" >Postuler par courrier</a>
-
-        <span ng-if="user.profile.birthdate">
-          <a class="btn green" ui-sref="candidature.finalization">
-            <span class="fr">Continuer l'inscription en ligne</span>
-            <span class="en">Resumer applicaiton</span>
-          </a>
-        </span>
-        <span ng-if="!user.profile.birthdate">
-          <a class="btn green" ui-sref="candidature.personnal-infos">
-                <span class="fr">Postuler en ligne</span>
-                <span class="en">Online application</span>
-          </a>
-        </span>
-
-
-
-
-
+  <p>
+    Cette année deux choix s'offrent à vous
+  </p>
+  <a class="btn grey" ng-click="navigation_inter_page = 1" >Postuler par courrier</a>
+    <span ng-if="user.profile.birthdate">
+      <a class="btn green" ui-sref="candidature.finalization">
+        <span class="fr">Continuer l'inscription en ligne</span>
+        <span class="en">Resumer applicaiton</span>
+      </a>
+    </span>
+      <span ng-if="!user.profile.birthdate">
+        <a class="btn green" ui-sref="candidature.personnal-infos">
+          <span class="fr">Postuler en ligne</span>
+          <span class="en">Online application</span>
+        </a>
+      </span>
   </div>
 
 
@@ -38,7 +24,7 @@
 
 
     <div class="" >
-      Voici votre numéro d'inscription qu'il faudra indiquer sur chaque envoie:
+      Voici votre numéro d'inscription qu'il faudra indiquer sur l'envoie postal:
       <div>
           {{ candidature.current_year_application_count}}
       </div>
@@ -48,22 +34,12 @@
       Télécharger le PDF
     </a>
     <a class="btn grey" ng-click="candidature.patch({application_completed: true})" ui-sref="candidature.account.login" >
-
-
       Confirmer l'inscription par Courrier
-
     </a>
     <a class="btn" ui-sref="candidature.account.login" >
       retour
-
     </a>
 
-
-
   </div>
-
-
-
-
 
 </div>

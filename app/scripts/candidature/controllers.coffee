@@ -65,7 +65,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 
 .controller('LoginController', (
   $rootScope, $scope, RestangularV2, $state, $http, Login,
-  Authentification, authManager, jwtHelper
+  Logout, authManager, jwtHelper
                                 ) ->
 
     # localStorage.clear()
@@ -100,7 +100,8 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
      )
 
     $scope.logout = () ->
-      Authentification.one("logout/").post().then((auth) ->
+      console.log("logout")
+      Logout.post([], [headers={}]).then((auth) ->
           localStorage.removeItem("token")
           delete $http.defaults.headers.common.Authorization
           $rootScope.user = $scope.user = []
@@ -164,7 +165,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 
 
 .controller('ParentCandidatureController', ($rootScope, $scope, $state, jwtHelper, $q,
-            Restangular, RestangularV2, Vimeo, Authentification, $http, cfpLoadingBar, authManager,
+            Restangular, RestangularV2, Vimeo, Logout, $http, cfpLoadingBar, authManager,
             Users, Candidatures, ArtistsV2, Galleries, Media, Upload) ->
 
   $rootScope.__cache = new Date().getTime()
@@ -225,7 +226,8 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 
   # logout
   $rootScope.logout = () ->
-    Authentification.one("logout/").post().then((auth) ->
+    console.log("olalogout")
+    Logout.post({},{},{}).then((auth) ->
         localStorage.removeItem("token")
         $rootScope.user = []
         delete $http.defaults.headers.common.Authorization

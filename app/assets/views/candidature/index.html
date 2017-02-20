@@ -5,7 +5,13 @@
             <img src="images/candidature/fresnoy-bandeau.jpg"  />
           </a>
       </div>
-      <div class="col-xs-offset-1 col-xs-10 col-md-offset-0 col-md-5 col-lg-4" ui-view="application_content_view"></div>
+      <div class="col-xs-offset-1 col-xs-10 col-md-offset-0 col-md-5 col-lg-4">
+        <div class="content">
+          <ng-include src="'views/candidature/partials/navigation-header.html'"></ng-include>
+          <div ui-view="application_content_view"></div>
+        </div>
+        <ng-include src="'views/candidature/partials/navigation-breadcrumb.html'"></ng-include>
+      </div>
       <div class="col-md-6 col-lg-7 right-screen">
         <div class="">
           <div class="bg" style="background-image:url('images/candidature/artworks/{{current_display_screen.image}}')">
