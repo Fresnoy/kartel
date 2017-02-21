@@ -1,4 +1,4 @@
-<div class="navigation breadcrumb" ng-show="isAuthenticated">
+<div class="navigation breadcrumb" ng-show="isAuthenticated && !upload_percentage<99">
   <ul class="list-inline small">
     <li ng-class="{'current': $state.current.name == 'candidature.personnal-infos'}"><a class="pointer" ui-sref="candidature.personnal-infos">
       <span class="square"></span>

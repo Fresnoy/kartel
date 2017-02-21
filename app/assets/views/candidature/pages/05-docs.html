@@ -59,7 +59,7 @@
                     <span ng-show="!candidature.justification_letter">envoyer votre lettre de motivation au format pdf</span>
                     <span ng-show="candidature.justification_letter" >Changer</span>
                   </div>
-                  
+
                   <a target='_blank'
                     href="{{candidature.justification_letter}}">
                     <img ng-show="candidature.justification_letter" height="30px" src="http://iconbug.com/data/5b/507/52ff0e80b07d28b590bbc4b30befde52.png" />
@@ -163,6 +163,9 @@
                   name="cJustification"
                   ngf-select="uploadFile(candidature.considered_project_1, candidature, 'considered_project_1') " ngf-capture="'camera'"
                   accept="application/pdf"
+                  ngf-accept="'application/pdf'"
+                  ngf-pattern="'application/pdf'"
+                  ngf-model-invalid="invalidFileProject1"
                   required
                   >
                   <span ng-show="!candidature.considered_project_1">Project envisagé au format PDF</span>
@@ -174,6 +177,12 @@
                   href="{{candidature.considered_project_1}}">
                   <img ng-show="candidature.considered_project_1" height="30px" src="http://iconbug.com/data/5b/507/52ff0e80b07d28b590bbc4b30befde52.png" />
                 </a>
+                <div ng-show="invalidFileProject1.$errorMessages" ng-messages="invalidFileProject1.$errorMessages" class="help-block error">
+                  <div ng-message="pattern">
+                    <span class="fr">Format accepté : pdf</span>
+                    <span class="en">Accepted format : pdf</span>
+                  </div>
+                </div>
 
                 <div ng-show="form.cProject1.$touched && form.cProject1.$invalid" ng-messages="form.cProject1.$error" class="help-block error">
                   <div ng-message="required">
@@ -233,6 +242,9 @@
                   name="cJustification"
                   ngf-select="uploadFile(candidature.considered_project_2, candidature, 'considered_project_2') " ngf-capture="'camera'"
                   accept="application/pdf"
+                  ngf-accept="'application/pdf'"
+                  ngf-pattern="'application/pdf'"
+                  ngf-model-invalid="invalidFileProject2"
                   required
                   >
                   <span ng-show="!candidature.considered_project_2">Project envisagé au format PDF</span>
@@ -243,6 +255,12 @@
                   href="{{candidature.considered_project_2}}">
                   <img ng-show="candidature.considered_project_2" height="30px" src="http://iconbug.com/data/5b/507/52ff0e80b07d28b590bbc4b30befde52.png" />
                 </a>
+                <div ng-show="invalidFileProject2.$errorMessages" ng-messages="invalidFileProject2.$errorMessages" class="help-block error">
+                  <div ng-message="pattern">
+                    <span class="fr">Format accepté : pdf</span>
+                    <span class="en">Accepted format : pdf</span>
+                  </div>
+                </div>
 
                 <div ng-show="form.cProject2.$touched && form.cProject2.$invalid" ng-messages="form.cProject2.$error" class="help-block error">
                   <div ng-message="required">
@@ -291,7 +309,7 @@
 
 
       <div class="navigation">
-        <a class="btn" ng-click="navigation_inter_page == 0">
+        <a class="btn" ng-click="navigation_inter_page = 0">
           Retour
         </a>
         <a class="btn" ng-click="navigation_inter_page = 2">
@@ -302,7 +320,7 @@
   </div>
 
 
-  <div ng-show='navigation_inter_page == 2'>
+  <div ng-if='navigation_inter_page == 2'>
 
 
           <h2>Élements Visuels</h2>
@@ -346,16 +364,24 @@ artistique ou de son travail. </p>
                   ngf-select="uploadVimeo(video, candidature, 'presentation_video')"
                   ngf-capture="'camera'"
                   accept="video/*"
+                  ngf-accept="'video/*'"
+                  ngf-pattern="'video/*'"
+                  ngf-model-invalid="invalidVideo"
                   ng-show="!candidature.presentation_video"
                   >
                   Uploader une vidéo</button>
-                  <div ng-show="form.uVideo.$invalid" ng-messages="form.uVideo.$error" class="help-block error">
+                  <div ng-show="invalidVideo.$errorMessages" ng-messages="invalidVideo.$errorMessages" class="help-block error">
                     <div ng-message="pattern">
                       <span class="fr">Fichier non reconnu comme étant une vidéo</span>
-                      <span class="en">No vidéo file</span>
+                      <span class="en">this is not a vidéo file</span>
                     </div>
                   </div>
-                  <iframe height="100px" width="200px" ng-if="candidature.presentation_video" src="{{trustSrc(candidature.presentation_video)}}" />
+                  <div ng-init="isAvailableVideo(candidature.presentation_video)">
+                    <iframe ng-if="_isAvailableVideo" height="100px" width="200px"  src="{{trustSrc(candidature.presentation_video)}}" />
+                    <div ng-if="candidature.presentation_video && candidature.presentation_video.indexOf('player.vimeo.com/video')>0 && !_isAvailableVideo">
+                      La vidéo est bien envoyée et sera disponible sous peu de temps, n'hésitez pas à revenir plus tard sur votre inscription pour la consulter
+                    </div>
+                  </div>
                   <a class="btn" ng-show="candidature.presentation_video.indexOf('player.vimeo.com/video')>0" ng-click='deleteVimeoVideo(candidature.presentation_video.split("/").pop(), candidature, "presentation_video")'>
                       Effacer la vidéo
                   </a>
@@ -397,7 +423,7 @@ artistique ou de son travail. </p>
 
 
           <div class="navigation">
-            <a class="btn" ng-click="navigation_inter_page == 2">
+            <a class="btn" ng-click="navigation_inter_page = 1">
               Retour
             </a>
             <a class="btn" ui-sref="candidature.messages">

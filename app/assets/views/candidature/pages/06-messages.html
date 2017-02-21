@@ -90,37 +90,6 @@ responsable en cas de problème technique).</p>
 
           </div>
 
-          <h2>Eléments supplémentaires</h2>
-          <p>Texte élément suplémentaire</p>
-          <div class="field">
-            <input
-              type="checkbox"
-              id="asynchronous-element"
-              ng-model="candidature.physical_content"
-              ng-change="candidature.patch({physical_content: candidature.physical_content})"
-              name="aAsynchone"
-              class="one"
-              />
-              <label class="checkbox one" for='asynchronous-element'>
-                <span class="fr">Je vous envoie des éléments par courrier</span>
-                <span class="en">Send Element by mail</span>
-              </label>
-              <div ng-show="candidature.physical_content" class="alert" >
-                <textarea
-                    ng-model="candidature.physical_content_description"
-                    ng-model-options='{ debounce: 1000 }'
-                    ng-change="candidature.patch({physical_content_description: candidature.physical_content_description})"
-                    placeholder="Desciption des éléments"
-                />
-                <span class="fr"> N'oubliez pas de précisez votre numéro de cadidature : </span>
-                <span class="en"> Don't forget to give us your application number </span>
-                  <strong>{{candidature.current_year_application_count}}</strong>
-
-              </div>
-            </div>
-
-
-
 
 
   </form>
@@ -129,7 +98,7 @@ responsable en cas de problème technique).</p>
 
 
       <div class="navigation">
-        <a class="btn" ui-sref="candidature.documents">
+        <a class="btn" ui-sref="candidature.documents" >
           Retour
         </a>
         <a class="btn" ng-click="navigation_inter_page = 1">

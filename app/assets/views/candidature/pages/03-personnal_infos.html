@@ -183,7 +183,7 @@
                           <span ng-show="candidature.identity_card" >Changer</span>
 
                         </div>
-                        
+
                         <a target='_blank'
                           href="{{candidature.identity_card}}">
                           <img ng-show="candidature.identity_card.toLowerCase().indexOf('pdf')>0" height="30px"
@@ -203,7 +203,7 @@
                         <div ng-show="invalidFileJustification.$errorMessages" ng-messages="invalidFileJustification.$errorMessages" class="help-block error">
 
                           <div ng-message="pattern">
-                            <span class="fr">Formats accepés : jpg / png / gif / pdf</span>
+                            <span class="fr">Formats acceptés : jpg / png / gif / pdf</span>
                             <span class="en">Accepted formats : jpg / png / gif / pdf</span>
                           </div>
                           <div ng-message="identity_card">
@@ -582,8 +582,8 @@
                        class="help-block error">
 
                     <div ng-message="pattern">
-                      <span class="fr">Formats accepés : jpg / png / gif / pdf</span>
-                      <span class="en">Required</span>
+                      <span class="fr">Formats acceptés : jpg / png / gif</span>
+                      <span class="en">accepted formats : jpg / png / gif</span>
                     </div>
                     <div ng-message="maxSize">
                       <span class="fr">Photo trop importante < 10MB</span>

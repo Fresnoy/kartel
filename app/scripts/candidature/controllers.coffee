@@ -524,6 +524,28 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
     $scope.trustSrc = (src) ->
       return $sce.trustAsResourceUrl(src);
 
+    $scope._isAvailableVideo = false
+    $scope.isAvailableVideo = (videoUri) ->
+      if(!videoUri)
+        $scope._isAvailableVideo = false
+      if(videoUri.indexOf('player.vimeo.com/video')>0)
+          idVimeo = videoUri.split("/").pop()
+          VimeoToken.one().get().then((settings) ->
+              Vimeo.setDefaultHeaders({Authorization: "Bearer "+ settings.token})
+              video_uri = "videos/"+idVimeo
+              Vimeo.one(video_uri).get().then((video_infos) ->
+                if(video_infos.data.status == "available")
+                  $scope._isAvailableVideo = true
+                else
+                  $scope._isAvailableVideo = false
+              , (error) ->
+                $scope._isAvailableVideo = false
+              )
+          , (error) ->
+            $scope._isAvailableVideo = false
+          )
+      else
+        $scope._isAvailableVideo = true
 
     $scope.deleteVimeoVideo = (idVimeo, model, field) ->
       # get Vimeo token api
@@ -531,14 +553,11 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
           Vimeo.setDefaultHeaders({Authorization: "Bearer "+ settings.token})
           video_uri = "videos/"+idVimeo
           Vimeo.one(video_uri).remove().then((video_infos) ->
-            console.log("video_infos")
-            console.log(video_infos)
             model[field] = ""
             patch_infos = {}
             model[field] = ""
             patch_infos[field] = model[field]
             model.patch(patch_infos)
-
           )
       )
 
@@ -550,10 +569,8 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 
       # get Vimeo token api
       VimeoToken.one().get().then((settings) ->
-          console.log("vimeoUpload")
           # localStorage.setItem('vimeo_upload_token',settings.token)
           Vimeo.setDefaultHeaders({Authorization: "Bearer "+ settings.token})
-          # console.log(Vimeo)
           # connect to vimeo api
           Vimeo.one("me").get().then((account_infos) ->
               # console.log(account_infos)
@@ -562,9 +579,6 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
                 type: "streaming"
               # get an upload ticket
               account_infos.data.customPOST(upload_settings,"videos").then((ticket) ->
-                    # console.log("ticket")
-                    # console.log(ticket)
-
                     # http method because Vimeo crash when multipart upload
                     #  send no Authorization
                     upload_config =
@@ -576,10 +590,8 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
                       method: 'PUT'
                     Upload.http(upload_config)
                     .then((resp) ->
-                        console.log("Successful upload VIMEO")
                         # Complete the upload : complete_uri remove
                         Vimeo.one(ticket.data.complete_uri).remove().then((remove) ->
-                          console.log("Ok Vimeo now video is complete")
                           # get video id
                           location = remove.headers('Location')
                           video_id = location.split('/')[2]
@@ -606,7 +618,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
                         console.log("ERROR  upload VIMEO")
                         console.log(error)
                       , (evt) ->
-                        $scope.upload_percentage = parseInt(100.0 * evt.loaded / evt.total)
+                        $rootScope.upload_percentage = parseInt(100.0 * evt.loaded / evt.total)
 
                     )
                   )

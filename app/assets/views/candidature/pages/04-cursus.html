@@ -78,6 +78,11 @@
                         ngf-select="uploadFile(file[$index], item)"
                         ngf-capture="'camera'"
                         accept="image/*, application/pdf"
+                        ngf-accept="'image/*, application/pdf'"
+                        ngf-pattern="'image/*,application/pdf'"
+                        ngf-model-invalid="invalidFileCursusJustification[$index]"
+                        name="jCursus[$index]"
+                        required
                         >
                         <span ng-show="!item.picture && !item.file" class="btn" >Ajouter un fichier image ou pdf</span>
                       </div>
@@ -88,7 +93,12 @@
                         <img ng-show="item.picture" height="30px" src="http://www.fitright.co.in/images/generic-image-file-icon-hi.png" />
                       </a>
 
-
+                      <div ng-show="invalidFileCursusJustification[$index].$errorMessages" ng-messages="item.invalidFileCursusJustification[$index].$errorMessages" class="help-block error">
+                        <div ng-message="pattern">
+                          <span class="fr">Formats acceptés : jpg / png / gif / pdf</span>
+                          <span class="en">Accepted formats : jpg / png / gif / pdf</span>
+                        </div>
+                      </div>
                       <div class="inline"  ng-show="form.$submitted || item.$touched">
                           <span ng-show="item.$error.required"> Give us a photo please</span>
                           <span ng-show="item.$error.photo"> Value error </span>
