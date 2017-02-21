@@ -46,12 +46,15 @@
         <h2>Cursus</h2>
         <div class="row">
           <div class="col-xs-12 col-md-6 col-lg-6">
-            <div><label><span class="fr">Master</span><span class="en">Master</span></label>   <input class="hidden" type="text" ng-model="candidature.master_degree" readonly required/><span class="isvalid"></div>
-              <div><label><span class="fr">Cursus</span><span class="en">Cursus</span></label>
-                  <input class="" type="text" ng-model="user.profile.cursus" readonly required/><span class="isvalid">
-              </div>
+            <div ><label><span class="fr">Master / 7 ans exp. art.</span><span class="en">Master / 7 year exp. art.</span></label>   <input class="hidden" type="text" ng-model="candidature.master_degree" readonly required/><span class="isvalid"></div>
+
+
+            <div><label><span class="fr">Cursus</span><span class="en">Cursus</span></label>  <input class="" type="text" ng-model="user.profile.cursus" readonly required/><span class="isvalid"> </div>
           </div>
           <div class="col-xs-12 col-md-6 col-lg-6">
+            <div ng-if='candidature.master_degree==false'>
+              <label><span class="fr">Argumentaire</span><span class="en">Argument</span></label><input class="hidden" type="text" ng-model="candidature.experience_justification" readonly required /><span class="isvalid"/>
+            </div>
             <div>
                 <div ng-if="cursus_justifications.media.length">
                   <label><span class="fr">Documents</span><span class="en">Documents</span></label>
