@@ -165,7 +165,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 
 
 .controller('ParentCandidatureController', ($rootScope, $scope, $state, jwtHelper, $q,
-            Restangular, RestangularV2, Vimeo, Logout, $http, cfpLoadingBar, authManager,
+            Restangular, RestangularV2, Vimeo, Logout, $http, cfpLoadingBar, authManager, ISO3166,
             Users, Candidatures, ArtistsV2, Galleries, Media, Upload) ->
 
   $rootScope.__cache = new Date().getTime()
@@ -229,6 +229,11 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
   $scope.setLang = (lang) ->
     localStorage.setItem("language", lang)
     $rootScope.language = localStorage.language
+
+  # countries
+  $rootScope.getCountrie = (code) ->
+
+    return _.invert(ISO3166.countryToCode)[code]
 
 
   # logout

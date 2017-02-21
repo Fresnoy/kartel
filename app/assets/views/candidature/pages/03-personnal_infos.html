@@ -72,8 +72,10 @@
                               date-min-limit="{{birthdateMax}}"
                               date-max-limit="{{birthdateMin}}"
                           >
-                              <input readonly type="text" ng-model="user.profile.birthdate" ng-change="save(user)" required />
+                              <input class="date" readonly type="text" ng-model="user.profile.birthdate" ng-change="save(user)" required />
+
                           </datepicker>
+
                           <div ng-show="form1.uBirthDate.$touched && form1.uBirthDate.$invalid" ng-messages="form1.uBirthDate.$error" class="help-block error">
                             <div ng-message="required">
                               <span class="fr">Obligatoire</span>
@@ -99,42 +101,36 @@
 
 
                       <div class="field">
-                        <input hidden name='uNationality' id="nationality" type="text" ng-model="user.profile.nationality"  required />
+                        <input hidden name='uNationality' id="nationality" type="text" ng-model="user.profile.nationality" required />
                         <div ng-repeat="item in nationality track by $index" >
-                          <select
-                            ng-model="nationality[$index]"
-                            ng-change="user.patch({'profile':{'nationality': nationality.join(splitChar)}}); user.profile.nationality = nationality.join(splitChar);"
+                          <div class="item" ng-init='removeConfirmation[$index]=false'>
+                            <span class="flag-icon flag-icon-{{item | lowercase}}" />
+                            <span class="name" ng-bind="getCountrie(item)" />
+                            <span class="trash" ng-click="removeConfirmation[$index]=true" />
+                            <div class="delete-pane" ng-show="removeConfirmation[$index]">
+                                <span class="trash" ng-click="nationality.splice($index,1);
+                                user.profile.nationality = nationality.join(splitChar);
+                                user.patch({'profile':{'nationality': nationality.join(splitChar)}})" />
+                                <span class="name"><span class="fr">Supprimer</span><span class="en">Delete</span></span>
+                                <span class="cancel" ng-click="removeConfirmation[$index]=false"></span>
+                            </div>
+                          </div>
+                        </div>
+                        <select
+                            ng-model = "nation"
+                            ng-change="nationality.push(nation); user.profile.nationality = nationality.join(splitChar);
+                            user.patch({'profile':{'nationality': user.profile.nationality}}); nation=''"
                             >
                               <option value="">----</option>
                               <option ng-repeat="(country, code) in countries" value="{{code}}">{{country}} ({{code}})</option>
-                          </select>
-                          <div class="remove" ng-show="!removeConfirmation[$index]"
-                               ng-init='removeConfirmation[$index]=false'
-                               ng-click="removeConfirmation[$index]=!removeConfirmation[$index]">
-                          </div>
-                          <div class="remove-confirm" ng-show="removeConfirmation[$index]"
-                               ng-click="removeConfirmation[$index]=!removeConfirmation[$index]">
-                            <span class="fr">Supprimer ? </span><span class="en">Delete ?</span>
-                            <a class="no"><span class="fr">Annuler</span><span class="en">Cancel</span></a>
-                            <a class="yes" ng-click="nationality.splice($index,1); user.profile.nationality = nationality.join(splitChar); user.patch({'profile':{'nationality': nationality.join(splitChar)}})">Ok</a>
-                          </div>
-                        </div>
-
-                        <div>
-                          <a class="btn" ng-click="nationality.push(array())">
-                            <span class="fr"> + ajouter une nationalité </span>
-                            <span class="en"> + add natonality</span>
-                          </a>
-                        </div>
-
-
+                        </select>
                         <div ng-show="form1.uNationality.$touched && form1.uNationality.$invalid" ng-messages="form1.uNationality.$error" class="help-block error">
                           <div ng-message="required">
                             <span class="fr">Obligatoire</span>
                             <span class="en">Required</span>
                           </div>
                         </div>
-                        <label class="topborder" for="nationality">
+                        <label class="" for="nationality">
                           <span class="field-state required"></span>
                           <span class="fr">Nationalité</span>
                           <span class="en">Nationality</span>
@@ -169,48 +165,49 @@
 
                       <div class="field">
                         <input  ng-model="candidature.identity_card" hidden required />
-                        <div id="id-justification" class="btn"
+                        <div
+                          ng-if="!candidature.identity_card"
+                          id="id-justification"
+                          class="media-upload"
                           ng-model="candidature.identity_card"
-                          ngf-select="uploadFile(candidature.identity_card, candidature, 'identity_card') " ngf-capture="'camera'"
+                          ngf-select="uploadFile(candidature.identity_card, candidature, 'identity_card')"
+                          ngf-capture="'camera'"
                           ngf-accept="'image/*, application/pdf'"
                           ngf-pattern="'image/*,application/pdf'"
                           ngf-model-invalid="invalidFileJustification"
                           name="jID"
                           required
                           >
-                          <span ng-show="!candidature.identity_card">envoyer</span>
-                          <span ng-show="candidature.identity_card" >Changer</span>
-
+                          <span class="image" />
                         </div>
-
-                        <a target='_blank'
-                          href="{{candidature.identity_card}}">
-                          <img ng-show="candidature.identity_card.toLowerCase().indexOf('pdf')>0" height="30px"
-                           src="images/file-pdf.png" />
-                          <img ng-show="(candidature.identity_card.toLowerCase().indexOf('.png')>0 ||
-                          candidature.identity_card.toLowerCase().indexOf('.gif')>0
-                          || candidature.identity_card.toLowerCase().indexOf('.jpg')>0)" height="30px"
-                           src="images/file-image.png" />
-                        </a>
-
-                        <div ng-show="form1.jID.$invalid" ng-messages="form1.jID.$error" class="help-block error">
-                          <div ng-message="required">
-                            <span class="fr">Obligatoire</span>
-                            <span class="en">Required</span>
+                        <div class="item" ng-if="candidature.identity_card" ng-init='RC_id=false'>
+                          <a class="link" target='_blank' href="{{candidature.identity_card}}"><img  /></a>
+                          <span class="name">{{candidature.identity_card.split('.').pop()}}</span>
+                          <span class="trash" ng-click="RC_id=true" />
+                          <div class="delete-pane" ng-show="RC_id">
+                              <span class="trash" ng-click="candidature.identity_card=''; RC_id=false" />
+                              <span class="name"><span class="fr">Supprimer</span><span class="en">Delete</span></span>
+                              <span class="cancel" ng-click="RC_id=false"></span>
                           </div>
                         </div>
-                        <div ng-show="invalidFileJustification.$errorMessages" ng-messages="invalidFileJustification.$errorMessages" class="help-block error">
 
-                          <div ng-message="pattern">
-                            <span class="fr">Formats acceptés : jpg / png / gif / pdf</span>
-                            <span class="en">Accepted formats : jpg / png / gif / pdf</span>
-                          </div>
-                          <div ng-message="identity_card">
-                            <span class="fr">Valeur éronnée</span>
-                            <span class="en">Value Error</span>
-                          </div>
-                        </div>
+
+
                         <label class="topborder" for="id-justification">
+                          <div ng-show="form1.jID.$invalid && form1.jID.$touched" ng-messages="form1.jID.$error" class="help-block error">
+                            <div ng-message="required">
+                              <span class="fr">Obligatoire</span>
+                              <span class="en">Required</span>
+                            </div>
+                          </div>
+                          <div ng-show="invalidFileJustification.$errorMessages" ng-messages="invalidFileJustification.$errorMessages" class="help-block error">
+
+                            <div ng-message="pattern">
+                              <span class="fr">Formats acceptés : jpg / png / gif / pdf</span>
+                              <span class="en">Accepted formats : jpg / png / gif / pdf</span>
+                            </div>
+                          </div>
+
                           <span class="field-state required" ng-class="{ 'error': form1.jID.$error, 'valid':form1.jID.$valid, 'touched': form1.jID.$touched }"></span>
                           <span class="fr">Justificatif d'identité (JPG / PDF)</span>
                           <span class="en">Justification (JPG / PDF)</span>
