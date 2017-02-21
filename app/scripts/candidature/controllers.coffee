@@ -248,8 +248,9 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 
   )
   $rootScope.$on('data:read', (event, data) ->
-    $rootScope.writingData = false
-
+    setTimeout ( ->
+      $rootScope.writingData = false
+    ), 100
   )
 
 

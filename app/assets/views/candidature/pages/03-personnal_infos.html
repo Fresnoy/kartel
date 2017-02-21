@@ -1,7 +1,6 @@
 <div class="personnal-infos">
 
   <h1>Selection</h1>
-  <div class="data-writing" ng-show="writingData"><span class="fr">Enregistrement</span><span class="en">Save data</span></div>
 
   <div ng-show="navigation_inter_page == 0" class="" >
 
@@ -41,7 +40,7 @@
 
                         <div class="field">
                           <select id="gender" ng-model="user.profile.gender" ng-change="save(user)" name="uGender" required>
-                            <option value="">------</option> <!-- not selected / blank option -->
+                            <option value="">Male / Female  / ...</option> <!-- not selected / blank option -->
                             <option ng-repeat="(code, value) in gender" value="{{code}}">{{value[language]}}</option>
                           </select>
                           <div ng-show="form1.uGender.$touched && form1.uGender.$invalid" ng-messages="form1.uGender.$error" class="help-block error">
