@@ -183,10 +183,7 @@
                           <span ng-show="candidature.identity_card" >Changer</span>
 
                         </div>
-                        <span ng-if='upload_percentage<99'>
-                          <img src='images/load.gif' height="20px" /> {{upload_percentage}} / 100
-                        </span>
-
+                        
                         <a target='_blank'
                           href="{{candidature.identity_card}}">
                           <img ng-show="candidature.identity_card.toLowerCase().indexOf('pdf')>0" height="30px"
@@ -207,7 +204,7 @@
 
                           <div ng-message="pattern">
                             <span class="fr">Formats accepés : jpg / png / gif / pdf</span>
-                            <span class="en">Required</span>
+                            <span class="en">Accepted formats : jpg / png / gif / pdf</span>
                           </div>
                           <div ng-message="identity_card">
                             <span class="fr">Valeur éronnée</span>
@@ -572,9 +569,6 @@
                   >
                   <span ng-if="!user.profile.photo">Choisir une photo</span>
                 </div>
-                <span ng-if='upload_percentage<99'>
-                  <img src='http://mupit.icm.jhu.edu/MuPIT_Interactive/images/load.gif' height="20px" /> {{upload_percentage}} / 100
-                </span>
 
                 <label class="topborder" for="photo">
                   <div ng-show="form4.uPhoto.$invalid" ng-messages="form4.uPhoto.$error" class="help-block error">

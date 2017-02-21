@@ -295,6 +295,35 @@ body.en {
           display: block;
       }
     }
+    .upload{
+      position: absolute;
+      left:0;
+      top:0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255,255,255,0.8);
+      z-index: 5;
+      text-align: center;
+      .unit{
+        font-size: 2em;
+        display: block;
+        position: absolute;
+        width:100%;
+        text-align: center;
+        top: 50%;
+        &:after{
+          content: " / 100";
+        }
+      }
+      img{
+        position: absolute;
+        display: block;
+        height: 20%;
+        top: 25%;
+        margin-left: -13%;
+        left: 50%;
+      }
+    }
     .content {
       margin-top: 50px;
       z-index:2;
@@ -415,6 +444,18 @@ body.en {
       }
     }
     .summary {
+      h2{
+        margin: 0px;
+        font-size: 1.1em;
+      }
+      h3{
+        margin: 0px;
+        font-size: 1.0em;
+      }
+      hr{
+        margin: 0px 0px 5px 0px;
+        height: 1px;
+      }
       input{
         width:70%;
         display: inline-block;

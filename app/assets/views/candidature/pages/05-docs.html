@@ -51,19 +51,25 @@
                     name="cJustification"
                     ngf-select="uploadFile(candidature.justification_letter, candidature, 'justification_letter') " ngf-capture="'camera'"
                     accept="application/pdf"
+                    ngf-accept="'application/pdf'"
+                    ngf-pattern="'application/pdf'"
+                    ngf-model-invalid="invalidJustificationLetter"
                     required
                     >
                     <span ng-show="!candidature.justification_letter">envoyer votre lettre de motivation au format pdf</span>
                     <span ng-show="candidature.justification_letter" >Changer</span>
                   </div>
-                  <span ng-if='upload_percentage<99'>
-                    <img src='http://mupit.icm.jhu.edu/MuPIT_Interactive/images/load.gif' height="20px" /> {{upload_percentage}} / 100
-                  </span>
-
+                  
                   <a target='_blank'
                     href="{{candidature.justification_letter}}">
                     <img ng-show="candidature.justification_letter" height="30px" src="http://iconbug.com/data/5b/507/52ff0e80b07d28b590bbc4b30befde52.png" />
                   </a>
+                  <div ng-show="invalidJustificationLetter.$errorMessages" ng-messages="invalidJustificationLetter.$errorMessages" class="help-block error">
+                    <div ng-message="pattern">
+                      <span class="fr">Ce n'est pas un fichier pdf</span>
+                      <span class="en">Only Pdf accepted</span>
+                    </div>
+                  </div>
 
                   <div ng-show="form.cJustification.$touched && form.cJustification.$invalid" ng-messages="form.cJustification.$error" class="help-block error">
                     <div ng-message="required">
@@ -90,19 +96,26 @@
                     name="cJustification"
                     ngf-select="uploadFile(candidature.curriculum_vitae, candidature, 'curriculum_vitae') " ngf-capture="'camera'"
                     accept="application/pdf"
+                    ngf-accept="'application/pdf'"
+                    ngf-pattern="'application/pdf'"
+                    ngf-model-invalid="invalidCV"
                     required
                     >
                     <span ng-show="!candidature.curriculum_vitae">envoyer votre Biographie PDF</span>
                     <span ng-show="candidature.curriculum_vitae" >Changer</span>
                   </div>
-                  <span ng-if='upload_percentage<99'>
-                    <img src='http://mupit.icm.jhu.edu/MuPIT_Interactive/images/load.gif' height="20px" /> {{upload_percentage}} / 100
-                  </span>
 
                   <a target='_blank'
                     href="{{candidature.curriculum_vitae}}">
                     <img ng-show="candidature.curriculum_vitae" height="30px" src="http://iconbug.com/data/5b/507/52ff0e80b07d28b590bbc4b30befde52.png" />
                   </a>
+
+                  <div ng-show="invalidCV.$errorMessages" ng-messages="invalidCV.$errorMessages" class="help-block error">
+                    <div ng-message="pattern">
+                      <span class="fr">Ce n'est pas un fichier pdf</span>
+                      <span class="en">Only Pdf accepted</span>
+                    </div>
+                  </div>
 
                   <div ng-show="form.cCV.$touched && form.cJustification.$invalid" ng-messages="form.cCV.$error" class="help-block error">
                     <div ng-message="required">
@@ -155,9 +168,7 @@
                   <span ng-show="!candidature.considered_project_1">Project envisagé au format PDF</span>
                   <span ng-show="candidature.considered_project_1" >Changer</span>
                 </div>
-                <span ng-if='upload_percentage<99'>
-                  <img src='http://mupit.icm.jhu.edu/MuPIT_Interactive/images/load.gif' height="20px" /> {{upload_percentage}} / 100
-                </span>
+
 
                 <a target='_blank'
                   href="{{candidature.considered_project_1}}">
@@ -227,9 +238,6 @@
                   <span ng-show="!candidature.considered_project_2">Project envisagé au format PDF</span>
                   <span ng-show="candidature.considered_project_2" >Changer</span>
                 </div>
-                <span ng-if='upload_percentage<99'>
-                  <img src='http://mupit.icm.jhu.edu/MuPIT_Interactive/images/load.gif' height="20px" /> {{upload_percentage}} / 100
-                </span>
 
                 <a target='_blank'
                   href="{{candidature.considered_project_2}}">
@@ -332,9 +340,6 @@ artistique ou de son travail. </p>
                 </div>
                 <p>Si vous n'avez pas de lien, envoyez nous la vidéo, nous la convertirons <a href='https://vimeo.com/help/compression' target='_blank'>
                   voir les spécifications pour un rendu optimal</a>  : </p>
-                <span ng-if='upload_percentage<99'>
-                  <img src='http://mupit.icm.jhu.edu/MuPIT_Interactive/images/load.gif' height="20px" /> {{upload_percentage}} / 100
-                </span>
 
 
                 <button ng-model="video" name="uVideo"

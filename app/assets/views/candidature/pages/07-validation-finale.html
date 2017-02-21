@@ -7,7 +7,7 @@
 
     <form name="form" ng-submit="form.$valid && submit()" class="css-form" novalidate>
 
-        <h4><span class="fr">Informations personnels</span><span class="en">Personnal Information</span></h4>
+        <h2><span class="fr">Informations personnels</span><span class="en">Personnal Information</span></h2>
         <div class="row">
           <div class="col-xs-12 col-md-7 col-lg-7">
             <div><label><span class="fr">Nom</span><span class="en">Name</span></label>  <input type="text" ng-model="user.last_name" readonly required/><span class="isvalid"/></div>
@@ -43,7 +43,7 @@
           <a class="edit" ui-sref="candidature.personnal-infos">modifier les information</a>
         </p>
         <hr>
-        <h4>Cursus</h4>
+        <h2>Cursus</h2>
         <div class="row">
           <div class="col-xs-12 col-md-6 col-lg-6">
             <div><label><span class="fr">Master</span><span class="en">Master</span></label>   <input class="hidden" type="text" ng-model="candidature.master_degree" readonly required/><span class="isvalid"></div>
@@ -68,7 +68,7 @@
         <hr>
         <div class="row">
           <div class="col-xs-12 col-md-6 col-lg-6">
-            Projet première année
+            <h3><span class="fr">Projet première année</span><span class="en">First year project</span></h3>
             <div><label><span class="fr">Description</span><span class="en">Description</span></label> <input class="hidden" type="text" ng-model="candidature.considered_project_1" readonly required/><span class="isvalid"></div>
             <div><label><span class="fr">Références artistiques</span><span class="en">Art referencies</span></label> <input class="hidden" type="text" ng-model="candidature.artistic_referencies_project_1" readonly required/><span class="isvalid"></div>
             <br/>
@@ -79,7 +79,7 @@
           </div>
           <div class="col-xs-12 col-md-6 col-lg-6">
 
-            Projet deuxième année
+            <h3><span class="fr">Projet deuxième année</span><span class="en">Second year project</span></h3>
             <div><label><span class="fr">Description</span><span class="en">Description</span></label> <input class="hidden" type="text" ng-model="candidature.considered_project_2" readonly required/><span class="isvalid"></div>
             <div><label><span class="fr">Références artistiques</span><span class="en"> Art referencies</span></label> <input class="hidden" type="text" ng-model="candidature.artistic_referencies_project_2" readonly required/><span class="isvalid"></div>
             <br/>
@@ -98,11 +98,11 @@
         <div class="row">
           <div class="col-xs-12 col-md-12 col-lg-12">
             <div ng-if="candidature.remote_interview">
-              <h4><span class="fr">Entrevue à distance</span><span class="en">remote interview</span><br/></h4>
+              <h3><span class="fr">Entrevue à distance</span><span class="en">remote interview</span><br/></h3>
               <div><label><span class="fr">Via</span><span class="en">Type</span></label> <input class="" type="text" ng-model="candidature.remote_interview_type" readonly required/><span class="isvalid"></div>
               <div><label><span class="fr">ID/URL</span><span class="en">ID/URL</span></label> <input class="" type="text" ng-model="candidature.remote_interview_info" readonly required/><span class="isvalid"></div>
             </div>
-            <h4><span class="fr">Message</span><span class="en">Message</span><br/></h4>
+            <h3><span class="fr">Message</span><span class="en">Message</span><br/></h3>
             <div><input class="" type="text" ng-model="candidature.remark" readonly /><span class="isvalid"></div>
           </div>
         </div>

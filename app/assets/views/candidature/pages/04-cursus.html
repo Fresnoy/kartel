@@ -87,9 +87,7 @@
                         <img ng-show="item.file" height="30px" src="http://iconbug.com/data/5b/507/52ff0e80b07d28b590bbc4b30befde52.png" />
                         <img ng-show="item.picture" height="30px" src="http://www.fitright.co.in/images/generic-image-file-icon-hi.png" />
                       </a>
-                      <span ng-if='upload_percentage<99'>
-                        <img src='http://mupit.icm.jhu.edu/MuPIT_Interactive/images/load.gif' height="20px" /> {{upload_percentage}} / 100
-                      </span>
+
 
                       <div class="inline"  ng-show="form.$submitted || item.$touched">
                           <span ng-show="item.$error.required"> Give us a photo please</span>
