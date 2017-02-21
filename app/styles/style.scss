@@ -341,7 +341,7 @@ body.en {
         color:white;
         border-radius: 0px;
         &.green {
-          background-color: green;
+          background-color: #B8E986;
         }
         &.block{
           display: block;
@@ -354,6 +354,20 @@ body.en {
         &.photo-remove{
           margin: 10px 0px;
         }
+    }
+    .help-pane{
+      position: absolute;
+      top: -50px;
+      left: -5px;
+      width: 105%;
+      padding: 30px;
+      background: #d8d8d8;
+      height: 100vh;
+      z-index: 100;
+
+    }
+    .field{
+      position: relative;
     }
     input, select, textarea{
       width:100%;
@@ -379,7 +393,7 @@ body.en {
       }
       &.ng-valid{
         ~label .field-state{
-          background: green;
+          background: #B8E986;
         }
       }
       &[type='checkbox'],&[type='radio'] {
@@ -401,7 +415,24 @@ body.en {
             }
           }
         }
-
+        &.check{
+          visibility: hidden;
+          position: absolute;
+          + label{
+            padding-left: 30px;
+            &:before{
+              content: " ";
+              display: inline-block;
+              width: 20px;
+              height: 20px;
+              position: absolute; top: 0; left: 0;
+              background: transparent url(../images/candidature/icons/check_false.svg) 0 0px no-repeat;
+            }
+          }
+          &:checked + label:before {
+              background: transparent url(../images/candidature/icons/check_true.svg) 0 0px no-repeat;
+          }
+        }
       }
       &.inline-block{
         display: inline-block;
@@ -498,7 +529,7 @@ body.en {
       }
       input.ng-valid + .isvalid:before {
         content: "√";
-        color: green;
+        color: #B8E986;
       }
     }
     .navigation{
@@ -523,7 +554,7 @@ body.en {
       &.breadcrumb{
         position: absolute;
         background: none;
-        z-index: 2;
+        z-index: 1;
         margin: 10px 0px;
         width: 100%;
         a{
@@ -564,7 +595,7 @@ body.en {
     .data-writing{
         position: absolute;
         right: 10px;
-        background: green;
+        background: #B8E986;
         color: white;
         border-radius: 5px;
         padding: 2px 5px;
@@ -597,7 +628,7 @@ body.en {
       margin: 30px 0px;
 
       &.dragover{
-        background-color: green;
+        background-color: #B8E986;
       }
 
     }
@@ -713,7 +744,7 @@ body.en {
     text-transform: uppercase;
   }
   &.green{
-    background: green;
+    background: #B8E986;
   }
   &.grey{
     background: grey;

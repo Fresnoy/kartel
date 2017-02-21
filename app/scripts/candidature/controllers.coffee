@@ -205,6 +205,10 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 
   # navigation
   $rootScope.navigation_inter_page = 0
+  $rootScope.display_help = false
+  $scope.show_help = () ->
+    console.log("Please Help !")
+    $rootScope.display_help = !$rootScope.display_help
 
   # Dates
   $rootScope.current_year = new Date().getFullYear()
@@ -480,9 +484,12 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
       year = new Date().getFullYear()
       $scope.years = []
       $scope.years.push (year-i) for i in [1..35]
+      #
+      $scope.uploadFileExp = (data, model, field) ->
+        $rootScope.upload(data, model, field)
 
       #patch Medium
-      $scope.uploadFile = (data, model ) ->
+      $scope.uploadFile = (data, model) ->
 
           field = "picture"
           if (data.type.match("image.*"))
@@ -497,10 +504,8 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
       $scope.addItem = (gallery) ->
         medium_infos =
           gallery: gallery.url
-
         Media.one().customPOST(medium_infos).then((response_media) ->
           gallery.media.push(response_media)
-          $scope.state.selected = 1
         )
       $scope.removeItem = (media, index) ->
         item = media[index]
