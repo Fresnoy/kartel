@@ -151,8 +151,8 @@
 
           <form name="formConfirmation">
 
-                <div ng-click="edit_email = true"  >
-                  <a ng-show="!edit_email" > - {{user.email}} </a>
+                <div >
+                  <a ng-show="!edit_email" > {{user.email}} </a>
                 </div>
                 <div ng-show="edit_email">
                   <input id="email" type="email" ng-model="user.email" name="uEmail" unique-user-field required />
@@ -179,11 +179,12 @@
                     Valider l'email
                   </a>
                 </div>
+                <div class="btn" ng-show="!edit_email" ng-click="edit_email = true" >
+                  Corriger l'email
+                </div>
 
           </form>
-          <p>
-            vous pouvez encore modifier l'email de réception en cliquant sur celui ci puis renvoyer, il vous reste {{ send_email }} essais
-          </p>
+
 
 
                 <div ng-show="formConfirmation.uEmail.$invalid && formConfirmation.$submitted" ng-messages="formConfirmation.$error" class="alert alert-danger">
@@ -202,7 +203,7 @@
                 </div>
                 <div class="navigation">
                     <a class="btn btn-inv" ng-click="update_infos(formConfirmation, user)" ng-class="{ 'has-error': (formConfirmation.$invalid || send_email<1 || edit_email) }" >
-                      Renvoyer l'email
+                      Renvoyer l'email {{send_email}}
                     </a>
                   </div>
       </div>
