@@ -382,6 +382,9 @@ body.en {
       text-indent: 4px;
       font-size: 20px;
       color:#4a4a4a;
+      &.no-border{
+        border-bottom: 0px solid black;
+      }
       &:focus{
         outline:none;
         background-color: rgba(0,0,0,.05)
@@ -475,6 +478,12 @@ body.en {
       appearance:none;
       -moz-appearance:none; /* Firefox */
       -webkit-appearance:none;
+    }
+    textarea{
+      height: 50px;
+      &:focus{
+        height: auto;
+      }
     }
     label.topborder{
       border-top: 3px solid black;

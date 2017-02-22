@@ -169,8 +169,9 @@ angular.module('kartel',
             responseError: (response)  ->
                 $rootScope.$broadcast('data:read')
                 # candidature expired
-                if(response.data.candidature == "expired")
-                  $state.go("candidature.expired")
+                if(response.data && response.data.candidature)
+                  if (response.data.candidature == "expired")
+                    $state.go("candidature.expired")
                 return $q.reject(response);
         }
 ])

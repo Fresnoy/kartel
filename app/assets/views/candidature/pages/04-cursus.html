@@ -4,7 +4,7 @@
   <div class="" ng-show="navigation_inter_page == 0" >
     <div class="help-pane" ng-if='display_help'>
         <span class="close" ng-click="show_help(false)">x</span>
-        <h1>Aide  11111</h1>
+        <h1>Aide</h1>
           <p><u>Cocher la case correspondant à votre situation</u></p>
           <p>
           Les candidats doivent pouvoir justifier :
@@ -64,7 +64,10 @@
 
             <div ng-if="candidature.master_degree==false">
               <p>Dites nous en quoi cette expérience vous a préparé au Fresnoy (1 page)</p>
+              <input id="exp-justification" ng-model="candidature.experience_justification" required hidden />
               <div ng-model="candidature.experience_justification"
+                class="media-upload"
+                ng-if="!candidature.experience_justification"
                 ngf-select="uploadFileExp(candidature.experience_justification, candidature, 'experience_justification')"
                 ngf-capture="'camera'"
                 accept="application/pdf"
@@ -74,14 +77,19 @@
                 name="jExp"
                 required
                 >
-                <span ng-show="!candidature.experience_justification" class="btn" >Ajouter un fichier image ou pdf</span>
-                <span ng-show="candidature.experience_justification"  class="btn"  >Changer</span>
-              </div>
 
-              <a target='_blank' ng-show="candidature.experience_justification"
-                href="{{candidature.experience_justification}}">
-                <img ng-show="candidature.experience_justification" height="30px" src="http://iconbug.com/data/5b/507/52ff0e80b07d28b590bbc4b30befde52.png" />
-              </a>
+                <span class="upload-file" />
+              </div>
+              <div class="item" ng-if="candidature.experience_justification" ng-init='RC_exp=false'>
+                <a class="link" target='_blank' href="{{candidature.experience_justification}}"><img  /></a>
+                <span class="name">{{candidature.experience_justification.split('.').pop()}}</span>
+                <span class="trash" ng-click="RC_exp=true" />
+                <div class="delete-pane" ng-show="RC_exp">
+                    <span class="trash" ng-click="candidature.experience_justification=''; RC_exp=false" />
+                    <span class="name"><span class="fr">Supprimer</span><span class="en">Delete</span></span>
+                    <span class="cancel" ng-click="RC_exp=false"></span>
+                </div>
+              </div>
 
               <div ng-show="invalidExperienceJustification.$errorMessages" ng-messages="item.invalidExperienceJustification.$errorMessages" class="help-block error">
                 <div ng-message="pattern">
@@ -89,6 +97,11 @@
                   <span class="en">Accepted format : pdf</span>
                 </div>
               </div>
+              <label class="topborder" for="exp-justification">
+                <span class="field-state"></span>
+                <span class="fr">Justification d'expérience</span>
+                <span class="en">Experience justification</span>
+              </label>
 
             </div>
 
@@ -113,14 +126,9 @@
           <p>Cursus</p>
     </div>
 
-                <h3>Cursus / parcours artistique</h3>
+    <h3>Cursus / parcours artistique</h3>
 
-
-
-
-                <div class="field">
-
-
+            <div class="field">
                         <textarea
                           id="cursus"
                             ng-model="user.profile.cursus"
@@ -152,62 +160,46 @@
                       <div ng-repeat="item in cursus_justifications.media | orderBy:'1*position' track by $index"
                             ng-model="cursus_justifications.media"
                             name="uCursus"
-                            class="item-list"
-                            >
+                            class="item-list">
 
-                          <input type="text" placeholder="Titre"
-                           ng-model="item.label"
-                           ng-model-options='{ debounce: 1000 }'
-                           ng-change="item.patch({label: item.label})"
-
-                           required
-                            />
-
-                          <div ng-model="file[$index]"
-                            ngf-select="uploadFile(file[$index], item)"
-                            ngf-capture="'camera'"
-                            accept="image/*, application/pdf"
-                            ngf-accept="'image/*, application/pdf'"
-                            ngf-pattern="'image/*,application/pdf'"
-                            ngf-model-invalid="invalidFileCursusJustification[$index]"
-                            name="jCursus[$index]"
-                            required
-                            >
-                            <span ng-show="!item.picture && !item.file" class="btn" >Ajouter un fichier image ou pdf</span>
-                          </div>
-
-                          <a target='_blank' ng-show="item.file || item.picture"
-                            href="{{item.file || item.picture}}">
-                            <img ng-show="item.file" height="30px" src="http://iconbug.com/data/5b/507/52ff0e80b07d28b590bbc4b30befde52.png" />
-                            <img ng-show="item.picture" height="30px" src="http://www.fitright.co.in/images/generic-image-file-icon-hi.png" />
-                          </a>
-
-                          <div ng-show="invalidFileCursusJustification[$index].$errorMessages" ng-messages="item.invalidFileCursusJustification[$index].$errorMessages" class="help-block error">
-                            <div ng-message="pattern">
-                              <span class="fr">Formats acceptés : jpg / png / gif / pdf</span>
-                              <span class="en">Accepted formats : jpg / png / gif / pdf</span>
+                          <div class="item" ng-if="item.file || item.picture" ng-init='RC_CursusJustif[$index]=false'>
+                            <a class="link" target='_blank' href="{{item.file || item.picture}}"><img  /></a>
+                            <input class="name no-border" type="text" placeholder="Nom" ng-model="item.label" ng-change="item.patch({label: item.label})" class="no-border" required />
+                            <span class="trash" ng-click="RC_CursusJustif[$index]=true" />
+                            <div class="delete-pane" ng-show="RC_CursusJustif[$index]">
+                                <span class="trash" ng-click="removeItem(cursus_justifications.media, $index); RC_CursusJustif[$index]=false" />
+                                <span class="name"><span class="fr">Supprimer</span><span class="en">Delete</span></span>
+                                <span class="cancel" ng-click="RC_CursusJustif[$index]=false"></span>
                             </div>
-                          </div>
-                          <div class="inline"  ng-show="form.$submitted || item.$touched">
-                              <span ng-show="item.$error.required"> Give us a photo please</span>
-                              <span ng-show="item.$error.photo"> Value error </span>
-                          </div>
-
-                          <div class="remove" ng-show="!removeConfirmation[$index]"
-                               ng-init='removeConfirmation[$index]=false'
-                               ng-click="removeConfirmation[$index]=!removeConfirmation[$index]">
-                          </div>
-                          <div class="remove-confirm" ng-show="removeConfirmation[$index]"
-                               ng-click="removeConfirmation[$index]=!removeConfirmation[$index]"
-                          >
-                            <a class="no">Cancel</a>
-                            <a class="yes" ng-click="removeItem(cursus_justifications.media, $index)">Ok</a>
                           </div>
 
                         </div>
 
                         <div>
-                          <a class="btn block" ng-click="addItem(cursus_justifications)"> Ajouter un justificatif </a>
+                          <div ng-model="file"
+                            class="media-upload"
+                            ngf-select="uploadFile(file, cursus_justifications)"
+                            ngf-capture="'camera'"
+                            accept="image/*, application/pdf"
+                            ngf-accept="'image/*, application/pdf'"
+                            ngf-pattern="'image/*,application/pdf'"
+                            ngf-model-invalid="invalidFileCursusJustification"
+                            name="jCursus"
+                            required
+                            >
+                            <span class="upload-file" />
+                          </div>
+                          <div ng-show="invalidFileCursusJustification.$errorMessages" ng-messages="item.invalidFileCursusJustification.$errorMessages" class="help-block error">
+                            <div ng-message="pattern">
+                              <span class="fr">Formats acceptés : jpg / png / gif / pdf</span>
+                              <span class="en">Accepted formats : jpg / png / gif / pdf</span>
+                            </div>
+                          </div>
+                          <label class="topborder" for="cursus">
+                            <span class="field-state required"></span>
+                            <span class="fr">Ajouter un justificatif (diplôme, certification, ... )</span>
+                            <span class="en">Add a document (degree, certificatie, ... )</span>
+                          </label>
                         </div>
 
                         <p></p>
@@ -219,11 +211,60 @@
                     <a class="btn" ng-click="navigation_inter_page = 0">
                       Retour
                     </a>
-                    <a class="btn" ui-sref="candidature.documents"
+                    <a class="btn" ng-click="navigation_inter_page = 2"
                     >
                       Continue
                     </a>
                   </div>
+      </div>
+      <div ng-show="navigation_inter_page == 2">
+        <div class="help-pane" ng-if='display_help'>
+            <span class="close" ng-click="show_help(false)">x</span>
+            <h1>Aide</h1>
+              <p>Déjà candidaté</p>
+        </div>
+        <form name="form1" ng-submit="form.$valid && submit()" class="css-form" novalidate enctype="multipart/form-data">
+              <div class="field">
+
+                      <input type="checkbox"
+                        id="firstime"
+                        ng-model="candidature.first_time"
+                        ng-change="candidature.patch({first_time: candidature.first_time})"
+                        name="cFirst"
+                        ng-value="true"
+                        class="one check"
+                      />
+                      <label for="firstime" class="big pointer">
+                        <span class="fr">J'ai déjà postulé au Fresnoy</span>
+                        <span class="en"></span>
+                      </label>
+                      <div ng-if='candidature.first_time'>
+                        <span>En quelle année ?</span>
+                        <input type="number"
+                          id="last-candidature"
+                          ng-model="candidature.last_application_year"
+                          ng-change="candidature.patch({last_application_year: candidature.last_application_year})"
+                          name="cLastCandidature"
+                          class="one"
+                          ng-show=candidature.first_time
+                          required
+                        />
+                        <label for="last-candidature" class="checkbox">
+                          <span class="field-state required" ></span>
+                          <span class="fr">Année</span>
+                          <span class="en">Year</span>
+                        </label>
+                      </div>
+
+              </div>
+        </form>
+
+
+
+        <div class="navigation">
+          <a class="btn" ng-click="navigation_inter_page = 1">Retour</a>
+          <a class="btn" ui-sref="candidature.documents">Continue</a>
+        </div>
       </div>
 
 </div>

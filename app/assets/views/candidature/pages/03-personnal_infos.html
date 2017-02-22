@@ -559,7 +559,7 @@
                   <span class="name">{{user.profile.photo.split('.').pop()}}</span>
                   <span class="trash" ng-click="RC_photo=true" />
                   <div class="delete-pane" ng-show="RC_photo">
-                      <span class="trash" ng-click="user.profile.photo=''; RC_id=false" />
+                      <span class="trash" ng-click="user.profile.photo=''; RC_photo=false" />
                       <span class="name"><span class="fr">Supprimer</span><span class="en">Delete</span></span>
                       <span class="cancel" ng-click="RC_photo=false"></span>
                   </div>

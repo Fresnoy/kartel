@@ -508,7 +508,12 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
           if (data.type.match("pdf"))
             field = "file"
 
-          $rootScope.upload(data, model, field)
+          medium_infos =
+            gallery: model.url
+          Media.one().customPOST(medium_infos).then((response_media) ->
+            model.media.push(response_media)
+            $rootScope.upload(data, response_media, field)
+          )
 
 
       # ITEM ADD
@@ -530,7 +535,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 
 # media
 .controller('MediaController', (
-        $rootScope, $scope, $q, $state, $filter, $sce,
+        $rootScope, $scope, $q, $state, $filter, $sce, $http,
         Users, ArtistsV2, Restangular, RestangularV2, Candidatures, Media, Galleries,
         ISO3166, Upload, VimeoToken, Vimeo
       ) ->
@@ -544,6 +549,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
     $scope.isAvailableVideo = (videoUri) ->
       if(!videoUri)
         $scope._isAvailableVideo = false
+        return
       if(videoUri.indexOf('player.vimeo.com/video')>0)
           idVimeo = videoUri.split("/").pop()
           VimeoToken.one().get().then((settings) ->
@@ -600,10 +606,11 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
                     upload_config =
                       url: ticket.data.upload_link_secure
                       headers:
-                        'Content-type': data.type
-                        'Authorization': undefined
+                        'authorization': undefined
+                        'content-type': undefined
                       data: data
                       method: 'PUT'
+
                     Upload.http(upload_config)
                     .then((resp) ->
                         # Complete the upload : complete_uri remove
@@ -632,7 +639,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
                         )
                       , (error)->
                         console.log("ERROR  upload VIMEO")
-                        console.log(error)
+                        console.log(error.headers('Authorization'))
                       , (evt) ->
                         $rootScope.upload_percentage = parseInt(100.0 * evt.loaded / evt.total)
 

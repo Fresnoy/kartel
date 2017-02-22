@@ -2,60 +2,15 @@
 
   <h1>Selection</h1>
 
-  <div class="" ng-show='navigation_inter_page == 0' >
-
-
-
-    <form name="form" ng-submit="form.$valid && submit()" class="css-form" novalidate enctype="multipart/form-data">
-          <div class="field">
-
-                  <input type="checkbox"
-                    id="firstime"
-                    ng-model="candidature.first_time"
-                    ng-change="candidature.patch({first_time: candidature.first_time})"
-                    name="cFirst"
-                    ng-value="true"
-                    class="one check"
-                  />
-                  <label for="firstime" class="big pointer">
-                    <span class="fr">J'ai déjà postulé au Fresnoy</span>
-                    <span class="en"></span>
-                  </label>
-                  <div ng-if='candidature.first_time'>
-                    <span>En quelle année ?</span>
-                    <input type="number"
-                      id="last-candidature"
-                      ng-model="candidature.last_application_year"
-                      ng-change="candidature.patch({last_application_year: candidature.last_application_year})"
-                      name="cLastCandidature"
-                      class="one"
-                      ng-show=candidature.first_time
-                      required
-                    />
-                    <label for="last-candidature" class="checkbox">
-                      <span class="field-state required" ></span>
-                      <span class="fr">Année</span>
-                      <span class="en">Year</span>
-                    </label>
-                  </div>
-
-          </div>
-
-          <div class="navigation">
-            <a class="btn" ui-sref="candidature.cursus">
-              Retour
-            </a>
-            <a class="btn" ng-click="navigation_inter_page = 1">
-              Continue
-            </a>
-          </div>
-    </div>
-    <div class="" ng-show='navigation_inter_page == 1' >
+    <div class="" ng-show='navigation_inter_page == 0' >
 
           <h3>Motivations</h2>
+          <form name="form1" ng-submit="form.$valid && submit()" class="css-form" novalidate enctype="multipart/form-data">
           <div class="field">
                   <input name="cJustification" ng-model="candidature.justification_letter" hidden required />
-                  <div id="justification-letter" class="btn btn-inv"
+                  <div id="justification-letter"
+                    ng-if="!candidature.justification_letter"
+                    class="media-upload"
                     ng-model="candidature.justification_letter"
                     name="cJustification"
                     ngf-select="uploadFile(candidature.justification_letter, candidature, 'justification_letter') "
@@ -66,14 +21,21 @@
                     ngf-model-invalid="invalidJustificationLetter"
                     required
                     >
-                    <span ng-show="!candidature.justification_letter">envoyer votre lettre de motivation au format pdf</span>
-                    <span ng-show="candidature.justification_letter" >Changer</span>
+                    <span class="upload-file" />
                   </div>
 
-                  <a target='_blank'
-                    href="{{candidature.justification_letter}}">
-                    <img ng-show="candidature.justification_letter" height="30px" src="http://iconbug.com/data/5b/507/52ff0e80b07d28b590bbc4b30befde52.png" />
-                  </a>
+                  <div class="item" ng-if="candidature.justification_letter" ng-init='RC_letter=false'>
+                    <a class="link" target='_blank' href="{{candidature.justification_letter}}"><img  /></a>
+                    <span class="name">{{candidature.justification_letter.split('.').pop()}}</span>
+                    <span class="trash" ng-click="RC_letter=true" />
+                    <div class="delete-pane" ng-show="RC_letter">
+                        <span class="trash" ng-click="candidature.justification_letter=''; RC_letter=false" />
+                        <span class="name"><span class="fr">Supprimer</span><span class="en">Delete</span></span>
+                        <span class="cancel" ng-click="RC_letter=false"></span>
+                    </div>
+                  </div>
+
+
                   <div ng-show="invalidJustificationLetter.$errorMessages" ng-messages="invalidJustificationLetter.$errorMessages" class="help-block error">
                     <div ng-message="pattern">
                       <span class="fr">Ce n'est pas un fichier pdf</span>
@@ -101,7 +63,9 @@
 
           <div class="field">
                   <input name="cCV" ng-model="candidature.curriculum_vitae" hidden required />
-                  <div id="cv" class="btn btn-inv"
+                  <div id="cv"
+                    class="media-upload"
+                    ng-if="!candidature.curriculum_vitae"
                     ng-model="candidature.curriculum_vitae"
                     name="cJustification"
                     ngf-select="uploadFile(candidature.curriculum_vitae, candidature, 'curriculum_vitae') " ngf-capture="'camera'"
@@ -111,14 +75,19 @@
                     ngf-model-invalid="invalidCV"
                     required
                     >
-                    <span ng-show="!candidature.curriculum_vitae">envoyer votre Biographie PDF</span>
-                    <span ng-show="candidature.curriculum_vitae" >Changer</span>
+                    <span class="upload-file" />
                   </div>
 
-                  <a target='_blank'
-                    href="{{candidature.curriculum_vitae}}">
-                    <img ng-show="candidature.curriculum_vitae" height="30px" src="http://iconbug.com/data/5b/507/52ff0e80b07d28b590bbc4b30befde52.png" />
-                  </a>
+                  <div class="item" ng-if="candidature.curriculum_vitae" ng-init='RC_CV=false'>
+                    <a class="link" target='_blank' href="{{candidature.curriculum_vitae}}"><img  /></a>
+                    <span class="name">{{candidature.curriculum_vitae.split('.').pop()}}</span>
+                    <span class="trash" ng-click="RC_CV=true" />
+                    <div class="delete-pane" ng-show="RC_CV">
+                        <span class="trash" ng-click="candidature.curriculum_vitae=''; RC_CV=false" />
+                        <span class="name"><span class="fr">Supprimer</span><span class="en">Delete</span></span>
+                        <span class="cancel" ng-click="RC_CV=false"></span>
+                    </div>
+                  </div>
 
                   <div ng-show="invalidCV.$errorMessages" ng-messages="invalidCV.$errorMessages" class="help-block error">
                     <div ng-message="pattern">
@@ -146,10 +115,10 @@
           </div>
     </form>
     <div class="navigation">
-      <a class="btn" ui-sref="navigation_inter_page = 0">
+      <a class="btn" ui-sref="candidature.cursus">
         Retour
       </a>
-      <a class="btn" ng-click="navigation_inter_page = 2">
+      <a class="btn" ng-click="navigation_inter_page = 1">
         Continue
       </a>
     </div>
@@ -157,7 +126,7 @@
 
 
 
-  <div ng-show='navigation_inter_page == 2'>
+  <div ng-show='navigation_inter_page == 1'>
     <div class="help-pane" ng-if='display_help'>
         <span class="close" ng-click="show_help(false)">x</span>
         <h1>Aide  11111</h1>
@@ -174,7 +143,7 @@
         <h3>Première année</h3>
         <div class="field">
                 <input name="cProject1" ng-model="candidature.considered_project_1" hidden required />
-                <div id="considered-project-1" class="btn btn-inv"
+                <div id="considered-project-1"
                   ng-model="candidature.considered_project_1"
                   name="cJustification"
                   ngf-select="uploadFile(candidature.considered_project_1, candidature, 'considered_project_1') " ngf-capture="'camera'"
@@ -183,16 +152,23 @@
                   ngf-pattern="'application/pdf'"
                   ngf-model-invalid="invalidFileProject1"
                   required
+                  class="media-upload"
+                  ng-if='!candidature.considered_project_1'
                   >
-                  <span ng-show="!candidature.considered_project_1">Project envisagé au format PDF</span>
-                  <span ng-show="candidature.considered_project_1" >Changer</span>
+                  <span class="upload-file" />
                 </div>
 
+                <div class="item" ng-if="candidature.considered_project_1" ng-init='RC_prj1=false'>
+                  <a class="link" target='_blank' href="{{candidature.considered_project_1}}"><img  /></a>
+                  <span class="name">{{candidature.considered_project_1.split('.').pop()}}</span>
+                  <span class="trash" ng-click="RC_prj1=true" />
+                  <div class="delete-pane" ng-show="RC_prj1">
+                      <span class="trash" ng-click="candidature.considered_project_1=''; RC_prj1=false" />
+                      <span class="name"><span class="fr">Supprimer</span><span class="en">Delete</span></span>
+                      <span class="cancel" ng-click="RC_prj1=false"></span>
+                  </div>
+                </div>
 
-                <a target='_blank'
-                  href="{{candidature.considered_project_1}}">
-                  <img ng-show="candidature.considered_project_1" height="30px" src="http://iconbug.com/data/5b/507/52ff0e80b07d28b590bbc4b30befde52.png" />
-                </a>
                 <div ng-show="invalidFileProject1.$errorMessages" ng-messages="invalidFileProject1.$errorMessages" class="help-block error">
                   <div ng-message="pattern">
                     <span class="fr">Format accepté : pdf</span>
@@ -253,7 +229,7 @@
         <h3>Deuxième année</h3>
         <div class="field">
                 <input name="cProject2" ng-model="candidature.considered_project_2" hidden required />
-                <div id="considered-project-2" class="btn btn-inv"
+                <div id="considered-project-2"
                   ng-model="candidature.considered_project_2"
                   name="cJustification"
                   ngf-select="uploadFile(candidature.considered_project_2, candidature, 'considered_project_2') " ngf-capture="'camera'"
@@ -261,16 +237,22 @@
                   ngf-accept="'application/pdf'"
                   ngf-pattern="'application/pdf'"
                   ngf-model-invalid="invalidFileProject2"
-                  required
+                  class="media-upload"
+                  ng-if='!candidature.considered_project_2'
                   >
-                  <span ng-show="!candidature.considered_project_2">Project envisagé au format PDF</span>
-                  <span ng-show="candidature.considered_project_2" >Changer</span>
+                  <span class="upload-file" />
                 </div>
 
-                <a target='_blank'
-                  href="{{candidature.considered_project_2}}">
-                  <img ng-show="candidature.considered_project_2" height="30px" src="http://iconbug.com/data/5b/507/52ff0e80b07d28b590bbc4b30befde52.png" />
-                </a>
+                <div class="item" ng-if="candidature.considered_project_2" ng-init='RC_prj2=false'>
+                  <a class="link" target='_blank' href="{{candidature.considered_project_2}}"><img  /></a>
+                  <span class="name">{{candidature.considered_project_2.split('.').pop()}}</span>
+                  <span class="trash" ng-click="RC_prj2=true" />
+                  <div class="delete-pane" ng-show="RC_prj2">
+                      <span class="trash" ng-click="candidature.considered_project_2=''; RC_prj2=false" />
+                      <span class="name"><span class="fr">Supprimer</span><span class="en">Delete</span></span>
+                      <span class="cancel" ng-click="RC_prj2=false"></span>
+                  </div>
+                </div>
                 <div ng-show="invalidFileProject2.$errorMessages" ng-messages="invalidFileProject2.$errorMessages" class="help-block error">
                   <div ng-message="pattern">
                     <span class="fr">Format accepté : pdf</span>
@@ -325,10 +307,10 @@
 
 
       <div class="navigation">
-        <a class="btn" ng-click="navigation_inter_page = 1">
+        <a class="btn" ng-click="navigation_inter_page = 0">
           Retour
         </a>
-        <a class="btn" ng-click="navigation_inter_page = 3">
+        <a class="btn" ng-click="navigation_inter_page = 2">
                     Continue
         </a>
       </div>
@@ -336,7 +318,7 @@
   </div>
 
 
-  <div ng-if='navigation_inter_page == 3'>
+  <div ng-if='navigation_inter_page == 2'>
 
 
           <h2>Élements Visuels</h2>
@@ -344,7 +326,7 @@
 réalisés par le candidat et lui paraissant
 particulièrement représentatif de sa démarche
 artistique ou de son travail. </p>
-          <form name="form" ng-submit="form.$valid && submit()" class="css-form" novalidate>
+          <form name="form1" ng-submit="form.$valid && submit()" class="css-form" novalidate>
                 <div class="field">
                         <input
                           type="url"
@@ -356,7 +338,7 @@ artistique ou de son travail. </p>
                           placeholder="Url"
                           required
                               />
-                          <div ng-show="form.cVideo.$touched && form.cVideo.$invalid" ng-messages="form.cVideo.$error" class="help-block error">
+                          <div ng-show="form1.cVideo.$touched && form1.cVideo.$invalid" ng-messages="form1.cVideo.$error" class="help-block error">
                             <div ng-message="required">
                               <span class="fr">Obligatoire</span>
                               <span class="en">required</span>
@@ -384,18 +366,24 @@ artistique ou de son travail. </p>
                   ngf-pattern="'video/*'"
                   ngf-model-invalid="invalidVideo"
                   ng-show="!candidature.presentation_video"
+                  class="media-upload"
+                  ng-if='!candidature.presentation_video'
                   >
-                  Uploader une vidéo</button>
+                  <span class="upload-file" />
+                </button>
+
                   <div ng-show="invalidVideo.$errorMessages" ng-messages="invalidVideo.$errorMessages" class="help-block error">
                     <div ng-message="pattern">
                       <span class="fr">Fichier non reconnu comme étant une vidéo</span>
                       <span class="en">this is not a vidéo file</span>
                     </div>
                   </div>
-                  <div ng-init="isAvailableVideo(candidature.presentation_video)">
-                    <iframe ng-if="_isAvailableVideo" height="100px" width="200px"  src="{{trustSrc(candidature.presentation_video)}}" />
-                    <div ng-if="candidature.presentation_video && candidature.presentation_video.indexOf('player.vimeo.com/video')>0 && !_isAvailableVideo">
-                      La vidéo est bien envoyée et sera disponible sous peu de temps, n'hésitez pas à revenir plus tard sur votre inscription pour la consulter
+                  <div>
+                    <div ng-if="candidature.presentation_video">
+                      <iframe ng-if="_isAvailableVideo" height="100px" width="200px"  src="{{trustSrc(candidature.presentation_video)}}" />
+                      <div ng-if="candidature.presentation_video && candidature.presentation_video.indexOf('player.vimeo.com/video')>0 && !_isAvailableVideo">
+                        La vidéo est bien envoyée et sera disponible sous peu de temps, n'hésitez pas à revenir plus tard sur votre inscription pour la consulter
+                      </div>
                     </div>
                   </div>
                   <a class="btn" ng-show="candidature.presentation_video.indexOf('player.vimeo.com/video')>0" ng-click='deleteVimeoVideo(candidature.presentation_video.split("/").pop(), candidature, "presentation_video")'>
@@ -414,11 +402,11 @@ artistique ou de son travail. </p>
                     ng-model="candidature.physical_content"
                     ng-change="candidature.patch({physical_content: candidature.physical_content})"
                     name="aAsynchone"
-                    class="one"
+                    class="one check"
                     />
-                    <label class="checkbox one" for='asynchronous-element'>
-                      <span class="fr">Je vous envoie des éléments par courrier</span>
-                      <span class="en">Send Element by mail</span>
+                    <label class="check one pointer" for='asynchronous-element'>
+                      <span class="fr">Je n'arrive pas à vous envoyer la vidéo, je vous l'envoie par courrier</span>
+                      <span class="en">I can not send you the video, send it by mail</span>
                     </label>
                     <div ng-show="candidature.physical_content" class="alert" >
                       <textarea
@@ -439,7 +427,7 @@ artistique ou de son travail. </p>
 
 
           <div class="navigation">
-            <a class="btn" ng-click="navigation_inter_page = 2">
+            <a class="btn" ng-click="navigation_inter_page = 1">
               Retour
             </a>
             <a class="btn" ui-sref="candidature.messages">
