@@ -583,8 +583,8 @@ body.en {
           color: grey;
         }
         .square{
-          width: 7px;
-          height: 7.5px;
+          width: 9px;
+          height: 9px;
           display: block;
           background: grey;
         }
@@ -652,11 +652,15 @@ body.en {
       background: #f2f2f2;
       cursor: pointer;
       width: 100%;
-      .image{
-        background: url(../images/file-image.png)  no-repeat center center;
-        background-size: 20px;
+      .upload-file{
+        background: url(../images/candidature/icons/file-upload.svg) no-repeat center center;
+        background-size: 20px 20px;
         height: 20px;
         display: block;
+        &.photo{
+          background-size: 30px 30px;
+          height: 60px;
+        }
       }
     }
     .item {
@@ -666,7 +670,7 @@ body.en {
       position: relative;
       vertical-align: top;
       .link{
-        background: url(../images/file-image.png)  no-repeat center center;
+        background: url(../images/candidature/icons/file.svg)  no-repeat center center;
         background-size: 20px 20px;
         height: 20px;
         width: 20%;

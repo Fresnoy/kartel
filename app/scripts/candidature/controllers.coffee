@@ -232,8 +232,13 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 
   # countries
   $rootScope.getCountrie = (code) ->
-
     return _.invert(ISO3166.countryToCode)[code]
+
+  # LANGUAGES
+  console.log(languageMappingList)
+  $rootScope.getLanguageName = (code) ->
+
+    return languageMappingList
 
 
   # logout
