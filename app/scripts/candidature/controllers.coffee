@@ -54,9 +54,10 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 
 .controller('AccountPasswordAskController', ($rootScope, $scope, RestAuth) ->
 
+  $scope.emailSended = false;
   $scope.submit = () ->
       RestAuth.one().customPOST({email: $scope.email}, "password/reset/").then((response) ->
-        $scope.form.success = response.success
+        $scope.emailSended = true;
       , (response) ->
         $scope.form.error = "Erreur d'envoie de l'email"
 
@@ -174,32 +175,99 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
   $rootScope.screen =
       home:
         image:"renaud_duval_sealine_excroissance_i.jpg"
-        copyright:"Abtin Sarabi 2017"
+        copyright:"Renaud Duval 2017"
         position: {x:0,y:0}
       create_user:
         image:"junkai-chen_correspondances_2016_3.jpg"
-        copyright:"Abtin Sarabi 2017"
+        copyright:"Junkai Chen 2017"
         position: {x:0,y:0}
       login:
         image:"clea-coudsy40.jpg"
-        copyright:"Abtin Sarabi 2017"
+        copyright:"Cléa Coudsy 2017"
         position: {x:0,y:0}
       option:
-        image:"abtin-sarabi_si-l’homme-a-temps-avait-ouvert-ses-yeux-egares_2016_1.jpg"
+        image:"abtin-sarabi_si-l-homme-a-temps-avait-ouvert-ses-yeux-egares_2016_1.jpg"
         copyright:"Abtin Sarabi 2017"
         position: {x:0,y:0}
+
       personnal:
-        image:"baptiste-rabichon_diamonds_2016"
-        copyright:"Abtin Sarabi 2017"
+        image:"chia-wei-hsu_ecriture-divine_2016_2.jpg"
+        copyright:"Baptiste Rabichon 2017"
+        position: {x:"-0px",y:"33%"}
+      personnal2:
+        image:"chia-wei-hsu_ecriture-divine_2016_2.jpg"
+        copyright:"Baptiste Rabichon 2017"
+        position: {x:"-50px",y:"33%"}
+      personnal3:
+        image:"chia-wei-hsu_ecriture-divine_2016_2.jpg"
+        copyright:"Baptiste Rabichon 2017"
+        position: {x:"-100px",y:"33%"}
+      personnal4:
+        image:"chia-wei-hsu_ecriture-divine_2016_2.jpg"
+        copyright:"Baptiste Rabichon 2017"
+        position: {x:"-150px",y:"33%"}
+      cursus:
+        image:"victor-vaysse_while-true_2016_2.jpg"
+        copyright:""
+        position: {x:0,y:0}
+      cursus2:
+        image:"kate-krolle_on-porte-nos-coeurs_2014_10.jpg"
+        copyright:""
+        position: {x:0,y:0}
+      cursus3:
+        image:"baptiste-rabichon_diamonds_2016.jpg"
+        copyright:""
+        position: {x:0,y:0}
+      docs:
+        image:"leonard-martin_yoknapatawpha_2016_2.jpg"
+        copyright:""
+        position: {x:0,y:0}
+      docs2:
+        image:"gaetan-robillard_l-oeil-du-gymnote_2012_01.jpg"
+        copyright:""
+        position: {x:0,y:0}
+      docs3:
+        image:"fabien-zocco_l'entreprise-de-de-deconstruction-theotechnique_2016_2.jpg"
+        copyright:""
+        position: {x:0,y:0}
+      docs4:
+        image:"david-ayoun_deha-vani_2014_3.jpg"
+        copyright:""
+        position: {x:0,y:0}
+      message:
+        image:"fabien_zocco_mind-body_problem_2015_01.jpg"
+        copyright:""
+        position: {x:0,y:0}
+      message2:
+        image:"junkai-chen_correspondances_2016_3.jpg"
+        copyright:""
+        position: {x:0,y:0}
+      message3:
+        image:"kate-krolle_on-porte-nos-coeurs_2014_10.jpg"
+        copyright:""
+        position: {x:0,y:0}
+      final:
+        image:"gaetan-robillard_l-oeil-du-gymnote_2012_01.jpg"
+        copyright:""
+        position: {x:0,y:0}
+      final2:
+        image:"alexandru-petru-badelita_i-made-you-i-kill-you_2016.jpg"
+        copyright:""
+        position: {x:0,y:0}
+      final3:
+        image:"regina_demina_l-avalanche_2015_09.jpg"
+        copyright:""
         position: {x:0,y:0}
 
 
-  $rootScope.current_display_screen = $rootScope.screen.home
+
+  if(!$rootScope.current_display_screen)
+    $rootScope.current_display_screen = $rootScope.screen.home
 
   # init step in parent controller
   $rootScope.step = []
   $rootScope.step.current = "00"
-  $rootScope.step.total = 12
+  $rootScope.step.total = 19
   $rootScope.step.title = "Welcome"
 
   # navigation
@@ -236,7 +304,6 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 
   # logout
   $rootScope.logout = () ->
-    console.log("olalogout")
     Logout.post({},{},{}).then((auth) ->
         localStorage.removeItem("token")
         $rootScope.user = []
@@ -383,6 +450,28 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
   console.log($state.current)
 
   $rootScope.loadInfos($rootScope)
+  $rootScope.step.current = "03"
+  $rootScope.step.title = "Informations personnelles"
+
+  $rootScope.current_display_screen = $rootScope.screen.personnal
+
+  $scope.$watch('navigation_inter_page', (value) ->
+      if(value == 0)
+          $rootScope.current_display_screen = $rootScope.screen.personnal
+          $rootScope.step.current = "03"
+      if(value == 1)
+          $rootScope.current_display_screen = $rootScope.screen.personnal2
+          $rootScope.step.current = "04"
+      if(value == 2)
+          $rootScope.current_display_screen = $rootScope.screen.personnal3
+          $rootScope.step.current = "05"
+      if(value == 3)
+          $rootScope.current_display_screen = $rootScope.screen.personnal4
+          $rootScope.step.current = "06"
+  )
+
+
+
 
   $scope.save = (model) ->
     model_copy =  RestangularV2.copy(model)
@@ -482,6 +571,21 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 
       $rootScope.loadInfos($rootScope)
 
+      $rootScope.current_display_screen = $rootScope.screen.cursus
+      $rootScope.step.title = "Cursus"
+
+      $scope.$watch('navigation_inter_page', (value) ->
+          if(value == 0)
+              $rootScope.current_display_screen = $rootScope.screen.cursus
+              $rootScope.step.current = "07"
+          if(value == 1)
+              $rootScope.current_display_screen = $rootScope.screen.cursus2
+              $rootScope.step.current = "08"
+          if(value == 2)
+              $rootScope.current_display_screen = $rootScope.screen.cursus3
+              $rootScope.step.current = "09"
+      )
+
       $scope.state =
          selected: undefined
       #cursus
@@ -538,7 +642,24 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
     $scope.trustSrc = (src) ->
       return $sce.trustAsResourceUrl(src);
 
+
     $scope.honor = false
+    $rootScope.step.title = "Documents"
+
+    $scope.$watch('navigation_inter_page', (value) ->
+        if(value == 0)
+            $rootScope.current_display_screen = $rootScope.screen.docs
+            $rootScope.step.current = "10"
+        if(value == 1)
+            $rootScope.current_display_screen = $rootScope.screen.docs2
+            $rootScope.step.current = "11"
+        if(value == 2)
+            $rootScope.current_display_screen = $rootScope.screen.docs3
+            $rootScope.step.current = "12"
+        if(value == 2)
+            $rootScope.current_display_screen = $rootScope.screen.docs4
+            $rootScope.step.current = "13"
+    )
 
     $scope._isAvailableVideo = false
     $scope.isAvailableVideo = (videoUri) ->
@@ -654,15 +775,52 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
     $scope.uploadFile = (data, model, field) ->
       $rootScope.upload(data, model, field)
 
-    $scope.INTERVIEW_TYPES = [
-          "Skype"
-          "Hangouts"
-          "FaceTime"
-          "OOVOO"
-          "Facebook"
-          "ApperIn"
-          "Spark Hire"
-          "Other"
-    ]
+
 
 )
+
+.controller('MessageController', (
+        $rootScope, $scope
+      ) ->
+
+    $rootScope.loadInfos($rootScope)
+
+    $scope.INTERVIEW_TYPES = ["Skype", "ApperIn"]
+
+    $rootScope.step.title = "Messages"
+
+    $scope.$watch('navigation_inter_page', (value) ->
+        if(value == 0)
+            $rootScope.current_display_screen = $rootScope.screen.message
+            $rootScope.step.current = "14"
+        if(value == 1)
+            $rootScope.current_display_screen = $rootScope.screen.docs2
+            $rootScope.step.current = "15"
+        if(value == 2)
+            $rootScope.current_display_screen = $rootScope.screen.docs3
+            $rootScope.step.current = "16"
+    )
+)
+.controller('FinalizationController', (
+        $rootScope, $scope
+      ) ->
+
+    $rootScope.loadInfos($rootScope)
+    $rootScope.step.title = "Finalisation"
+
+    $scope.$watch('navigation_inter_page', (value) ->
+        if(value == 0)
+            $rootScope.current_display_screen = $rootScope.screen.final
+            $rootScope.step.current = "17"
+        if(value == 1)
+            $rootScope.current_display_screen = $rootScope.screen.final2
+            $rootScope.step.current = "18"
+
+    )
+)
+.controller('CompletedController', ($rootScope, $scope) ->
+    $rootScope.loadInfos($rootScope)
+    $rootScope.current_display_screen = $rootScope.screen.final3
+    $rootScope.step.current = "19"
+    $rootScope.step.title = "Complet"
+  )

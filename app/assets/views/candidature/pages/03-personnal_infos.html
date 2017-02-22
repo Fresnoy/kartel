@@ -141,7 +141,8 @@
 
 
                       <div class="field">
-                        <select id="birth-country" ng-change="save(user)" ng-model="user.profile.birthplace_country" name="uBirthCountry" required>
+                        <select id="birth-country" ng-change="save(user)" ng-model="user.profile.birthplace_country"
+                        name="uBirthCountry" required>
                           <option value="">-- Select a Country --</option>
                           <option ng-repeat="(country,code) in countries" value="{{code}}">{{country}}</option>
                         </select>

@@ -36,7 +36,7 @@ Moreover, the jury will look at the visual material lasting 8 minutes maximum in
               id="remote-interview"
               ng-model="candidature.remote_interview"
               ng-change="candidature.patch({remote_interview: candidature.remote_interview})"
-              name="cInterview"
+              name="cInterviewType"
               class="one check"
               />
               <label for="remote-interview" class="check one pointer">
@@ -51,16 +51,17 @@ Moreover, the jury will look at the visual material lasting 8 minutes maximum in
               <div class="" ng-if="candidature.remote_interview">
 
 
-                <select id="remote_interview_type"
+                <select id="remote-interview-type"
                   ng-change="candidature.patch({remote_interview_type : candidature.remote_interview_type})"
                   name="cInterviewType"
                   ng-model="candidature.remote_interview_type"
                   required
                 >
-                <option value="">--</option>
-                <option ng-repeat="value in INTERVIEW_TYPES" value="{{value}}">
-                  {{value}}
-                </option>
+                  <option value="">Plateforme</option>
+                  <option ng-repeat="value in INTERVIEW_TYPES" value="{{value}}" ng-selected="candidature.remote_interview_type == value">
+                    {{v}}
+                  </option>
+                </select>
                 <div ng-show="form.$submitted || form.cInterviewType.$touched">
                   <span ng-show="form.cInterviewType.$error.required">
                     <span class="fr">
@@ -70,13 +71,14 @@ Moreover, the jury will look at the visual material lasting 8 minutes maximum in
                       required
                     </span>
                 </div>
-                </select>
-                <label>
+
+                <label for="remote-interview-type">
+                  <span class="field-state"></span>
                   <span class="fr">Entretien via</span>
                   <span class="en">Remote interview Type</span>
                 </label>
 
-                <div class="" ng-if="candidature.remote_interview_type">
+                <div class="" ng-show="candidature.remote_interview_type">
 
                   <input
                     id="remote-interview-info"
@@ -88,7 +90,17 @@ Moreover, the jury will look at the visual material lasting 8 minutes maximum in
                     placeholder = "URL / ID / infos"
                     required
                     />
+                    <div ng-show="form.$submitted || form.cInterviewInfos.$touched">
+                      <span ng-show="form.cInterviewInfos.$error.required">
+                        <span class="fr">
+                          Champs requis
+                        </span>
+                        <span class="en">
+                          required
+                        </span>
+                    </div>
                     <label for="remote-interview-info">
+                      <span class="field-state"></span>
                       <span class="fr">Identifiants</span>
                       <span class="en">Identifiants</span>
                     </label>

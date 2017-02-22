@@ -172,7 +172,7 @@ angular.module('candidature.application', ['candidature.controllers',
                   views:
                     'application_content_view':
                         templateUrl: 'views/candidature/pages/06-messages.html'
-                        controller: 'MediaController'
+                        controller: 'MessageController'
 
       )
 
@@ -182,7 +182,7 @@ angular.module('candidature.application', ['candidature.controllers',
                   views:
                     'application_content_view':
                         templateUrl: 'views/candidature/pages/07-validation-finale.html'
-                        controller: ($rootScope) -> $rootScope.loadInfos($rootScope)
+                        controller: 'FinalizationController'
                   requiresLogin: true
       )
 
@@ -192,7 +192,7 @@ angular.module('candidature.application', ['candidature.controllers',
                 views:
                   'application_content_view':
                       templateUrl: 'views/candidature/pages/08-completed.html'
-                      controller: ($rootScope) -> $rootScope.loadInfos($rootScope)
+                      controller: 'CompletedController'
                 requiresLogin: true
 
       )
