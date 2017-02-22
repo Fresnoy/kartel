@@ -358,7 +358,7 @@ artistique ou de son travail. </p>
                   voir les spécifications pour un rendu optimal</a>  : </p>
 
 
-                <button ng-model="video" name="uVideo"
+                <div ng-model="video" name="uVideo"
                   ngf-select="uploadVimeo(video, candidature, 'presentation_video')"
                   ngf-capture="'camera'"
                   accept="video/*"
@@ -370,7 +370,7 @@ artistique ou de son travail. </p>
                   ng-if='!candidature.presentation_video'
                   >
                   <span class="upload-file" />
-                </button>
+                </div>
 
                   <div ng-show="invalidVideo.$errorMessages" ng-messages="invalidVideo.$errorMessages" class="help-block error">
                     <div ng-message="pattern">
@@ -379,8 +379,8 @@ artistique ou de son travail. </p>
                     </div>
                   </div>
                   <div>
-                    <div ng-if="candidature.presentation_video">
-                      <iframe ng-if="_isAvailableVideo" height="100px" width="200px"  src="{{trustSrc(candidature.presentation_video)}}" />
+                    <div ng-if="candidature.presentation_video" ng-init='isAvailableVideo(candidature.presentation_video)'>
+                      <iframe ng-if="_isAvailableVideo" height="100px" width="200px"  ng-src="{{trustSrc(candidature.presentation_video)}}" />
                       <div ng-if="candidature.presentation_video && candidature.presentation_video.indexOf('player.vimeo.com/video')>0 && !_isAvailableVideo">
                         La vidéo est bien envoyée et sera disponible sous peu de temps, n'hésitez pas à revenir plus tard sur votre inscription pour la consulter
                       </div>
@@ -390,10 +390,24 @@ artistique ou de son travail. </p>
                       Effacer la vidéo
                   </a>
 
+                  <hr/>
 
+                  <div class="field">
+                    <input
+                      type="checkbox"
+                      id="honor"
+                      ng-model="honor"
+                      name="aAsynchone"
+                      class="one check"
+                      />
+                      <label class="check one pointer" for='honor'>
+                        <span class="fr">Je déclare sur l'honneur avoir réalisé tous les éléments visuels envoyés</span>
+                        <span class="en">I have realized all the visual elements</span>
+                      </label>
 
+                  </div>
 
-                <h3>Autres éléments</h3>
+                  <hr/>
 
                 <div class="field">
                   <input
@@ -403,6 +417,7 @@ artistique ou de son travail. </p>
                     ng-change="candidature.patch({physical_content: candidature.physical_content})"
                     name="aAsynchone"
                     class="one check"
+                    ng-value=true
                     />
                     <label class="check one pointer" for='asynchronous-element'>
                       <span class="fr">Je n'arrive pas à vous envoyer la vidéo, je vous l'envoie par courrier</span>
@@ -430,7 +445,7 @@ artistique ou de son travail. </p>
             <a class="btn" ng-click="navigation_inter_page = 1">
               Retour
             </a>
-            <a class="btn" ui-sref="candidature.messages">
+            <a class="btn" ng-class="{ 'has-error': honor==false }" ui-sref="candidature.messages">
               Continue
             </a>
           </div>

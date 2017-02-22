@@ -100,7 +100,6 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
      )
 
     $scope.logout = () ->
-      console.log("logout")
       Logout.post([], [headers={}]).then((auth) ->
           localStorage.removeItem("token")
           delete $http.defaults.headers.common.Authorization
@@ -233,12 +232,6 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
   # countries
   $rootScope.getCountrie = (code) ->
     return _.invert(ISO3166.countryToCode)[code]
-
-  # LANGUAGES
-  console.log(languageMappingList)
-  $rootScope.getLanguageName = (code) ->
-
-    return languageMappingList
 
 
   # logout
@@ -545,6 +538,8 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
     $scope.trustSrc = (src) ->
       return $sce.trustAsResourceUrl(src);
 
+    $scope.honor = false
+
     $scope._isAvailableVideo = false
     $scope.isAvailableVideo = (videoUri) ->
       if(!videoUri)
@@ -606,10 +601,14 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
                     upload_config =
                       url: ticket.data.upload_link_secure
                       headers:
-                        'authorization': undefined
-                        'content-type': undefined
+                        'Content-Type': data.type
+                        Authorization : undefined
                       data: data
                       method: 'PUT'
+                      transformRequest: (data, headers) ->
+                        console.log(headers()['Authorization'])
+                        delete headers()['Authorization']
+                        return data;
 
                     Upload.http(upload_config)
                     .then((resp) ->
