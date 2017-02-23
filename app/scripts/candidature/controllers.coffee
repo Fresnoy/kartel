@@ -85,6 +85,8 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
       console.log("logged : resume candidature")
       $state.go("candidature.option")
 
+    delete $http.defaults.headers.common.Authorization
+
     $scope.login = (form, params) ->
 
       Login.post(params, [headers={}])
@@ -516,7 +518,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
   )
 
   $scope.languageSelectOption =
-    fr:"Selectionner une langue"
+    fr:"Sélectionner une langue"
     en:"Select a language"
 
 
@@ -578,9 +580,11 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
           if(value == 0)
               $rootScope.current_display_screen = $rootScope.screen.cursus
               $rootScope.step.current = "07"
+
           if(value == 1)
               $rootScope.current_display_screen = $rootScope.screen.cursus2
               $rootScope.step.current = "08"
+              $rootScope.step.title = "Parcours"
           if(value == 2)
               $rootScope.current_display_screen = $rootScope.screen.cursus3
               $rootScope.step.current = "09"
@@ -653,9 +657,11 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
         if(value == 1)
             $rootScope.current_display_screen = $rootScope.screen.docs2
             $rootScope.step.current = "11"
+            $rootScope.step.title = "Projets"
         if(value == 2)
             $rootScope.current_display_screen = $rootScope.screen.docs3
             $rootScope.step.current = "12"
+            $rootScope.step.title = "œuvres"
         if(value == 2)
             $rootScope.current_display_screen = $rootScope.screen.docs4
             $rootScope.step.current = "13"
@@ -785,17 +791,19 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 
     $rootScope.loadInfos($rootScope)
 
-    $scope.INTERVIEW_TYPES = ["Skype", "ApperIn"]
+    $scope.INTERVIEW_TYPES = ["Skype"]
 
-    $rootScope.step.title = "Messages"
+    $rootScope.step.title = "Entretien"
 
     $scope.$watch('navigation_inter_page', (value) ->
         if(value == 0)
             $rootScope.current_display_screen = $rootScope.screen.message
             $rootScope.step.current = "14"
+            $rootScope.step.title = "Entretien"
         if(value == 1)
             $rootScope.current_display_screen = $rootScope.screen.docs2
             $rootScope.step.current = "15"
+            $rootScope.step.title = "Message"
         if(value == 2)
             $rootScope.current_display_screen = $rootScope.screen.docs3
             $rootScope.step.current = "16"
@@ -806,15 +814,17 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
       ) ->
 
     $rootScope.loadInfos($rootScope)
-    $rootScope.step.title = "Finalisation"
+    $rootScope.step.title = "Récapitulatif"
 
     $scope.$watch('navigation_inter_page', (value) ->
         if(value == 0)
             $rootScope.current_display_screen = $rootScope.screen.final
             $rootScope.step.current = "17"
+            $rootScope.step.title = "Récapitulatif"
         if(value == 1)
             $rootScope.current_display_screen = $rootScope.screen.final2
             $rootScope.step.current = "18"
+            $rootScope.step.title = "Validation"
 
     )
 )

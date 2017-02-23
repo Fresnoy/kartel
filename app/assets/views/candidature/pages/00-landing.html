@@ -19,7 +19,7 @@
   </div>
 
 
-  <div ng-show="navigation_inter_page == 1" ng-init="step.current = '02';step.title = 'Test';current_display_screen = $rootscope.screen.create_user" class="">
+  <div ng-show="navigation_inter_page == 1" ng-init="step.current = '01';step.title = 'Bienvenue';current_display_screen = $rootscope.screen.create_user" class="">
       <h1>
         <span class="fr">Procédure de sélection</span>
         <span class="en">Selection procedure</span>
@@ -32,7 +32,7 @@
       </h2>
       <div class="fr">
           <p>La procédure de sélection est ouverte à tous les candidats, sans distinction de sexe ou de nationalité, âgés de 35 ans au plus au 1er janvier de l’année du concours (nés après le 31 décembre <span ng-bind="(current_year-age_max)" />) -
-             <strong>Un justificatif vous sera demander dans les prochaines pages</strong>
+             <strong>Un justificatif vous sera demandé dans les prochaines pages.</strong>
           </p>
           <p>Les candidats doivent pouvoir justifier :</p>
           <ul><li>soit du Baccalauréat (ou équivalence reconnue) et 5 années d’études attestées par un titre ou diplôme,</li>
@@ -50,19 +50,21 @@
           <p>The candidates in the second case will sit a specific examination set by a special committee, who will judge and validate their application. Their decision is final. Participation in the selection procedure is free. Travel costs and living expenses of candidates during the entrance examinations are at the charge of the candidate.</p>
       </div>
       <form>
+        <div class="field">
           <input type="checkbox"
-            class="one "
             id="accept"
             ng-model="accept"
             name="cAccept"
             ng-value="true"
             ng-init='accept=false'
+            class="one check"
             required
           />
-          <label for="accept" class="checkbox one pointer">
-            <span class="fr">J'ai pris connaissance des conditions d'accès, je suis né après le le 31 décembre <span ng-bind="(current_year-age_max)" /></span>
+          <label for="accept" class="one check pointer">
+            <span class="fr">J'ai pris connaissance des conditions d'accès, je suis né après le 31 décembre <span ng-bind="(current_year-age_max)" /></span>
             <span class="en">///////////////// <span ng-bind="(current_year-age_max)" /></span>
           </label>
+        </div>
       </form>
       <div class="navigation">
                 <a class="btn next" ng-class="{ 'has-error': accept == false }"

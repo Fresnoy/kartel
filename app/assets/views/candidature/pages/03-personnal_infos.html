@@ -1,6 +1,10 @@
 <div class="personnal-infos">
 
-  <h1>Selection</h1>
+  <h1>
+    <span class="fr">Inscription</span>
+    <span class="en">Registration</span>
+
+  </h1>
 
   <div ng-show="navigation_inter_page == 0" class="" >
 
@@ -40,7 +44,7 @@
 
                         <div class="field">
                           <select id="gender" ng-model="user.profile.gender" ng-change="save(user)" name="uGender" required>
-                            <option value="">Male / Female  / ...</option> <!-- not selected / blank option -->
+                            <option value="">...</option> <!-- not selected / blank option -->
                             <option ng-repeat="(code, value) in gender" value="{{code}}">{{value[language]}}</option>
                           </select>
                           <div ng-show="form1.uGender.$touched && form1.uGender.$invalid" ng-messages="form1.uGender.$error" class="help-block error">
@@ -100,6 +104,34 @@
 
 
 
+                                        <div class="field">
+                                          <select id="birth-country" ng-change="save(user)" ng-model="user.profile.birthplace_country"
+                                          name="uBirthCountry" required>
+                                            <option value="">-- Select a Country --</option>
+                                            <option ng-repeat="(country,code) in countries" value="{{code}}">{{country}}</option>
+                                          </select>
+                                          <div ng-show="form1.uBirthCountry.$touched && form1.uBirthCountry.$invalid" ng-messages="form1.uBirthCountry.$error" class="help-block error">
+                                            <div ng-message="required">
+                                              <span class="fr">Obligatoire</span>
+                                              <span class="en">Required</span>
+                                            </div>
+                                            <div ng-message="birthcountry">
+                                              <span class="fr">Valeur éronnée</span>
+                                              <span class="en">Value Error</span>
+                                            </div>
+                                          </div>
+                                          <label for="birth-country">
+                                            <span class="field-state required" ng-class="{ 'error': form1.uGender.$error, 'valid':form1.uGender.$valid, 'touched': form1.uGender.$touched }"></span>
+                                            <span class="fr">Pays de naissance</span>
+                                            <span class="en">Gender</span>
+                                          </label>
+                                        </div>
+
+
+
+
+
+
                       <div class="field">
                         <input hidden name='uNationality' id="nationality" type="text" ng-model="user.profile.nationality" required />
                         <div ng-repeat="item in nationality track by $index" >
@@ -138,30 +170,6 @@
                       </div>
 
 
-
-
-                      <div class="field">
-                        <select id="birth-country" ng-change="save(user)" ng-model="user.profile.birthplace_country"
-                        name="uBirthCountry" required>
-                          <option value="">-- Select a Country --</option>
-                          <option ng-repeat="(country,code) in countries" value="{{code}}">{{country}}</option>
-                        </select>
-                        <div ng-show="form1.uBirthCountry.$touched && form1.uBirthCountry.$invalid" ng-messages="form1.uBirthCountry.$error" class="help-block error">
-                          <div ng-message="required">
-                            <span class="fr">Obligatoire</span>
-                            <span class="en">Required</span>
-                          </div>
-                          <div ng-message="birthcountry">
-                            <span class="fr">Valeur éronnée</span>
-                            <span class="en">Value Error</span>
-                          </div>
-                        </div>
-                        <label for="birth-country">
-                          <span class="field-state required" ng-class="{ 'error': form1.uGender.$error, 'valid':form1.uGender.$valid, 'touched': form1.uGender.$touched }"></span>
-                          <span class="fr">Pays de naissance</span>
-                          <span class="en">Gender</span>
-                        </label>
-                      </div>
 
 
                       <div class="field">
@@ -229,7 +237,6 @@
                           </div>
                         </div>
                         <label for="insurance-number">
-                          <span class="field-state"></span>
                           <span class="fr">Numéro de sécurité sociale</span>
                           <span class="en">Insurance number</span>
                         </label>

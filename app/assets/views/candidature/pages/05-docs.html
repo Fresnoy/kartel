@@ -1,6 +1,10 @@
 <div class="documents">
 
-  <h1>Selection</h1>
+  <h1>
+    <span class="fr">Inscription</span>
+    <span class="en">Registration</span>
+
+  </h1>
 
     <div class="" ng-show='navigation_inter_page == 0' >
 
@@ -108,8 +112,8 @@
                   </div>
                   <label class="topborder" for="cv">
                     <span class="field-state required"></span>
-                    <span class="fr">Bio / CV</span>
-                    <span class="en">Bio / CV</span>
+                    <span class="fr">Bio</span>
+                    <span class="en">Bio</span>
                   </label>
 
           </div>
@@ -130,11 +134,12 @@
     <div class="help-pane" ng-if='display_help'>
         <span class="close" ng-click="show_help(false)">x</span>
         <h1>Aide</h1>
-          <p class="fr">Tous les textes peuvent être accompagnés de visuels. <ul><li>Résumé du parcours et/ou des études (10 lignes).<br/>Ce document décrira le parcours personnel qui a conduit à la candidature.            </li>            <li>Lettre de motivation/note d’intention (3 pages).            Dans ce document, le candidat expose ses motivations et explicite en quoi sa démarche artistique peut se développer au Fresnoy, le candidat sera jugé sur la qualité d’écriture et la pertinence de son argumentation.            </li>            <li>Artistes et œuvres de référence (20 lignes). Ce document précise les artistes et œuvres de référence du candidat dans les domaines du cinéma, des arts plastiques, de la littérature, du spectacle vivant, etc… dans le champ particulier à chacune des deux années.            </li>            <li>Projets envisagés pour les deux années au Fresnoy (1 page par projet). Plutôt que des projets précis, ce document doit indiquer le type d’œuvre que l’artiste envisage de réaliser au Fresnoy dans le champ particulier à chacune des deux années et dans une démarche transdisciplinaire : film, vidéo, photographie, installations interactives, sonores ou programmées, spectacle vivant...            </li>            <li>Texte relatif au contenu des éléments visuels (10 lignes).</li></ul>          </p>
-          <p class="en">All the texts may be backed up with images.<ul><li>Résumé of candidate’s background and/or studies (10 lines). This document explains how the candidate’s background led him/her to apply.</li><li>Motivation letter/note of intention (3 pages). In this document, the candidate explains what his motivations are and explains how his artistic practice may develop at Le Fresnoy. The candidate will be judged on the quality of writing and the relevance of his/her arguments.</li><li>Artists and works of reference (20 lines). <br/>This document indicates the artists and works of reference of the candidate in the area of film, art, literature, live arts, etc. in the particular field of each of the two years.</li><li>Projects envisaged for the two years at Le Fresnoy (1 page per project). Rather than very defined projects, this document should indicate the type of work that the artist envisages making at Le Fresnoy in the particular field of each of the two years and in a transdisciplinary mode: film, video, photography, sound, interactive or programmed installations, live arts, etc. </li><li>A text linked to the content of the visual material (10 lines).</li></ul>A first year of work on traditional media, electronic or not, of cinema, photography, video art, and visual arts. <br/>A second year of work and research on digital media.          </p>
+          <div class="fr"><p>Tous les textes peuvent être accompagnés de visuels. <ul><li>Résumé du parcours et/ou des études (10 lignes).<br/>Ce document décrira le parcours personnel qui a conduit à la candidature.            </li>            <li>Lettre de motivation/note d’intention (3 pages).            Dans ce document, le candidat expose ses motivations et explicite en quoi sa démarche artistique peut se développer au Fresnoy, le candidat sera jugé sur la qualité d’écriture et la pertinence de son argumentation.            </li>            <li>Artistes et œuvres de référence (20 lignes). Ce document précise les artistes et œuvres de référence du candidat dans les domaines du cinéma, des arts plastiques, de la littérature, du spectacle vivant, etc… dans le champ particulier à chacune des deux années.            </li>            <li>Projets envisagés pour les deux années au Fresnoy (1 page par projet). Plutôt que des projets précis, ce document doit indiquer le type d’œuvre que l’artiste envisage de réaliser au Fresnoy dans le champ particulier à chacune des deux années et dans une démarche transdisciplinaire : film, vidéo, photographie, installations interactives, sonores ou programmées, spectacle vivant...            </li>            <li>Texte relatif au contenu des éléments visuels (10 lignes).</li></ul>          </p></div>
+          <div class="en"><p>All the texts may be backed up with images.<ul><li>Résumé of candidate’s background and/or studies (10 lines). This document explains how the candidate’s background led him/her to apply.</li><li>Motivation letter/note of intention (3 pages). In this document, the candidate explains what his motivations are and explains how his artistic practice may develop at Le Fresnoy. The candidate will be judged on the quality of writing and the relevance of his/her arguments.</li><li>Artists and works of reference (20 lines). <br/>This document indicates the artists and works of reference of the candidate in the area of film, art, literature, live arts, etc. in the particular field of each of the two years.</li><li>Projects envisaged for the two years at Le Fresnoy (1 page per project). Rather than very defined projects, this document should indicate the type of work that the artist envisages making at Le Fresnoy in the particular field of each of the two years and in a transdisciplinary mode: film, video, photography, sound, interactive or programmed installations, live arts, etc. </li><li>A text linked to the content of the visual material (10 lines).</li></ul>A first year of work on traditional media, electronic or not, of cinema, photography, video art, and visual arts. <br/>A second year of work and research on digital media.          </p></div>
     </div>
     <form name="form" ng-submit="form.$valid && submit()" class="css-form" novalidate enctype="multipart/form-data">
-        <h2>Projets envisagés durant le cursus du Fresnoy</h2>
+      <p>Merci de lire impérativement les <a ng-click="show_help(true)">informations  </a> avant de compléter cette étape.</p>
+        <h3>Projets envisagés durant le cursus du Fresnoy</h3>
         <p><strong>1re année </strong>Travail sur les supports traditionnels,
     argentiques et électroniques, du cinéma, de la
     photographie, de la vidéo et des arts visuels.<br>
@@ -322,11 +327,11 @@
 
 
           <h2>Éléments Visuels</h2>
-          <p>Une œuvre ou un ensemble d’extraits d’œuvres
-réalisés par le candidat et lui paraissant
-particulièrement représentatif de sa démarche
-artistique ou de son travail. </p>
-          <form name="form1" ng-submit="form.$valid && submit()" class="css-form" novalidate>
+            <form name="form1" ng-submit="form.$valid && submit()" class="css-form" novalidate>
+              <p>Saisir ci-dessous le lien vidéo vers une œuvre ou un ensemble d’extraits d’œuvres que vous avez réalisés et
+    particulièrement représentatifs de votre démarche artistique.</p>
+    <p>Cette vidéo d'une <strong>durée maximale de 8 minutes</strong> sera vue successivement par les deux jurys (de préselection et de l'entretien oral).</p>
+
                 <div class="field">
                         <input
                           type="url"
@@ -354,8 +359,11 @@ artistique ou de son travail. </p>
                             <span class="en">Video Links</span>
                           </label>
                 </div>
-                <p>Si vous n'avez pas de lien, envoyez nous la vidéo, nous la convertirons <a href='https://vimeo.com/help/compression' target='_blank'>
-                  voir les spécifications pour un rendu optimal</a>  : </p>
+                <br>
+                <br>
+                <hr/>
+                <h4>En cas de problème, vous pouvez :</h4>
+                <p> - nous envoyer la vidéo, en cliquant ci-dessous : </p>
 
 
                 <div ng-model="video" name="uVideo"
@@ -382,32 +390,23 @@ artistique ou de son travail. </p>
                     <div ng-if="candidature.presentation_video" ng-init='isAvailableVideo(candidature.presentation_video)'>
                       <iframe ng-if="_isAvailableVideo" height="100px" width="200px"  ng-src="{{trustSrc(candidature.presentation_video)}}" />
                       <div ng-if="candidature.presentation_video && candidature.presentation_video.indexOf('player.vimeo.com/video')>0 && !_isAvailableVideo">
-                        La vidéo est bien envoyée et sera disponible sous peu de temps, n'hésitez pas à revenir plus tard sur votre inscription pour la consulter
+                        La vidéo est bien envoyée et sera disponible pour vérification dans quelques minutes, 
+                        n'hésitez pas à revenir plus tard sur votre inscription pour la consulter
                       </div>
                     </div>
                   </div>
                   <a class="btn" ng-show="candidature.presentation_video.indexOf('player.vimeo.com/video')>0" ng-click='deleteVimeoVideo(candidature.presentation_video.split("/").pop(), candidature, "presentation_video")'>
                       Effacer la vidéo
                   </a>
+                  <p>
+                    <a href='https://vimeo.com/help/compression' target='_blank'>
+                      voir les spécifications pour un rendu optimal</a>
+                  </p>
+                  <p>
+                      - nous envoyer la vidéo par courrier (cocher la case ci-dessous)
+                  </p>
 
-                  <hr/>
 
-                  <div class="field">
-                    <input
-                      type="checkbox"
-                      id="honor"
-                      ng-model="honor"
-                      name="aAsynchone"
-                      class="one check"
-                      />
-                      <label class="check one pointer" for='honor'>
-                        <span class="fr">Je déclare sur l'honneur avoir réalisé tous les éléments visuels envoyés</span>
-                        <span class="en">I have realized all the visual elements</span>
-                      </label>
-
-                  </div>
-
-                  <hr/>
 
                 <div class="field">
                   <input
@@ -420,22 +419,51 @@ artistique ou de son travail. </p>
                     ng-value=true
                     />
                     <label class="check one pointer" for='asynchronous-element'>
-                      <span class="fr">Je n'arrive pas à vous envoyer la vidéo, je vous l'envoie par courrier</span>
+                      <span class="fr">J'envoie un fichier MP4 ou
+ProRes sur une clef USB</span>
                       <span class="en">I can not send you the video, send it by mail</span>
                     </label>
                     <div ng-show="candidature.physical_content" class="alert" >
-                      <textarea
-                          ng-model="candidature.physical_content_description"
-                          ng-model-options='{ debounce: 1000 }'
-                          ng-change="candidature.patch({physical_content_description: candidature.physical_content_description})"
-                          placeholder="Desciption des éléments"
-                      />
-                      <span class="fr"> N'oubliez pas de précisez votre numéro de cadidature : </span>
+
+                      <span class="fr"> Il est impératif d'indiquer la référence de votre dossier sur la clef USB.</span>
                       <span class="en"> Don't forget to give us your application number </span>
                         <strong>{{candidature.current_year_application_count}}</strong>
+                      <p>
+                          à l'adresse suivante :
+                      </p>
+                      <p>
+                          Pédagogie - Concours 2017<br/>
+                          Le Fresnoy - Studio national <br/>des arts contemporains<br/>
+                          22 rue du Fresnoy <br/>
+                          BP 80179 <br/>
+                          59202 Tourcoing Cedex <br/>
+                          France
+                      </p>
+
 
                     </div>
                   </div>
+
+
+                                    <hr/>
+
+
+                                    <div class="field">
+                                      <input
+                                        type="checkbox"
+                                        id="honor"
+                                        ng-model="honor"
+                                        name="aAsynchone"
+                                        class="one check"
+                                        />
+                                        <label class="check one pointer" for='honor'>
+                                          <span class="fr">Je déclare sur l'honneur que tous
+                  les documents visuels soumis au jury sont réalisés par moi seul, sans aucune aide ou intervention extérieure.</span>
+                                          <span class="en"> /// </span>
+                                        </label>
+
+                                    </div>
+
           </form>
 
 

@@ -1,5 +1,10 @@
 <div class="cursus">
-  <h1>Candidature</h1>
+
+  <h1>
+    <span class="fr">Inscription</span>
+    <span class="en">Registration</span>
+
+  </h1>
 
   <div class="" ng-show="navigation_inter_page == 0" >
     <div class="help-pane" ng-if='display_help'>
@@ -23,7 +28,7 @@
     </div>
 
 
-    <p>Cocher la case correspondant à votre situation</p>
+    <p>Cocher la case correspondant à votre situation : </p>
 
     <form name="form" ng-submit="form.$valid && submit()" class="css-form" novalidate enctype="multipart/form-data">
             <p>
@@ -126,7 +131,7 @@
           <p>Cursus</p>
     </div>
 
-    <h3>Cursus / parcours artistique</h3>
+    <p>Résumé du parcours artistique : </p>
 
             <div class="field">
                         <textarea
@@ -235,7 +240,7 @@
                         class="one check"
                       />
                       <label for="firstime" class="big pointer">
-                        <span class="fr">J'ai déjà postulé au Fresnoy</span>
+                        <span class="fr">Je me suis déjà présenté(e) à la sélection des candidatures du Fresnoy - Studio national</span>
                         <span class="en"></span>
                       </label>
                       <div ng-if='candidature.first_time'>

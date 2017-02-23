@@ -1,15 +1,21 @@
 <div class="messages">
-  <h1>Selection</h1>
+
 
   <div ng-show="navigation_inter_page == 0" >
+    <h1>
+      <span class="fr">Entretien</span>
+      <span class="en">Interview</span>
+
+    </h1>
+
 
 
     <form name="form" ng-submit="form.$valid && submit()" class="css-form" novalidate enctype="multipart/form-data">
 
-        <h2>Entretien</h2>
-        <div class="fr"><p>À l’issue de la présélection, 65 candidats au maximum sont invités à se présenter aux épreuves d’admission. Les épreuves de la sélection finale se déroulent au Fresnoy - Studio national. Les candidats présélectionnés sont conviés à un entretien avec un jury entre le lundi 3 et le vendredi 7 juillet 2017.<br/>
+        <div class="fr"><p>À l’issue de la présélection, 65 candidats au maximum sont invités à se présenter aux épreuves d’admission. Les épreuves de la sélection finale se déroulent au Fresnoy - Studio national.
+        <br/>Les candidats présélectionnés sont conviés à un entretien avec un jury entre le lundi 3 et le vendredi 7 juillet 2017.<br/>
 Les candidats hors continent européen, ont la possibilité de passer l’entretien oral au Fresnoy ou par skype (Le Fresnoy ne peut être tenu pour responsable en cas de problème technique). <br/>
-Le ou la candidat(e) présente et commente son travail personnel et s’entretient avec les membres du jury de ses projets et motivations. Le jury est composé de représentants de disciplines artistiques différentes et du directeur du Fresnoy. L’entretien dure 40 minutes.<br/>
+</p><p>Le ou la candidat(e) présente et commente son travail personnel et s’entretient avec les membres du jury de ses projets et motivations. Le jury est composé de représentants de disciplines artistiques différentes et du directeur du Fresnoy. L’entretien dure 40 minutes.<br/>
 Chaque candidat est principalement jugé sur :
 <ul><li>L’originalité, l’ambition et la qualité de sa production artistique personnelle dans une ou plusieurs disciplines, </li><li>
 La manifestation d’un acquis et d’un savoir-faire, notamment technique, </li><li>
@@ -17,7 +23,7 @@ L’évidence de ses intérêts multi ou transdisciplinaires, </li><li>
 Son niveau de culture générale (formation antérieure, qualités d’expression, de rédaction, etc.), </li><li>
 Son intérêt pour l’utilisation de tous les langages artistiques audiovisuels et multimédia (des supports traditionnels à ceux de la création numérique), </li><li>
 La présentation du dossier.</li></ul>
-Par ailleurs, le jury visionnera les éléments visuels de 8 minutes maximum figurant au dossier du candidat (voir plus haut « dossier artistique »).<br/>
+Par ailleurs, le jury visionnera les éléments visuels de 8 minutes maximum figurant au dossier du candidat.<br/>
 L’attention du candidat est attirée sur l’importance de ces éléments, seuls documents le présentant qui seront examinés aux deux étapes de la sélection.</p>
 </div>
 <div class="en"><p>At the end of the pre-selection, up to 65 applicants will be invited to attend interviews at Le Fresnoy. The final selection takes place at Le Fresnoy. Shortlisted candidates will be invited for interview by the jury between Monday July 3, and Friday July 7, 2017.The applicants are mainly judged on:
@@ -41,7 +47,7 @@ Moreover, the jury will look at the visual material lasting 8 minutes maximum in
               />
               <label for="remote-interview" class="check one pointer">
                 <span class="fr">
-                  J'habite hors du continent Européen
+                  J'habite hors du continent Européen et souhaite passer l'entretien par Skype.
                 </span>
                 <span class="en">
                   I can go to Le Fresnoy for interviews :
@@ -59,7 +65,7 @@ Moreover, the jury will look at the visual material lasting 8 minutes maximum in
                 >
                   <option value="">Plateforme</option>
                   <option ng-repeat="value in INTERVIEW_TYPES" value="{{value}}" ng-selected="candidature.remote_interview_type == value">
-                    {{v}}
+                    {{value}}
                   </option>
                 </select>
                 <div ng-show="form.$submitted || form.cInterviewType.$touched">
@@ -87,7 +93,7 @@ Moreover, the jury will look at the visual material lasting 8 minutes maximum in
                     ng-change="candidature.patch({remote_interview_info : candidature.remote_interview_info})"
                     ng-model-options='{ debounce: 1000 }'
                     name="cInterviewInfos"
-                    placeholder = "URL / ID / infos"
+                    placeholder = "Identifiant"
                     required
                     />
                     <div ng-show="form.$submitted || form.cInterviewInfos.$touched">
@@ -101,8 +107,8 @@ Moreover, the jury will look at the visual material lasting 8 minutes maximum in
                     </div>
                     <label for="remote-interview-info">
                       <span class="field-state"></span>
-                      <span class="fr">Identifiants</span>
-                      <span class="en">Identifiants</span>
+                      <span class="fr">Identifiant</span>
+                      <span class="en">ID</span>
                     </label>
 
                 </div>
@@ -135,10 +141,13 @@ Moreover, the jury will look at the visual material lasting 8 minutes maximum in
 
 
   <div ng-show="navigation_inter_page == 1" >
+    <h1>
+      <span class="fr">Message</span>
+      <span class="en">Message</span>
 
-    <h2>Message</h2>
+    </h1>
     <p>
-      Vous pouvez laisser un message dans votre dossier de candidature.
+    Pour toutes précisions, vous pouvez nous laisser un message ci-dessous :
     </p>
 
         <textarea
