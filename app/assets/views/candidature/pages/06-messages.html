@@ -130,50 +130,11 @@ Moreover, the jury will look at the visual material lasting 8 minutes maximum in
         <a class="btn" ui-sref="candidature.documents" >
           Retour
         </a>
-        <a class="btn" ng-click="navigation_inter_page = 1">
-          Continue
-        </a>
-      </div>
-
-
-
-  </div>
-
-
-  <div ng-show="navigation_inter_page == 1" >
-    <h1>
-      <span class="fr">Message</span>
-      <span class="en">Message</span>
-
-    </h1>
-    <p>
-    Pour toutes précisions, vous pouvez nous laisser un message ci-dessous :
-    </p>
-
-        <textarea
-          id="remark"
-            ng-model="candidature.remark"
-            ng-model-options='{ debounce: 1000 }'
-            ng-change="candidature.patch({remark: candidature.remark})"
-            placeholder="Message"
-            rows="10"
-        />
-        <label for="remark">
-          <span class="fr">Informations complémentaires</span>
-          <span class="en">Additionnal information</span>
-        </label>
-
-
-
-
-      <div class="navigation">
-        <a class="btn" ng-click="navigation_inter_page = 0">
-          Retour
-        </a>
         <a class="btn" ui-sref="candidature.finalization">
           Continue
         </a>
       </div>
+
 
   </div>
 </div>

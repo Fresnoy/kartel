@@ -72,7 +72,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
     # localStorage.clear()
     # console.log(localStorage)
 
-    $rootScope.step.current = "02"
+    $rootScope.step.current = "07"
     $rootScope.step.title = "Login"
     $rootScope.current_display_screen = $rootScope.screen.login
 
@@ -119,9 +119,22 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
       $scope.edit_email = false
       $scope.send_email = 2
 
-      $rootScope.step.current = "02"
-      $rootScope.step.title = "Identification"
+      $rootScope.step.current = "04"
+      $rootScope.step.title = ""
       $rootScope.current_display_screen = $rootScope.screen.create_user
+
+      $scope.$watch('navigation_inter_page', (value) ->
+          if(value == 0)
+              $rootScope.current_display_screen = $rootScope.screen.personnal
+              $rootScope.step.title = ""
+              $rootScope.step.current = "04"
+          if(value == 1)
+              $rootScope.current_display_screen = $rootScope.screen.personnal2
+              $rootScope.step.current = "05"
+              $rootScope.step.title = ""
+      )
+
+
 
       # init user form
       if(!$scope.user)
@@ -146,6 +159,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 
         Registration.post(params).then((response) ->
           $scope.user_created = true
+          $scope.navigation_inter_page = 1
         , (response) ->
           form.error = response.data
 
@@ -442,6 +456,26 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 )
 
 
+.controller('IntroController', ($rootScope, $scope, $state, $filter, ISO3166,
+        Restangular, RestangularV2, Media, Upload) ->
+
+        $scope.$watch('navigation_inter_page', (value) ->
+            if(value == 0)
+                $rootScope.current_display_screen = $rootScope.screen.personnal
+                $rootScope.step.title = "Bienvenue"
+                $rootScope.step.current = "01"
+            if(value == 1)
+                $rootScope.current_display_screen = $rootScope.screen.personnal2
+                $rootScope.step.current = "02"
+                $rootScope.step.title = ""
+            if(value == 2)
+                $rootScope.current_display_screen = $rootScope.screen.personnal2
+                $rootScope.step.current = "03"
+        )
+
+)
+
+
 
 .controller('PersonnalInfosController', ($rootScope, $scope, $state, $filter, ISO3166,
         Restangular, RestangularV2, Media, Upload) ->
@@ -654,6 +688,8 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
         if(value == 0)
             $rootScope.current_display_screen = $rootScope.screen.docs
             $rootScope.step.current = "10"
+            $rootScope.step.title = "Documents"
+
         if(value == 1)
             $rootScope.current_display_screen = $rootScope.screen.docs2
             $rootScope.step.current = "11"
@@ -661,10 +697,11 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
         if(value == 2)
             $rootScope.current_display_screen = $rootScope.screen.docs3
             $rootScope.step.current = "12"
-            $rootScope.step.title = "œuvres"
+            $rootScope.step.title = "Projets"
         if(value == 2)
             $rootScope.current_display_screen = $rootScope.screen.docs4
             $rootScope.step.current = "13"
+            $rootScope.step.title = "œuvres"
     )
 
     $scope._isAvailableVideo = false

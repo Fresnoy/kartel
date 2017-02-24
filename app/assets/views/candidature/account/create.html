@@ -1,9 +1,10 @@
 <div class="create-account-page">
     <div ng-if="!user_created">
-          <h1>
-                    Candidature
-          </h1>
-            <div class="fr"><p>Pour les besoins de l'inscription, vous devez vous créer un compte.</p></div>
+      <h1>
+        <span class="fr">Création de votre compte</span>
+        <span class="en"></span>
+      </h1>
+            <div class="fr"><p>Pour les besoins de l'inscription (envoi postal ou en ligne), vous devez créer un compte.</p></div>
             <div class="en"><p>////</p></div>
 
             <form name="form" class="css-form" ng-submit="form.$valid && login()" novalidate>
@@ -148,6 +149,7 @@
                   confimation envoyé sur
                   l’email :
         </p>
+        <br/>
 
           <form name="formConfirmation">
 

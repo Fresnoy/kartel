@@ -28,14 +28,12 @@
     </div>
 
 
-    <p>Cocher la case correspondant à votre situation : </p>
+
 
     <form name="form" ng-submit="form.$valid && submit()" class="css-form" novalidate enctype="multipart/form-data">
-            <p>
 
-            </p>
             <div class="field">
-
+            <p>Cocher la case correspondant à votre situation : </p>
                     <input type="radio"
                       id="master-degree"
                       ng-model="candidature.master_degree"
@@ -124,7 +122,80 @@
       </div>
 
   </div>
+
+
   <div ng-show="navigation_inter_page == 1">
+
+          <p>
+              Envoi de votre CV :
+          </p>
+
+  <div class="field">
+
+          <input name="cCV" ng-model="candidature.curriculum_vitae" hidden required />
+          <div id="cv"
+            class="media-upload"
+            ng-if="!candidature.curriculum_vitae"
+            ng-model="candidature.curriculum_vitae"
+            name="cJustification"
+            ngf-select="uploadFile(candidature.curriculum_vitae, candidature, 'curriculum_vitae') " ngf-capture="'camera'"
+            accept="application/pdf"
+            ngf-accept="'application/pdf'"
+            ngf-pattern="'application/pdf'"
+            ngf-model-invalid="invalidCV"
+            required
+            >
+            <span class="upload-file" />
+          </div>
+
+          <div class="item" ng-if="candidature.curriculum_vitae" ng-init='RC_CV=false'>
+            <a class="link" target='_blank' href="{{candidature.curriculum_vitae}}"><img  /></a>
+            <span class="name">{{candidature.curriculum_vitae.split('.').pop()}}</span>
+            <span class="trash" ng-click="RC_CV=true" />
+            <div class="delete-pane" ng-show="RC_CV">
+                <span class="trash" ng-click="candidature.curriculum_vitae=''; RC_CV=false" />
+                <span class="name"><span class="fr">Supprimer</span><span class="en">Delete</span></span>
+                <span class="cancel" ng-click="RC_CV=false"></span>
+            </div>
+          </div>
+
+          <div ng-show="invalidCV.$errorMessages" ng-messages="invalidCV.$errorMessages" class="help-block error">
+            <div ng-message="pattern">
+              <span class="fr">Ce n'est pas un fichier pdf</span>
+              <span class="en">Only Pdf accepted</span>
+            </div>
+          </div>
+
+          <div ng-show="form.cCV.$touched && form.cJustification.$invalid" ng-messages="form.cCV.$error" class="help-block error">
+            <div ng-message="required">
+              <span class="fr">Obligatoire</span>
+              <span class="en">Required</span>
+            </div>
+            <div ng-message="justification_letter">
+              <span class="fr">Valeur éronnée</span>
+              <span class="en">Value Error</span>
+            </div>
+          </div>
+          <label class="topborder" for="cv">
+            <span class="field-state required"></span>
+            <span class="fr">CV</span>
+            <span class="en">CV</span>
+          </label>
+
+        </div>
+
+        <div class="navigation">
+          <a class="btn" ng-click="navigation_inter_page = 0">
+            Retour
+          </a>
+          <a class="btn" ng-click="navigation_inter_page = 2"
+          >
+            Continue
+          </a>
+        </div>
+  </div>
+
+  <div ng-show="navigation_inter_page == 2">
     <div class="help-pane" ng-if='display_help'>
         <span class="close" ng-click="show_help(false)">x</span>
         <h1>Aide</h1>
@@ -213,16 +284,16 @@
                   </div>
 
                   <div class="navigation">
-                    <a class="btn" ng-click="navigation_inter_page = 0">
+                    <a class="btn" ng-click="navigation_inter_page = 1">
                       Retour
                     </a>
-                    <a class="btn" ng-click="navigation_inter_page = 2"
+                    <a class="btn" ng-click="navigation_inter_page = 3"
                     >
                       Continue
                     </a>
                   </div>
       </div>
-      <div ng-show="navigation_inter_page == 2">
+      <div ng-show="navigation_inter_page == 3">
         <div class="help-pane" ng-if='display_help'>
             <span class="close" ng-click="show_help(false)">x</span>
             <h1>Aide</h1>
@@ -267,7 +338,7 @@
 
 
         <div class="navigation">
-          <a class="btn" ng-click="navigation_inter_page = 1">Retour</a>
+          <a class="btn" ng-click="navigation_inter_page = 2">Retour</a>
           <a class="btn" ui-sref="candidature.documents">Continue</a>
         </div>
       </div>

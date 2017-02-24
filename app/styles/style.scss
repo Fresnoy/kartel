@@ -285,7 +285,10 @@ body.en {
 .student-app{
     padding: 0;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-
+    .exposant{
+      font-size: .8em;
+      vertical-align: top;
+    }
     h1{
       margin-top: 0px;
       font-weight: bold;
