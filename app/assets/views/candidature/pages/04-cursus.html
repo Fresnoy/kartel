@@ -138,7 +138,7 @@
             ng-if="!candidature.curriculum_vitae"
             ng-model="candidature.curriculum_vitae"
             name="cJustification"
-            ngf-select="uploadFile(candidature.curriculum_vitae, candidature, 'curriculum_vitae') " ngf-capture="'camera'"
+            ngf-select="upload(candidature.curriculum_vitae, candidature, 'curriculum_vitae') " ngf-capture="'camera'"
             accept="application/pdf"
             ngf-accept="'application/pdf'"
             ngf-pattern="'application/pdf'"

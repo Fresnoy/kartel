@@ -73,7 +73,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
     # console.log(localStorage)
 
     $rootScope.step.current = "07"
-    $rootScope.step.title = "Login"
+
     $rootScope.current_display_screen = $rootScope.screen.login
 
     $scope.vm =
@@ -120,18 +120,18 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
       $scope.send_email = 2
 
       $rootScope.step.current = "04"
-      $rootScope.step.title = ""
+
       $rootScope.current_display_screen = $rootScope.screen.create_user
 
       $scope.$watch('navigation_inter_page', (value) ->
           if(value == 0)
               $rootScope.current_display_screen = $rootScope.screen.personnal
-              $rootScope.step.title = ""
+
               $rootScope.step.current = "04"
           if(value == 1)
               $rootScope.current_display_screen = $rootScope.screen.personnal2
               $rootScope.step.current = "05"
-              $rootScope.step.title = ""
+
       )
 
 
@@ -282,9 +282,10 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 
   # init step in parent controller
   $rootScope.step = []
-  $rootScope.step.current = "00"
+  $rootScope.step.current = "01"
   $rootScope.step.total = 19
-  $rootScope.step.title = "Welcome"
+  $rootScope.step.title = "Procédure d'inscription"
+
 
   # navigation
   $rootScope.navigation_inter_page = 0
@@ -467,7 +468,8 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
             if(value == 1)
                 $rootScope.current_display_screen = $rootScope.screen.personnal2
                 $rootScope.step.current = "02"
-                $rootScope.step.title = ""
+                $rootScope.step.title = "Procédure d'inscription"
+
             if(value == 2)
                 $rootScope.current_display_screen = $rootScope.screen.personnal2
                 $rootScope.step.current = "03"
@@ -487,7 +489,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 
   $rootScope.loadInfos($rootScope)
   $rootScope.step.current = "03"
-  $rootScope.step.title = "Informations personnelles"
+
 
   $rootScope.current_display_screen = $rootScope.screen.personnal
 
@@ -608,7 +610,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
       $rootScope.loadInfos($rootScope)
 
       $rootScope.current_display_screen = $rootScope.screen.cursus
-      $rootScope.step.title = "Cursus"
+
 
       $scope.$watch('navigation_inter_page', (value) ->
           if(value == 0)
@@ -618,7 +620,6 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
           if(value == 1)
               $rootScope.current_display_screen = $rootScope.screen.cursus2
               $rootScope.step.current = "08"
-              $rootScope.step.title = "Parcours"
           if(value == 2)
               $rootScope.current_display_screen = $rootScope.screen.cursus3
               $rootScope.step.current = "09"
@@ -682,26 +683,25 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 
 
     $scope.honor = false
-    $rootScope.step.title = "Documents"
+
 
     $scope.$watch('navigation_inter_page', (value) ->
         if(value == 0)
             $rootScope.current_display_screen = $rootScope.screen.docs
             $rootScope.step.current = "10"
-            $rootScope.step.title = "Documents"
 
         if(value == 1)
             $rootScope.current_display_screen = $rootScope.screen.docs2
             $rootScope.step.current = "11"
-            $rootScope.step.title = "Projets"
+
         if(value == 2)
             $rootScope.current_display_screen = $rootScope.screen.docs3
             $rootScope.step.current = "12"
-            $rootScope.step.title = "Projets"
+
         if(value == 2)
             $rootScope.current_display_screen = $rootScope.screen.docs4
             $rootScope.step.current = "13"
-            $rootScope.step.title = "œuvres"
+
     )
 
     $scope._isAvailableVideo = false
@@ -830,17 +830,13 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 
     $scope.INTERVIEW_TYPES = ["Skype"]
 
-    $rootScope.step.title = "Entretien"
-
     $scope.$watch('navigation_inter_page', (value) ->
         if(value == 0)
             $rootScope.current_display_screen = $rootScope.screen.message
             $rootScope.step.current = "14"
-            $rootScope.step.title = "Entretien"
         if(value == 1)
             $rootScope.current_display_screen = $rootScope.screen.docs2
             $rootScope.step.current = "15"
-            $rootScope.step.title = "Message"
         if(value == 2)
             $rootScope.current_display_screen = $rootScope.screen.docs3
             $rootScope.step.current = "16"
@@ -851,17 +847,16 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
       ) ->
 
     $rootScope.loadInfos($rootScope)
-    $rootScope.step.title = "Récapitulatif"
 
     $scope.$watch('navigation_inter_page', (value) ->
         if(value == 0)
             $rootScope.current_display_screen = $rootScope.screen.final
             $rootScope.step.current = "17"
-            $rootScope.step.title = "Récapitulatif"
+
         if(value == 1)
             $rootScope.current_display_screen = $rootScope.screen.final2
             $rootScope.step.current = "18"
-            $rootScope.step.title = "Validation"
+
 
     )
 )
@@ -869,5 +864,5 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
     $rootScope.loadInfos($rootScope)
     $rootScope.current_display_screen = $rootScope.screen.final3
     $rootScope.step.current = "19"
-    $rootScope.step.title = "Complet"
+
   )
