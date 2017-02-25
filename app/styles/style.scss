@@ -428,7 +428,6 @@ body.en {
             text-align: left;
             display:inline-block;
             &.big{
-              font-size: 1.1em
             }
           }
         }
@@ -436,12 +435,15 @@ body.en {
           visibility: hidden;
           position: absolute;
           + label{
-            padding-left: 30px;
+            font-size: 18px;
+            padding-left: 50px;
+            text-transform: none;
+            font-weight: bold;
             &:before{
               content: " ";
               display: inline-block;
-              width: 20px;
-              height: 20px;
+              width: 30px;
+              height: 30px;
               position: absolute; top: 0; left: 0;
               background: transparent url(../images/candidature/icons/check_false.svg) 0 0px no-repeat;
             }
@@ -498,7 +500,7 @@ body.en {
       text-align: right;
       font-weight: normal;
       text-transform: uppercase;
-      font-size: 0.7em;
+      font-size: .9em;
       color:grey;
       display: inline-block;
       width: 100%;

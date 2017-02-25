@@ -770,7 +770,6 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
                       data: data
                       method: 'PUT'
                       transformRequest: (data, headers) ->
-                        console.log(headers()['Authorization'])
                         delete headers()['Authorization']
                         return data;
 
