@@ -399,16 +399,17 @@ body.en {
           background: red;
         }
       }
-      &.ng-valid-required, &.ng-invalid-required{
-        ~label .field-state{
-          background: orange;
-        }
-      }
       &.ng-valid{
         ~label .field-state{
           background: #B8E986;
         }
       }
+      &.ng-invalid-required{
+        ~label .field-state{
+          background: orange;
+        }
+      }
+
       &.date{
         background: transparent url(../images/candidature/icons/calendar.svg) no-repeat right;
         background-size: 20px;
@@ -423,7 +424,6 @@ body.en {
         &.one{
           margin: 20px;
           ~ label {
-            width: 75%;
             vertical-align: top;
             text-align: left;
             display:inline-block;
@@ -442,8 +442,8 @@ body.en {
             &:before{
               content: " ";
               display: inline-block;
-              width: 30px;
-              height: 30px;
+              width: 40px;
+              height: 40px;
               position: absolute; top: 0; left: 0;
               background: transparent url(../images/candidature/icons/check_false.svg) 0 0px no-repeat;
             }
@@ -632,7 +632,7 @@ body.en {
     }
     .data-writing{
         position: absolute;
-        left: 130px;
+        right: 130px;
         top:78px;
         font-size: 0.8em;
         box-shadow: 2px 1px 2px rgba(0,0,0,0.3);

@@ -1,0 +1,60 @@
+<div class="cv">
+   <h1>
+      <span class="fr">CV</span>
+      <span class="en">CV</span>
+   </h1>
+   <p>Envoyer nous votre Cv complet : </p>
+   <p>&nbsp;</p>
+   <div class="field">
+      <input name="cCV" ng-model="candidature.curriculum_vitae" hidden required />
+      <div id="cv"
+         class="media-upload"
+         ng-if="!candidature.curriculum_vitae"
+         ng-model="candidature.curriculum_vitae"
+         name="cJustification"
+         ngf-select="upload(candidature.curriculum_vitae, candidature, 'curriculum_vitae') " ngf-capture="'camera'"
+         accept="application/pdf"
+         ngf-accept="'application/pdf'"
+         ngf-pattern="'application/pdf'"
+         ngf-model-invalid="invalidCV"
+         required
+         >
+         <span class="upload-file" />
+      </div>
+      <div class="item" ng-if="candidature.curriculum_vitae" ng-init='RC_CV=false'>
+         <a class="link" target='_blank' href="{{candidature.curriculum_vitae}}"><img  /></a>
+         <span class="name">{{candidature.curriculum_vitae.split('.').pop()}}</span>
+         <span class="trash" ng-click="RC_CV=true" />
+         <div class="delete-pane" ng-show="RC_CV">
+            <span class="trash" ng-click="candidature.curriculum_vitae=''; RC_CV=false" />
+            <span class="name"><span class="fr">Supprimer</span><span class="en">Delete</span></span>
+            <span class="cancel" ng-click="RC_CV=false"></span>
+         </div>
+      </div>
+      <div ng-show="invalidCV.$errorMessages" ng-messages="invalidCV.$errorMessages" class="help-block error">
+         <div ng-message="pattern">
+            <span class="fr">Ce n'est pas un fichier pdf</span>
+            <span class="en">Only Pdf accepted</span>
+         </div>
+      </div>
+      <div ng-show="form.cCV.$touched && form.cJustification.$invalid" ng-messages="form.cCV.$error" class="help-block error">
+         <div ng-message="required">
+            <span class="fr">Obligatoire</span>
+            <span class="en">Required</span>
+         </div>
+         <div ng-message="justification_letter">
+            <span class="fr">Valeur éronnée</span>
+            <span class="en">Value Error</span>
+         </div>
+      </div>
+      <label class="topborder" for="cv">
+      <span class="field-state required"></span>
+      <span class="fr">CV complet</span>
+      <span class="en">Complet CV </span>
+      </label>
+   </div>
+   <div class="navigation">
+      <a class="btn prev" ui-sref="candidature.curiculum"><span class="fr">Retour</span><span class="en">Back</span></a>
+      <a class="btn next" ui-sref="candidature.artistic-background"><span class="fr">Continuer</span><span class="en">Continue</span></a>
+   </div>
+</div>
