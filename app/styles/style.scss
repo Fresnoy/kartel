@@ -593,8 +593,9 @@ body.en {
         position: absolute;
         background: none;
         z-index: 1;
-        margin: 10px 0px;
+        margin: 20px 0px;
         width: 100%;
+        text-align: center;
         a{
           color: grey;
         }
@@ -610,11 +611,12 @@ body.en {
         .rollover{
           display: none;
           position: absolute;
-          margin-top: -25px;
+          margin-top: -35px;
           margin-left: -100px;
           text-align: center;
           pointer-events: none;
           width: 200px;
+          font-size: 1.2em;
 
         }
         li{
