@@ -126,7 +126,7 @@
               name="uSelectNationality"
                ng-model = "nation"
                ng-change="nationality.push(nation); user.profile.nationality = nationality.join(splitChar);
-               user.patch({'profile':{'nationality': user.profile.nationality}}); nation=''"               
+               user.patch({'profile':{'nationality': user.profile.nationality}}); nation=''"
                >
                <option value="">----</option>
                <option ng-repeat="(country, code) in countries" value="{{code}}">{{country}} ({{code}})</option>
