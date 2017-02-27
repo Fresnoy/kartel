@@ -117,39 +117,50 @@
             ng-minlength="10" ng-maxlength="20" required
             hidden
             />
-         <input
-            type="text"
-            placeholder="33"
-            class="inline-block phone_code"
-            ng-model="phone_country"
-            ng-change="user.profile.homeland_phone = '+' + phone_country +' '+ phone_number;"
-            />
-         <input
-            type="text"
-            placeholder="123456789"
-            ng-model="phone_number"
-            ng-change="user.profile.homeland_phone = '+' + phone_country + ' ' + phone_number;"
-            class="inline-block phone_number"
-            />
-         <div ng-show="user.profile.homeland_phone && form2.uHomelandPhone.$invalid" ng-messages="form2.uHomelandPhone.$error" class="help-block error">
-            <div ng-message="required">
-               <span class="fr">Obligatoire</span>
-               <span class="en">Required</span>
-            </div>
-            <div ng-message="maxlength">
-               <span class="fr">Pas plus de 20 signes</span>
-               <span class="en">Phone no not more than 20 char</span>
-            </div>
-            <div ng-message="pattern">
-               <span class="fr">Le numéro doit être du type [+33 123456789]</span>
-               <span class="en">Number type [+33 123456789]</span>
-            </div>
-         </div>
-         <label for="phone">
-           <span class="field-state"></span>
-           <span class="fr">Numéro de téléphone</span>
-           <span class="en">Phone number</span>
-         </label>
+
+
+        <div class="row">
+          <div class="col-xs-3 col-md-3 col-lg-3">
+            <input
+               type="text"
+               placeholder="33"
+               ng-model="phone_country"
+               ng-change="user.profile.homeland_phone = '+' + phone_country +' '+ phone_number;"
+               class="phone_code"
+               />
+             <label for="phone_code">
+               <span class="fr">Indicatif</span>
+               <span class="en">Phone code</span>
+             </label>
+          </div>
+          <div class="col-xs-9 col-md-9 col-lg-9">
+             <input
+                type="text"
+                placeholder="123456789"
+                ng-model="phone_number"
+                ng-change="user.profile.homeland_phone = '+' + phone_country + ' ' + phone_number;"
+                />
+             <div ng-show="user.profile.homeland_phone && form2.uHomelandPhone.$invalid" ng-messages="form2.uHomelandPhone.$error" class="help-block error">
+                <div ng-message="required">
+                   <span class="fr">Obligatoire</span>
+                   <span class="en">Required</span>
+                </div>
+                <div ng-message="maxlength">
+                   <span class="fr">Pas plus de 20 signes</span>
+                   <span class="en">Phone no not more than 20 char</span>
+                </div>
+                <div ng-message="pattern">
+                   <span class="fr">Le numéro doit être du type [+33 123456789]</span>
+                   <span class="en">Number type [+33 123456789]</span>
+                </div>
+             </div>
+             <label for="phone">
+               <span class="field-state"></span>
+               <span class="fr">Numéro de téléphone</span>
+               <span class="en">Phone number</span>
+             </label>
+          </div>
+        </div>
       </div>
    </form>
    <div class="navigation">
