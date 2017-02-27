@@ -370,6 +370,18 @@ body.en {
       background: #d8d8d8;
       height: 100vh;
       z-index: 100;
+      .close{
+        background: url(../images/candidature/icons/cancel.svg) no-repeat center center;
+        width: 20%;
+        height: 20px;
+        display: inline-block;
+        opacity: 1;
+        overflow: hidden;
+        text-indent: -100px;
+        &:hover{
+          opacity: .8;
+        }
+      }
 
     }
     .field{
@@ -510,6 +522,15 @@ body.en {
         height: 7px;
         background: black;
         display: inline-block;
+        &.invalid{
+          background: red;
+        }
+        &.valid{
+          background: #B8E986;
+        }
+        &.required{
+          background: orange;
+        }
       }
     }
     .summary {
@@ -572,6 +593,7 @@ body.en {
     }
     .navigation{
       margin: 30px 0px;
+      position: relative;
 
       .prev:before{
         content:"◄";
@@ -579,14 +601,17 @@ body.en {
         font-size: 0.5em;
         vertical-align: middle;
       }
-      .next:after{
-        content:"►";
-        margin-right: 5px;
-        font-size: 0.5em;
-        vertical-align: middle;
+
+      .next{
+          position: absolute;
+          right: 0px;
+          &:after{
+            content:"►";
+            margin-left: 5px;
+            font-size: 0.5em;
+            vertical-align: middle;
+          }
       }
-
-
       &.footer {
         margin: 0px 0px;
         position: absolute;
@@ -601,7 +626,7 @@ body.en {
         height: auto;
         a{
           font-size: 0.8em;
-          color: grey;
+          color: #9B9B9B;
         }
       }
       &.breadcrumb{
@@ -783,34 +808,39 @@ body.en {
     }
 
     .right-screen{
+      height: 100vh;
       .bg{
-        height: 100vh;
+        height: 100%;
         background-size: cover;
-        padding: 10% 0px 0px 10%;
+
         background-position-y: 33%;
         position: fixed;
         overflow: hidden;
         width: 100%;
         transition: all 0.5s ease-out;
-        .step-infos{
-          padding-left: 30px;
+      }
+      .step-infos{
+          top:23%;
+          position: absolute;
+          margin-left: 80px;
+          padding-left: 20px;
           border-left: 5px solid rgb(51, 51, 51);
           .current{
-            font-size: 5em;
+            font-size: 64px;
             font-weight: bold;
             display: inline-block;
             line-height: 60px;
           }
           .total{
+            font-size: 20px;
             display: inline-block;
             vertical-align: top;
           }
           .title{
             font-weight: bold;
+            font-size: 26px;
             display: block;
-            font-size: 2em;
           }
-        }
       }
     }
 }

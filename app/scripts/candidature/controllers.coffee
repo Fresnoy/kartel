@@ -161,8 +161,11 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
   # navigation
   $rootScope.navigation_inter_page = 0
   $rootScope.display_help = false
-  $scope.show_help = () ->
-    console.log("Please Help !")
+  $rootScope.show_help = (bool) ->
+    console.log("Please Help !" + bool)
+    if(bool!=undefined)
+      return $rootScope.display_help = bool
+
     $rootScope.display_help = !$rootScope.display_help
 
   # Dates
