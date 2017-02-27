@@ -48,6 +48,13 @@ angular.module('candidature.application', ['candidature.controllers',
                     'application_content_view':
                         templateUrl: 'views/candidature/pages/error.html',
       )
+      # PAGE - User Guide
+      $stateProvider.state('candidature.user-guide',
+                url: '/user-guide'
+                views:
+                    'application_content_view':
+                        templateUrl: 'views/candidature/pages/user-guide.html',
+      )
       # PAGE - Error ADMIN can't create application
       $stateProvider.state('candidature.error_admin_user',
                 url: '/error_admin'
