@@ -185,6 +185,9 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
   # lang
   if localStorage.getItem("language")
     $rootScope.language = localStorage.getItem("language")
+  else
+    localStorage.language = "fr"
+    $rootScope.language = localStorage.getItem("language")
 
   $scope.setLang = (lang) ->
     localStorage.setItem("language", lang)
@@ -412,6 +415,8 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
       en:"Select a language"
 
     $scope.LANGUAGES = languageMappingList
+    $scope.LANGUAGES = _.sortBy(_.pairs(languageMappingList), (o) -> return o[1].englishName)
+    console.log($scope.LANGUAGES)
     $scope.other_language = []
     $scope.splitChar = ", "
 

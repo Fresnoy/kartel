@@ -23,8 +23,8 @@
             ng-change="saveUserModel(user)"
             required>
             <option value="">{{languageSelectOption[language]}}</option>
-            <option ng-repeat="(name, item) in LANGUAGES" value="{{name.split('-')[0]}}">
-               {{item.englishName}} ({{name}})
+            <option ng-repeat="lang in LANGUAGES" value="{{lang[0].split('-')[0]}}">
+               {{lang[1].englishName}} ({{lang[0]}})
             </option>
          </select>
          <div ng-show="form3.uMotherTongue.$touched && form3.uMotherTongue.$invalid" ng-messages="form3.uMotherTongue.$error" class="help-block error">

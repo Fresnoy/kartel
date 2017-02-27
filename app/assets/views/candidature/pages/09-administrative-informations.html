@@ -150,9 +150,9 @@
             </div>
             <input hidden name='uNationality' id="nationality" type="text" ng-model="user.profile.nationality" required />
             <label class="" for="nationality">
-              <span class="field-state"></span>
-              <span class="fr">Nationalité</span>
-              <span class="en">Nationality</span>
+                <span class="field-state"></span>
+                <span class="fr"><span ng-show="nationality.length>0">Autres </span>Nationalité</span>
+                <span class="en"><span ng-show="nationality.length>0">Other </span>Nationality</span>
             </label>
          </div>
          <div class="field">
@@ -214,11 +214,11 @@
                </div>
             </div>
             <label for="family-status">
-            <span class="field-state"></span>
-            <span class="fr">Situation familiale</span>
-            <span class="en">
-            Family Status
-            </span>
+                  <span class="field-state"></span>
+                  <span class="fr">Situation familiale</span>
+                  <span class="en">
+                        Family Status
+                  </span>
             </label>
          </div>
          <div class="field">
