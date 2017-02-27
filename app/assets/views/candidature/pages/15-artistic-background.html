@@ -1,3 +1,14 @@
+<div class="help-pane" ng-show='display_help' ng-init="show_help(false)">
+   <span class="close" ng-click="show_help(false)">x</span>
+   <h1><class class="fr">Aide</class><class class="en">Help</class></h1>
+   <div class="fr">
+      <p></p>
+   </div>
+   <div class="en">
+      <p></p>
+   </div>
+</div>
+
 <div class="">
 
   <h1>
@@ -5,11 +16,6 @@
      <span class="en">Artistic Background</span>
   </h1>
 
-  <div class="help-pane" ng-if='display_help'>
-      <span class="close" ng-click="show_help(false)">x</span>
-      <h1>Aide</h1>
-        <p>Parcours artistique</p>
-  </div>
 
   <p>Résumé du parcours artistique : </p>
 

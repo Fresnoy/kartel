@@ -165,7 +165,6 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
     console.log("Please Help !" + bool)
     if(bool!=undefined)
       return $rootScope.display_help = bool
-
     $rootScope.display_help = !$rootScope.display_help
 
   # Dates

@@ -1,3 +1,15 @@
+<div class="help-pane" ng-show='display_help' ng-init="show_help(false)">
+   <span class="close" ng-click="show_help(false)">x</span>
+   <h1><class class="fr">Aide</class><class class="en">Help</class></h1>
+   <div class="fr">
+        <p>La sélection est limitée à 3 candidatures maximum</p>
+   </div>
+   <div class="en">
+      <p></p>
+   </div>
+</div>
+
+
 <div class="previous">
 
   <h1>
@@ -5,11 +17,6 @@
      <span class="en">Previous Applications</span>
   </h1>
 
-  <div class="help-pane" ng-if='display_help'>
-      <span class="close" ng-click="show_help(false)">x</span>
-      <h1>Aide</h1>
-        <p>Pas plus de 3 candidature</p>
-  </div>
   <form name="form1" ng-submit="form.$valid && submit()" class="css-form" novalidate enctype="multipart/form-data">
         <div class="field">
 

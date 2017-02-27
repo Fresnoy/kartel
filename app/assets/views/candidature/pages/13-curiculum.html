@@ -1,30 +1,36 @@
+<div class="help-pane" ng-show='display_help' ng-init="show_help(false)">
+   <span class="close" ng-click="show_help(false)">x</span>
+   <h1><class class="fr">Aide</class><class class="fr">Help</class></h1>
+   <div class="fr">
+     <p><u>Cocher la case correspondant à votre situation</u></p>
+     <p>
+        Les candidats doivent pouvoir justifier :
+     <ul>
+        <li>soit du Baccalauréat (ou équivalence reconnue)
+           et 5 années d’études attestées par un titre ou
+           diplôme,
+        </li>
+        <li>soit du Baccalauréat (ou équivalence
+           reconnue) et 7 années d’expérience artistique
+           ou professionnelle, et sous réserve de joindre
+           au dossier d’inscription administrative un
+           argumentaire, une page maximum, précisant
+           en quoi leur expérience les a préparés au
+           cursus du Fresnoy.
+        </li>
+     </ul>
+     </p>
+   </div>
+   <div class="en">
+      <p></p>
+   </div>
+</div>
+
 <div class="curiculum">
    <h1>
       <span class="fr">Cursus</span>
       <span class="en">Cursus</span>
    </h1>
-   <div class="help-pane" ng-if='display_help'>
-      <span class="close" ng-click="show_help(false)">x</span>
-      <h1>Aide</h1>
-      <p><u>Cocher la case correspondant à votre situation</u></p>
-      <p>
-         Les candidats doivent pouvoir justifier :
-      <ul>
-         <li>soit du Baccalauréat (ou équivalence reconnue)
-            et 5 années d’études attestées par un titre ou
-            diplôme,
-         </li>
-         <li>soit du Baccalauréat (ou équivalence
-            reconnue) et 7 années d’expérience artistique
-            ou professionnelle, et sous réserve de joindre
-            au dossier d’inscription administrative un
-            argumentaire, une page maximum, précisant
-            en quoi leur expérience les a préparés au
-            cursus du Fresnoy.
-         </li>
-      </ul>
-      </p>
-   </div>
    <form name="form" ng-submit="form.$valid && submit()" class="css-form" novalidate enctype="multipart/form-data">
       <div class="field">
          <p>Cocher la case correspondant à votre situation : </p>
