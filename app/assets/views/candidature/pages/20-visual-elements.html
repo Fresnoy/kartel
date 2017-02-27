@@ -111,22 +111,20 @@
             type="checkbox"
             id="asynchronous-element"
             ng-model="candidature.physical_content"
-            ng-change="candidature.patch({physical_content: candidature.physical_content})"
             name="aAsynchone"
             class="one check"
             ng-value=true
             />
-
          <label class="check one pointer" for='asynchronous-element'>
-         <span class="fr">J'envoie un fichier MP4 ou
-         ProRes sur une clef USB</span>
-         <span class="en">I can not send you the video, send it by mail</span>
+             <span class="fr">J'envoie un fichier MP4 ou
+             ProRes sur une clef USB</span>
+             <span class="en">I can not send you the video, send it by mail</span>
          </label>
          <div ng-if="!candidature.physical_content" class="alert" >
-            <div ng-init='candidature.patch({physical_content_description: ""})' />
+            <div ng-init='candidature.patch({physical_content_description: "", physical_content: false})' ></div>
           </div>
          <div ng-if="candidature.physical_content" class="alert" >
-            <div ng-init='candidature.patch({physical_content_description: "Film sur Clef USB"})'
+            <div ng-init='candidature.patch({physical_content_description: "Film sur Clef USB", physical_content: true})' />
             <span class="fr"> Il est impératif d'indiquer la référence de votre dossier sur la clef USB.</span>
             <span class="en"> Don't forget to give us your application number </span>
             <strong>{{candidature.current_year_application_count}}</strong>
@@ -149,7 +147,7 @@
             type="checkbox"
             id="honor"
             ng-model="honor"
-            name="aAsynchone"
+            name="aHonor"
             class="one check"
             />
          <label class="check one pointer" for='honor'>

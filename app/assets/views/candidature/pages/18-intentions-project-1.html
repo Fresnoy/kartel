@@ -45,7 +45,7 @@
       <input name="cProject1" ng-model="candidature.considered_project_1" hidden required />
       <div id="considered-project-1"
          ng-model="candidature.considered_project_1"
-         name="cJustification"
+         name="cProject1"
          ngf-select="upload(candidature.considered_project_1, candidature, 'considered_project_1') " ngf-capture="'camera'"
          accept="application/pdf"
          ngf-accept="'application/pdf'"
@@ -89,18 +89,44 @@
       <span class="en"> </span>
       </label>
    </div>
+
+
+
    <div class="field">
-      <textarea
-         id="artistic-referencies-project-1"
-         ng-model="candidature.artistic_referencies_project_1"
-         ng-model-options='{ debounce: 1000 }'
-         ng-change="candidature.patch({artistic_referencies_project_1 : candidature.artistic_referencies_project_1})"
-         placeholder="Références artistiques (20 lignes max)"
-         rows="20"
-         name=cARP1
-         required
-         />
-      <div ng-show="form.cARP1.$touched && form.cARP1.$invalid" ng-messages="form.cARP1.$error" class="help-block error">
+
+     <div id="considered-referencies-project-1"
+        ng-model="candidature.artistic_referencies_project_1"
+        name="cARP1"
+        ngf-select="upload(candidature.artistic_referencies_project_1, candidature, 'artistic_referencies_project_1') " ngf-capture="'camera'"
+        accept="application/pdf"
+        ngf-accept="'application/pdf'"
+        ngf-pattern="'application/pdf'"
+        ngf-model-invalid="invalidFileRefProject1"
+        required
+        class="media-upload"
+        ng-if='!candidature.artistic_referencies_project_1'
+        >
+        <span class="upload-file" />
+     </div>
+     <input name="cRefProject1" ng-model="candidature.artistic_referencies_project_1" hidden required />
+     <div class="item" ng-if="candidature.artistic_referencies_project_1" ng-init='RC_ref_prj1=false'>
+        <a class="link" target='_blank' href="{{candidature.artistic_referencies_project_1}}"><img  /></a>
+        <span class="name">{{candidature.artistic_referencies_project_1.split('.').pop()}}</span>
+        <span class="trash" ng-click="RC_ref_prj1=true" />
+        <div class="delete-pane" ng-show="RC_ref_prj1">
+           <span class="trash" ng-click="candidature.artistic_referencies_project_1=''; RC_ref_prj1=false" />
+           <span class="name"><span class="fr">Supprimer</span><span class="en">Delete</span></span>
+           <span class="cancel" ng-click="RC_ref_prj1=false"></span>
+        </div>
+     </div>
+     <div ng-show="invalidFileRefProject1.$errorMessages" ng-messages="invalidFileRefProject1.$errorMessages" class="help-block error">
+        <div ng-message="pattern">
+           <span class="fr">Format accepté : pdf</span>
+           <span class="en">Accepted format : pdf</span>
+        </div>
+     </div>
+
+      <div ng-show="form.cRefProject1.$touched && form.cRefProject1.$invalid" ng-messages="form.cRefProject1.$error" class="help-block error">
          <div ng-message="required">
             <span class="fr">Obligatoire</span>
             <span class="en">required</span>
@@ -110,10 +136,10 @@
             <span class="en">maxlength</span>
          </div>
       </div>
-      <label for="artistic-referencies-project-1">
-      <span class="field-state required"></span>
-      <span class="fr">Références artistiques (20 lignes) </span>
-      <span class="en">Artistic references for the first year's project</span>
+      <label class="topborder" for="artistic-referencies-project-1">
+            <span class="field-state required"></span>
+            <span class="fr">Références artistiques (20 lignes, format pdf) </span>
+            <span class="en">Artistic references for the first year's project 20 lines, pdf</span>
       </label>
    </div>
    <div class="navigation">

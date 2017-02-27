@@ -66,7 +66,6 @@
             type="checkbox"
             id="remote-interview"
             ng-model="candidature.remote_interview"
-            ng-change="candidature.patch({remote_interview: candidature.remote_interview})"
             name="cInterviewType"
             class="one check"
             />
@@ -78,33 +77,12 @@
          I can go to Le Fresnoy for interviews :
          </span>
          </label>
+         <div class="" ng-if="!candidature.remote_interview">
+           <div class="" ng-init='candidature.remote_interview_type = ""; candidature.patch({remote_interview_type : candidature.remote_interview_type,remote_interview: candidature.remote_interview })' />
+         </div>
          <div class="" ng-if="candidature.remote_interview">
-            <select id="remote-interview-type"
-               ng-change="candidature.patch({remote_interview_type : candidature.remote_interview_type})"
-               name="cInterviewType"
-               ng-model="candidature.remote_interview_type"
-               required
-               >
-               <option value="">Plateforme</option>
-               <option ng-repeat="value in INTERVIEW_TYPES" value="{{value}}" ng-selected="candidature.remote_interview_type == value">
-                  {{value}}
-               </option>
-            </select>
-            <div ng-show="form.$submitted || form.cInterviewType.$touched">
-               <span ng-show="form.cInterviewType.$error.required">
-               <span class="fr">
-               Champs requis
-               </span>
-               <span class="en">
-               required
-               </span>
-            </div>
-            <label for="remote-interview-type">
-            <span class="field-state"></span>
-            <span class="fr">Entretien via</span>
-            <span class="en">Remote interview Type</span>
-            </label>
-            <div class="" ng-show="candidature.remote_interview_type">
+            <div ng-init='candidature.remote_interview_type = "skype"; candidature.patch({remote_interview_type :candidature.remote_interview_type, remote_interview: candidature.remote_interview })' />
+            <div class="">
                <input
                   id="remote-interview-info"
                   type="text"
@@ -135,6 +113,6 @@
    </form>
    <div class="navigation">
       <a class="btn prev" ui-sref="candidature.summary"><span class="fr">Retour</span><span class="en">Back</span></a>
-      <a class="btn next" ui-sref="candidature.finalization"><span class="fr">Continuer</span><span class="en">Continue</span></a>
+      <a class="btn next" ng-class="{ 'has-error': form.$invalid }"  ui-sref="candidature.finalization"><span class="fr">Continuer</span><span class="en">Continue</span></a>
    </div>
 </div>

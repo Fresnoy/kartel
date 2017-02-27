@@ -83,16 +83,38 @@
       </label>
    </div>
    <div class="field">
-      <textarea
-         id="artistic-referencies-project-2"
-         ng-model="candidature.artistic_referencies_project_2"
-         ng-model-options='{ debounce: 1000 }'
-         ng-change="candidature.patch({artistic_referencies_project_2 : candidature.artistic_referencies_project_2})"
-         placeholder="Références artistiques (20 lignes max)"
-         rows="20"
-         name=cARP2
-         required
-         />
+
+     <input name="cRefProject2" ng-model="candidature.artistic_referencies_project_2" hidden required />
+     <div id="considered-referencies-project-2"
+        ng-model="candidature.artistic_referencies_project_2"
+        name="cARP2"
+        ngf-select="upload(candidature.artistic_referencies_project_2, candidature, 'artistic_referencies_project_2') " ngf-capture="'camera'"
+        accept="application/pdf"
+        ngf-accept="'application/pdf'"
+        ngf-pattern="'application/pdf'"
+        ngf-model-invalid="invalidFileRefProject1"
+        required
+        class="media-upload"
+        ng-if='!candidature.artistic_referencies_project_2'
+        >
+        <span class="upload-file" />
+     </div>
+     <div class="item" ng-if="candidature.artistic_referencies_project_2" ng-init='RC_ref_prj2=false'>
+        <a class="link" target='_blank' href="{{candidature.artistic_referencies_project_2}}"><img  /></a>
+        <span class="name">{{candidature.artistic_referencies_project_2.split('.').pop()}}</span>
+        <span class="trash" ng-click="RC_ref_prj1=true" />
+        <div class="delete-pane" ng-show="RC_ref_prj1">
+           <span class="trash" ng-click="candidature.artistic_referencies_project_2=''; RC_ref_prj1=false" />
+           <span class="name"><span class="fr">Supprimer</span><span class="en">Delete</span></span>
+           <span class="cancel" ng-click="RC_ref_prj2=false"></span>
+        </div>
+     </div>
+     <div ng-show="invalidFileRefProject2.$errorMessages" ng-messages="invalidFileRefProject2.$errorMessages" class="help-block error">
+        <div ng-message="pattern">
+           <span class="fr">Format accepté : pdf</span>
+           <span class="en">Accepted format : pdf</span>
+        </div>
+     </div>
       <div ng-show="form.cARP2.$touched && form.cARP2.$invalid" ng-messages="form.cARP2.$error" class="help-block error">
          <div ng-message="required">
             <span class="fr">Obligatoire</span>
@@ -103,10 +125,10 @@
             <span class="en">maxlength</span>
          </div>
       </div>
-      <label for="artistic-referencies-project-2">
+      <label class="topborder" for="artistic-referencies-project-2">
       <span class="field-state required"></span>
-      <span class="fr">Références artistiques <br/>pour la deuxième année (20 lignes)</span>
-      <span class="en">Artistic references for the second year's project</span>
+      <span class="fr">Références artistiques <br/>pour la deuxième année (20 lignes, format pdf)</span>
+      <span class="en">Artistic references for the second year's project, 20 lines, pdf</span>
       </label>
    </div>
    </form>

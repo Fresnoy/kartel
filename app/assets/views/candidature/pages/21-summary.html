@@ -53,9 +53,9 @@
     <h2>Parcours</h2>
     <div class="row">
       <div class="col-xs-12 col-md-6 col-lg-6">
-        <div ><label><span class="fr">Master / 7 ans exp. art.</span><span class="en">Master / 7 year exp. art.</span></label>   <input class="hidden" type="text" ng-model="candidature.master_degree" readonly required/><span class="isvalid"></div>
-          <div><label><span class="fr">CV</span><span class="en">CV</span></label> <input class="hidden" type="text" ng-model="candidature.curriculum_vitae" readonly required/><span class="isvalid"></div>
-        <div><label><span class="fr">Cursus</span><span class="en">Cursus</span></label>  <input class="hidden" type="text" ng-model="user.profile.cursus" readonly required/><span class="isvalid"> </div>
+        <div ><label><span class="fr">Master / 7 ans exp. art.</span><span class="en">Master / 7 year exp. art.</span></label>   <input class="hidden" type="text" ng-model="candidature.master_degree" readonly required/><span class="isvalid" /></div>
+          <div><label><span class="fr">CV</span><span class="en">CV</span></label> <input class="hidden" type="text" ng-model="candidature.curriculum_vitae" readonly required/><span class="isvalid" /></div>
+        <div><label><span class="fr">Cursus</span><span class="en">Cursus</span></label>  <input class="hidden" type="text" ng-model="user.profile.cursus" readonly required/><span class="isvalid" /></div>
       </div>
       <div class="col-xs-12 col-md-6 col-lg-6">
         <div ng-if='candidature.master_degree==false'>
@@ -78,10 +78,10 @@
     <div class="row">
       <div class="col-xs-12 col-md-6 col-lg-6">
         <h3><span class="fr">Projet première année</span><span class="en">First year project</span></h3>
-        <div><label><span class="fr">Description</span><span class="en">Description</span></label> <input class="hidden" type="text" ng-model="candidature.considered_project_1" readonly required/><span class="isvalid"></div>
-        <div><label><span class="fr">Références artistiques</span><span class="en">Art referencies</span></label> <input class="hidden" type="text" ng-model="candidature.artistic_referencies_project_1" readonly required/><span class="isvalid"></div>
+        <div><label><span class="fr">Description</span><span class="en">Description</span></label> <input class="hidden" type="text" ng-model="candidature.considered_project_1" readonly required/><span class="isvalid" /></div>
+        <div><label><span class="fr">Références artistiques</span><span class="en">Art referencies</span></label> <input class="hidden" type="text" ng-model="candidature.artistic_referencies_project_1" readonly required/><span class="isvalid" /></div>
         <br/>
-        <div><label><span class="fr">Lettre de motivation</span><span class="en">Cover letter</span></label> <input class="hidden" type="text" ng-model="candidature.justification_letter" readonly required/><span class="isvalid"></div>
+        <div><label><span class="fr">Lettre de motivation</span><span class="en">Cover letter</span></label> <input class="hidden" type="text" ng-model="candidature.justification_letter" readonly required/><span class="isvalid" /></div>
 
 
 
@@ -89,10 +89,13 @@
       <div class="col-xs-12 col-md-6 col-lg-6">
 
         <h3><span class="fr">Projet deuxième année</span><span class="en">Second year project</span></h3>
-        <div><label><span class="fr">Description</span><span class="en">Description</span></label> <input class="hidden" type="text" ng-model="candidature.considered_project_2" readonly required/><span class="isvalid"></div>
-        <div><label><span class="fr">Références artistiques</span><span class="en"> Art referencies</span></label> <input class="hidden" type="text" ng-model="candidature.artistic_referencies_project_2" readonly required/><span class="isvalid"></div>
+        <div><label><span class="fr">Description</span><span class="en">Description</span></label> <input class="hidden" type="text" ng-model="candidature.considered_project_2" readonly required/><span class="isvalid" /></div>
+        <div><label><span class="fr">Références artistiques</span><span class="en"> Art referencies</span></label> <input class="hidden" type="text" ng-model="candidature.artistic_referencies_project_2" readonly required/><span class="isvalid" /></div>
         <br/>
-        <div><label><span class="fr">Vidéo de présentation</span><span class="en">presentation video</span></label> <input class="hidden" type="url" ng-model="candidature.presentation_video" readonly required/><span class="isvalid"></div>
+        <div><label><span class="fr">Vidéo de présentation</span><span class="en">presentation video</span></label>
+          <span ng-if='!candidature.physical_content'><input class="hidden" type="url" ng-model="candidature.presentation_video" readonly required/>  <span class="isvalid" /></span>
+          <span ng-if='candidature.physical_content'><input class="hidden" type="url" ng-model="candidature.physical_content" readonly required/>  <span class="isvalid" /></span>
+        </div>
       </div>
     </div>
 

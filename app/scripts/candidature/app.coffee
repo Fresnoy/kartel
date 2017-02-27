@@ -252,7 +252,7 @@ angular.module('candidature.application', ['candidature.controllers',
       )
       # ONLINE CANDIDATURE - 19 - Projet 1
       $stateProvider.state('candidature.intentions-project-2',
-                  url: '/project-1'
+                  url: '/project-2'
                   views:
                     'application_content_view':
                         templateUrl: 'views/candidature/pages/19-intentions-project-2.html',
