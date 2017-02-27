@@ -2,12 +2,14 @@
    <h1>
       Confirmation
    </h1>
-   <p class="fr"> Merci de confimer la  création de votre compte en cliquant sur le lien de confimation envoyé sur l’email : </p>
+   <p class="fr"> Merci de d'activer la création de votre compte en cliquant sur le lien de confimation qui vous a été envoyé à l'adresse suivante : </p>
    <p class="en"> Thank you for confirming the creation of your account by clicking on the confimation link sent on the email : </p>
    <br/>
    <form name="formConfirmation">
-      <div >
+      <div>
+        <p>
          <a ng-show="!edit_email" > {{user.email}} </a>
+        </p>
       </div>
       <div ng-show="edit_email">
          <input id="email" type="email" ng-model="user.email" name="uEmail" unique-user-field required />
@@ -34,27 +36,19 @@
          Valider l'email
          </a>
       </div>
-      <div class="btn" ng-show="!edit_email" ng-click="edit_email = true" >
-         Corriger l'email
-      </div>
    </form>
-   <div ng-show="formConfirmation.uEmail.$invalid && formConfirmation.$submitted" ng-messages="formConfirmation.$error" class="alert alert-danger">
-      <div ng-message="first_name">
-         <span class="fr">Prénom : {{formConfirmation.$error.first_name[0]}}</span>
-         <span class="en">First Name : {{formConfirmation.$error.first_name[0]}}</span>
-      </div>
-      <div ng-message="last_name">
-         <span class="fr">Nom : {{formConfirmation.$error.last_name[0]}}</span>
-         <span class="en">Name : {{formConfirmation.$error.first_name[0]}}</span>
-      </div>
-      <div ng-message="usernmae">
-         <span class="fr">Username : {{formConfirmation.$error.usernmae[0]}}</span>
-         <span class="en">Username : {{formConfirmation.$error.usernmae[0]}}</span>
-      </div>
-   </div>
+   <p>
+     Si vous ne recevez oas d'e-mail :
+  </p>
+  <ul>
+    <li>vérirfier vos spam</li>
+    <li>vérifier l'email ci-dessus</li>
+    <li><a class="pointer" ng-click="edit_email = true">corriger l'email</a></li>
+  </li>
+
    <div class="navigation">
-      <a class="btn btn-inv" ng-click="update_infos(formConfirmation, user)" ng-class="{ 'has-error': (formConfirmation.$invalid || send_email<1 || edit_email) }" >
-      Renvoyer l'email {{send_email}}
+      <a class="btn btn-inv" ng-click="update_infos(formConfirmation, user)" ng-show="(!formConfirmation.$invalid && send_email>=1 && !edit_email)" >
+      Renvoyer l'email
       </a>
    </div>
 </div>
