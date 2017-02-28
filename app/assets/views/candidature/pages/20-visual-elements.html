@@ -20,7 +20,7 @@
          particulièrement représentatifs de votre démarche artistique.
       </p>
       <p>Cette vidéo d'une <strong>durée maximale de 8 minutes</strong> sera vue successivement par les deux jurys (de préselection et de l'entretien oral).</p>
-      <div class="field">
+      <div class="field" ng-show="!candidature.physical_content">
          <input
             type="url"
             id = "video"
@@ -46,22 +46,24 @@
          <span class="fr">Lien vidéo (8 minutes maximum) format mp4</span>
          <span class="en">Video Links</span>
          </label>
+
+         <p>Préciser le contenu du ou des visuels : </p>
+         <textarea
+            ng-model="candidature.presentation_video_details"
+            ng-model-options='{ debounce: 1000 }'
+            ng-change="candidature.patch({presentation_video_details : candidature.presentation_video_details})"
+            placeholder=""
+            rows="2"
+            required=""
+            >
+         </textarea>
+         <label>
+             <span class="field-state required"></span>
+             <span class="fr">Contenu visuels</span>
+             <span class="en">Visuel content</span>
+         </label>
       </div>
-      <p>Précisions sur le contenu du ou des visuels
-      </p>
-      <textarea
-         ng-model="candidature.presentation_video_details"
-         ng-model-options='{ debounce: 1000 }'
-         ng-change="candidature.patch({presentation_video_details : candidature.presentation_video_details})"
-         placeholder=""
-         rows="5"
-         required=""
-         ></textarea>
-      <label>
-      <span class="field-state required"></span>
-      <span class="fr">Contenu visuels</span>
-      <span class="en">Visuel content</span>
-      </label>
+
       <div>
          <div ng-if="candidature.presentation_video">
             <iframe ng-if="_isAvailableVideo" height="100px" width="200px"  ng-src="{{trustSrc(candidature.presentation_video)}}" />
@@ -77,35 +79,37 @@
       <br>
       <br>
       <hr/>
-      <h4>En cas de problème, vous pouvez :</h4>
-      <p> - nous envoyer la vidéo, en cliquant ci-dessous : </p>
-      <div ng-model="video" name="uVideo"
-         ngf-select="uploadVimeo(video, candidature, 'presentation_video')"
-         ngf-capture="'camera'"
-         accept="video/*"
-         ngf-accept="'video/*'"
-         ngf-pattern="'video/*'"
-         ngf-model-invalid="invalidVideo"
-         ng-show="!candidature.presentation_video"
-         class="media-upload"
-         ng-show='!candidature.presentation_video'
-         >
-         <span class="upload-file" />
-      </div>
-      <div ng-show="invalidVideo.$errorMessages" ng-messages="invalidVideo.$errorMessages" class="help-block error">
-         <div ng-message="pattern">
-            <span class="fr">Fichier non reconnu comme étant une vidéo</span>
-            <span class="en">this is not a vidéo file</span>
-         </div>
-      </div>
+      <div class='' ng-show="!candidature.physical_content" >
+            <h4>En cas de problème, vous pouvez :</h4>
+            <p> - nous envoyer la vidéo, en cliquant ci-dessous : </p>
+            <div ng-model="video" name="uVideo"
+               ngf-select="uploadVimeo(video, candidature, 'presentation_video')"
+               ngf-capture="'camera'"
+               accept="video/*"
+               ngf-accept="'video/*'"
+               ngf-pattern="'video/*'"
+               ngf-model-invalid="invalidVideo"
+               ng-show="!candidature.presentation_video"
+               class="media-upload"
+               ng-show='!candidature.presentation_video'
+               >
+               <span class="upload-file" />
+            </div>
+            <div ng-show="invalidVideo.$errorMessages" ng-messages="invalidVideo.$errorMessages" class="help-block error">
+               <div ng-message="pattern">
+                  <span class="fr">Fichier non reconnu comme étant une vidéo</span>
+                  <span class="en">this is not a vidéo file</span>
+               </div>
+            </div>
 
-      <p>
-         <a href='https://vimeo.com/help/compression' target='_blank'>
-         voir les spécifications pour un rendu optimal</a>
-      </p>
-      <p>
-         - nous envoyer la vidéo par courrier (cocher la case ci-dessous)
-      </p>
+            <p>
+               <a href='https://vimeo.com/help/compression' target='_blank'>
+               voir les spécifications pour un rendu optimal</a>
+            </p>
+            <p>
+               - nous envoyer la vidéo par courrier (cocher la case ci-dessous)
+            </p>
+      </div>
       <div class="field">
          <input
             type="checkbox"
@@ -139,7 +143,23 @@
                59202 Tourcoing Cedex <br/>
                France
             </p>
+            <p>Préciser le contenu du ou des visuels : </p>
+            <textarea
+               ng-model="candidature.presentation_video_details"
+               ng-model-options='{ debounce: 1000 }'
+               ng-change="candidature.patch({presentation_video_details : candidature.presentation_video_details})"
+               placeholder=""
+               rows="2"
+               required=""
+               >
+            </textarea>
+            <label>
+                <span class="field-state required"></span>
+                <span class="fr">Contenu visuels</span>
+                <span class="en">Visuel content</span>
+            </label>
          </div>
+
       </div>
       <hr/>
       <div class="field">
