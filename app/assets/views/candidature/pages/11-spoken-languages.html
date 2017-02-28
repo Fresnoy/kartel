@@ -24,7 +24,7 @@
             required>
             <option value="">{{languageSelectOption[language]}}</option>
             <option ng-repeat="lang in LANGUAGES" value="{{lang[0].split('-')[0]}}">
-               {{lang[1].englishName}} ({{lang[0]}})
+               {{lang[1].englishName}}
             </option>
          </select>
          <div ng-show="form3.uMotherTongue.$touched && form3.uMotherTongue.$invalid" ng-messages="form3.uMotherTongue.$error" class="help-block error">
@@ -61,8 +61,8 @@
             user.patch({'profile':{'other_language': user.profile.other_language}}); langue='';"
             >
             <option value="">{{languageSelectOption[language]}}</option>
-            <option ng-repeat="(name, item) in LANGUAGES" value="{{name}}">
-               {{item.englishName}} ({{name}})
+            <option ng-repeat="lang in LANGUAGES" value="{{lang[0].split('-')[0]}}">
+               {{lang[1].englishName}}
             </option>
          </select>
          <label class="" for="other-languages">

@@ -76,7 +76,7 @@
               <a class="pointer" ui-sref="candidature.cv">
                 <label><span class="fr">Documents</span><span class="en">Documents</span></label>
                 <div ng-repeat="item in cursus_justifications.media" ng-model="cursus_justifications.media">
-                  <input type="text" ng-model="(item.picture || item.file) && item.label" readonly required /><span class="isvalid"/>
+                  <input type="text" ng-if='item.picture' ng-model="((item.picture || item.file) && item.label)" readonly required /><span class="isvalid"/>
                 </div>
               </a>
             </div>
