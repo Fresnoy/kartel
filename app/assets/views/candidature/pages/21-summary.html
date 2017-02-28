@@ -109,7 +109,7 @@
         <a class="pointer" ui-sref="candidature.visual-elements">
           <div><label><span class="fr">Vidéo de présentation</span><span class="en">presentation video</span></label>
             <span ng-if='!candidature.physical_content'><input class="hidden" type="url" ng-model="candidature.presentation_video" readonly required/>  <span class="isvalid" /></span>
-            <span ng-if='candidature.physical_content'><input class="hidden" type="url" ng-model="candidature.physical_content" readonly required/>  <span class="isvalid" /></span>
+            <span ng-if='candidature.physical_content'><input class="hidden" type="text" ng-model="candidature.physical_content" readonly required/>  <span class="isvalid" /></span>
           </div>
         </a>
       </div>
