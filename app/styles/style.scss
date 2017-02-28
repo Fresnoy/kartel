@@ -408,7 +408,7 @@ body.en {
       &.ng-invalid.ng-touched{
         background-color:none;
         ~label .field-state{
-          background: red;
+          background: #dc4154;
         }
       }
       &.ng-valid{
@@ -471,12 +471,18 @@ body.en {
           background-position: 2px 5px;
           padding-left: 12px;
       }
-      ~ .help-block{
-        text-align: right;
-        margin: 0px;
-        &.error{
-          color: red;
-        }
+    }
+    .help-block{
+      text-align: center;
+      margin: 0px;
+      &.error{
+        color: black;
+        font-weight: bold;
+        text-decoration: none;
+        text-transform: none;
+        background: #dc4154; /* rgba(208,27,1,.75); */
+        padding: 5px;
+        margin: 5px 0px;
       }
     }
     select{
@@ -514,8 +520,10 @@ body.en {
         height: 7px;
         background: black;
         display: inline-block;
+        vertical-align: top;
+        margin-top: 5px;
         &.invalid{
-          background: red;
+          background: #dc4154;
         }
         &.valid{
           background: #B8E986;
@@ -538,11 +546,19 @@ body.en {
         margin: 0px 0px 5px 0px;
         height: 1px;
       }
+      a{
+        &:hover{
+          text-decoration: none;
+        }
+        label{
+          cursor: pointer;
+        }
+      }
       input{
         width:70%;
         display: inline-block;
         margin: 5px 0px;
-        font-size: 0.8em;
+        font-size: 0.9em;
         border: 0px;
         margin: 0px;
         &.hidden{
@@ -555,12 +571,13 @@ body.en {
         text-align: left;
         font-weight: normal;
         text-transform: uppercase;
-        font-size: 0.7em;
+        font-size: 0.8em;
         margin: 0px;
         color:grey;
         display: inline-block;
         width: auto;;
       }
+
       .edit{
         font-size: 0.8em;
         color: black;
@@ -576,7 +593,7 @@ body.en {
 
       input.ng-invalid + .isvalid:before {
         content: "x";
-        color: red;
+        color: #dc4154;
       }
       input.ng-valid + .isvalid:before {
         content: "√";
@@ -685,6 +702,24 @@ body.en {
           display: inline-block !important;
         }
     }
+    .modal {
+      position: fixed;
+      top:0px;
+      left: 0px;
+      min-height: 100vh;
+      width: 100%;
+      background: rgba(255,255,255,0.8);
+      .modal-content{
+        top:50%;
+        padding: 10px;
+        height: 200px;
+        width: 50%;
+        margin: -100px auto auto auto;
+        vertical-align: middle;
+
+      }
+
+    }
 
     .photo-upload{
       width: 100%;
@@ -739,6 +774,7 @@ body.en {
         display: inline-block;
         font-weight: bold;
         text-transform: uppercase;
+        color:black;
       }
       .trash{
         background: url(../images/candidature/icons/trash.svg) no-repeat center center;
@@ -759,7 +795,7 @@ body.en {
       .delete-pane{
         padding: 10px 0px;
         line-height: 20px;
-        background: #e5717e;
+        background: #dc4154;
         position: absolute;
         top: 0;
         left: 0;
@@ -839,7 +875,7 @@ body.en {
 
 
  span[ng-show*="error"] {
-    color:red;
+    color:#dc4154;
  }
 
  .disabled{

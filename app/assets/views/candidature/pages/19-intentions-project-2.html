@@ -46,7 +46,7 @@
          ngf-pattern="'application/pdf'"
          ngf-model-invalid="invalidFileProject2"
          class="media-upload"
-         ng-if='!candidature.considered_project_2'
+         ng-show='!candidature.considered_project_2'
          >
          <span class="upload-file" />
       </div>
@@ -95,7 +95,7 @@
         ngf-model-invalid="invalidFileRefProject1"
         required
         class="media-upload"
-        ng-if='!candidature.artistic_referencies_project_2'
+        ng-show='!candidature.artistic_referencies_project_2'
         >
         <span class="upload-file" />
      </div>

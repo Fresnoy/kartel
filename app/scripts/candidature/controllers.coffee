@@ -434,7 +434,6 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
     $rootScope.step.current = "12"
     $rootScope.current_display_screen = candidature_config.screen.photo_info
 
-
     $scope.uploadPhoto = (data, model, form) ->
       infos =
         url: model.url,
@@ -458,12 +457,13 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 
 
 #cursus
-.controller('ArtisticBgController', ($rootScope, $scope, Media, Galleries, Upload) ->
+.controller('CvController', ($rootScope, $scope, Media, Galleries, Upload) ->
 
       $rootScope.loadInfos($rootScope)
-      $rootScope.step.current = "15"
-      $rootScope.current_display_screen = candidature_config.screen.artistics_bg
+      $rootScope.step.current = "14"
+      $rootScope.current_display_screen = candidature_config.screen.cv
 
+      
       #patch Medium
       $scope.uploadFile = (data, model) ->
 
@@ -485,6 +485,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
         item.remove().then((response) ->
             media.splice(index,1)
         )
+
 )
 
 .controller('PreviousAppController', ($rootScope, $scope, Media, Galleries, Upload) ->

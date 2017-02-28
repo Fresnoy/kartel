@@ -46,57 +46,7 @@
               </div>
 
 
-              <div class="field">
-
-                    <div ng-repeat="item in cursus_justifications.media | orderBy:'1*position' track by $index"
-                          ng-model="cursus_justifications.media"
-                          name="uCursus"
-                          class="item-list">
-
-                        <div class="item" ng-if="item.file || item.picture" ng-init='RC_CursusJustif[$index]=false'>
-                          <a class="link" target='_blank' href="{{item.file || item.picture}}"><img  /></a>
-                          <input class="name no-border" type="text" placeholder="Nom" ng-model="item.label" ng-change="item.patch({label: item.label})" class="no-border" required />
-                          <span class="trash" ng-click="RC_CursusJustif[$index]=true" />
-                          <div class="delete-pane" ng-show="RC_CursusJustif[$index]">
-                              <span class="trash" ng-click="removeItem(cursus_justifications.media, $index); RC_CursusJustif[$index]=false" />
-                              <span class="name"><span class="fr">Supprimer</span><span class="en">Delete</span></span>
-                              <span class="cancel" ng-click="RC_CursusJustif[$index]=false"></span>
-                          </div>
-                        </div>
-
-                      </div>
-
-                      <div>
-                        <div ng-model="file"
-                          class="media-upload"
-                          ngf-select="uploadFile(file, cursus_justifications)"
-                          ngf-capture="'camera'"
-                          accept="image/*, application/pdf"
-                          ngf-accept="'image/*, application/pdf'"
-                          ngf-pattern="'image/*,application/pdf'"
-                          ngf-model-invalid="invalidFileCursusJustification"
-                          name="jCursus"
-                          required
-                          >
-                          <span class="upload-file" />
-                        </div>
-                        <div ng-show="invalidFileCursusJustification.$errorMessages" ng-messages="item.invalidFileCursusJustification.$errorMessages" class="help-block error">
-                          <div ng-message="pattern">
-                            <span class="fr">Formats acceptés : jpg / png / gif / pdf</span>
-                            <span class="en">Accepted formats : jpg / png / gif / pdf</span>
-                          </div>
-                        </div>
-                        <label class="topborder" for="cursus">
-                          <span class="field-state required"></span>
-                          <span class="fr">Ajouter un justificatif (diplôme, certification, ... )</span>
-                          <span class="en">Add a document (degree, certificatie, ... )</span>
-                        </label>
-                      </div>
-
-                      <p></p>
-
-
-                </div>
+              
 
 
 

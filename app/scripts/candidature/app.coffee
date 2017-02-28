@@ -207,10 +207,8 @@ angular.module('candidature.application', ['candidature.controllers',
                   views:
                     'application_content_view':
                         templateUrl: 'views/candidature/pages/14-cv.html',
-                        controller: ($rootScope) ->
-                          $rootScope.loadInfos($rootScope)
-                          $rootScope.step.current = "14"
-                          $rootScope.current_display_screen = candidature_config.screen.cv
+                        controller: "CvController"
+
       )
       # ONLINE CANDIDATURE - 15 - Parcours  Artistique
       $stateProvider.state('candidature.artistic-background',
@@ -218,7 +216,11 @@ angular.module('candidature.application', ['candidature.controllers',
                   views:
                     'application_content_view':
                         templateUrl: 'views/candidature/pages/15-artistic-background.html',
-                        controller: "ArtisticBgController"
+                        controller: ($rootScope) ->
+                          $rootScope.loadInfos($rootScope)
+                          $rootScope.step.current = "15"
+                          $rootScope.current_display_screen = candidature_config.screen.artistics_bg
+
       )
       # ONLINE CANDIDATURE - 16 - Candidatres precedents
       $stateProvider.state('candidature.previous-applications',

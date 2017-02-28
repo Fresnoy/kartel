@@ -66,7 +66,7 @@
          <input id="exp-justification" ng-model="candidature.experience_justification" required hidden />
          <div ng-model="candidature.experience_justification"
             class="media-upload"
-            ng-if="!candidature.experience_justification"
+            ng-show="!candidature.experience_justification"
             ngf-select="upload(candidature.experience_justification, candidature, 'experience_justification')"
             ngf-capture="'camera'"
             accept="application/pdf"
@@ -88,7 +88,7 @@
                <span class="cancel" ng-click="RC_exp=false"></span>
             </div>
          </div>
-         <div ng-show="invalidExperienceJustification.$errorMessages" ng-messages="item.invalidExperienceJustification.$errorMessages" class="help-block error">
+         <div ng-show="invalidExperienceJustification.$errorMessages" ng-messages="invalidExperienceJustification.$errorMessages" class="help-block error">
             <div ng-message="pattern">
                <span class="fr">Format accepté :pdf</span>
                <span class="en">Accepted format : pdf</span>
