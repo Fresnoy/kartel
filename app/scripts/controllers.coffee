@@ -133,7 +133,9 @@ angular.module('memoire.controllers', ['memoire.services'])
 
     search = ""
     #return all artwork video and filtre with idFrezsnoy - TODO search idFresnoy in api
-    AmeRestangular.all("api_search/").get("",{"search": search, "flvfile": "true", "previewsize":"scr", headers:{}}).then((ame_artwork) ->
+    AmeRestangular.setDefaultHeaders({'Content-Type': 'charset=UTF-8'})
+    console.log(AmeRestangular)
+    AmeRestangular.all("api_search/").get("",{"search": search, "flvfile": "true", "previewsize":"scr"}, headers:{}).then((ame_artwork) ->
       for archive in ame_artwork
         # valid reference id Fresnoy => id AME
 
