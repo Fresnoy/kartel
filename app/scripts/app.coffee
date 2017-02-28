@@ -300,6 +300,7 @@ angular.module('kartel',
 
 .run(['AmeRestangular', (AmeRestangular) ->
   AmeRestangular.setErrorInterceptor((response) ->
+    console.log(response)
     if (response.status == 401)
         console.log("Login required... ")
     else if (response.status == 404)
