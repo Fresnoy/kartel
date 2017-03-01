@@ -463,7 +463,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
       $rootScope.step.current = "14"
       $rootScope.current_display_screen = candidature_config.screen.cv
 
-      
+
       #patch Medium
       $scope.uploadFile = (data, model) ->
 
@@ -596,9 +596,10 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
                         Authorization : undefined
                       data: data
                       method: 'PUT'
-                      transformRequest: (data, headers) ->
-                        delete headers()['Authorization']
-                        return data;
+                      skipAuthorization: true,
+                      # transformRequest: (data, headers) ->
+                      #   delete headers()['Authorization']
+                      #   return data;
 
                     Upload.http(upload_config)
                     .then((resp) ->

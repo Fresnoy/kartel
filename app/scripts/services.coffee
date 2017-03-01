@@ -9,7 +9,6 @@ angular.module('memoire.services', ['restangular'])
 
 .factory('Users', (RestangularV2) ->
         return RestangularV2.withConfig((RestangularConfigurer) ->
-              # RestangularConfigurer.setBaseUrl(config.rest_uri_v2)
         ).service('people/user')
 )
 
@@ -22,7 +21,6 @@ angular.module('memoire.services', ['restangular'])
 
 .factory('RestAuth', (RestangularV2) ->
         return RestangularV2.withConfig((RestangularConfigurer) ->
-              # RestangularConfigurer.setBaseUrl(config.rest_uri_v2)
         ).service('rest-auth')
 )
 
@@ -32,13 +30,13 @@ angular.module('memoire.services', ['restangular'])
 
 .factory('ArtistsV2', (RestangularV2) ->
         return RestangularV2.withConfig((RestangularConfigurer) ->
-              # RestangularConfigurer.setBaseUrl(config.rest_uri_v2)
+
         ).service('people/artist')
 )
 
 .factory('Candidatures', (RestangularV2) ->
         return RestangularV2.withConfig((RestangularConfigurer) ->
-              # RestangularConfigurer.setBaseUrl(config.rest_uri_v2)
+
         ).service('school/student-application')
 )
 
@@ -64,16 +62,13 @@ angular.module('memoire.services', ['restangular'])
 
 .factory('Galleries', (RestangularV2) ->
         return RestangularV2.withConfig((RestangularConfigurer) ->
-              # RestangularConfigurer.setBaseUrl(config.rest_uri_v2)
         ).service('assets/gallery')
 )
 
 .factory('Media', (RestangularV2) ->
         return RestangularV2.withConfig((RestangularConfigurer) ->
-              # RestangularConfigurer.setBaseUrl(config.rest_uri_v2)
         ).service('assets/medium')
 )
-
 
 .factory('Partners', (Restangular) ->
         return Restangular.service('production/productionorganizationtask/')
@@ -81,18 +76,15 @@ angular.module('memoire.services', ['restangular'])
 
 .factory('Authentification', (RestangularV2) ->
         return RestangularV2.withConfig((RestangularConfigurer) ->
-              # RestangularConfigurer.setBaseUrl(config.rest_uri_v2)
         ).service('rest-auth')
 )
 
-.factory('Login', (Restangular) ->
-        return Restangular.withConfig((RestangularConfigurer) ->
-              RestangularConfigurer.setBaseUrl(config.rest_uri_v2)
+.factory('Login', (RestangularV2) ->
+        return RestangularV2.withConfig((RestangularConfigurer) ->
         ).service('rest-auth/login/')
 )
-.factory('Logout', (Restangular) ->
-        return Restangular.withConfig((RestangularConfigurer) ->
-              RestangularConfigurer.setBaseUrl(config.rest_uri_v2)
+.factory('Logout', (RestangularV2) ->
+        return RestangularV2.withConfig((RestangularConfigurer) ->
         ).service('rest-auth/logout/')
 )
 

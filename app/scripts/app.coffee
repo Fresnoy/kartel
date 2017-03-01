@@ -69,10 +69,11 @@ angular.module('kartel',
 
     jwtOptionsProvider.config({
       tokenGetter: ['options', (options) ->
+        console.log(options)
         return localStorage.getItem('token')
       ],
       authHeader: "Authorization"
-      authPrefix: ""
+      authPrefix: "JWT"
       # unauthenticatedRedirectPath: '/login',
       unauthenticatedRedirector: ['$state', ($state) ->
         console.log("unauthenticatedRedirector")
