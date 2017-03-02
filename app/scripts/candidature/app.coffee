@@ -8,7 +8,10 @@ angular.module('candidature.application', ['candidature.controllers',
 .run(['$rootScope' ,'$state', ($rootScope, $state) ->
   $rootScope.$on('tokenHasExpired', () ->
     console.log('Your session has expired!')
-    console.log($state)
+    localStorage.removeItem("token")
+    delete $http.defaults.headers.common.Authorization
+    authManager.unauthenticate()
+
     if($state.$urlRouter!=undefined && $state.$urlRouter.location.indexOf("candidature/"))
       setTimeout(() ->
         $state.go('candidature.account.login')
@@ -29,6 +32,7 @@ angular.module('candidature.application', ['candidature.controllers',
                 'main_view.application_content_view':
                     templateUrl: 'views/candidature/pages/01-landing-page.html',
                     controller: ($rootScope) ->
+                      $rootScope.step.current = "01"
                       $rootScope.current_display_screen = candidature_config.screen.home
 
                 'main_view.application_step_view':
@@ -130,6 +134,8 @@ angular.module('candidature.application', ['candidature.controllers',
                   views:
                     'application_content_view':
                         templateUrl: 'views/candidature/pages/02-terms-of-access.html',
+                        controller: ($rootScope) ->
+                          $rootScope.step.current = "02"
       )
       # ONLINE CANDIDATURE - 03 - Terms of access
       $stateProvider.state('candidature.terms-of-access-2',
@@ -137,6 +143,8 @@ angular.module('candidature.application', ['candidature.controllers',
                   views:
                     'application_content_view':
                         templateUrl: 'views/candidature/pages/03-terms-of-access-2.html',
+                        controller: ($rootScope) ->
+                          $rootScope.step.current = "03"
       )
       # ONLINE CANDIDATURE - 08 - Options
       $stateProvider.state('candidature.options',
@@ -145,6 +153,7 @@ angular.module('candidature.application', ['candidature.controllers',
                     'application_content_view':
                         templateUrl: 'views/candidature/pages/08-inscription-options.html',
                         controller: ($rootScope) ->
+                          $rootScope.step.current = "08"
                           $rootScope.step.total = 24
                           $rootScope.loadInfos($rootScope)
       )

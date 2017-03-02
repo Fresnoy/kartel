@@ -44,7 +44,7 @@
          <div ng-repeat="item in other_language track by $index" >
             <div class="item" ng-init='RC_lang[$index]=false'>
                <span class="flag-icon flag-icon-{{item | lowercase}}" />
-               <span class="name" ng-bind="LANGUAGES[item].nativeName" />
+               <span class="name" ng-bind="LANGUAGES_NAME[item].nativeName" />
                <span class="trash" ng-click="RC_lang[$index]=true" />
                <div class="delete-pane" ng-show="RC_lang[$index]">
                   <span class="trash" ng-click="other_language.splice($index,1);

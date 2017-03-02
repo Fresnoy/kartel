@@ -414,9 +414,10 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
       fr:"Sélectionner une langue"
       en:"Select a language"
 
-    $scope.LANGUAGES = languageMappingList
+
+    
+    $scope.LANGUAGES_NAME = languageMappingList
     $scope.LANGUAGES = _.sortBy(_.pairs(languageMappingList), (o) -> return o[1].englishName)
-    console.log($scope.LANGUAGES)
     $scope.other_language = []
     $scope.splitChar = ", "
 

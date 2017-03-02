@@ -291,7 +291,9 @@ body.en {
     }
     h1{
       margin-top: 0px;
+      margin-bottom: 20px;
       font-weight: bold;
+      font-size: 26px;
       &:after{
           content:"";
           margin: 5px 0px;
@@ -300,6 +302,9 @@ body.en {
           background: black;
           display: block;
       }
+    }
+    h2{
+      font-size: 20px;
     }
     .upload{
       position: absolute;
@@ -331,12 +336,16 @@ body.en {
       }
     }
     .content {
+      width: 330px;
       margin-top: 50px;
       z-index:2;
       padding: 40px;
       box-shadow: 0px 0px 5px black;
       position: relative;
-      background-color: rgba(255,255,255,0.8)
+      background-color: rgba(255,255,255,0.8);
+      p, li{
+        line-height: 1.2em;
+      }
     }
     .pointer{
       cursor: pointer;
@@ -368,7 +377,8 @@ body.en {
       width: 105%;
       padding: 30px;
       background: #d8d8d8;
-      height: 100vh;
+      min-height: 100vh;
+      height: 100%;
       z-index: 100;
       .close{
         background: url(../images/candidature/icons/cancel.svg) no-repeat center center;
@@ -396,7 +406,7 @@ body.en {
       margin-top: 20px;
       padding-bottom: 5px;
       text-indent: 4px;
-      font-size: 20px;
+      font-size: 18px;
       color:#4a4a4a;
       &.no-border{
         border-bottom: 0px solid black;
@@ -447,16 +457,21 @@ body.en {
           visibility: hidden;
           position: absolute;
           + label{
-            font-size: 18px;
+            font-size: 12px;
             padding-left: 50px;
             text-transform: none;
             font-weight: bold;
+            color: black;
+            position: relative;
             &:before{
               content: " ";
               display: inline-block;
+              position: absolute;
+              top:50%;
+              left: 0;
+              margin-top: -20px;
               width: 40px;
               height: 40px;
-              position: absolute; top: 0; left: 0;
               background: transparent url(../images/candidature/icons/check_false.svg) 0 0px no-repeat;
             }
           }
@@ -488,7 +503,7 @@ body.en {
     select{
       background: url(../images/candidature/icons/arrow_list.svg) no-repeat left;
       background-size: 20px;
-      text-indent: 25%;
+      text-indent: 15%;
       text-align: center;
       -webkit-appearance: none;
       appearance:none;
@@ -510,11 +525,10 @@ body.en {
       text-align: right;
       font-weight: normal;
       text-transform: uppercase;
-      font-size: .9em;
+      font-size: .8em;
       color:grey;
       display: inline-block;
       width: 100%;
-
       .field-state{
         width:7px;
         height: 7px;
@@ -575,7 +589,7 @@ body.en {
         margin: 0px;
         color:grey;
         display: inline-block;
-        width: auto;;
+        width: auto;
       }
 
       .edit{
@@ -643,7 +657,7 @@ body.en {
         background: none;
         z-index: 1;
         margin: 20px 0px;
-        width: 100%;
+        width: 350px;
         text-align: center;
         a{
           color: grey;
@@ -775,6 +789,7 @@ body.en {
         font-weight: bold;
         text-transform: uppercase;
         color:black;
+        margin-top:0px;
       }
       .trash{
         background: url(../images/candidature/icons/trash.svg) no-repeat center center;
@@ -784,6 +799,9 @@ body.en {
         display: inline-block;
         cursor: pointer;
         line-height: 20px;
+        position: absolute;
+        right: 0px;
+
       }
       .cancel{
         background: url(../images/candidature/icons/cancel.svg) no-repeat center center;
@@ -791,6 +809,8 @@ body.en {
         height: 20px;
         display: inline-block;
         cursor: pointer;
+        position: absolute;
+        right: 0px;
       }
       .delete-pane{
         padding: 10px 0px;
@@ -801,6 +821,15 @@ body.en {
         left: 0;
         width: 100%;
         height: 100%;
+        .trash{
+          left: 0px;
+        }
+        .name{
+          padding-left: 30%;
+        }
+        .cancel{
+
+        }
       }
     }
 
@@ -840,7 +869,7 @@ body.en {
       .bg{
         height: 100%;
         background-size: cover;
-
+        opacity: 0.5;
         background-position-y: 33%;
         position: fixed;
         overflow: hidden;
@@ -866,7 +895,7 @@ body.en {
           }
           .title{
             font-weight: bold;
-            font-size: 26px;
+            font-size: 28px;
             display: block;
           }
       }
@@ -886,15 +915,18 @@ body.en {
   &.has-error{
     opacity: 0.2;
     pointer-events:none;
+
   }
   &.green, &.grey{
     color: white;
     display: block;
     text-align: center;
     text-transform: uppercase;
+    font-weight: bold;
   }
   &.green{
     background: #B8E986;
+    color: #9B9B9B;
   }
   &.grey{
     background: grey;

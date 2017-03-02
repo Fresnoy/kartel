@@ -42,9 +42,9 @@
             </div>
          </div>
          <label for="video">
-         <span class="field-state required"></span>
-         <span class="fr">Lien vidéo (8 minutes maximum) format mp4</span>
-         <span class="en">Video Links</span>
+             <span class="field-state required"></span>
+             <span class="fr">Lien vidéo (8 minutes maximum) format mp4</span>
+             <span class="en">Video Links</span>
          </label>
 
          <p>Préciser le contenu du ou des visuels : </p>
@@ -65,22 +65,22 @@
       </div>
 
       <div>
-         <div ng-if="candidature.presentation_video">
+         <div ng-if="!candidature.physical_content && candidature.presentation_video">
             <iframe ng-if="_isAvailableVideo" height="100px" width="200px"  ng-src="{{trustSrc(candidature.presentation_video)}}" />
             <div ng-if="candidature.presentation_video && candidature.presentation_video.indexOf('player.vimeo.com/video')>0 && !_isAvailableVideo">
                La vidéo est bien envoyée et sera disponible pour vérification dans quelques minutes,
                n'hésitez pas à revenir plus tard sur votre inscription pour la consulter
             </div>
-         </div>
-         <a class="btn" ng-show="_isAvailableVideo && candidature.presentation_video.indexOf('player.vimeo.com/video')>0" ng-click='deleteVimeoVideo(candidature.presentation_video.split("/").pop(), candidature, "presentation_video")'>
-         Effacer la vidéo
-         </a>
+           <a class="btn" ng-show="_isAvailableVideo && candidature.presentation_video.indexOf('player.vimeo.com/video')>0" ng-click='deleteVimeoVideo(candidature.presentation_video.split("/").pop(), candidature, "presentation_video")'>
+              Effacer la vidéo
+           </a>
+        </div>
       </div>
       <br>
       <br>
       <hr/>
       <div class='' ng-show="!candidature.physical_content" >
-            <h4>En cas de problème, vous pouvez :</h4>
+            <h4>Si vous ne pouvez pas fournir un lien vers une vidéo<br/>Vous pouvez :</h4>
             <p> - nous envoyer la vidéo, en cliquant ci-dessous : </p>
             <div ng-model="video" name="uVideo"
                ngf-select="uploadVimeo(video, candidature, 'presentation_video')"

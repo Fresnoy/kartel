@@ -40,7 +40,7 @@
          </div>
          <div class="field">
             <input type="text" id="username" ng-model="user.username" ng-minlength="4" name="uUserName" unique-user-field required />
-            <div ng-show="form.uUserName.$viewValue.length>0" ng-messages="form.uUserName.$error" class="help-block error">
+            <div ng-show="form.uUserName.$viewValue.length>0 && form.uUserName.$invalid" ng-messages="form.uUserName.$error" class="help-block error">
                <div ng-message="minlength">
                   <span class="fr">Minimum 4 signes</span>
                   <span class="en">4 char min</span>
@@ -62,7 +62,7 @@
          </div>
          <div class="field">
             <input id="email" type="email" ng-model="user.email" name="uEmail" unique-user-field required />
-            <div ng-show="form.uEmail.$touched  && form.uEmail.$invalid" ng-messages="form.uEmail.$error" class="help-block error">
+            <div ng-show="form.uEmail.$touched && form.uEmail.$invalid" ng-messages="form.uEmail.$error" class="help-block error">
                <div ng-message="required">
                   <span class="fr">Requis</span>
                   <span class="en">required</span>
@@ -105,7 +105,7 @@
             </label>
          </div>
          <div>
-            <div ng-show="form.$error  && form.$invalid" ng-messages="form.$error" class="help-block error">
+            <div ng-show="form.$error  && form.$submit  && form.$invalid" ng-messages="form.$error" class="help-block error">
                {{form.error}}
             </div>
          </div>
