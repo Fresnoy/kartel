@@ -97,7 +97,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 
 .controller('AccountPasswordResetController', ($rootScope, $scope, RestAuth) ->
 
-  $rootScope.current_display_screen = candidature_config.screen.account_reset_password
+  $rootScope.step.current = "06"
 
   $scope.emailSended = false;
   $scope.submit = () ->
@@ -153,10 +153,9 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 
   # init step in parent controller
   $rootScope.step = []
-  $rootScope.step.current = "01"
   $rootScope.step.total = 24
   $rootScope.step.title = "Procédure d'inscription"
-
+  $rootScope.candidature_config = candidature_config
 
   # navigation
   $rootScope.navigation_inter_page = 0
@@ -415,7 +414,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
       en:"Select a language"
 
 
-    
+
     $scope.LANGUAGES_NAME = languageMappingList
     $scope.LANGUAGES = _.sortBy(_.pairs(languageMappingList), (o) -> return o[1].englishName)
     $scope.other_language = []
@@ -492,8 +491,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 .controller('PreviousAppController', ($rootScope, $scope, Media, Galleries, Upload) ->
 
         $rootScope.loadInfos($rootScope)
-        $rootScope.step.current = "15"
-        $rootScope.current_display_screen = candidature_config.screen.artistics_bg
+        $rootScope.step.current = "16"
 
         #cursus
         year = new Date().getFullYear()
@@ -519,7 +517,6 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 
     $rootScope.loadInfos($rootScope)
     $rootScope.step.current = "20"
-    $rootScope.current_display_screen = candidature_config.screen.video
 
     $scope.trustSrc = (src) ->
       return $sce.trustAsResourceUrl(src);
@@ -646,31 +643,4 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
     $scope.uploadFile = (data, model, field) ->
       $rootScope.upload(data, model, field)
 
-
-
 )
-
-.controller('FinalizationController', (
-        $rootScope, $scope
-      ) ->
-
-    $rootScope.loadInfos($rootScope)
-
-    $scope.$watch('navigation_inter_page', (value) ->
-        if(value == 0)
-            $rootScope.current_display_screen = $rootScope.screen.final
-            $rootScope.step.current = "17"
-
-        if(value == 1)
-            $rootScope.current_display_screen = $rootScope.screen.final2
-            $rootScope.step.current = "18"
-
-
-    )
-)
-.controller('CompletedController', ($rootScope, $scope) ->
-    $rootScope.loadInfos($rootScope)
-    $rootScope.current_display_screen = $rootScope.screen.final3
-    $rootScope.step.current = "19"
-
-  )

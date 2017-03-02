@@ -285,6 +285,13 @@ body.en {
 .student-app{
     padding: 0;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    &.container-fluid {
+      /* BUG */
+      padding-right: 15px;
+      padding-left: 15px;
+      margin-right: auto;
+      margin-left: auto;
+    }
     .exposant{
       font-size: .8em;
       vertical-align: top;
@@ -875,6 +882,16 @@ body.en {
         overflow: hidden;
         width: 100%;
         transition: all 0.5s ease-out;
+
+      }
+      .copyright{
+        position: fixed;
+        bottom: 10px;
+        right: 50px;
+        background-color: rgba(255,255,255,0.75);
+        padding: 1px 20px;
+        font-size: 12px;
+
       }
       .step-infos{
           top:23%;

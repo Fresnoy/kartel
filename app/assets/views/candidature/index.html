@@ -20,14 +20,17 @@
       </div>
       <div class="col-md-6 col-lg-7 right-screen">
         <div class="">
-          <div class="bg" style="background-image:url(images/candidature/artworks/{{current_display_screen.image}});
-          background-position-x:{{current_display_screen.position.x}}">
+          <div class="bg" style="background-image:url({{candidature_config.path}}{{candidature_config.screen[step.current].image}});
+          background-position-x:{{candidature_config.screen[step.current].position.x}}">
           </div>
           <div class="step-infos visible-md visible-lg">
                 <div class="current">{{step.current}}</div>
                 <div class="total">/ {{step.total}}</div>
                 <div class="title">{{step.title}}</div>
           </div>
+          <div class="copyright">
+            <span ng-bind='candidature_config.screen[step.current].copyright' />
+          </span>
         </div>
 
       </div>

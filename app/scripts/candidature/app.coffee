@@ -33,7 +33,6 @@ angular.module('candidature.application', ['candidature.controllers',
                     templateUrl: 'views/candidature/pages/01-landing-page.html',
                     controller: ($rootScope) ->
                       $rootScope.step.current = "01"
-                      $rootScope.current_display_screen = candidature_config.screen.home
 
                 'main_view.application_step_view':
                     templateUrl: 'views/candidature/partials/step-infos.html'
@@ -44,6 +43,7 @@ angular.module('candidature.application', ['candidature.controllers',
                 views:
                     'application_content_view':
                         templateUrl: 'views/candidature/pages/faq.html',
+                        controller: ($rootScope) ->
       )
       # PAGE - Error
       $stateProvider.state('candidature.error',
@@ -228,7 +228,6 @@ angular.module('candidature.application', ['candidature.controllers',
                         controller: ($rootScope) ->
                           $rootScope.loadInfos($rootScope)
                           $rootScope.step.current = "15"
-                          $rootScope.current_display_screen = candidature_config.screen.artistics_bg
 
       )
       # ONLINE CANDIDATURE - 16 - Candidatres precedents
@@ -248,7 +247,6 @@ angular.module('candidature.application', ['candidature.controllers',
                         controller: ($rootScope) ->
                           $rootScope.loadInfos($rootScope)
                           $rootScope.step.current = "17"
-                          $rootScope.current_display_screen = candidature_config.screen.motivations
       )
       # ONLINE CANDIDATURE - 18 - Projet 1
       $stateProvider.state('candidature.intentions-project-1',
@@ -259,7 +257,6 @@ angular.module('candidature.application', ['candidature.controllers',
                         controller: ($rootScope) ->
                           $rootScope.loadInfos($rootScope)
                           $rootScope.step.current = "18"
-                          $rootScope.current_display_screen = candidature_config.screen.project1
       )
       # ONLINE CANDIDATURE - 19 - Projet 1
       $stateProvider.state('candidature.intentions-project-2',
@@ -270,7 +267,6 @@ angular.module('candidature.application', ['candidature.controllers',
                         controller: ($rootScope) ->
                           $rootScope.loadInfos($rootScope)
                           $rootScope.step.current = "19"
-                          $rootScope.current_display_screen = candidature_config.screen.project2
       )
       # ONLINE CANDIDATURE - 20 - Elements visuels
       $stateProvider.state('candidature.visual-elements',
@@ -289,7 +285,6 @@ angular.module('candidature.application', ['candidature.controllers',
                         controller: ($rootScope) ->
                           $rootScope.loadInfos($rootScope)
                           $rootScope.step.current = "21"
-                          $rootScope.current_display_screen = candidature_config.screen.summary
       )
       # ONLINE CANDIDATURE - 22 - ITW
       $stateProvider.state('candidature.interview',
@@ -300,7 +295,6 @@ angular.module('candidature.application', ['candidature.controllers',
                         controller: ($rootScope) ->
                           $rootScope.loadInfos($rootScope)
                           $rootScope.step.current = "22"
-                          $rootScope.current_display_screen = candidature_config.screen.interview
       )
       # ONLINE CANDIDATURE - 23 - Confirmation
       $stateProvider.state('candidature.finalization',
@@ -311,7 +305,6 @@ angular.module('candidature.application', ['candidature.controllers',
                         controller: ($rootScope) ->
                           $rootScope.loadInfos($rootScope)
                           $rootScope.step.current = "23"
-                          $rootScope.current_display_screen = candidature_config.screen.finalization
       )
         # ONLINE CANDIDATURE - 24 - Confirmation
       $stateProvider.state('candidature.confirmation',
@@ -322,7 +315,6 @@ angular.module('candidature.application', ['candidature.controllers',
                           controller: ($rootScope) ->
                             $rootScope.loadInfos($rootScope)
                             $rootScope.step.current = "24"
-                            $rootScope.current_display_screen = candidature_config.screen.confirmed
         )
 
 
