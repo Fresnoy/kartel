@@ -343,7 +343,8 @@ body.en {
       }
     }
     .content {
-      width: 330px;
+      max-width: 330px;
+      width:100%;
       margin-top: 50px;
       z-index:2;
       padding: 40px;
@@ -873,6 +874,9 @@ body.en {
 
     .right-screen{
       height: 100vh;
+      padding-right:0px;
+      padding-left:0px;
+
       .bg{
         height: 100%;
         background-size: cover;
