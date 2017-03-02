@@ -139,7 +139,7 @@ angular.module('kartel',
         return {
             request: (response) ->
                 # disable html cache
-                if(response.url.match(".html") && !response.htmlnocache)
+                if(response.url.match(".html") && !response.url.match("uib") && !response.htmlnocache)
                   response.url +="?"+new Date().getTime().toString().slice(-2)
                   response.htmlnocache = true
                 # broadcast message on save model
@@ -291,12 +291,6 @@ angular.module('kartel',
 
 ])
 
-.run(($rootScope, $templateCache) ->
-  # remove cache HTML template (for update)
-  $rootScope.$on('$viewContentLoaded', () ->
-    $templateCache.removeAll();
-  )
-)
 
 
 .run(['AmeRestangular', (AmeRestangular) ->
