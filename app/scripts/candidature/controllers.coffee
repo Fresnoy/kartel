@@ -61,7 +61,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
         $state, jwtHelper, RestAuth, Restangular
 ) ->
 
-  $rootScope.step.current = "05"
+  $rootScope.step.current = "06"
   $rootScope.current_display_screen = candidature_config.screen.account_create_password
   $scope.user_id = false
 

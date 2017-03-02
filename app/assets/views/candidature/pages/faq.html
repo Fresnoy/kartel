@@ -14,7 +14,10 @@
   <h3 class="pointer" ng-init="faq3 = false" ng-click="faq3 = !faq3">
     Je n'ai reçu aucun email de confirmation
   </h3>
-  <p ng-show="faq3">à compléter</p>
+  <div ng-show="faq3">
+    <span class="fr">Tous les email sont envoyés instantanément, si vous ne recevez pas d’e-mail de notre part, vérifiez vos spam, ouu écrivez nous à selection-at-lefresnoy.net</span>
+    <span class="en"></span>
+  </div>
 
    <<div class="navigation">
       <a class="btn prev" ui-sref="candidature.account.login"><span class="fr">Retour</span><span class="en">Back</span></a>
