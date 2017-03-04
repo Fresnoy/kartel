@@ -1,4 +1,6 @@
 exports.config =
+        npm:
+          enabled: false
         plugins:
                 sass:
                         mode: 'native'
