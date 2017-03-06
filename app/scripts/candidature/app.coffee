@@ -8,9 +8,8 @@ angular.module('candidature.application', ['candidature.controllers',
 .run(['$rootScope' ,'$state', ($rootScope, $state) ->
   $rootScope.$on('tokenHasExpired', () ->
     console.log('Your session has expired!')
-    localStorage.removeItem("token")
-    delete $http.defaults.headers.common.Authorization
-    authManager.unauthenticate()
+    if( $rootScope.logout == Function)
+      $rootScope.logout()
 
     if($state.$urlRouter!=undefined && $state.$urlRouter.location.indexOf("candidature/"))
       setTimeout(() ->
@@ -295,6 +294,7 @@ angular.module('candidature.application', ['candidature.controllers',
                         controller: ($rootScope) ->
                           $rootScope.loadInfos($rootScope)
                           $rootScope.step.current = "22"
+
       )
       # ONLINE CANDIDATURE - 23 - Confirmation
       $stateProvider.state('candidature.finalization',

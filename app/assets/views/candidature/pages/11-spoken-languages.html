@@ -2,10 +2,21 @@
    <span class="close" ng-click="show_help(false)">x</span>
    <h1><class class="fr">Aide</class><class class="en">Help</class></h1>
    <div class="fr">
-      <p></p>
+      <p>Les candidats doivent posséder une connaissance
+du français et de l’anglais parlés. Toutes les étapes
+de la procédure de sélection (dossier et entretien
+oral), se font en français ou en anglais, au choix
+du candidat. Il est rappelé aux candidats admis
+que les études au Fresnoy se font ensuite en
+français.</p>
    </div>
    <div class="en">
-      <p></p>
+      <p>Candidates must have knowledge of spoken
+French and English. All the stages of the selection
+procedure (application and interviews) are in
+French or English, as the candidate wishes.<br/>
+Candidates admitted to Le Fresnoy are reminded
+that the course is carried out in French.</p>
    </div>
 </div>
 
@@ -43,7 +54,7 @@
          <input hidden type="text" id="other-languages" ng-model="user.profile.other_language" ng-init = "initLanguages()" />
          <div ng-repeat="item in other_language track by $index" >
             <div class="item" ng-init='RC_lang[$index]=false'>
-               <span class="flag-icon flag-icon-{{item | lowercase}}" />
+               <span class="language" />
                <span class="name" ng-bind="LANGUAGES_NAME[item].nativeName" />
                <span class="trash" ng-click="RC_lang[$index]=true" />
                <div class="delete-pane" ng-show="RC_lang[$index]">

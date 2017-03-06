@@ -1,6 +1,6 @@
 <div class="help-pane" ng-show='display_help' ng-init="show_help(false)">
    <span class="close" ng-click="show_help(false)">x</span>
-   <h1><class class="fr">Aide</class><class class="fr">Help</class></h1>
+   <h1><class class="fr">Aide</class><class class="en">Help</class></h1>
    <div class="fr">
      <p><u>Cocher la case correspondant à votre situation</u></p>
      <p>
@@ -22,7 +22,24 @@
      </p>
    </div>
    <div class="en">
-      <p></p>
+      <p>The candidates must be able to provide proof of:<ul>
+         <li> A levels or Baccalauréat (or recognized
+equivalent) and 5 years of study validated by a
+diploma; (or)</li>
+<li>A levels or Baccalauréat (or recognized
+equivalent) and 7 years of artistic or professional
+experience; in this case, a one page argument
+should be sent with the administrative application
+to explain how this experience is relevant to the
+course at Le Fresnoy.
+The candidates in the second case will sit a
+specific examination set by a special committee,
+who will judge and validate their application. Their
+decision is final. Participation in the selection
+procedure is free. Travel costs and living expenses
+of candidates during the entrance examinations
+are at the charge of the candidate.</li>
+</ul></p>
    </div>
 </div>
 
@@ -58,7 +75,8 @@
             />
          <label for="no-master-degree" class="checkbox one big pointer">
          <span class="fr">BAC + 7 années<br/><small>d'expérience professionnelle attestée</small></span>
-         <span class="en">//////////////</span>
+         <span class="en">A levels or Baccalauréat (or recognized equivalent) and 7 years of artistic or professional
+experience</span>
          </label>
       </div>
       <div ng-if="candidature.master_degree==false">

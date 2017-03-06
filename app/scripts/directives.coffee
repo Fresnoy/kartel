@@ -73,7 +73,6 @@ angular.module('memoire.directives', ['memoire.services', 'bootstrapLightbox'])
         if ctrl.toId
           clearTimeout(toId)
         ctrl.toId = setTimeout(() ->
-          console.log("search : " + value)
           if(!value)
             return
           Users.getList({search: value}).then((data) ->

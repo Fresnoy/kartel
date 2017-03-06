@@ -1,13 +1,3 @@
-<div class="help-pane" ng-show='display_help' ng-init="show_help(false)">
-   <span class="close" ng-click="show_help(false)">x</span>
-   <h1><class class="fr">Aide</class><class class="en">Help</class></h1>
-   <div class="fr">
-      <p></p>
-   </div>
-   <div class="en">
-      <p></p>
-    </div>
-</div>
 
 <div class="confirmation">
    <h1>
@@ -39,12 +29,19 @@
    Valider
    </a>
    <div class="" ng-if="validation" >
-      <p class="text-danger" style="border:2px solid red; padding:20px;">
+      <p class="text-danger">
          La validation est définitive. Vous ne pourrez plus modifier vos informations après avoir cliqué.
       </p>
-      <a class="block btn green" ui-sref="candidature.confirmation" ng-click="candidature.patch({application_completed: true})">
-      Je valide définitivement <br>ma candidature <br>au concours 2017<br>du Fresnoy - Studio national
-      </a>
+      <p>
+        <a class="btn green" ui-sref="candidature.confirmation" ng-click="candidature.patch({application_completed: true})">
+          Je valide définitivement <br><small>ma candidature au concours 2017<br>du Fresnoy - Studio national</small>
+        </a>
+      </p>
+   </div>
+
+
+   <div class="navigation" ng-show="validation">
+      <a class="btn prev" ui-sref="candidature.summary" ng-class="" ><span class="fr">Retour</span><span class="en">Back</span></a>
    </div>
 
 </div>

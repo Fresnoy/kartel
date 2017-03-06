@@ -10,6 +10,8 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
       $rootScope.step.current = "04"
       $rootScope.current_display_screen = candidature_config.screen.account_create_user
 
+      $rootScope.logout()
+
       # init user form
       if(!$scope.user)
         $scope.user =
@@ -26,7 +28,6 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 
       # create user
       $scope.create = (form, params) ->
-        delete $http.defaults.headers.common.Authorization
         Registration.post(params).then((response) ->
           $state.go('candidature.account.user-created', {infos:params})
         , (response) ->
@@ -137,7 +138,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
           , () ->
             console.log("error")
             params.error = "Error login"
-            $scope.logout()
+            $scope.logout("candidature.account.login")
      )
 )
 
@@ -151,6 +152,8 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
   if(!$rootScope.current_display_screen)
     $rootScope.current_display_screen = candidature_config.screen.home
 
+
+
   # init step in parent controller
   $rootScope.step = []
   $rootScope.step.total = 24
@@ -160,8 +163,9 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
   # navigation
   $rootScope.navigation_inter_page = 0
   $rootScope.display_help = false
+  $rootScope.help_exist = false
   $rootScope.show_help = (bool) ->
-    console.log("Please Help !" + bool)
+    $rootScope.help_exist=true
     if(bool!=undefined)
       return $rootScope.display_help = bool
     $rootScope.display_help = !$rootScope.display_help
@@ -198,13 +202,14 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 
 
   # logout
-  $rootScope.logout = () ->
+  $rootScope.logout = (route) ->
     Logout.post({},{},{}).then((auth) ->
         localStorage.removeItem("token")
         $rootScope.user = []
         delete $http.defaults.headers.common.Authorization
         authManager.unauthenticate()
-        $state.go("candidature.account.login")
+        if(route)
+          $state.go(route)
     )
 
 
@@ -301,7 +306,6 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
       scope.user = user
 
       Candidatures.getList().then((candidatures) ->
-        console.log(candidatures.length)
         if (candidatures.length >= 2)
           $state.go("candidature.error_admin_user")
 

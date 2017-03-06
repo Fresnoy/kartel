@@ -3,7 +3,7 @@
      <span class="close" ng-click="show_help(false)">x</span>
      <h1>Aide</h1>
      <div class="fr">
-        <p>Exemple d'aide</p>
+        <p>Aide contextualisée</p>
      </div>
      <div class="en">
         <p>Help exemple</p>
@@ -17,13 +17,13 @@
   <hr/>
 
   <div class="data-writing" style="position:static"><span class="fr">Données enregistrés</span><span class="en">Saved data</span></div>
+  <h2>Données</h2>
   <p>
-    Vos données sont enregistrés après chaques modifications, il n'est pas nécessaire de valider quoi que ce soit.
+    Vos données sont enregistrés après chaques modifications, il n'est pas nécessaire de valider les informations.
   </p>
 
   <hr/>
-
-  <p>Couleurs des champs de formulaire</p>
+  <h2>Couleurs de champs</h2>
   <label for="family-status">
     <span class="field-state invalid"></span>
     <span class="fr">Données non valides</span>
@@ -41,15 +41,31 @@
   </label>
 
   <hr/>
-
-  <p>Le symbole suivant vous invite à téléverser un fichier</p>
+  <h2>Fichiers</h2>
+  <p>Le symbole suivant vous invite à mettre en ligne un fichier</p>
   <div class="media-upload" ><span class="upload-file" /></div>
-  <p>Les fichiers images acceptés sont du type JPG, PNG, GIF<br/>
-    Les fichiers documents acceptés sont du type PDF<br/>
-    Les fichiers vidéo acceptés sont de tous types<br/>
-  </p>
-
+  <p>Types de fichiers acceptés : </p>
+  <ul><li>images au format Jpg, Png, Gif</li>
+    <li>documents au format Pdf</li>
+    <li>vidéo au tous formats</li>
+  </ul>
   <hr/>
+  <h2>Suppression</h2>
+  <p>Pour supprimer une information, cliquer cet icône :</p>
+  <div class="item">
+    <span class="name" />
+    <span class="trash" />
+  </div>
+  <br/>
+  <p>Confirmer en répétant l'opération, annuler en appuyant sur la croix</p>
+  <div class="item">
+    <br/>
+     <div class="delete-pane">
+        <span class="trash" ></span>
+        <span class="name"><span class="fr">Supprimer</span><span class="en">Delete</span></span>
+        <span class="cancel"></span>
+     </div>
+  </div>
 
 
 

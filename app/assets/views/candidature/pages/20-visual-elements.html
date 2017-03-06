@@ -2,13 +2,29 @@
    <span class="close" ng-click="show_help(false)">x</span>
    <h1><class class="fr">Aide</class><class class="en">Help</class></h1>
    <div class="fr">
-      <p></p>
+          <p>Une œuvre ou un ensemble d’extraits d’œuvres
+    réalisés par le candidat et lui paraissant
+    particulièrement représentatif de sa démarche
+    artistique ou de son travail. Fichiers MP4 ou
+    ProRes sur clé USB, durée maximale 8 minutes,
+    organisation selon le souhait du candidat
+    (exemple: 3 extraits vidéo, ou encore un
+    diaporama de photographies, ou un ensemble
+    d’extraits sonores, une ou plusieurs captations
+    vidéo d’installations, etc…). <br/>Chaque extrait
+    d’œuvre devra être précédé d’un carton texte
+    spécifiant la nature et le contexte de l’œuvre. Ces
+    éléments du dossier seront vus successivement
+    par les deux jurys.</p>
+    <p>
+      Par ailleurs, le jury visionnera les éléments visuels de 8 minutes maximum figurant au dossier du candidat.
+      L’attention du candidat est attirée sur l’importance de ces éléments, seuls documents le présentant qui seront examinés aux deux étapes de la sélection.
+    </p>
    </div>
    <div class="en">
       <p></p>
     </div>
 </div>
-
 
 <div class="">
    <h1>
@@ -47,7 +63,7 @@
              <span class="en">Video Links</span>
          </label>
 
-         <p>Préciser le contenu du ou des visuels : </p>
+         <p>Préciser la nature et le contexte des éléments visuels : </p>
          <textarea
             ng-model="candidature.presentation_video_details"
             ng-model-options='{ debounce: 1000 }'
@@ -129,21 +145,7 @@
           </div>
          <div ng-if="candidature.physical_content" class="alert" >
             <div ng-init='candidature.patch({physical_content_description: "Film sur Clef USB", physical_content: true})' />
-            <span class="fr"> Il est impératif d'indiquer la référence de votre dossier sur la clef USB.</span>
-            <span class="en"> Don't forget to give us your application number </span>
-            <strong>{{candidature.current_year_application_count}}</strong>
-            <p>
-               à l'adresse suivante :
-            </p>
-            <p>
-               Pédagogie - Concours 2017<br/>
-               Le Fresnoy - Studio national <br/>des arts contemporains<br/>
-               22 rue du Fresnoy <br/>
-               BP 80179 <br/>
-               59202 Tourcoing Cedex <br/>
-               France
-            </p>
-            <p>Préciser le contenu du ou des visuels : </p>
+            <p>Préciser la nature et le contexte des éléments visuels : </p>
             <textarea
                ng-model="candidature.presentation_video_details"
                ng-model-options='{ debounce: 1000 }'
@@ -158,6 +160,21 @@
                 <span class="fr">Contenu visuels</span>
                 <span class="en">Visuel content</span>
             </label>
+            <span class="fr"> Il est impératif d'indiquer la référence de votre dossier sur la clef USB.</span>
+            <span class="en"> Don't forget to give us your application number </span>
+            <strong>{{candidature.current_year_application_count}}</strong>
+            <p>
+               à l'adresse suivante :
+            </p>
+            <p>
+               Pédagogie - Concours 2017<br/>
+               Le Fresnoy - Studio national <br/>des arts contemporains<br/>
+               22 rue du Fresnoy <br/>
+               BP 80179 <br/>
+               59202 Tourcoing Cedex <br/>
+               France
+            </p>
+
          </div>
 
       </div>
@@ -172,7 +189,7 @@
             />
          <label class="check one pointer" for='honor'>
          <span class="fr">Je déclare sur l'honneur que tous
-         les documents visuels soumis au jury sont réalisés par moi seul, sans aucune aide ou intervention extérieure.</span>
+         les documents soumis au jury sont réalisés par moi seul, sans aucune aide ou intervention extérieure.</span>
          <span class="en"> /// </span>
          </label>
       </div>

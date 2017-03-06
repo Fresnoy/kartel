@@ -1,14 +1,3 @@
-<div class="help-pane" ng-show='display_help' ng-init="show_help(false)">
-   <span class="close" ng-click="show_help(false)">x</span>
-   <h1><class class="fr">Aide</class><class class="en">Help</class></h1>
-   <div class="fr">
-      <p></p>
-   </div>
-   <div class="en">
-      <p></p>
-    </div>
-</div>
-
 <div class="summary">
 
   <h1>Récapitulatif</h1>
@@ -62,7 +51,7 @@
           <div><label><span class="fr">CV</span><span class="en">CV</span></label> <input class="hidden" type="text" ng-model="candidature.curriculum_vitae" readonly required/><span class="isvalid" /></div>
         </a>
         <a class="pointer" ui-sref="candidature.artistic-background">
-          <div><label><span class="fr">Cursus</span><span class="en">Cursus</span></label>  <input class="hidden" type="text" ng-model="user.profile.cursus" readonly required/><span class="isvalid" /></div>
+          <div><label><span class="fr">Cursus</span><span class="en">Cursus</span></label> <input class="hidden" type="text" ng-model="user.profile.cursus" readonly required/><span class="isvalid" /></div>
         </a>
       </div>
       <div class="col-xs-12 col-md-6 col-lg-6">
@@ -107,10 +96,13 @@
         </a>
         <br/>
         <a class="pointer" ui-sref="candidature.visual-elements">
-          <div><label><span class="fr">Vidéo de présentation</span><span class="en">presentation video</span></label>
+          <div>
+            <label><span class="fr">Vidéo</span><span class="en">video</span></label>
             <span ng-if='!candidature.physical_content'><input class="hidden" type="url" ng-model="candidature.presentation_video" readonly required/>  <span class="isvalid" /></span>
             <span ng-if='candidature.physical_content'><input class="hidden" type="text" ng-model="candidature.physical_content" readonly required/>  <span class="isvalid" /></span>
           </div>
+          <div>
+          <label><span class="fr">Contenu</span><span class="en">Content</span></label><input class="hidden" type="text" ng-model="candidature.presentation_video_details" readonly required/>  <span class="isvalid" /></div>
         </a>
       </div>
     </div>

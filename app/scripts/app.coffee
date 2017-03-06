@@ -69,14 +69,12 @@ angular.module('kartel',
 
     jwtOptionsProvider.config({
       tokenGetter: ['options', (options) ->
-        console.log(options)
         return localStorage.getItem('token')
       ],
       authHeader: "Authorization"
       authPrefix: "JWT"
       # unauthenticatedRedirectPath: '/login',
       unauthenticatedRedirector: ['$state', ($state) ->
-        console.log("unauthenticatedRedirector")
         # $state.go('candidature.login');
 
       ],
@@ -128,7 +126,6 @@ angular.module('kartel',
 
 .filter('ageFilter', ->
     return (birthday) ->
-      console.log(birthday)
       ageDifMs = Date.now() - new Date(birthday).getTime();
       ageDate = new Date(ageDifMs); # miliseconds from epoch
       return Math.abs(ageDate.getUTCFullYear() - 1970)
@@ -295,7 +292,6 @@ angular.module('kartel',
 
 .run(['AmeRestangular', (AmeRestangular) ->
   AmeRestangular.setErrorInterceptor((response) ->
-    console.log(response)
     if (response.status == 401)
         console.log("Login required... ")
     else if (response.status == 404)
