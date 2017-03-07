@@ -20,8 +20,8 @@ candidate’s background led him/her to apply</p>
      <span class="en">Artistic Background</span>
   </h1>
 
-
-  <p>Résumé du parcours artistique : </p>
+  <form name="form" ng-submit="form.$valid && submit()" class="css-form" novalidate enctype="multipart/form-data">
+    <p>Résumé du parcours artistique : </p>
 
           <div class="field">
                       <textarea
@@ -46,6 +46,55 @@ candidate’s background led him/her to apply</p>
                         <span class="en">Cursus</span>
                       </label>
               </div>
+
+
+      <p>Site(s) web : </p>
+
+      <div class="field">
+
+        <div ng-repeat="item in artist.websites track by $index" >
+           <div class="item" ng-init='removeConfirmation[$index]=false'>
+              <span class="name" ng-bind="item.link" />
+              <span class="trash" ng-click="removeConfirmation[$index]=true" />
+              <div class="delete-pane" ng-show="removeConfirmation[$index]">
+                 <span class="trash" ng-click="removeItem(artist.websites, $index); removeConfirmation[$index]=false" />
+                 <span class="name"><span class="fr">Supprimer</span><span class="en">Delete</span></span>
+                 <span class="cancel" ng-click="removeConfirmation[$index]=false"></span>
+              </div>
+           </div>
+        </div>
+
+        <a ng-if="website.length>0 && form.aWebsite.$valid" ng-click='addWebsite(artist, artist.websites, website);' class="btn right add">
+            +
+        </a>
+
+          <input
+             type="url"
+             id = "website"
+             ng-model-options='{ debounce: 500 }'
+             name = "aWebsite"
+             ng-model="website"
+             placeholder="Url"
+             />
+          <div ng-show="form.aWebsite.$touched && form.aWebsite.$invalid" ng-messages="form.aWebsite.$error" class="help-block error">
+             <div ng-message="url">
+                <span class="fr">Erreur dans l'URL</span>
+                <span class="en">Error url</span>
+             </div>
+          </div>
+
+          <label for="website">
+              <span class="field-state"></span>
+              <span class="fr">Site Web <br/>(http://www.monsite.com)</span>
+              <span class="en">Website <br/>(http://www.mywebsite.com)</span>
+          </label>
+
+
+
+
+      </div>
+    </form>
+
 
 
 

@@ -224,9 +224,7 @@ angular.module('candidature.application', ['candidature.controllers',
                   views:
                     'application_content_view':
                         templateUrl: 'views/candidature/pages/15-artistic-background.html',
-                        controller: ($rootScope) ->
-                          $rootScope.loadInfos($rootScope)
-                          $rootScope.step.current = "15"
+                        controller: "ArtisticBgController"
 
       )
       # ONLINE CANDIDATURE - 16 - Candidatres precedents

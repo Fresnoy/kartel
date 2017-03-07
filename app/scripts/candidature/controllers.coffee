@@ -181,7 +181,6 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
   # ITW types
   $scope.INTERVIEW_TYPES = ["Skype"]
 
-
   # write data var
   $rootScope.writingData = false
 
@@ -334,6 +333,13 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
           # console.log(scope.candidature.plain())
           ArtistsV2.one(artist_id).get().then((artist) ->
               scope.artist = artist
+              for website in artist.websites
+                  website_id = website.match(/\d+$/)[0]
+                  RestangularV2.one('common/website', website_id).get().then((response_website) ->
+
+                      find_website = artist.websites.indexOf(response_website.url)
+                      artist.websites[find_website] = response_website
+                  )
           )
       )
     , (userInfos_error) ->
@@ -417,8 +423,6 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
       fr:"Sélectionner une langue"
       en:"Select a language"
 
-
-
     $scope.LANGUAGES_NAME = languageMappingList
     $scope.LANGUAGES = _.sortBy(_.pairs(languageMappingList), (o) -> return o[1].englishName)
     $scope.other_language = []
@@ -489,8 +493,34 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
         item.remove().then((response) ->
             media.splice(index,1)
         )
-
 )
+.controller('ArtisticBgController', ($rootScope, $scope, WebsiteV2) ->
+
+        $rootScope.loadInfos($rootScope)
+        $rootScope.step.current = "15"
+
+        $scope.addWebsite = (artist, model, field) ->
+          website_infos =
+            link: field
+            title_fr: "Site web de " + $rootScope.user.first_name + " " + $rootScope.user.last_name
+            title_en: "Website " + $rootScope.user.first_name + " " + $rootScope.user.last_name
+            language: localStorage.getItem("language").toUpperCase()
+
+          WebsiteV2.one().customPOST(website_infos).then((response_website) ->
+              model.push(response_website)
+              infos = []
+              infos.push(item.url) for item in model
+              artist.patch({websites: infos})
+
+              $scope.website = ""
+          )
+        $scope.removeItem = (model, index) ->
+          item = model[index]
+          item.remove().then((response) ->
+              model.splice(index,1)
+          )
+)
+
 
 .controller('PreviousAppController', ($rootScope, $scope, Media, Galleries, Upload) ->
 

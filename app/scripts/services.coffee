@@ -33,6 +33,11 @@ angular.module('memoire.services', ['restangular'])
 
         ).service('people/artist')
 )
+.factory('WebsiteV2', (RestangularV2) ->
+        return RestangularV2.withConfig((RestangularConfigurer) ->
+
+        ).service('common/website')
+)
 
 .factory('Candidatures', (RestangularV2) ->
         return RestangularV2.withConfig((RestangularConfigurer) ->

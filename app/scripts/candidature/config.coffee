@@ -3,7 +3,7 @@ candidature_config =
   screen:
     "01":
       image:"fabien_zocco_mind-body_problem_2015_01.jpg"
-      copyright:"Fabien Zocco - A Mind-Body Problem, installation 2015 - Promotion Alain Resnais"
+      copyright:"Fabien Zocco - A mind-body problem, installation 2015 - Promotion Alain Resnais"
       position: {x:"-400px",y:0}
     "02":
       image:"junkai-chen_correspondances_2016_3.jpg"
@@ -27,11 +27,11 @@ candidature_config =
       position: {x:"-400px",y:0}
     "07":
       image:"renaud_duval_sealine_excroissance_i.jpg"
-      copyright:"Renaud Duval - Sealine, installation 2013 - Promotion Chris Marker"
+      copyright:"Renaud Duval - Sealine, série photographique 2013 - Promotion Chris Marker"
       position: {x:"-300px",y:0}
     "08":
       image:"baptiste-rabichon_diamonds_2016.jpg"
-      copyright:"Baptiste Rabichon - Ranelagh / We're beautiful like diamonds in the sky / Encore elle, installation 2016 - Promotion Manoel de Oliveira"
+      copyright:"Baptiste Rabichon - Ranelagh / We're beautiful like diamonds in the sky / Encore elle, série photographique 2016 - Promotion Manoel de Oliveira"
       position: {x:"-100px",y:"33%"}
     "09":
       image:"chia-wei-hsu_ecriture-divine_2016_2.jpg"
@@ -83,7 +83,7 @@ candidature_config =
       position: {x:"-600px",y:0}
     "21":
       image:"regina_demina_l-avalanche_2015_09.jpg"
-      copyright:"Régina Demina - L’Avalanche, film 2015 - Promotion Alain Resnais"
+      copyright:"Régina Demina - L’avalanche, film 2015 - Promotion Alain Resnais"
       position: {x:0,y:0}
     "22":
       image:"dane-komljen_-visak-vjetra_2014_-50-.jpg"

@@ -382,6 +382,13 @@ body.en {
         &.photo-remove{
           margin: 10px 0px;
         }
+        &.add{
+          position: absolute;
+          &.right{
+            right: 0;
+            margin-top: 17px;
+          }
+        }
     }
     .help-pane{
       position: absolute;
@@ -842,6 +849,8 @@ body.en {
         text-transform: uppercase;
         color:black;
         margin-top:0px;
+        text-overflow: ellipsis;
+        overflow: hidden;
       }
       .trash{
         background: url(../images/candidature/icons/trash.svg) no-repeat center center;
@@ -878,6 +887,7 @@ body.en {
         }
         .name{
           padding-left: 30%;
+          width: 70%;
         }
         .cancel{
 
