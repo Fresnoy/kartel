@@ -513,6 +513,10 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
               artist.patch({websites: infos})
 
               $scope.website = ""
+
+          , (error) ->
+                $scope.form.aWebsite.$invalid = true
+                $scope.form.aWebsite.$error.url = true
           )
         $scope.removeItem = (model, index) ->
           item = model[index]

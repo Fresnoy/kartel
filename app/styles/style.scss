@@ -385,7 +385,7 @@ body.en {
         &.add{
           position: absolute;
           &.right{
-            right: 0;
+            right: -30px;
             margin-top: 17px;
           }
         }
@@ -851,6 +851,9 @@ body.en {
         margin-top:0px;
         text-overflow: ellipsis;
         overflow: hidden;
+        &.left{
+          width: 80%;
+        }
       }
       .trash{
         background: url(../images/candidature/icons/trash.svg) no-repeat center center;

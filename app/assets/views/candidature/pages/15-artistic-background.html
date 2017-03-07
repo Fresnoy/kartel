@@ -54,7 +54,8 @@ candidate’s background led him/her to apply</p>
 
         <div ng-repeat="item in artist.websites track by $index" >
            <div class="item" ng-init='removeConfirmation[$index]=false'>
-              <span class="name" ng-bind="item.link" />
+              <span class="name left" ng-bind="item.link.substring(7)" />
+
               <span class="trash" ng-click="removeConfirmation[$index]=true" />
               <div class="delete-pane" ng-show="removeConfirmation[$index]">
                  <span class="trash" ng-click="removeItem(artist.websites, $index); removeConfirmation[$index]=false" />
