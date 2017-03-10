@@ -336,7 +336,6 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
               for website in artist.websites
                   website_id = website.match(/\d+$/)[0]
                   RestangularV2.one('common/website', website_id).get().then((response_website) ->
-
                       find_website = artist.websites.indexOf(response_website.url)
                       artist.websites[find_website] = response_website
                   )

@@ -33,8 +33,44 @@ angular.module('memoire.controllers', ['memoire.services'])
     )
 )
 
-.controller('NavController', ($scope, Candidatures, $state) ->
-  $scope.candidatures = Candidatures.getList().$object
+.controller('NavController', ($scope, $rootScope, $http, Login, Logout, jwtHelper, Users, authManager, Candidatures, $state) ->
+  $rootScope.candidatures = Candidatures.getList().$object
+
+  $scope.user_infos =
+      username:""
+      email:""
+      password:""
+      error:""
+
+  if(localStorage.getItem('token'))
+    user_id = jwtHelper.decodeToken(localStorage.getItem('token')).user_id
+    Users.one(user_id).get().then((user) ->
+      $rootScope.user = user
+    )
+
+  $scope.login = (form, params) ->
+    delete $http.defaults.headers.common.Authorization
+    params.error=""
+    Login.post(params)
+    .then((auth) ->
+          localStorage.setItem('token', auth.token)
+          $http.defaults.headers.common.Authorization = "JWT "+ localStorage.getItem('token')
+          authManager.authenticate()
+          Users.one(auth.user.pk).get().then((user) ->
+            $rootScope.user = user
+          )
+        , (error) ->
+          params.error = error.data
+   )
+   # logout
+   $scope.logout = (route) ->
+     Logout.post({},{},{}).then((auth) ->
+         localStorage.removeItem("token")
+         delete $http.defaults.headers.common.Authorization
+         authManager.unauthenticate()
+         $rootScope.user = {}
+     )
+
 )
 
 .controller('ArtistListingController', ($scope, Artists, $state) ->
@@ -195,6 +231,12 @@ angular.module('memoire.controllers', ['memoire.services'])
 .controller('CandidaturesController', ($rootScope, $scope, Candidatures, ArtistsV2, Users) ->
   # init
   $scope.candidatures = []
+  $scope.select_critere =
+    'Tri par' : ""
+    'Candidatures Completes' : "application_complete"
+    'Selectionnés pour les interview' : "selected_for_interview"
+    'Selectionnés' : "selected_for_interview"
+    'Liste d\'attente' : "wait_listed"
 
   Candidatures.getList({limit: 500}).then((candidatures) ->
 
@@ -209,19 +251,33 @@ angular.module('memoire.controllers', ['memoire.services'])
             current_cantidature[0].artist = artist
       )
 
-
   )
 
+  $scope.show_candidat = (candidat, field, value) ->
+    if ($scope.critere)
+      return candidat[$scope.critere] == $scope.critere_bool
+    return true
 )
 
-.controller('CandidatController', ($rootScope, $scope, $stateParams, Candidatures, ArtistsV2, Users, Galleries, Media, Lightbox) ->
+.controller('CandidatController', ($rootScope, $scope, ISO3166, $stateParams, RestangularV2, Candidatures, ArtistsV2,
+        WebsiteV2, Users, Galleries, Media, Lightbox, $sce) ->
   # init
 
   $scope.candidature = []
   $scope.artist = []
-  $scope.user = []
   $scope.administrative_galleries = []
   $scope.artwork_galleries = []
+
+  $scope.gender =
+    M: fr: "Homme", en: "Male"
+    F: fr: "Femme", en: "Female"
+    T: fr: "Transgenre", en: "Transgender"
+    O: fr: "Autre", en: "Other"
+
+  $scope.country = ISO3166
+
+  $scope.trustSrc = (src) ->
+    return $sce.trustAsResourceUrl(src)
 
 
   loadGalleries = (galleries) ->
@@ -241,8 +297,6 @@ angular.module('memoire.controllers', ['memoire.services'])
       )
 
 
-
-
   $scope.lightbox = (gallery, index) ->
     Lightbox.openModal(gallery, index)
 
@@ -250,16 +304,18 @@ angular.module('memoire.controllers', ['memoire.services'])
     $scope.candidature = candidature
     artist_id = candidature.artist.match(/\d+$/)[0]
 
-    loadGalleries($scope.candidature.administrative_galleries)
-    loadGalleries($scope.candidature.artwork_galleries)
-
-
-
-
     ArtistsV2.one(artist_id).get().then((artist) ->
         $scope.artist = artist
+        for website in artist.websites
+            website_id = website.match(/\d+$/)[0]
+            RestangularV2.one('common/website', website_id).get().then((response_website) ->
+                find_website = artist.websites.indexOf(response_website.url)
+                artist.websites[find_website] = response_website
+            )
         user_id = artist.user.match(/\d+$/)[0]
-        $scope.user = Users.one(user_id).get().$object
+        $scope.artist.user = Users.one(user_id).get().then((user_infos) ->
+          $scope.artist.user = user_infos
+        )
 
     )
 

@@ -14,8 +14,45 @@
         <li ui-sref-active="active"><a ui-sref="school"><i class="glyphicon glyphicon-education"></i>&nbsp;&nbsp;Ecole</a></li>
         <li ui-sref-active="active"><a ui-sref="artist"><i class="glyphicon glyphicon-user"></i>&nbsp;&nbsp;Artistes</a></li>
         <li ui-sref-active="active"><a ui-sref="artwork"><i class="glyphicon glyphicon-picture"></i>&nbsp;&nbsp;Oeuvres</a></li>
-        <li ng-if="candidatures.length" ui-sref-active="active"><a ui-sref="candidatures"><i class="glyphicon glyphicon-dashboard"></i>&nbsp;&nbsp;Candidats</a></li>
+        <li ng-if="candidatures.length>1" ui-sref-active="active"><a ui-sref="candidatures"><i class="glyphicon glyphicon-dashboard"></i>&nbsp;&nbsp;Candidats</a></li>
       </ul>
+      <div class="pull-right">
+        <ul class="navbar-nav nav pull-right">
+            <li class="dropdown" ng-if='!isAuthenticated'>
+						  <a class="pointer dropdown-toggle" data-toggle="dropdown" role="button">Connexion<span class="caret"></span></a>
+              <div class="dropdown-menu pull-right" id="formLogin">
+                <div class="row">
+								  <div class="container-fluid">
+									  <form name="form">
+                      <div class="form-group">
+  							        <label>Username</label>
+  									    <input class="form-control" name="username"  ng-model="user_infos.username" id="username" type="text">
+                      </div>
+                      <div class="form-group">
+  									    <label>Password</label>
+  									    <input class="form-control" name="password" ng-model="user_infos.password" id="password" type="password"><br>
+                      </div>
+
+                      <div class="alert alert-danger" ng-show="user_infos.error">
+                        <div ng-repeat="(item, message) in user_infos.error">
+                          <span ng-bind='message' />
+                        </div>
+                      </div>
+                      <button type="submit" ng-click='login(form, user_infos)' id="btnLogin" class="btn btn-sm">Connexion</button>
+                    </form>
+
+                  </div>
+                </div>
+							</div>
+					  </li>
+            <li class="dropdown" ng-if='isAuthenticated'>
+                <a class="pointer dropdown-toggle" data-toggle="dropdown">{{user.username}}<b class="caret"></b></a>
+                <ul class="dropdown-menu pull-right">
+                    <li><a class="pointer" ng-click='logout()'><i class="icon-off"></i> Déconnection</a></li>
+                </ul>
+            </li>
+        </ul>
+      </div>
       <script type="text/ng-template" id="customTemplate.html">
         <a ng-click="goTo()">
           <div class="media">

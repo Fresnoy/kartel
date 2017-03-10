@@ -206,6 +206,7 @@ angular.module('kartel',
                 views:
                   'main_view':
                       templateUrl: 'kartel.html'
+                      controller: 'NavController'
                   'main_view.main_content_view':
                     templateUrl: 'views/artists.html'
                     controller: 'ArtistListingController'
@@ -236,6 +237,7 @@ angular.module('kartel',
                 views:
                   'main_view':
                       templateUrl: 'kartel.html'
+                      controller: 'NavController'
                   'main_view.main_content_view':
                       templateUrl: 'views/artworks.html'
                       controller: 'ArtworkListingController'
@@ -246,6 +248,7 @@ angular.module('kartel',
                 views:
                   'main_view':
                     templateUrl: 'kartel.html'
+                    controller: 'NavController'
                   'main_view.main_content_view':
                       templateUrl: 'views/artwork.html'
                       controller: 'ArtworkController'
@@ -258,6 +261,7 @@ angular.module('kartel',
                 views:
                   'main_view':
                     templateUrl: 'kartel.html'
+                    controller: 'NavController'
                   'main_view.main_content_view':
                       templateUrl: 'views/candidatures.html'
                       controller: 'CandidaturesController'

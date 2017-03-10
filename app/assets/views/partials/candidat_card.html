@@ -1,4 +1,8 @@
-<div class="candidat-card col-md-2">
+<div class="candidat-card col-md-2"  ng-class="{
+        'application_complete': candidature.application_complete,
+        'remote_interview': candidature.remote_interview,
+        'selected_for_interview': candidature.selected_for_interview,
+        'selected': candidature.selected}" ng-if='show_candidat(candidature)'>
   <a ui-sref="candidatures.candidat({id: candidature.id})">
     <div class="thumbnail">
       <fresnoy-thumbnail ng-if="candidature.artist.user.profile.photo" thurl="application.artist.user.profile.photo" thwidth="300" thheight="200"></fresnoy-thumbnail>

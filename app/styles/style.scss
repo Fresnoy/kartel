@@ -128,7 +128,18 @@ div.api-field {
         margin-top: -4px;
     }
 }
+.navbar {
 
+  #formLogin {
+    padding: 15px;
+    min-width:300px;
+  }
+
+}
+
+.pointer{
+  cursor: pointer;
+}
 
 .header {
     display: block;
@@ -282,6 +293,15 @@ body.en {
   }
 }
 
+.candidat{
+
+  .flag-icon{
+    width: 100px;
+    height: 100px;
+  }
+}
+
+
 .student-app{
     padding: 0;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -359,9 +379,6 @@ body.en {
       p, li{
         line-height: 1.228571
       }
-    }
-    .pointer{
-      cursor: pointer;
     }
     .btn{
         background: black;
@@ -1040,11 +1057,18 @@ label{
 .dragover {
     border: 5px dashed blue;
 }
+.print{
+  display: none;
+}
 
 
 
 // print
 @media print {
+    .print{
+      display: block;
+    }
+
     .no-print, .no-print * {
         display: none !important;
     }
