@@ -17,7 +17,7 @@
         </div>
         <div class="col-md-4">
           <ul class="list-inline">
-            <li class="nationality" ng-repeat="nationality in candidature.artist.user.profile.nationality.split(', ')">
+            <li class="nationality" ng-repeat="nationality in candidature.artist.user.profile.nationality.split(', ') track by $index">
               <span class="flag-icon flag-icon-{{nationality | lowercase}}" title="{{country.codeToCountry[nationality]}}">
               </span>
             </li>
@@ -25,14 +25,14 @@
           Langue : <span class="name" ng-bind="LANGUAGES_NAME_short[candidature.artist.user.profile.mother_tongue].englishName" />
           <div ng-if="candidature.artist.user.profile.other_language">
             <span class="inline">Autres:</span>
-            <span class="language" ng-repeat="language in candidature.artist.user.profile.other_language.split(', ')"><span class="name" ng-bind="LANGUAGES_NAME_short[language].nativeName" />, </span>
+            <span class="language" ng-repeat="language in candidature.artist.user.profile.other_language.split(', ')  track by $index"><span class="name" ng-bind="LANGUAGES_NAME_short[language].nativeName" />, </span>
           </div>
         </div>
       </div>
       <div class="row">
         <div class="col-md-4">
           <ul class="list-inline">
-            <li class="website" ng-repeat="website in candidature.artist.websites">
+            <li class="website" ng-repeat="website in candidature.artist.websites track by $index">
               <a href="{{ website.link }}" target="_blank">Site web</a>
             </li>
           </ul>
