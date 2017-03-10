@@ -34,8 +34,9 @@
             </label>
          </div>
          <div ng-if="vm.error" class="alert alert-danger">{{vm.error}}</div>
+
+         <button type="submit" ng-click="login(form, vm)" ng-class="{ 'has-error': form.$invalid }" class="btn grey block">Login</button>
       </form>
-      <a ng-click="login(form, vm)" ng-class="{ 'has-error': form.$invalid }" class="btn grey">Login</a>
       <div class="navigation footer">
          <p>
             <small>
