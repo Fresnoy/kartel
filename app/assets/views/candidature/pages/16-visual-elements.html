@@ -43,7 +43,7 @@
             name = "cVideo"
             ng-model="candidature.presentation_video"
             ng-model-options='{ debounce: 1000 }'
-            ng-change="candidature.patch({presentation_video : candidature.presentation_video})"
+            ng-change="candidature.patch({presentation_video : candidature.presentation_video||''})"
             placeholder="Url"
             required
             />
