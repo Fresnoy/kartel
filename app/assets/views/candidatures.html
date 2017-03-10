@@ -1,36 +1,43 @@
-<div class="row">
+<div class="candidat" ng-if="!user.is_superuser">
+        <div class="centered">
+          <h2 class="text-center">Veuillez vous connecter <span ng-show="isAuthenticated"><br/>avec un compte administrateur<br/></span> pour acceder à cette page</h2>
+        </div>
+</div>
+<div class="candidat" ng-if="user.is_superuser">
+  <div class="row">
 
-  <div class="col-md-12">
+    <div class="col-md-12">
 
-    <h1>Candidatures ({{ candidatures.length }})</h1>
-    <div class="row">
-      <div class="col-md-3">
-        <select id="gender" ng-model="critere" name="uGender" required>
-           <option ng-repeat="(item, value) in select_critere" value="{{value}}">{{item}}</option>
-        </select>
+      <h1>Candidatures ({{ candidatures.length }})</h1>
+      <div class="row">
+        <div class="col-md-3">
+          <select id="gender" ng-model="critere" name="uGender" required>
+             <option ng-repeat="(item, value) in select_critere" value="{{value}}">{{item}}</option>
+          </select>
+        </div>
+        <div class="pointer" class="col-md-2" ng-show='critere' ng-init="critere_bool = true">
+          <input type="radio"
+             ng-model="critere_bool"
+             name="cBool"
+             id="cbool-true"
+             ng-value="true"
+             class=""
+
+             />
+          <label class="inline" for="cbool-true">Oui</label>
+          <input type="radio"
+            ng-model="critere_bool"
+            name="cBool"
+            id="cbool-false"
+            ng-value="false"
+            class=""
+            />
+            <label class="inline" for="cbool-false">Non</label>
+
+        </div>
       </div>
-      <div class="pointer" class="col-md-2" ng-show='critere' ng-init="critere_bool = true">
-        <input type="radio"
-           ng-model="critere_bool"
-           name="cBool"
-           id="cbool-true"
-           ng-value="true"
-           class=""
-
-           />
-        <label class="inline" for="cbool-true">Oui</label>
-        <input type="radio"
-          ng-model="critere_bool"
-          name="cBool"
-          id="cbool-false"
-          ng-value="false"
-          class=""
-          />
-          <label class="inline" for="cbool-false">Non</label>
-
-      </div>
+      <ng-include src="'views/partials/candidat_card.html'" ng-repeat="candidature in candidatures"></ng-include>
     </div>
-    <ng-include src="'views/partials/candidat_card.html'" ng-repeat="candidature in candidatures"></ng-include>
-  </div>
 
+  </div>
 </div>

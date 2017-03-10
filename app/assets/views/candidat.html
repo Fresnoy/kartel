@@ -1,5 +1,7 @@
 <div class="candidat" ng-if="!user.is_superuser">
-        Veuillez vous connecter pour acceder à cette page
+        <div class="centered">
+          <h2 class="text-center">Veuillez vous connecter <span ng-show="isAuthenticated">(avec un compte admin!)</span> avec un compte admin pour acceder à cette page</h2>
+        </div>
 </div>
 <div class="candidat" ng-if="user.is_superuser">
   <div class="info col-xs-9 col-md-9 col-lg-9">
