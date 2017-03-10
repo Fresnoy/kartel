@@ -143,6 +143,73 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 )
 
 
+.controller('CandidatureBreadcrumbController', ($rootScope, $scope, $state) ->
+
+    $scope.getProgression = (type) ->
+      if(type == "administrative-informations")
+        ar = [$rootScope.user.last_name, $rootScope.user.first_name,
+          $rootScope.user.profile.gender, $rootScope.user.profile.birthdate,
+          $rootScope.user.profile.birthplace_country,
+          $rootScope.candidature.identity_card,$rootScope.user.profile.nationality,
+          $rootScope.user.profile.photo, $rootScope.user.profile.homeland_phone,
+          $rootScope.user.profile.mother_tongue, $rootScope.user.profile.homeland_address,
+          $rootScope.user.profile.homeland_zipcode,
+          $rootScope.user.profile.homeland_town, $rootScope.user.profile.homeland_country]
+        total = ar.length
+        progress = 0
+        for item in ar
+          if(item)
+            progress++
+        return $scope.progress_admin = progress/total*100
+
+      if(type == "curiculum")
+        total = 2
+        progress = 0
+        if($rootScope.candidature.master_degree ||
+          (!$rootScope.candidature.master_degree && $rootScope.candidature.curiculum )
+        )
+          progress++
+        if($rootScope.candidature.curriculum_vitae)
+          progress++
+        return $scope.progress_curiculum = progress/total*100
+
+      if(type == "portfolio")
+         total = 3
+         progress = 0
+         if($rootScope.user.profile.cursus)
+            progress++
+         if($rootScope.candidature.presentation_video ||
+            ($rootScope.candidature.physical_content)
+         )
+            progress++
+         if($rootScope.candidature.presentation_video_details)
+           progress++
+
+         return $scope.progress_portfolio = progress/total*100
+
+      if(type == "intentions")
+          ar = [$rootScope.candidature.justification_letter,
+            $rootScope.candidature.considered_project_1,
+            $rootScope.candidature.considered_project_2,
+            $rootScope.candidature.artistic_referencies_project_1,
+            $rootScope.candidature.artistic_referencies_project_2]
+          total = ar.length
+          progress = 0
+          for item, i in ar
+            if(item)
+              progress++
+
+          return $scope.progress_intentions = progress/total*100
+
+    $scope.progress_admin = 0
+    $scope.progress_curiculum = 0
+    $scope.progress_portfolio = 0
+    $scope.progress_intentions = 0
+
+
+
+)
+  # Media
 .controller('ParentCandidatureController', ($rootScope, $scope, $state, jwtHelper, $q,
             Restangular, RestangularV2, Vimeo, Logout, $http, cfpLoadingBar, authManager, ISO3166,
             Users, Candidatures, ArtistsV2, Galleries, Media, Upload) ->
@@ -402,8 +469,9 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 
     $scope.$watch("user.profile.homeland_phone", (newValue, oldValue) ->
       if(newValue)
-        $scope.phone_number = newValue.split(" ").pop()
-        $scope.phone_country = newValue.split(" ").shift().substr(1)
+        $scope.phone_number = newValue.split("-").pop()
+        $scope.phone_country = newValue.split("-").shift().substr(1)
+
         if($scope.form2.uHomelandPhone.$valid)
           $scope.saveUserModel($scope.user)
     )
@@ -499,6 +567,16 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
         $rootScope.step.current = "15"
 
         $scope.addWebsite = (artist, model, field) ->
+          console.log(field)
+
+          if(!/^https?:\/\//i.test(field))
+            field = 'http://' + field;
+
+
+          console.log(field)
+          console.log(field.indexOf('://'))
+
+
           website_infos =
             link: field
             title_fr: "Site web de " + $rootScope.user.first_name + " " + $rootScope.user.last_name
@@ -510,12 +588,12 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
               infos = []
               infos.push(item.url) for item in model
               artist.patch({websites: infos})
-
               $scope.website = ""
 
           , (error) ->
                 $scope.form.aWebsite.$invalid = true
                 $scope.form.aWebsite.$error.url = true
+
           )
         $scope.removeItem = (model, index) ->
           item = model[index]
@@ -528,7 +606,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 .controller('PreviousAppController', ($rootScope, $scope, Media, Galleries, Upload) ->
 
         $rootScope.loadInfos($rootScope)
-        $rootScope.step.current = "16"
+        $rootScope.step.current = "17"
 
         #cursus
         year = new Date().getFullYear()
@@ -553,7 +631,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
       ) ->
 
     $rootScope.loadInfos($rootScope)
-    $rootScope.step.current = "20"
+    $rootScope.step.current = "16"
 
     $scope.trustSrc = (src) ->
       return $sce.trustAsResourceUrl(src);

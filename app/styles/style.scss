@@ -274,6 +274,45 @@ div.api-field {
     }
 }
 
+.icon{
+  background-position: center center;
+  background-repeat: no-repeat;
+  width: 20px;
+  height: 20px;
+  display:inline-block;
+  &.icon-idcard{
+    background-image: url(../images/candidature/icons/ID_light.svg);
+    &.active, &:hover{
+      background-image: url(../images/candidature/icons/ID_dark.svg);
+    }
+  }
+  &.icon-graduation{
+    background-image: url(../images/candidature/icons/cursus_light.svg);
+    &.active, &:hover{
+      background-image: url(../images/candidature/icons/cursus_dark.svg);
+    }
+  }
+  &.icon-folder{
+    background-image: url(../images/candidature/icons/portfolio_light.svg);
+    &.active, &:hover{
+      background-image: url(../images/candidature/icons/portfolio_dark.svg);
+    }
+  }
+  &.icon-arrows{
+    background-image: url(../images/candidature/icons/intentions_light.svg);
+    &.active, &:hover{
+      background-image: url(../images/candidature/icons/intentions_dark.svg);
+    }
+  }
+  &.icon-check{
+    background-image: url(../images/candidature/icons/summary_light.svg);
+    &.active, &:hover{
+      background-image: url(../images/candidature/icons/summary_dark.svg);
+    }
+  }
+
+}
+
 
 // Candidature
 body.fr {
@@ -378,6 +417,14 @@ body.en {
       background-color: rgba(255,255,255,0.8);
       p, li{
         line-height: 1.228571
+      }
+      .mobile{
+        .breadcrumb{
+          position: static;
+          ul{
+            margin:0px;
+          }
+        }
       }
     }
     .btn{
@@ -595,7 +642,7 @@ body.en {
       }
       h3{
         margin: 0px;
-        font-size: 1.0em;
+        font-size: 0.8em;
       }
       hr{
         margin: 0px 0px 5px 0px;
@@ -643,7 +690,8 @@ body.en {
         margin-top: 0px;
         font-weight: bold;
         position: absolute;
-        left:-0px;
+        left:-10px;
+        top:0px;
       }
 
       input.ng-invalid + .isvalid:before {
@@ -723,45 +771,61 @@ body.en {
         position: absolute;
         background: none;
         z-index: 1;
-        margin: 20px 0px;
-        width: 350px;
+        margin: 0px 0px;
+        max-width: 350px;
+        width: 100%;
         text-align: center;
         a{
           color: grey;
         }
-        .square{
-          width: 9px;
-          height: 9px;
-          display: block;
-          background: grey;
-        }
-        li.current .square{
-          background: black;
-        }
-        .rollover{
-          display: none;
-          position: absolute;
-          margin-top: -35px;
-          margin-left: -100px;
-          text-align: center;
-          pointer-events: none;
-          width: 200px;
-          font-size: 1.2em;
-
+        ul{
+          margin-bottom: 40px;
         }
         li{
-          margin: 0% 7%;
-          &:hover {
-            .square{
-              background: black;
+          width: 19%;
+          position: relative;
+          padding: 0px 0px;
+          &:hover, &.current {
+            .name{
+              visibility: visible;
             }
-            .rollover{
-              display: block;
+            .loading{
+              visibility: visible;
             }
+          }
+          .icon {
+            width: 100%;
+          }
+          .name{
+            visibility: hidden;
+            position: absolute;
+            text-align: center;
+            pointer-events: none;
+            font-size: 0.8em;
+            width: 100%;
+          }
+          .loading{
+            margin: 5px 0px 5px 0px;
+            visibility: hidden;
+            width:100%;
+            background: #BFBFBF;
+            height: 5px;
+            position: relative;
+            .bar{
+              left: 0px;
+              position: absolute;
+              background: #4A4A4A;
+              height: 5px;
+            }
+            &.completed .bar{
+              background: #B8E986;
+            }
+
           }
         }
       }
     }
+
     .data-writing{
         position: absolute;
         right: 130px;

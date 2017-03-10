@@ -5,7 +5,8 @@
       <span class="en">Finalization</span>
    </h1>
    <p>
-      Pour toutes précisions, vous pouvez nous laisser un message ci-dessous :
+      Pour toutes précisions, vous pouvez nous laisser un message ci-dessous :<br/>
+      (si vous n'avez rien à ajouter vous pouvez nous dire comment avez vous connu le Fresnoy)
    </p>
    <textarea
       id="remark"
@@ -30,7 +31,7 @@
    </a>
    <div class="" ng-if="validation" >
       <p class="text-danger">
-         La validation est définitive. Vous ne pourrez plus modifier vos informations après avoir cliqué.
+         Attention : cette validation est définitive. Vous ne pourrez plus modifier vos informations après avoir cliqué.
       </p>
       <p>
         <a class="btn green" ui-sref="candidature.confirmation" ng-click="candidature.patch({application_completed: true})">

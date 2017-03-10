@@ -37,7 +37,7 @@ qui peut servir de base).</li><li>
             ng-model="user.profile.homeland_address"
             id="homeland_country"
             placeholder=""
-            ng-change="saveUserModel(user)"
+            ng-change="user.patch({profile : {homeland_address: (user.profile.homeland_address||'')}})"
             ng-model-options='{ debounce: 1000 }'
             rows="3"
             required
@@ -60,7 +60,7 @@ qui peut servir de base).</li><li>
             id="homeland_zip"
             ng-model="user.profile.homeland_zipcode"
             ng-model-options='{ debounce: 1000 }'
-            ng-change="saveUserModel(user)"
+            ng-change="user.patch({profile : {homeland_zipcode: (user.profile.homeland_zipcode||'')}})"
             required
             />
          <div ng-show="form2.uHomelandZip.$touched && form2.uHomelandZip.$invalid" ng-messages="form2.uHomelandZip.$error" class="help-block error">
@@ -100,7 +100,7 @@ qui peut servir de base).</li><li>
          <select ng-model="user.profile.homeland_country"
             id="homeland_country"
             name="uHomelandCountry"
-            ng-change="saveUserModel(user)"
+            ng-change="user.patch({profile : {homeland_country: (user.profile.homeland_country||'')}})"
             required
             >
             <option value="">-- Select a Country --</option>
@@ -128,7 +128,7 @@ qui peut servir de base).</li><li>
             ng-pattern="phone_pattern"
             ng-model="user.profile.homeland_phone"
             ng-change="saveUserModel(user)"
-            ng-minlength="10" ng-maxlength="20" required
+            ng-minlength="9" ng-maxlength="20" required
             hidden
             />
 
@@ -139,7 +139,7 @@ qui peut servir de base).</li><li>
                type="text"
                placeholder=""
                ng-model="phone_country"
-               ng-change="user.profile.homeland_phone = '+' + phone_country +' '+ phone_number;"
+               ng-change="user.profile.homeland_phone = '+' + phone_country +'-'+ phone_number;"
                class="phone_code"
                />
              <label for="phone_code">
@@ -153,9 +153,8 @@ qui peut servir de base).</li><li>
                 type="text"
                 placeholder=""
                 ng-model="phone_number"
-                ng-change="user.profile.homeland_phone = '+' + phone_country + ' ' + phone_number;"
+                ng-change="user.profile.homeland_phone = '+' + phone_country + '-' + phone_number;"
                 />
-
              <label for="phone">
                <span class="field-state"></span>
                <span class="fr">Numéro de téléphone <br/>[33 123456789]</span>
@@ -163,6 +162,7 @@ qui peut servir de base).</li><li>
              </label>
           </div>
         </div>
+
         <div ng-show="user.profile.homeland_phone && form2.uHomelandPhone.$invalid" ng-messages="form2.uHomelandPhone.$error" class="help-block error">
            <div ng-message="required">
               <span class="fr">Obligatoire</span>

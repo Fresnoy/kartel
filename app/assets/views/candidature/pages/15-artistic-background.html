@@ -28,7 +28,7 @@ candidate’s background led him/her to apply</p>
                         id="cursus"
                           ng-model="user.profile.cursus"
                           ng-model-options='{ debounce: 1000 }'
-                          ng-change="user.patch({profile : {'cursus': user.profile.cursus}})"
+                          ng-change="user.patch({profile : {cursus: (user.profile.cursus||'')}})"
                           placeholder="Année - Expérience, diplôme, ..."
                           rows="10"
                           name=uCursus
@@ -70,12 +70,14 @@ candidate’s background led him/her to apply</p>
         </a>
 
           <input
-             type="url"
+             type="text"
              id = "website"
              ng-model-options='{ debounce: 500 }'
              name = "aWebsite"
              ng-model="website"
+             ng-change='form.aWebsite.$valid = true; form.aWebsite.$invalid = false '
              placeholder="Url"
+             ng-value=""
              />
           <div ng-show="form.aWebsite.$touched && form.aWebsite.$invalid" ng-messages="form.aWebsite.$error" class="help-block error">
              <div ng-message="url">
@@ -85,7 +87,6 @@ candidate’s background led him/her to apply</p>
           </div>
 
           <label for="website">
-              <span class="field-state"></span>
               <span class="fr">Site Web <br/>(http://www.monsite.com)</span>
               <span class="en">Website <br/>(http://www.mywebsite.com)</span>
           </label>
@@ -104,6 +105,6 @@ candidate’s background led him/her to apply</p>
 
   <div class="navigation">
      <a class="btn prev" ui-sref="candidature.cv"><span class="fr">Retour</span><span class="en">Back</span></a>
-     <a class="btn next" ui-sref="candidature.previous-applications"><span class="fr">Continuer</span><span class="en">Continue</span></a>
+     <a class="btn next" ui-sref="candidature.visual-elements"><span class="fr">Continuer</span><span class="en">Continue</span></a>
   </div>
 </div>

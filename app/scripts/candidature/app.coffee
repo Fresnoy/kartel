@@ -35,6 +35,10 @@ angular.module('candidature.application', ['candidature.controllers',
 
                 'main_view.application_step_view':
                     templateUrl: 'views/candidature/partials/step-infos.html'
+
+                'main_view.application_breadcrumb_view':
+                    templateUrl: 'views/candidature/partials/navigation-breadcrumb.html',
+                    controller: 'CandidatureBreadcrumbController'
       )
       # PAGE - FAQ
       $stateProvider.state('candidature.faq',
@@ -227,52 +231,53 @@ angular.module('candidature.application', ['candidature.controllers',
                         controller: "ArtisticBgController"
 
       )
-      # ONLINE CANDIDATURE - 16 - Candidatres precedents
+      # ONLINE CANDIDATURE - 16 - Elements visuels
+      $stateProvider.state('candidature.visual-elements',
+                  url: '/video'
+                  views:
+                    'application_content_view':
+                        templateUrl: 'views/candidature/pages/16-visual-elements.html',
+                        controller: "MediaVideoController"
+      )
+      # ONLINE CANDIDATURE - 17 - Candidatres precedents
       $stateProvider.state('candidature.previous-applications',
                   url: '/previous-applications'
                   views:
                     'application_content_view':
-                        templateUrl: 'views/candidature/pages/16-previous-applications.html',
+                        templateUrl: 'views/candidature/pages/17-previous-applications.html',
                         controller: "PreviousAppController"
       )
-      # ONLINE CANDIDATURE - 17 - Motivations
+      # ONLINE CANDIDATURE - 18 - Motivations
       $stateProvider.state('candidature.motivations',
                   url: '/motivations'
                   views:
                     'application_content_view':
-                        templateUrl: 'views/candidature/pages/17-motivations.html',
-                        controller: ($rootScope) ->
-                          $rootScope.loadInfos($rootScope)
-                          $rootScope.step.current = "17"
-      )
-      # ONLINE CANDIDATURE - 18 - Projet 1
-      $stateProvider.state('candidature.intentions-project-1',
-                  url: '/project-1'
-                  views:
-                    'application_content_view':
-                        templateUrl: 'views/candidature/pages/18-intentions-project-1.html',
+                        templateUrl: 'views/candidature/pages/18-motivations.html',
                         controller: ($rootScope) ->
                           $rootScope.loadInfos($rootScope)
                           $rootScope.step.current = "18"
       )
       # ONLINE CANDIDATURE - 19 - Projet 1
-      $stateProvider.state('candidature.intentions-project-2',
-                  url: '/project-2'
+      $stateProvider.state('candidature.intentions-project-1',
+                  url: '/project-1'
                   views:
                     'application_content_view':
-                        templateUrl: 'views/candidature/pages/19-intentions-project-2.html',
+                        templateUrl: 'views/candidature/pages/19-intentions-project-1.html',
                         controller: ($rootScope) ->
                           $rootScope.loadInfos($rootScope)
                           $rootScope.step.current = "19"
       )
-      # ONLINE CANDIDATURE - 20 - Elements visuels
-      $stateProvider.state('candidature.visual-elements',
-                  url: '/video'
+      # ONLINE CANDIDATURE - 20 - Projet 1
+      $stateProvider.state('candidature.intentions-project-2',
+                  url: '/project-2'
                   views:
                     'application_content_view':
-                        templateUrl: 'views/candidature/pages/20-visual-elements.html',
-                        controller: "MediaVideoController"
+                        templateUrl: 'views/candidature/pages/20-intentions-project-2.html',
+                        controller: ($rootScope) ->
+                          $rootScope.loadInfos($rootScope)
+                          $rootScope.step.current = "20"
       )
+
       # ONLINE CANDIDATURE - 21 - Summary
       $stateProvider.state('candidature.summary',
                   url: '/summary'
