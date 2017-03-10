@@ -72,6 +72,17 @@ decisions are final and without appeal.</p>
       Nous vous remercions pour votre candidature et vous souhaitons bonne chance !
    </p>
 
+   <div ng-show="(!candidature.physical_content || candidature.physical_content_description!='Envoi Postal')" >
+     <a class="pointer btn grey" ng-show="!postal" ng-click="postal = true">
+       Je confirme l'envoi postal
+     </a>
+     <div class="pointer btn green" ng-if="postal"
+      ng-init='candidature.patch({physical_content_description: "Envoi Postal", physical_content: true})'>
+       Merci
+     </div>
+   </div>
+
+
 
 
   <div class="navigation">

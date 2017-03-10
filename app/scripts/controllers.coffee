@@ -228,7 +228,8 @@ angular.module('memoire.controllers', ['memoire.services'])
   )
 )
 
-.controller('CandidaturesController', ($rootScope, $scope, Candidatures, ArtistsV2, Users) ->
+.controller('CandidaturesController', ($rootScope, $scope, Candidatures, RestangularV2, ArtistsV2, Users,
+  ISO3166) ->
   # init
   $scope.candidatures = []
   $scope.select_critere =
@@ -238,17 +239,30 @@ angular.module('memoire.controllers', ['memoire.services'])
     'Selectionnés' : "selected_for_interview"
     'Liste d\'attente' : "wait_listed"
 
-  Candidatures.getList({limit: 500}).then((candidatures) ->
+  $scope.country = ISO3166
+  $scope.LANGUAGES_NAME = languageMappingList
+  $scope.LANGUAGES_NAME_short = {}
+  $scope.LANGUAGES_NAME_short[obj.split("-")[0]] = val for obj, val of languageMappingList
 
+  Candidatures.getList({limit: 500}).then((candidatures) ->
     for candidature in candidatures
       artist_id = candidature.artist.match(/\d+$/)[0]
       if(candidature.application_completed)
         $scope.candidatures.push(candidature)
         ArtistsV2.one(artist_id).get().then((artist) ->
             current_cantidature = _.filter(candidatures, (c) -> return c.artist == artist.url)
-            user_id = artist.user.match(/\d+$/)[0]
-            artist.user = Users.one(user_id).get().$object
             current_cantidature[0].artist = artist
+            for website in artist.websites
+                website_id = website.match(/\d+$/)[0]
+                RestangularV2.one('common/website', website_id).get().then((response_website) ->
+                    find_website = artist.websites.indexOf(response_website.url)
+                    artist.websites[find_website] = response_website
+                )
+            user_id = artist.user.match(/\d+$/)[0]
+            current_cantidature[0].artist.user = Users.one(user_id).get().then((user_infos) ->
+              current_cantidature[0].artist.user = user_infos
+            )
+
       )
 
   )
@@ -257,6 +271,22 @@ angular.module('memoire.controllers', ['memoire.services'])
     if ($scope.critere)
       return candidat[$scope.critere] == $scope.critere_bool
     return true
+
+
+  $scope.search = (search) ->
+    $(".candidat-card").each((item) ->
+        text = $(this).text().toLowerCase()
+        search = search.toLowerCase()
+        $(this).show()
+        if(text.indexOf(search)==-1)
+          $(this).hide()
+
+    )
+    return true
+
+
+
+
 )
 
 .controller('CandidatController', ($rootScope, $scope, ISO3166, $stateParams, RestangularV2, Candidatures, ArtistsV2,

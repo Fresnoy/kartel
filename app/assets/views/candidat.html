@@ -14,7 +14,7 @@
 
     <p><i class="glyphicon glyphicon-flag"></i>&nbsp;Nationalité(s)</p>
     <ul class="list-inline">
-      <li class="website" ng-repeat="nationality in artist.user.profile.nationality.split(', ')">
+      <li class="nationality" ng-repeat="nationality in artist.user.profile.nationality.split(', ')">
         <span class="flag-icon flag-icon-{{nationality | lowercase}}" title="{{country.codeToCountry[nationality]}}">
           {{country.codeToCountry[nationality]}}
         </span>

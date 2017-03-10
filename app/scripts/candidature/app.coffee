@@ -167,6 +167,7 @@ angular.module('candidature.application', ['candidature.controllers',
                     'application_content_view':
                         templateUrl: 'views/candidature/pages/09b-inscription-by-mail.html',
                         controller: ($rootScope) ->
+                          $rootScope.loadInfos($rootScope)
                           $rootScope.step.current = "09"
                           $rootScope.step.total = 9
       )

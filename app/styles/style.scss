@@ -339,6 +339,21 @@ body.en {
   }
 }
 
+.candidat-card{
+  img {
+    width: 100%;
+  }
+  .flag-icon{
+    height: 50px;
+    width: 50px;
+  }
+  .row > div{
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+}
+
 .candidat{
 
   .flag-icon{

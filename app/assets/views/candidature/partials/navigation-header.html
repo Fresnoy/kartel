@@ -7,7 +7,7 @@
     <li class="help"><a class="pointer"  ng-click="setLang('fr')" >FR</a> |</li>
     <li class="help"><a class="pointer" ng-click="setLang('en')" >EN</a> |</li>
     <li class="help" ng-show="help_exist"><a class="pointer" ng-click="show_help(true)">Aide</a>|</li>
-    <li ng-if="isAuthenticated"><a class="pointer" ng-click="logout('candidature.account.login')">Déconnexion</a></li>
+    <li ng-if="isAuthenticated"><a class="pointer" ng-click="logout('candidature.account.login')" title="{{user.username}}">Déconnexion</a></li>
   </ul>
 
 </div>
