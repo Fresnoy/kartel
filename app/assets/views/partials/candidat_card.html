@@ -1,54 +1,68 @@
-<div class="candidat-card col-md-4"  ng-class="{
+<div class="candidat-card col-md-3"  ng-class="{
         'application_complete': candidature.application_complete,
         'remote_interview': candidature.remote_interview,
         'selected_for_interview': candidature.selected_for_interview,
         'selected': candidature.selected}" ng-if='show_candidat(candidature)'>
-  <a ui-sref="candidatures.candidat({id: candidature.id})">
+
     <div class="thumbnail">
       <div class="row">
         <div class="col-md-4">
-          <fresnoy-thumbnail ng-if="candidature.artist.user.profile.photo" thurl="candidature.artist.user.profile.photo" thwidth="50" thheight="20"></fresnoy-thumbnail>
-          <img ng-if="!candidature.artist.user.profile.photo" src="images/anonymous.jpg" alt="..">
+          <div class="photo">
+            <fresnoy-thumbnail ng-if="candidature.artist.user.profile.photo" thurl="candidature.artist.user.profile.photo" thwidth="50" thheight="50"></fresnoy-thumbnail>
+            <img ng-if="!candidature.artist.user.profile.photo" src="images/anonymous.jpg" alt="..">
+          </div>
         </div>
         <div class="col-md-4">
-          {{ candidature.artist.user.first_name }}<br/>
-          {{ candidature.artist.user.last_name }}<br/>
-          {{ candidature.artist.user.profile.birthdate | ageFilter}} ans
+          <div class="user-infos">
+            <span class="user-first_name">{{ candidature.artist.user.first_name }}</span>
+            <span class="user-last_name">{{ candidature.artist.user.last_name }}</span>
+            <span class="user-birthdate">{{ candidature.artist.user.profile.birthdate | ageFilter}} ans</span>
+          </div>
         </div>
         <div class="col-md-4">
-          <ul class="list-inline">
-            <li class="nationality" ng-repeat="nationality in candidature.artist.user.profile.nationality.split(', ') track by $index">
-              <span class="flag-icon flag-icon-{{nationality | lowercase}}" title="{{country.codeToCountry[nationality]}}">
-              </span>
-            </li>
-          </ul>
-          Langue : <span class="name" ng-bind="LANGUAGES_NAME_short[candidature.artist.user.profile.mother_tongue].englishName" />
-          <div ng-if="candidature.artist.user.profile.other_language">
-            <span class="inline">Autres:</span>
-            <span class="language" ng-repeat="language in candidature.artist.user.profile.other_language.split(', ')  track by $index"><span class="name" ng-bind="LANGUAGES_NAME_short[language].nativeName" />, </span>
+          <div class="oneline nationality">
+            <span ng-repeat="nationality in candidature.artist.user.profile.nationality.split(', ') track by $index">
+              <span class="flag-icon flag-icon-{{nationality | lowercase}}" title="{{country.codeToCountry[nationality]}}" />
+            </span>
+          </div>
+          <div class="oneline langues">
+            <i class="glyphicon glyphicon-flag" title="Langues parlées"></i>&nbsp;<span class="name" ng-bind="LANGUAGES_NAME_short[candidature.artist.user.profile.mother_tongue].englishName" />
+            <span ng-if="candidature.artist.user.profile.other_language">
+              <span class="language" ng-repeat="language in candidature.artist.user.profile.other_language.split(', ')  track by $index"><span class="name" ng-bind="LANGUAGES_NAME_short[language].nativeName" />, </span>
+            </span>
           </div>
         </div>
       </div>
       <div class="row">
-        <div class="col-md-4">
-          <ul class="list-inline">
-            <li class="website" ng-repeat="website in candidature.artist.websites track by $index">
-              <a href="{{ website.link }}" target="_blank">Site web</a>
-            </li>
-          </ul>
+        <div class="col-md-6">
+          <div class="oneline website">
+            <span ng-repeat="website in candidature.artist.websites track by $index">
+                <a href="{{ website.link }}" target="_blank" title="{{ website.link }}">Siteweb</a>
+            </span>
+          </div>
         </div>
-        <div class="col-md-4">
-          <a ng-if="candidature.presentation_video" href="{{candidature.presentation_video}}" target="_blank" title="{{candidature.presentation_video_details}}" >Voir la vidéo</a>
+        <div class="col-md-6">
+          <div class="oneline video">
+            <a ng-if="candidature.presentation_video" href="{{candidature.presentation_video}}" target="_blank" title="{{candidature.presentation_video_details}}" >vidéo</a>
+          </div>
         </div>
 
       </div>
       <div class="row">
         <div class="col-md-8">
-          <h2>{{candidature.current_year_application_count}}</h2>
+          <h3>{{candidature.current_year_application_count}}</h3>
+          <span ng-if="!candidature.application_completed && candidature.physical_content">Courrier</span>
+          <span ng-if="candidature.application_completed">En ligne</span>
         </div>
-
-
+        <div class="col-md-1">
+          <i class="glyphicon glyphicon-envelope green" title="courrrier  reçu" ng-if='candidature.physical_content && candidature.physical_content_received' />
+          <i class="glyphicon glyphicon-envelope red" title="courrrier non reçu"  ng-if='candidature.physical_content && !candidature.physical_content_received' />
+        </div>
+        <div class="col-md-1">
+          <h3 class="state" ng-bind="getStateCandidature(candidature)" />
+        </div>
       </div>
+      <a class="go glyphicon glyphicon-play-circle" ui-sref="candidatures.candidat({id: candidature.id})" />
     </div>
-  </a>
+
 </div>

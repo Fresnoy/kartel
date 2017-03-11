@@ -58,6 +58,7 @@ angular.module('memoire.controllers', ['memoire.services'])
           authManager.authenticate()
           Users.one(auth.user.pk).get().then((user) ->
             $rootScope.user = user
+            $state.reload()
           )
         , (error) ->
           params.error = error.data
@@ -247,7 +248,7 @@ angular.module('memoire.controllers', ['memoire.services'])
   Candidatures.getList({limit: 500}).then((candidatures) ->
     for candidature in candidatures
       artist_id = candidature.artist.match(/\d+$/)[0]
-      if(candidature.application_completed)
+      if(candidature.application_completed || candidature.physical_content)
         $scope.candidatures.push(candidature)
         ArtistsV2.one(artist_id).get().then((artist) ->
             current_cantidature = _.filter(candidatures, (c) -> return c.artist == artist.url)
@@ -262,10 +263,21 @@ angular.module('memoire.controllers', ['memoire.services'])
             current_cantidature[0].artist.user = Users.one(user_id).get().then((user_infos) ->
               current_cantidature[0].artist.user = user_infos
             )
-
       )
-
   )
+
+  $scope.getStateCandidature = (candidature) ->
+    $state = 0
+    if(candidature.application_complete)
+      $state = 1
+    if(candidature.selected_for_interview)
+      $state = 2
+    if(candidature.wait_listed)
+      $state = 3
+    if(candidature.selected)
+      $state = 4
+    return $state
+
 
   $scope.show_candidat = (candidat, field, value) ->
     if ($scope.critere)
@@ -305,6 +317,9 @@ angular.module('memoire.controllers', ['memoire.services'])
     O: fr: "Autre", en: "Other"
 
   $scope.country = ISO3166
+  $scope.LANGUAGES_NAME = languageMappingList
+  $scope.LANGUAGES_NAME_short = {}
+  $scope.LANGUAGES_NAME_short[obj.split("-")[0]] = val for obj, val of languageMappingList
 
   $scope.trustSrc = (src) ->
     return $sce.trustAsResourceUrl(src)
@@ -325,15 +340,20 @@ angular.module('memoire.controllers', ['memoire.services'])
             gallery_infos.media[media_index] = media
           )
       )
+    return galleries
+
+
+
 
 
   $scope.lightbox = (gallery, index) ->
     Lightbox.openModal(gallery, index)
 
-  Candidatures.one().one($stateParams.id).get().then((candidature) ->
+  Candidatures.one($stateParams.id).get().then((candidature) ->
     $scope.candidature = candidature
-    artist_id = candidature.artist.match(/\d+$/)[0]
 
+
+    artist_id = candidature.artist.match(/\d+$/)[0]
     ArtistsV2.one(artist_id).get().then((artist) ->
         $scope.artist = artist
         for website in artist.websites
@@ -345,6 +365,18 @@ angular.module('memoire.controllers', ['memoire.services'])
         user_id = artist.user.match(/\d+$/)[0]
         $scope.artist.user = Users.one(user_id).get().then((user_infos) ->
           $scope.artist.user = user_infos
+        )
+
+    )
+    gallery_id = candidature.cursus_justifications.match(/\d+$/)[0]
+    Galleries.one(gallery_id).get().then((gallery_infos) ->
+      candidature.cursus_justifications = gallery_infos
+
+      for medium in gallery_infos.media
+        medium_id = medium.match(/\d+$/)[0]
+        Media.one(medium_id).get().then((media) ->
+          media_index = gallery_infos.media.indexOf(media.url)
+          gallery_infos.media[media_index] = media
         )
 
     )

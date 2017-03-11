@@ -166,7 +166,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
         total = 2
         progress = 0
         if($rootScope.candidature.master_degree ||
-          (!$rootScope.candidature.master_degree && $rootScope.candidature.curiculum )
+          (!$rootScope.candidature.master_degree && $rootScope.candidature.experience_justification)
         )
           progress++
         if($rootScope.candidature.curriculum_vitae)

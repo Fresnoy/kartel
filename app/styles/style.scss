@@ -339,13 +339,50 @@ body.en {
   }
 }
 
+.red{
+  color:red;
+}
+.green{
+  color:green;
+}
+
 .candidat-card{
+  font-size: 0.9em;
+
+  .thumbnail{
+    height: 150px;
+    padding: 0px;
+  }
+
+  a{
+    color:black;
+
+  }
+  .go{
+    position: absolute;
+    right: 30px;
+    top:auto;
+    bottom: 30px;
+    font-size: 20px;
+    &:hover{
+      text-decoration: none;
+    }
+  }
+  h3{
+    padding: 0;
+    margin: 0;
+  }
   img {
+    width: 50px;
+  }
+  .oneline{
     width: 100%;
+    overflow: hidden;
+    white-space:nowrap;
   }
   .flag-icon{
-    height: 50px;
-    width: 50px;
+    height: 20px;
+    width: 20px;
   }
   .row > div{
     overflow: hidden;

@@ -21,54 +21,209 @@
       </li>
     </ul>
     <i class="glyphicon glyphicon-link"></i>&nbsp;Web :
-    <ul class="list-inline">
-      <li class="website" ng-repeat="website in artist.websites track by $index">
+      <span class="website" ng-repeat="website in artist.websites track by $index">
         <a href="{{ website.link }}" target="_blank">{{ website.link }}</a>
-      </li>
-    </ul>
+      </span>
+    <br/>
+    <i class="glyphicon glyphicon-facetime-video"></i>&nbsp;video :
+    <a ng-if="candidature.presentation_video" target="_blank" href="{{candidature.presentation_video}}">Lien</a>
+    <span ng-if="!candidature.presentation_video && candidature.physical_content">
+      <i class="glyphicon glyphicon-envelope green" title="courrrier reçu" ng-if='candidature.physical_content && candidature.physical_content_received' />
+      <i class="glyphicon glyphicon-envelope red" title="courrrier non reçu"  ng-if='candidature.physical_content && !candidature.physical_content_received' />
+      {{candidature.physical_content_description}}
+    </span>
+    <p>Description: {{candidature.presentation_video_details}}</p>
+    <p ng-if="!candidature.first_time">Candidaté en {{candidature.last_applications_years}}</p>
+    <p ng-if="candidature.first_time">Première candidature</p>
+    <p ng-if="candidature.remote_interview">Désire passer l'entretiens par Skype</p>
   </div>
 
   <div class="photo col-xs-3 col-md-3 col-lg-3">
     <div class="thumbnail" ng-if="artist.user.profile.photo" >
-      <img src="{{artist.user.profile.photo}}" height="300px" />
+      <img src="{{artist.user.profile.photo}}" height="150px" />
     </div>
   </div>
 
-  <div class="info col-xs-9 col-md-9 col-lg-9">
+  <div class="info col-xs-12 col-md-12 col-lg-12">
+      <tabset class="api-field">
+        <!-- Desciption  tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+          <li role="admin-infos" class="active">
+            <a data-target ="#admin-infos" role="tab" data-toggle="tab">
+              Infos administratives
+            </a>
+          </li>
+          <li role="contact" class="">
+            <a data-target ="#contact" role="tab" data-toggle="tab">
+              Contact
+            </a>
+          </li>
+          <li role="cursus" class="">
+            <a data-target ="#cursus" role="tab" data-toggle="tab">
+              Cursus
+            </a>
+          </li>
+          <li role="intensions" class="">
+            <a data-target ="#intensions" role="tab" data-toggle="tab">
+              Intensions
+            </a>
+          </li>
+          <li role="actions" class="">
+            <a data-target ="#actions" role="tab" data-toggle="tab">
+              Actions
+            </a>
+          </li>
+        </ul>
+          <!-- Desciption  content -->
+        <div class="tab-content">
+          <div role="tabpanel" class="tab-pane active" id="admin-infos">
+            <div class="person">
+              <p>
+                Né(e) en {{country.codeToCountry[artist.user.profile.birthplace_country]}} le {{ artist.user.profile.birthdate }}
+                ({{artist.user.profile.birthdate | ageFilter}} ans) - <a target="_blank" ng-href="{{candidature.identity_card}}">Justificatif</a>
+                <br/>Genre :  {{ gender[artist.user.profile.gender].fr }}
+                <br/>Status familiale : {{artist.user.profile.family_status}}
+              </p>
 
-    <div class="person">
-      <p>
-        Né(e) en {{country.codeToCountry[artist.user.profile.birthplace_country]}} le {{ artist.user.profile.birthdate }}
-        ({{artist.user.profile.birthdate | ageFilter}} ans) - <a target="_blank" ng-href="{{candidature.identity_card}}">Justificatif</a>
-        <br/>Genre :  {{ gender[artist.user.profile.gender].fr }}
-      </p>
+              <iframe  class="print" width="100%" height="100%" ng-if='candidature.identity_card'
+                src="{{trustSrc(candidature.identity_card)}}"></iframe>
+              <br/>
 
-      <iframe  class="print" width="100%" height="100%" ng-if='candidature.identity_card'
-        src="{{trustSrc(candidature.identity_card)}}"></iframe>
-      <br/>
-      <strong><i class="glyphicon glyphicon-home"></i> Adresse</strong>
-      <p>
-          {{artist.user.profile.homeland_address}}<br/>
-          {{artist.user.profile.homeland_zipcode}}<br/>
-          {{artist.user.profile.homeland_town}}<br/>
-          {{country.codeToCountry[artist.user.profile.homeland_country]}}<br/>
-      </p>
+            </div>
 
+            <strong><i class="glyphicon glyphicon-home"></i> Adresse</strong>
+            <p>
+                {{artist.user.profile.homeland_address}}<br/>
+                {{artist.user.profile.homeland_zipcode}}<br/>
+                {{artist.user.profile.homeland_town}}<br/>
+                {{country.codeToCountry[artist.user.profile.homeland_country]}}<br/>
+            </p>
 
+            <p>Numéro de Sécu: {{artist.user.profile.social_insurance_number}}</p>
 
-      <div ng-if="artist.user.profile.cursus">
-        <h3>Cursus</h3>
-        <div ng-bind-html="artist.user.profile.cursus|markdown"></div>
-      </div>
+          </div>
 
 
 
+          <div role="tabpanel" class="tab-pane" id="contact">
+            <h3>Contact</h3>
+            <i class="glyphicon glyphicon-earphone"></i>&nbsp;<a href="tel:{{artist.user.profile.homeland_phone}}" class="" target="_blank">{{ artist.user.profile.homeland_phone }}</a>
+            <br/>
+            <i class="glyphicon glyphicon-envelope"></i>&nbsp;<a href="mailto:{{artist.user.email}}" class="" target="_blank">{{ artist.user.email }}</a>
+            <br/>
+            <i class="glyphicon glyphicon-facetime-video"></i>&nbsp;Skype : <a href="skype:{{candidature.remote_interview_info}}?call" class="">{{ candidature.remote_interview_info }}</a>
+            <br/>
+            <i class="glyphicon glyphicon-flag" title="Langues parlées"></i>&nbsp; Langues parlées :
+            <span class="name" ng-bind="LANGUAGES_NAME_short[artist.user.profile.mother_tongue].englishName" />
+            <span ng-if="artist.user.profile.other_language">
+              <span class="language" ng-repeat="language in artist.user.profile.other_language.split(', ')  track by $index">, <span class="name" ng-bind="LANGUAGES_NAME_short[language].nativeName" /></span>
+            </span>
+          </div>
 
 
+
+          <div role="tabpanel" class="tab-pane" id="cursus">
+            <h3>Cursus</h3>
+            <a class="name" target="_blank" href="{{candidature.curriculum_vitae}}" >CV </a>
+            <p ng-if='candidature.master_degree'>Diplome : Bac +5</p>
+            <p ng-if='!candidature.master_degree'><a href="{{candidature.experience_justification}}" target="_blanck">BAC + 7 années d'expérience professionnelle attestée - </a></p>
+            <div ng-if="candidature.cursus_justifications">
+              Justificatifs :
+              <span class="justificatifs" ng-repeat="justif in candidature.cursus_justifications.media track by $index">
+                <a class="name"  target="_blank" href="{{justif.file || justif.picture}}" >{{justif.label}} </a> /
+              </span>
+            </div>
+            Résumé du parcours artistique :
+            <div ng-bind-html="artist.user.profile.cursus|markdown"></div>
+          </div>
+
+
+
+        <div role="tabpanel" class="tab-pane" id="intensions">
+          <h3>Intensions</h3>
+          <a class="name" target="_blank" href="{{candidature.justification_letter}}" >Lettre de motivation </a>
+          <br/>
+          <h4>Projet 1ere année</h4>
+          <a class="name" target="_blank" href="{{candidature.considered_project_1}}" >Description</a>
+          /
+          <a class="name" target="_blank" href="{{candidature.artistic_referencies_project_1}}" >Références</a>
+          <h4>Projet 2nd année</h4>
+          <a class="name" target="_blank" href="{{candidature.considered_project_2}}" >Description</a>
+          /
+          <a class="name" target="_blank" href="{{candidature.artistic_referencies_project_2}}" >Références</a>
+
+        </div>
+
+        <div role="tabpanel" class="tab-pane" id="actions">
+          <h3>Actions</h3>
+
+          <div ng-if="candidature.physical_content">
+            <input type="checkbox" id="received" ng-model="candidature.physical_content_received"
+              ng-change="candidature.patch({physical_content_received: candidature.physical_content_received})" name="cReceived" ng-value="true"
+              class="inline one check"
+            />
+            <label for="received" class="inline pointer one">
+              <span class="fr">Courrier reçu</span>
+            </label>
+            <br/>
+          </div>
+
+
+
+
+
+          <input type="checkbox" id="complete" ng-model="candidature.application_complete"
+            ng-change="candidature.patch({application_complete: candidature.application_complete})" name="cComplete" ng-value="true"
+            class="inline one check"
+          />
+          <label for="complete" class="inline pointer one">
+            <span class="fr">Dossier complet</span>
+          </label>
+          <br/>
+
+
+          <input type="checkbox" id="interview" ng-model="candidature.selected_for_interview"
+            ng-change="candidature.patch({selected_for_interview: candidature.selected_for_interview})" name="cInterview" ng-value="true"
+            class="inline one check"
+          />
+          <label for="interview" class="inline pointer one">
+            <span class="fr">Sectionné pour l'entretien</span>
+          </label>
+          <br/>
+
+
+
+          <input type="checkbox" id="wait" ng-model="candidature.wait_listed"
+            ng-change="candidature.patch({wait_listed: candidature.wait_listed})" name="cWait" ng-value="true"
+            class="inline one check"
+          />
+          <label for="wait" class="inline pointer one">
+            <span class="fr">En liste d'attente</span>
+          </label>
+          <br/>
+
+          <input type="checkbox" id="selected" ng-model="candidature.selected"
+            ng-change="candidature.patch({selected: candidature.selected})" name="cSelected" ng-value="true"
+            class="inline one check"
+          />
+          <label for="selected" class="inline pointer one">
+            <span class="fr">Selectionné</span>
+          </label>
+          <br/>
+
+
+
+
+        </div>
+
+
+
+        </div>
+      </tabset>
       <div class="links">
         <ul>
           <li class="phone">
-            <i class="glyphicon glyphicon-earphone"></i>&nbsp;<a href="tel:{{artist.user.profile.homeland_phone}}" class="" target="_blank">{{ artist.user.profile.homeland_phone }}</a>
+
           </li>
           <li class="websites" ng-if="artist.websites.length">
 
@@ -76,7 +231,6 @@
 
         </ul>
       </div>
-    </div>
   </div>
 
 
