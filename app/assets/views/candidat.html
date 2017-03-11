@@ -91,13 +91,7 @@
 
             </div>
 
-            <strong><i class="glyphicon glyphicon-home"></i> Adresse</strong>
-            <p>
-                {{artist.user.profile.homeland_address}}<br/>
-                {{artist.user.profile.homeland_zipcode}}<br/>
-                {{artist.user.profile.homeland_town}}<br/>
-                {{country.codeToCountry[artist.user.profile.homeland_country]}}<br/>
-            </p>
+
 
             <p>Numéro de Sécu: {{artist.user.profile.social_insurance_number}}</p>
 
@@ -118,6 +112,13 @@
             <span ng-if="artist.user.profile.other_language">
               <span class="language" ng-repeat="language in artist.user.profile.other_language.split(', ')  track by $index">, <span class="name" ng-bind="LANGUAGES_NAME_short[language].nativeName" /></span>
             </span>
+            <br/>
+            <p><i class="glyphicon glyphicon-home"></i> Adresse :<br/>
+                {{artist.user.profile.homeland_address}}<br/>
+                {{artist.user.profile.homeland_zipcode}}
+                {{artist.user.profile.homeland_town}}<br/>
+                {{country.codeToCountry[artist.user.profile.homeland_country]}}<br/>
+            </p>
           </div>
 
 
