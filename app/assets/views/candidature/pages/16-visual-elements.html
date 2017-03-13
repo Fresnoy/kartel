@@ -84,8 +84,8 @@
          <div ng-if="!candidature.physical_content && candidature.presentation_video">
             <iframe ng-if="_isAvailableVideo" height="100px" width="200px"  ng-src="{{trustSrc(candidature.presentation_video)}}" />
             <div ng-if="candidature.presentation_video && candidature.presentation_video.indexOf('player.vimeo.com/video')>0 && !_isAvailableVideo">
-               La vidéo est bien envoyée et sera disponible pour vérification dans quelques minutes,
-               n'hésitez pas à revenir plus tard sur votre inscription pour la consulter
+               <strong>La vidéo est bien envoyée et sera disponible pour vérification dans quelques minutes,
+               n'hésitez pas à revenir plus tard sur votre inscription pour la consulter</strong>
             </div>
            <a class="btn" ng-show="_isAvailableVideo && candidature.presentation_video.indexOf('player.vimeo.com/video')>0" ng-click='deleteVimeoVideo(candidature.presentation_video.split("/").pop(), candidature, "presentation_video")'>
               Effacer la vidéo

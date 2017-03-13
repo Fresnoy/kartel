@@ -21,7 +21,7 @@
       <div class="name"><span class="fr">Portfolio</span><span class="en">Portfolio</span></div>
     </a></li>
     <li ng-class="{'current': candidature_config.screen[step.current].page.group =='intentions'}">
-      <a class="pointer" ui-sref="candidature.motivations">
+      <a class="pointer" ui-sref="candidature.previous-applications">
       <div class="loading" ng-class="{'completed' : progress_intentions == 100}" >
         <span class="bar" ng-style="{'width' : getProgression('intentions')+'%'}" /></div>
       <span class="icon icon-arrows" ng-class="{'active': candidature_config.screen[step.current].page.group =='intentions'}"></span>

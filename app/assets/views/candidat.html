@@ -108,9 +108,9 @@
             <i class="glyphicon glyphicon-facetime-video"></i>&nbsp;Skype : <a href="skype:{{candidature.remote_interview_info}}?call" class="">{{ candidature.remote_interview_info }}</a>
             <br/>
             <i class="glyphicon glyphicon-flag" title="Langues parlées"></i>&nbsp; Langues parlées :
-            <span class="name" ng-bind="LANGUAGES_NAME_short[artist.user.profile.mother_tongue].englishName" />
+            <span class="name" ng-bind="LANGUAGES_NAME_short[artist.user.profile.mother_tongue].englishName.split('(')[0]" />
             <span ng-if="artist.user.profile.other_language">
-              <span class="language" ng-repeat="language in artist.user.profile.other_language.split(', ')  track by $index">, <span class="name" ng-bind="LANGUAGES_NAME_short[language].nativeName" /></span>
+              <span class="language" ng-repeat="language in artist.user.profile.other_language.split(', ')  track by $index">, <span class="name" ng-bind="LANGUAGES_NAME_short[language].nativeName.split('(')[0]" /></span>
             </span>
             <br/>
             <p><i class="glyphicon glyphicon-home"></i> Adresse :<br/>
@@ -157,6 +157,19 @@
 
         <div role="tabpanel" class="tab-pane" id="actions">
           <h3>Actions</h3>
+
+
+            <input type="checkbox" id="received" ng-model="candidature.application_completed"
+              ng-change="candidature.patch({application_completed: candidature.application_completed})" name="cReceived"
+              ng-value="!candidature.application_completed"
+              class="inline one check"
+            />
+            <label for="received" class="inline pointer one">
+              <span class="fr">Candidature non éditable</span>
+            </label>
+            <br/>
+
+
 
           <div ng-if="candidature.physical_content">
             <input type="checkbox" id="received" ng-model="candidature.physical_content_received"

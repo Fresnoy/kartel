@@ -25,14 +25,14 @@
                   ng-model="candidature.first_time"
                   ng-change="candidature.patch({first_time: candidature.first_time})"
                   name="cFirst"
-                  ng-value="true"
+                  ng-true-value="false" ng-false-value="true"
                   class="one check"
                 />
                 <label for="firstime" class="big pointer">
                   <span class="fr">Je me suis déjà présenté(e) à la sélection des candidatures du Fresnoy - Studio national</span>
                   <span class="en"></span>
                 </label>
-                <div ng-if='candidature.first_time'>
+                <div ng-if='!candidature.first_time'>
                   <span>En quelle(s) année(s) ?</span>
                   <div ng-repeat="item in last_applications_years track by $index" >
                      <div class="item" ng-init='RC_last[$index]=false'>

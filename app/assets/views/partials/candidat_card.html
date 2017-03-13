@@ -26,9 +26,9 @@
             </span>
           </div>
           <div class="oneline langues">
-            <i class="glyphicon glyphicon-flag" title="Langues parlées"></i>&nbsp;<span class="name" ng-bind="LANGUAGES_NAME_short[candidature.artist.user.profile.mother_tongue].englishName" />
+            <i class="glyphicon glyphicon-flag" title="Langues parlées"></i>&nbsp;<span class="name" ng-bind="LANGUAGES_NAME_short[candidature.artist.user.profile.mother_tongue].englishName.split('('[0]" />
             <span ng-if="candidature.artist.user.profile.other_language">
-              <span class="language" ng-repeat="language in candidature.artist.user.profile.other_language.split(', ')  track by $index"><span class="name" ng-bind="LANGUAGES_NAME_short[language].nativeName" />, </span>
+              <span class="language" ng-repeat="language in candidature.artist.user.profile.other_language.split(', ')  track by $index"><span class="name" ng-bind="LANGUAGES_NAME_short[language].nativeName.split('(')[0]" />, </span>
             </span>
           </div>
         </div>
