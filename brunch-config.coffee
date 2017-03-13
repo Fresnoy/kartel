@@ -1,4 +1,6 @@
 exports.config =
+        npm:
+          enabled: false
         plugins:
                 sass:
                         mode: 'native'
@@ -21,6 +23,7 @@ exports.config =
                                 ]
                                 'js/app.js': [
                                         'app/scripts/*.coffee'
+                                        'app/scripts/candidature/*.coffee'
                                         'app/scripts/common/**/*.coffee'
                                         'app/scripts/*.js'
                                 ]
