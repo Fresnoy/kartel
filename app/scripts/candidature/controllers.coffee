@@ -146,6 +146,9 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 .controller('CandidatureBreadcrumbController', ($rootScope, $scope, $state) ->
 
     $scope.getProgression = (type) ->
+      if(!$scope.isAuthenticated)
+        return false
+
       if(type == "administrative-informations")
         ar = [$rootScope.user.last_name, $rootScope.user.first_name,
           $rootScope.user.profile.gender, $rootScope.user.profile.birthdate,
