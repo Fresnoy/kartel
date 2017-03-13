@@ -14,8 +14,10 @@
   de
   <ul class="authors list list-inline">
     <li ng-repeat="author in artwork.authors">
-      <a ng-show="author.nickname"><span class="nickname">{{ author.nickname }}</span></a></li>
-      <a ng-show="!author.nickname"><span class="firstname">{{ author.user.first_name }}</span> <span class="lastname">{{ author.user.last_name }}</span></a></li>
+      <a ui-sref="artist.detail({id: author.id})">
+        <span ng-show="author.nickname" class="nickname">{{ author.nickname }}</span>
+        <span ng-show="!author.nickname" class="firstname">{{ author.user.first_name }}</span> <span class="lastname">{{ author.user.last_name }}</span></a>
+    </li>
   </ul>
 </div>
 

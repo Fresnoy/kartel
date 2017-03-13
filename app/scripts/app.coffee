@@ -215,7 +215,7 @@ angular.module('kartel',
         $stateProvider.state('artist.detail',
                 url: '/:id',
                 views:
-                  'school_content_view':
+                  'main_content_view':
                     templateUrl: 'views/student.html'
                     controller: 'ArtistController'
         )

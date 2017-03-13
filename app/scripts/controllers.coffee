@@ -117,10 +117,12 @@ angular.module('memoire.controllers', ['memoire.services'])
   $scope.artworks = []
 
   Artists.one().one($stateParams.id).get().then((artist) ->
-    $scope.student = artist
+    $scope.student = {}
+    $scope.student.artist = artist
+    $scope.student.user = artist.user
 
     # Fetch artworks
-    for artwork_uri in $scope.student.artworks
+    for artwork_uri in $scope.student.artist.artworks
       matches = artwork_uri.match(/\d+$/)
       if matches
         artwork_id = matches[0]
