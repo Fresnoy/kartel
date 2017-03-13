@@ -33,9 +33,6 @@ angular.module('candidature.application', ['candidature.controllers',
                     controller: ($rootScope) ->
                       $rootScope.step.current = "01"
 
-                'main_view.application_step_view':
-                    templateUrl: 'views/candidature/partials/step-infos.html'
-
                 'main_view.application_breadcrumb_view':
                     templateUrl: 'views/candidature/partials/navigation-breadcrumb.html',
                     controller: 'CandidatureBreadcrumbController'
@@ -82,9 +79,6 @@ angular.module('candidature.application', ['candidature.controllers',
                 views:
                   'application_content_view':
                       templateUrl: 'views/candidature/account/index.html'
-                  'application_step_view':
-                      templateUrl: 'views/candidature/partials/step-infos.html'
-
 
       )
       # ACCOUNT - Create Account

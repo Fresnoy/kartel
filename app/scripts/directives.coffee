@@ -15,7 +15,6 @@ angular.module('memoire.directives', ['memoire.services', 'bootstrapLightbox'])
     },
     template: (x, scope) ->
       url = "http://media.lefresnoy.net/?url=http://api.lefresnoy.net/{{ url }}&w={{ width }}&h={{ height }}&fmt=jpg"
-      url = "{{ url }}"
       if scope.op
         url += "&op=#{ scope.op }"
       return "<img ng-src=\"#{url}\" />"
