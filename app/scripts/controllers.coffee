@@ -143,6 +143,7 @@ angular.module('memoire.controllers', ['memoire.services'])
 
   Artworks.one().one($stateParams.id).get().then((artwork) ->
     $scope.artwork = artwork
+    console.log(artwork)
     for event_uri in $scope.artwork.events
       matches = event_uri.match(/\d+$/)
       if matches
