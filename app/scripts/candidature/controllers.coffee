@@ -146,7 +146,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 .controller('CandidatureBreadcrumbController', ($rootScope, $scope, $state) ->
 
     $scope.getProgression = (type) ->
-      if(!$scope.isAuthenticated)
+      if(!$scope.isAuthenticated || !$rootScope.candidature || $rootScope.user.is_superuser)
         return false
 
       if(type == "administrative-informations")
@@ -373,10 +373,12 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
     user_id = jwtHelper.decodeToken(localStorage.getItem('token')).user_id
     Users.one(user_id).get().then((user) ->
       scope.user = user
+      if (user.is_superuser)
+        $state.go("candidature.error_admin_user")
+        return
 
       Candidatures.getList().then((candidatures) ->
-        if (candidatures.length >= 2)
-          $state.go("candidature.error_admin_user")
+
 
         candidature = candidatures[candidatures.length-1]
         scope.candidature = candidature
