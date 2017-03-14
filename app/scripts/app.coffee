@@ -136,7 +136,8 @@ angular.module('kartel',
         return {
             request: (response) ->
                 # disable html cache
-                if(response.url.match(".html") && !response.url.match("uib") && !response.htmlnocache)
+                if (response.url.match(".html") && !response.url.match("uib") && !response.url.match("customTemplate") && !response.htmlnocache)
+
                   response.url +="?"+new Date().getTime().toString().slice(-2)
                   response.htmlnocache = true
                 # broadcast message on save model
@@ -215,7 +216,7 @@ angular.module('kartel',
         $stateProvider.state('artist.detail',
                 url: '/:id',
                 views:
-                  'school_content_view':
+                  'main_content_view':
                     templateUrl: 'views/student.html'
                     controller: 'ArtistController'
         )
