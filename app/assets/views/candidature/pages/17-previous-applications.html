@@ -30,10 +30,11 @@
                 />
                 <label for="firstime" class="big pointer">
                   <span class="fr">Je me suis déjà présenté(e) à la sélection des candidatures du Fresnoy - Studio national</span>
-                  <span class="en"></span>
+                  <span class="en">I have already applied to Fresnoy - Studio national in the past</span>
                 </label>
                 <div ng-if='!candidature.first_time'>
-                  <span>En quelle(s) année(s) ?</span>
+                  <span  class="fr">En quelle(s) année(s) ?</span>
+                  <span  class="en">Year (s)?</span>
                   <div ng-repeat="item in last_applications_years track by $index" >
                      <div class="item" ng-init='RC_last[$index]=false'>
                         <span class="name" ng-bind="item" />

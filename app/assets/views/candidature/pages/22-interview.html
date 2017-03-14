@@ -83,7 +83,7 @@ incident).
          J'habite hors du continent Européen et souhaite passer l'entretien par Skype.
          </span>
          <span class="en">
-         I live outside the European continent and wish to pass the interview through Skype.
+         I do not live in mainland Europe and wish to pass the interview by Skype
          </span>
          </label>
          <div class="" ng-if="!candidature.remote_interview">
@@ -99,7 +99,7 @@ incident).
                   ng-change="candidature.patch({remote_interview_info : candidature.remote_interview_info})"
                   ng-model-options='{ debounce: 1000 }'
                   name="cInterviewInfos"
-                  placeholder = "Identifiant"
+                  placeholder = "Identifiant/username Skype "
                   required
                   />
                <div ng-show="form.$submitted || form.cInterviewInfos.$touched">
@@ -113,8 +113,8 @@ incident).
                </div>
                <label for="remote-interview-info">
                <span class="field-state"></span>
-               <span class="fr">Identifiant</span>
-               <span class="en">ID</span>
+               <span class="fr">Nom utilisateur Skype</span>
+               <span class="en">Skype Username</span>
                </label>
             </div>
          </div>

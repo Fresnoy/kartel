@@ -22,7 +22,26 @@
     </p>
    </div>
    <div class="en">
-      <p></p>
+      <p>A work or several extracts of works made by the
+      candidate and which are representative of his/
+      her specific practice. MP4 or ProRes files on
+      USB key, 8 minutes maximum, organised as the
+      candidate wishes (for example: 3 video extracts,
+      or a diaporama of photographs or a series of
+      sound excerpts, or one or several views of video
+      installations, etc.). Each extract of work should
+      be preceded by a label indicating the nature and
+      context of the work. This part of the application
+      will be seen by two different juries.</p>
+      <p>
+        Moreover, the jury will look at the visual material
+      lasting 8 minutes maximum in the candidate’s
+      portfolio (see artistic portfolio above).
+      The candidate should note the importance of
+      these documents, which are the only ones to be
+      examined at all two stages of the selection
+      process.
+    </p>
     </div>
 </div>
 
@@ -32,10 +51,16 @@
       <span class="en">Visual elements</span>
    </h1>
    <form name="form1" ng-submit="form.$valid && submit()" class="css-form" novalidate>
+     <div class="fr">
       <p>Saisir ci-dessous le lien vidéo vers une œuvre ou un ensemble d’extraits d’œuvres que vous avez réalisés et
          particulièrement représentatifs de votre démarche artistique.
       </p>
       <p>Cette vidéo d'une <strong>durée maximale de 8 minutes</strong> sera vue successivement par les deux jurys (de présélection et de l'entretien oral).</p>
+    </div>
+    <div class="en">
+      <p>Please connect the video link towards a work or a series of extracts of your works that are particularly representative of your artistic approach</p>
+      <p>This video of a maximum length of 8 minutes will be seen by two panels (during the pre-selection phase and the interview)</p>
+    </div>
       <div class="field" ng-show="!candidature.physical_content">
          <input
             type="url"
@@ -60,10 +85,11 @@
          <label for="video">
              <span class="field-state required"></span>
              <span class="fr">Lien vidéo (8 minutes maximum) format mp4</span>
-             <span class="en">Video Links</span>
+             <span class="en">VIDEO LINK (8 MINUTES MAXIMUM) MP4 FORMAT</span>
          </label>
 
-         <p>Préciser la nature et le contexte des éléments visuels : </p>
+         <p class="fr">Préciser la nature et le contexte des éléments visuels : </p>
+         <p class="en">Please explain the nature and the context of the visual elements:</p>
          <textarea
             ng-model="candidature.presentation_video_details"
             ng-model-options='{ debounce: 1000 }'
@@ -84,11 +110,19 @@
          <div ng-if="!candidature.physical_content && candidature.presentation_video">
             <iframe ng-if="_isAvailableVideo" height="100px" width="200px"  ng-src="{{trustSrc(candidature.presentation_video)}}" />
             <div ng-if="candidature.presentation_video && candidature.presentation_video.indexOf('player.vimeo.com/video')>0 && !_isAvailableVideo">
-               <strong>La vidéo est bien envoyée et sera disponible pour vérification dans quelques minutes,
-               n'hésitez pas à revenir plus tard sur votre inscription pour la consulter</strong>
+              <strong>
+              <span class="fr">
+               La vidéo est bien envoyée et sera disponible pour vérification dans quelques minutes,
+               n'hésitez pas à revenir plus tard sur votre inscription pour la consulter
+             </span>
+             <span class="en">The video has been sent and will be available for verification in several minutes, do not hesitate to come back to your inscription to consult it.</span>
+             </strong>
+
             </div>
            <a class="btn" ng-show="_isAvailableVideo && candidature.presentation_video.indexOf('player.vimeo.com/video')>0" ng-click='deleteVimeoVideo(candidature.presentation_video.split("/").pop(), candidature, "presentation_video")'>
-              Effacer la vidéo
+                <span class="fr">Effacer la vidéo</span>
+                <span class="en">delete video</span>
+              </strong>
            </a>
         </div>
       </div>
@@ -96,8 +130,16 @@
       <br>
       <hr/>
       <div class='' ng-show="!candidature.physical_content" >
-            <h4>Si vous ne pouvez pas fournir un lien vers une vidéo,<br/>Vous avez la possibilité de :</h4>
-            <p> - nous envoyer la vidéo, en cliquant ci-dessous : </p>
+            <h4>
+
+              <span class="fr">Si vous ne pouvez pas fournir un lien vers une vidéo,<br/>Vous avez la possibilité de :</span>
+              <span class="en">If you cannot provide a link towards a video, <br/>YOU MAY</span>
+
+
+
+            </h4>
+            <p class="fr"> - nous envoyer la vidéo, en cliquant ci-dessous : </p>
+            <p class="en"> - send us the video, by clicking below: </p>
             <div ng-model="video" name="uVideo"
                ngf-select="uploadVimeo(video, candidature, 'presentation_video')"
                ngf-capture="'camera'"
@@ -120,11 +162,13 @@
 
             <p>
                <a href='https://vimeo.com/help/compression' target='_blank'>
-               voir les spécifications pour un rendu optimal</a>
+                 <span class="fr">voir les spécifications pour un rendu optimal</span>
+                 <span class="en">See specifications for optimal rendering</span>
+
+             </a>
             </p>
-            <p>
-               - nous envoyer la vidéo par courrier (cocher la case ci-dessous)
-            </p>
+            <p class="fr">- nous envoyer la vidéo par courrier (cocher la case ci-dessous)</p>
+            <p class="en">- send us the video by post (tick the box below)</p>
       </div>
       <div class="field">
          <input
@@ -138,14 +182,15 @@
          <label class="check one pointer" for='asynchronous-element'>
              <span class="fr">J'envoie un fichier MP4 ou
              ProRes sur une clef USB en indiquant la référence de mon dossier</span>
-             <span class="en">I can not send you the video, send it by mail</span>
+             <span class="en">I am sending MP4 or ProRes files on a USB memory stick with my application reference.</span>
          </label>
          <div ng-if="!candidature.physical_content" class="alert" >
             <div ng-init='candidature.patch({physical_content_description: "", physical_content: false})' ></div>
           </div>
          <div ng-if="candidature.physical_content" class="alert" >
             <div ng-init='candidature.patch({physical_content_description: "Film sur Clef USB", physical_content: true})' />
-            <p>Préciser la nature et le contexte des éléments visuels : </p>
+            <p class="fr">Préciser la nature et le contexte des éléments visuels : </p>
+            <p class="en">Please explain the nature and the context of the visual elements:</p>
             <textarea
                ng-model="candidature.presentation_video_details"
                ng-model-options='{ debounce: 1000 }'
@@ -190,7 +235,7 @@
          <label class="check one pointer" for='honor'>
          <span class="fr">Je déclare sur l'honneur que tous
          les documents soumis au jury sont réalisés par moi seul, sans aucune aide ou intervention extérieure.</span>
-         <span class="en"> /// </span>
+         <span class="en">I declare that all the visual documents submitted have been created by me, without any help or outside sourcing.</span>
          </label>
       </div>
    </form>
