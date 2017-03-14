@@ -26,15 +26,29 @@
       <span class="en">Intentions</span>
    </h1>
    <form name="form" ng-submit="form.$valid && submit()" class="css-form" novalidate enctype="multipart/form-data">
-   <p>Merci de lire impérativement les <a class="pointer" ng-click="show_help(true)">informations</a> avant de compléter cette étape.</p>
-   <h3>Projets envisagés durant le cursus du Fresnoy</h3>
-   <p><strong>1<span class="exposant">re</span> année </strong>Travail sur les supports traditionnels,
-      argentiques et électroniques, du cinéma, de la
-      photographie, de la vidéo et des arts visuels.<br>
-      <strong>2<span class="exposant">e</span> année</strong> Travail sur les supports de la création
-      numérique et sur les écritures digitales.
-   </p>
-   <h3>Première année</h3>
+     <div class="fr">
+         <p>Merci de lire impérativement les <a class="pointer" ng-click="show_help(true)">informations</a> avant de compléter cette étape.</p>
+         <h3>Projets envisagés durant le cursus du Fresnoy</h3>
+         <p><strong>1<span class="exposant">re</span> année </strong>Travail sur les supports traditionnels,
+            argentiques et électroniques, du cinéma, de la
+            photographie, de la vidéo et des arts visuels.<br>
+            <strong>2<span class="exposant">e</span> année</strong> Travail sur les supports de la création
+            numérique et sur les écritures digitales.
+         </p>
+    </div>
+    <div class="en">
+        <p>Please read  <a class="pointer" ng-click="show_help(true)">the information</a>before completing this stage</p>
+        <h3>Projects imagined during the Fresnoy course</h3>
+        <p>A first year of work on traditional media, electronic or not, of cinema, photography, video art, and visual arts. <br>
+           A second year of work on digital art and media.
+        </p>
+    </div>
+
+   <h3>
+     <span class="fr">Première année</span>
+     <span class="en">First year</span>
+   </h3>
+
    <div class="field">
       <input name="cProject1" ng-model="candidature.considered_project_1" hidden required />
       <div id="considered-project-1"
@@ -80,7 +94,7 @@
       <label class="topborder" for="considered-project-1">
       <span class="field-state required"></span>
       <span class="fr">Projet envisagé <br/>pour la première année (1 page)</span>
-      <span class="en"> </span>
+      <span class="en">PROJECT IMAGINED FOR THE FIRST YEAR (1 PAGE)</span>
       </label>
    </div>
 
@@ -133,7 +147,7 @@
       <label class="topborder" for="artistic-referencies-project-1">
             <span class="field-state required"></span>
             <span class="fr">Références artistiques (20 lignes, format pdf) </span>
-            <span class="en">Artistic references for the first year's project 20 lines, pdf</span>
+            <span class="en">ARTISTIC REFERENCES (20 LIGNS, PDF FORMAT)</span>
       </label>
    </div>
    <div class="navigation">

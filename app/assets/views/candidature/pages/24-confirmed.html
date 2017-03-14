@@ -6,6 +6,8 @@
    </div>
    <div class="en">
       <p></p>
+      <span class="fr"></span>
+      <span class="en"></span>
     </div>
 </div>
 
@@ -13,12 +15,14 @@
 
   <div class="green">
         <h1>
-          Procédure de sélection
+          <span class="fr">Procédure de sélection</span>
+          <span class="en">Selection procedure</span>
         </h1>
-
         <p>
-          VOTRE CANDIDATURE A BIEN ÉTÉ TRANSMISE.<br/>
-          Référence de votre dossier :
+          <span class="fr">VOTRE CANDIDATURE A BIEN ÉTÉ TRANSMISE.<br/>
+          Référence de votre dossier :</span>
+          <span class="en">Your application has been sent. <br/>
+          Your application reference number:</span>
         </p>
         <div style="text-align:center">
           <big><strong>
@@ -30,29 +34,45 @@
   </div>
 
   <div ng-if="!candidature.application_complete">
-    Un email de confirmation vous sera adressé prochainement.
+
+    <span class="fr">Un email de confirmation vous sera adressé prochainement.</span>
+    <span class="en">A confirmation e-mail will be sent to you shortly</span>
   </div>
+
   <div ng-if="candidature.application_complete">
     <p>Votre candidature est confirmée</p>
   </div>
   <div ng-show="candidature.physical_content">
     <div ng-if="!candidature.physical_content_received">
-      <p>x Nous n'avons pas reçu la clef USB.</p>
+      <p>
+        <span class="fr">x Nous n'avons pas reçu la clef USB.</span>
+        <span class="en">x We have not received the USB memory stick</span>
+      </p>
     </div>
     <div ng-if="candidature.physical_content_received">
-      <p>√ Nous avons reçu la clef USB.</p>
+      <p>
+      <span class="fr">√ Nous avons reçu la clef USB.</span>
+      <span class="en">√ We have received the USB memory stick</span>
+      </p>
     </div>
 
+  </div>
+  <div class="fr">
+    <h2>Entretiens</h2>
+    <p>Les candidats présélectionnés sont conviés à un entretien avec un jury entre le lundi 3 et le vendredi 7 juillet 2017.</p>
 
+    <h2>Annonce des résultats</h2>
+    <p>La liste des 24 candidats admis sera affichée au Fresnoy et mise en ligne sur son site internet www.lefresnoy.net, le lundi 10 juillet 2017. <br/>Les résultats peuvent être communiqués par téléphone le jour même de 14h00 à 18h00 au +33(0)3 20 28 38 53.<br>
+    Les admissions sont valables pour l’année scolaire 2017–2018. <br/>Aucun candidat admis ne peut prétendre différer son intégration, ni se prévaloir de son admission pour une autre année scolaire.</p>
+  </div>
+  <div class="en">
+    <h2>Interviews</h2>
+    <p>Shortlisted candidates will be invited for interview by the jury between Monday July 3, and Friday July 7, 2017.</p>
+    <h2>Admitted applicants</h2>
+    <p>The list of the 24 successful candidates will be posted up at Le Fresnoy and published on our website www.lefresnoy.net on Monday July 10,
+    2017. The results may also be given by telephone the same day by ringing from 2 pm to 6 pm at: + 33 (0) 3 20 28 38 53. These results are only valid
+      for the 2017–2018 term. The admitted applicants may not postpone their date of admittance, nor expect to be admitted for a later school term.</p>
 
   </div>
-
-  <h2>Entretiens</h2>
-  <p>Les candidats présélectionnés sont conviés à un entretien avec un jury entre le lundi 3 et le vendredi 7 juillet 2017.</p>
-
-  <h2>Annonce des résultats</h2>
-  <p>La liste des 24 candidats admis sera affichée au Fresnoy et mise en ligne sur son site internet www.lefresnoy.net, le lundi 10 juillet 2017. <br/>Les résultats peuvent être communiqués par téléphone le jour même de 14h00 à 18h00 au +33(0)3 20 28 38 53.<br>
-  Les admissions sont valables pour l’année scolaire 2017–2018. <br/>Aucun candidat admis ne peut prétendre différer son intégration, ni se prévaloir de son admission pour une autre année scolaire.</p>
-
 
 </div>
