@@ -2,15 +2,22 @@
   <div class="col-md-2 sidebar">
     <h2>A-Z</h2>
       <span class="letter col-md-1" ng-repeat="letter in alphabet">
-        <a ui-sref-active="active" ui-sref="artwork({letter: letter})">
+        <a ui-sref-active="active" ui-sref="artwork({letter: letter, offset: offset})">
           <span>{{ letter|uppercase }}</span>
         </a>
       </span>
   </div>
 
   <div class="col-md-10">
-    <h1>{{ letter|uppercase }} ({{ artworks.length }})</h1>
+    <h1>{{ (letter || genre )|uppercase }} ({{ artworks.length }})</h1>
     <ng-include src="'views/partials/artwork_card.html'" ng-repeat="artwork in artworks"></ng-include>
+
+    <a ng-if="artworks.metadata.previous" ui-sref-active="active" ui-sref="artwork({letter: letter, offset: offset-limit})">
+      prev
+    </a>
+    <a ng-if="artworks.metadata.next" ui-sref-active="active" ui-sref="artwork({letter: letter, offset: offset+limit})">
+      next
+    </a>
   </div>
 
 </div>

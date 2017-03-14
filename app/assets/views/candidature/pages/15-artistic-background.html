@@ -1,0 +1,112 @@
+<div class="help-pane" ng-show='display_help' ng-init="show_help(false)">
+   <span class="close" ng-click="show_help(false)">x</span>
+   <h1><class class="fr">Aide</class><class class="en">Help</class></h1>
+   <div class="fr">
+      <p>Résumé du parcours et/ou des études (10 lignes).<br/>
+Ce document décrira le parcours personnel qui
+a conduit à la candidature</p>
+   </div>
+   <div class="en">
+      <p>Résumé of candidate’s background and/or
+studies (10 lines). <br/>This document explains how the
+candidate’s background led him/her to apply</p>
+   </div>
+</div>
+
+<div class="">
+
+  <h1>
+     <span class="fr">Parcours artistique</span>
+     <span class="en">Artistic Background</span>
+  </h1>
+
+  <form name="form" ng-submit="form.$valid && submit()" class="css-form" novalidate enctype="multipart/form-data">
+    <p class="fr">Résumé du parcours artistique : </p>
+    <p class="en">Summary of your artistic career: </p>
+
+          <div class="field">
+                      <textarea
+                        id="cursus"
+                          ng-model="user.profile.cursus"
+                          ng-model-options='{ debounce: 1000 }'
+                          ng-change="user.patch({profile : {cursus: (user.profile.cursus||'')}})"
+                          placeholder="Année - Expérience, diplôme, ..."
+                          rows="10"
+                          name=uCursus
+                          required
+                      />
+                      <div ng-show="form.uCursus.$touched && form.uCursus.$invalid" ng-messages="form.uCursus.$error" class="help-block error">
+                        <div ng-message="required">
+                          <span class="fr">Obligatoire</span>
+                          <span class="en">required</span>
+                        </div>
+                      </div>
+                      <label for="cursus">
+                        <span class="field-state required"></span>
+                        <span class="fr">Cursus</span>
+                        <span class="en">Cursus</span>
+                      </label>
+              </div>
+
+
+      <p class="fr">Site(s) web : </p>
+      <p class="en">website(s): </p>
+
+      <div class="field">
+
+        <div ng-repeat="item in artist.websites track by $index" >
+           <div class="item" ng-init='removeConfirmation[$index]=false'>
+              <span class="name left" ng-bind="item.link.substring(7)" />
+
+              <span class="trash" ng-click="removeConfirmation[$index]=true" />
+              <div class="delete-pane" ng-show="removeConfirmation[$index]">
+                 <span class="trash" ng-click="removeItem(artist.websites, $index); removeConfirmation[$index]=false" />
+                 <span class="name"><span class="fr">Supprimer</span><span class="en">Delete</span></span>
+                 <span class="cancel" ng-click="removeConfirmation[$index]=false"></span>
+              </div>
+           </div>
+        </div>
+
+        <a ng-if="website.length>0 && form.aWebsite.$valid" ng-click='addWebsite(artist, artist.websites, website);' class="btn right add">
+            +
+        </a>
+
+          <input
+             type="text"
+             id = "website"
+             ng-model-options='{ debounce: 500 }'
+             name = "aWebsite"
+             ng-model="website"
+             ng-change='form.aWebsite.$valid = true; form.aWebsite.$invalid = false '
+             placeholder="Url"
+             ng-value=""
+             />
+          <div ng-show="form.aWebsite.$touched && form.aWebsite.$invalid" ng-messages="form.aWebsite.$error" class="help-block error">
+             <div ng-message="url">
+                <span class="fr">Erreur dans l'URL</span>
+                <span class="en">Error url</span>
+             </div>
+          </div>
+
+          <label for="website">
+              <span class="fr">Site Web <br/>(http://www.monsite.com)</span>
+              <span class="en">Website <br/>(http://www.mywebsite.com)</span>
+          </label>
+
+
+
+
+      </div>
+    </form>
+
+
+
+
+
+
+
+  <div class="navigation">
+     <a class="btn prev" ui-sref="candidature.cv"><span class="fr">Retour</span><span class="en">Back</span></a>
+     <a class="btn next" ui-sref="candidature.visual-elements"><span class="fr">Continuer</span><span class="en">Continue</span></a>
+  </div>
+</div>

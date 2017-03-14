@@ -1,0 +1,69 @@
+<div class="confirmation">
+   <h1>
+      Confirmation
+   </h1>
+   <p class="fr"> Merci d'activer la création de votre compte en cliquant sur le lien de confirmation qui vous a été envoyé à l'adresse suivante : </p>
+   <p class="en"> Please activate the creation of your account by clicking on the confirmation link that was sent to the following address: </p>
+   <br/>
+   <form name="formConfirmation">
+      <div>
+        <p>
+         <a ng-show="!edit_email" > {{user.email}} </a>
+        </p>
+      </div>
+      <div ng-show="edit_email">
+         <input id="email" type="email" ng-model="user.email" name="uEmail" unique-user-field required />
+         <div ng-show="formConfirmation.uEmail.$touched  && formConfirmation.uEmail.$invalid" ng-messages="formConfirmation.uEmail.$error" class="help-block error">
+            <div ng-message="required">
+               <span class="fr">Requis</span>
+               <span class="en">required</span>
+            </div>
+            <div ng-message="email">
+               <span class="fr">E-mail non valide</span>
+               <span class="en">This is not a valid email</span>
+            </div>
+            <div ng-message="uniqueUserField">
+               <span class="fr">Cet email est déjà associé à un utilisateur, <a ui-sref="candidature.account.login">connectez vous</a></span>
+               <span class="en">Email is already use by an account, <a ui-sref="candidature.account.login">connect you</a></span>
+            </div>
+         </div>
+         <label for="email">
+         <span class="field-state required" ng-class="{ 'error': form.uEmail.$error, 'valid':form.uEmail.$valid, 'touched': form.uEmail.$touched }"></span>
+         <span class="fr">E-mail</span>
+         <span class="en">Email</span>
+         </label>
+         <a class="btn" ng-click="edit_email = false" ng-class="{ 'has-error': formConfirmation.$invalid }" >
+
+           <span class="fr">Valider l'email</span>
+           <span class="en">Valid email</span>
+         </a>
+      </div>
+   </form>
+   <p>
+     <span class="fr">Si vous ne recevez pas d'e-mail :</span>
+     <span class="en">If you have not received the e-mail:</span>
+  </p>
+  <ul>
+    <li>
+        <span class="fr">vérifier vos spam</span>
+        <span class="en">check your spam</span>
+    </li>
+    <li>
+      <span class="fr">vérifier l'email ci-dessus</span>
+      <span class="en">check the e-mail above </span>
+
+    </li>
+    <li><a class="pointer" ng-click="edit_email = true">
+      <span class="fr">corriger l'email</span>
+      <span class="en">correct the e-mail</span>
+      </a></li>
+  </li>
+
+   <div class="navigation">
+      <a class="btn btn-inv" ng-click="update_infos(formConfirmation, user)" ng-show="(!formConfirmation.$invalid && send_email>=1 && !edit_email)" >
+
+      <span class="fr">Réenvoyer l'email</span>
+      <span class="en">re-send email</span>
+      </a>
+   </div>
+</div>
