@@ -63,13 +63,24 @@ angular.module('memoire.controllers', ['memoire.services'])
         , (error) ->
           params.error = error.data
    )
+   
    # logout
-   $scope.logout = (route) ->
-     Logout.post({},{},{}).then((auth) ->
-         localStorage.removeItem("token")
-         delete $http.defaults.headers.common.Authorization
-         authManager.unauthenticate()
-         $rootScope.user = {}
+   $rootScope.logout = (route) ->
+     delete $http.defaults.headers.common.Authorization
+     Logout.post({}, [headers={}])
+     .then((auth) ->
+           localStorage.removeItem("token")
+           $rootScope.user = {}
+           delete $http.defaults.headers.common.Authorization
+           authManager.unauthenticate()
+           if(route)
+             $state.go(route)
+         , () ->
+           console.log("error Logout")
+           localStorage.removeItem("token")
+           $rootScope.user = {}
+           delete $http.defaults.headers.common.Authorization
+           authManager.unauthenticate()
      )
 
 )
