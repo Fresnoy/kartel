@@ -272,13 +272,21 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 
   # logout
   $rootScope.logout = (route) ->
-    Logout.post({},{},{}).then((auth) ->
-        localStorage.removeItem("token")
-        $rootScope.user = []
-        delete $http.defaults.headers.common.Authorization
-        authManager.unauthenticate()
-        if(route)
-          $state.go(route)
+    delete $http.defaults.headers.common.Authorization
+    Logout.post({}, [headers={}])
+    .then((auth) ->
+          localStorage.removeItem("token")
+          $rootScope.user = {}
+          delete $http.defaults.headers.common.Authorization
+          authManager.unauthenticate()
+          if(route)
+            $state.go(route)
+        , () ->
+          console.log("error Logout")
+          localStorage.removeItem("token")
+          $rootScope.user = {}
+          delete $http.defaults.headers.common.Authorization
+          authManager.unauthenticate()
     )
 
 
