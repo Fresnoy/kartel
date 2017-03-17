@@ -63,7 +63,7 @@ angular.module('memoire.controllers', ['memoire.services'])
         , (error) ->
           params.error = error.data
    )
-   
+
    # logout
    $rootScope.logout = (route) ->
      delete $http.defaults.headers.common.Authorization
@@ -85,9 +85,9 @@ angular.module('memoire.controllers', ['memoire.services'])
 
 )
 
-.controller('ArtistListingController', ($scope, Artists, $state) ->
+.controller('ArtistListingController', ($scope, Students, $state) ->
   $scope.letter = $state.params.letter || "a"
-  $scope.artists = Artists.getList({user__last_name__istartswith: $scope.letter, limit: 200}).$object
+  $scope.artists = Students.getList({user__last_name__istartswith: $scope.letter, limit: 200}).$object
   $scope.alphabet = "abcdefghijklmnopqrstuvwxyz".split("")
 )
 
@@ -124,13 +124,10 @@ angular.module('memoire.controllers', ['memoire.services'])
 )
 
 .controller('ArtistController', ($scope, $stateParams, Artists, Artworks) ->
-  $scope.student = null
   $scope.artworks = []
 
   Artists.one().one($stateParams.id).get().then((artist) ->
-    $scope.student = {}
-    $scope.student.artist = artist
-    $scope.student.user = artist.user
+    $scope.artist = artist
 
     # Fetch artworks
     for artwork_uri in $scope.student.artist.artworks
