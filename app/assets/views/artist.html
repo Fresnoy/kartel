@@ -1,1 +1,102 @@
-{{ artist.first_name }}
+<h1><i class="glyphicon glyphicon-user"></i>&nbsp;
+  <span ng-if="artist.nickname">"{{ artist.nickname }}"</span>
+  <span ng-if="!artist.nickname">{{ artist.user.first_name }} {{ artist.user.last_name }}</span>
+</h1>
+
+<div class="info col-sm-9">
+
+  <div class="person">
+
+    <h2><i class="glyphicon glyphicon-question-sign"></i>&nbsp;A propos</h2>
+
+    <div ng-if="artist.user.birthdate || artist.user.birthplace">
+      Né(e) <span ng-if="artist.user.birthdate">le {{ artist.user.birthdate }}</span> <span ng-if="artist.user.birthplace">à {{ artist.user.birthplace }}</span>.
+    </div>
+
+    <div class="links">
+      <ul>
+        <li class="phone" ng-if="artist.user.homeland_phone && isAuthenticated">
+          <i class="glyphicon glyphicon-earphone "></i>&nbsp;<a href="tel:{{ artist.user.homeland_phone }}" class="" target="_blank">{{ artist.user.homeland_phone }}</a>
+        </li>
+        <li class="websites" ng-if="student.websites.length">
+          <i class="glyphicon glyphicon-link"></i>&nbsp;Web :
+          <ul>
+            <li class="website" ng-repeat="website in artist.websites"><a href="{{ website.url }}" target="_blank">{{ website.title_fr }}</a></li>
+          </ul>
+        </li>
+        <li class="socialnetworks">
+          <ul>
+            <li class="twitter" ng-if="student.twitter_account"><i class="glyphicon glyphicon-comment"></i>&nbsp;<a href="{{ student.twitter_account }}" target="_blank">Twitter</a></li>
+            <li class="facebook" ng-if="student.facebook_profile"><i class="glyphicon glyphicon-comment"></i>&nbsp;<a href="{{ student.facebook_profile }}" target="_blank">Facebook</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div>
+
+      <tabset class="api-field">
+        <!-- Desciption  tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+          <li role="presentation" class="text">
+              <h3>Biographie</h3>
+          </li>
+          <li role="presentation" class="active">
+            <a data-target ="#bio-fr" aria-controls="description-fr" role="tab" data-toggle="tab">
+              <flag-icon country="fr"></flag-icon>
+            </a>
+          </li>
+          <li role="presentation">
+            <a data-target ="#bio-en" aria-controls="description-en" role="tab" data-toggle="tab">
+              <flag-icon country="uk"></flag-icon>
+            </a>
+          </li>
+          <li ng-if="student.bio_short_fr" role="presentation">
+            <a data-target ="#bio-short-fr" aria-controls="bio-short-fr" role="tab" data-toggle="tab">
+              Courte <flag-icon country="fr"></flag-icon>
+            </a>
+          </li>
+          <li ng-if="student.bio_short_en" role="presentation">
+            <a data-target ="#bio-short-en" aria-controls="bio-short-en" role="tab" data-toggle="tab">
+              Courte <flag-icon country="uk"></flag-icon>
+            </a>
+          </li>
+        </ul>
+          <!-- Desciption  content -->
+        <div class="tab-content">
+          <div role="tabpanel" class="tab-pane active" id="bio-fr">
+            <div ng-bind-html="artist.bio_fr|markdown"></div>
+          </div>
+          <div role="tabpanel" class="tab-pane" id="bio-en">
+            <div ng-bind-html="artist.bio_en|markdown"></div>
+          </div>
+          <div role="tabpanel" class="tab-pane" id="bio-short-fr">
+            <div ng-bind-html="artist.bio_short_fr|markdown"></div>
+          </div>
+          <div role="tabpanel" class="tab-pane" id="bio-short-en">
+            <div ng-bind-html="artist.bio_short_en|markdown"></div>
+          </div>
+        </div>
+      </tabset>
+
+
+  </div>
+
+
+</div>
+
+
+<div class="photo col-sm-3">
+  <div class="thumbnail" ng-if="artist.user.photo" >
+    <fresnoy-thumbnail thurl="'media/'+artist.user.photo" thwidth="300" thheight="400"></fresnoy-thumbnail>
+  </div>
+</div>
+
+<div class="info col-sm-12">
+  <h2><i class="glyphicon glyphicon-flash"></i>Oeuvres</h2>
+
+  <div class="row">
+    <ng-include src="'views/partials/artwork_card.html'" ng-repeat="artwork in artworks"></ng-include>
+  </div>
+</div>

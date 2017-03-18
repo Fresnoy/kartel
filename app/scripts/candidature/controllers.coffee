@@ -435,8 +435,8 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
   $rootScope.step.current = "09"
   $rootScope.current_display_screen = candidature_config.screen.admin_infos
 
-  $scope.birthdateMin = $filter('date')(new Date($rootScope.current_year-$rootScope.age_min,11,31), 'yyyy-MM-dd')
-  $scope.birthdateMax = $filter('date')(new Date($rootScope.current_year-$rootScope.age_max+1,1,1), 'yyyy-MM-dd')
+  $scope.birthdateMin = $filter('date')(new Date($rootScope.current_year-$rootScope.age_min,1,31), 'yyyy-MM-dd')
+  $scope.birthdateMax = $filter('date')(new Date($rootScope.current_year-$rootScope.age_max+1,0,0), 'yyyy-MM-dd')
 
   # Gender
   $scope.gender =
