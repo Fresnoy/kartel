@@ -146,6 +146,9 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 .controller('CandidatureBreadcrumbController', ($rootScope, $scope, $state) ->
 
     $scope.getProgression = (type) ->
+      if(!$scope.isAuthenticated || !$rootScope.candidature || $rootScope.user.is_superuser)
+        return false
+
       if(type == "administrative-informations")
         ar = [$rootScope.user.last_name, $rootScope.user.first_name,
           $rootScope.user.profile.gender, $rootScope.user.profile.birthdate,
@@ -269,13 +272,21 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 
   # logout
   $rootScope.logout = (route) ->
-    Logout.post({},{},{}).then((auth) ->
-        localStorage.removeItem("token")
-        $rootScope.user = []
-        delete $http.defaults.headers.common.Authorization
-        authManager.unauthenticate()
-        if(route)
-          $state.go(route)
+    delete $http.defaults.headers.common.Authorization
+    Logout.post({}, [headers={}])
+    .then((auth) ->
+          localStorage.removeItem("token")
+          $rootScope.user = {}
+          delete $http.defaults.headers.common.Authorization
+          authManager.unauthenticate()
+          if(route)
+            $state.go(route)
+        , () ->
+          console.log("error Logout")
+          localStorage.removeItem("token")
+          $rootScope.user = {}
+          delete $http.defaults.headers.common.Authorization
+          authManager.unauthenticate()
     )
 
 
@@ -370,10 +381,12 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
     user_id = jwtHelper.decodeToken(localStorage.getItem('token')).user_id
     Users.one(user_id).get().then((user) ->
       scope.user = user
+      if (user.is_superuser)
+        $state.go("candidature.error_admin_user")
+        return
 
       Candidatures.getList().then((candidatures) ->
-        if (candidatures.length >= 2)
-          $state.go("candidature.error_admin_user")
+
 
         candidature = candidatures[candidatures.length-1]
         scope.candidature = candidature

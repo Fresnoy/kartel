@@ -50,7 +50,8 @@ are at the charge of the candidate.</li>
    </h1>
    <form name="form" ng-submit="form.$valid && submit()" class="css-form" novalidate enctype="multipart/form-data">
       <div class="field">
-         <p>Cocher la case correspondant à votre situation : </p>
+         <p class="fr">Cocher la case correspondant à votre situation : </p>
+         <p class="en">Please tick the corresponding box: </p>
          <input type="radio"
             id="master-degree"
             ng-model="candidature.master_degree"
@@ -61,7 +62,7 @@ are at the charge of the candidate.</li>
             />
          <label for="master-degree" class="checkbox one big pointer">
          <span class="fr">J'ai un master (bac + 5)</span>
-         <span class="en">Master degree</span>
+         <span class="en">I have a master's degree (bac + 5, - high school diploma + 5 years)</span>
          </label>
       </div>
       <div class="field">
@@ -75,12 +76,12 @@ are at the charge of the candidate.</li>
             />
          <label for="no-master-degree" class="checkbox one big pointer">
          <span class="fr">BAC + 7 années<br/><small>d'expérience professionnelle attestée</small></span>
-         <span class="en">A levels or Baccalauréat (or recognized equivalent) and 7 years of artistic or professional
-experience</span>
+         <span class="en">BAC or high school diploma + 7 years<br/><small>of proven professional experience</small></span>
          </label>
       </div>
       <div ng-if="candidature.master_degree==false">
-         <p>Dites nous en quoi cette expérience vous a préparé au Fresnoy (1 page)</p>
+         <p class="fr">Dites nous en quoi cette expérience vous a préparé au Fresnoy (1 page)</p>
+         <p class="en">Tell us how this experience has prepared you for Le Fresnoy (1 page)</p>
          <input id="exp-justification" ng-model="candidature.experience_justification" required hidden />
          <div ng-model="candidature.experience_justification"
             class="media-upload"

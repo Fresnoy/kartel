@@ -7,14 +7,17 @@
 
 <div class="nature">
   {{ artwork.type }}
-  <ul class="genres list list-inline">
+  <ul class="genres list list-inline" ng-show="artworks.genre">
     <li ng-repeat="genre in artwork.genres">
       <a ui-sref="genre({genre: genre.label})">{{ genre.label }}</a></li>
   </ul>
   de
   <ul class="authors list list-inline">
     <li ng-repeat="author in artwork.authors">
-      <a ui-sref="school.student({id: author.id})"><span class="firstname">{{ author.user.first_name }}</span> <span class="lastname">{{ author.user.last_name }}</span></a></li>
+      <a ui-sref="artist.detail({id: author.id})">
+        <span ng-show="author.nickname" class="nickname">{{ author.nickname }}</span>
+        <span ng-show="!author.nickname" class="firstname">{{ author.user.first_name }}</span> <span class="lastname">{{ author.user.last_name }}</span></a>
+    </li>
   </ul>
 </div>
 

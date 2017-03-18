@@ -63,20 +63,31 @@ angular.module('memoire.controllers', ['memoire.services'])
         , (error) ->
           params.error = error.data
    )
+
    # logout
-   $scope.logout = (route) ->
-     Logout.post({},{},{}).then((auth) ->
-         localStorage.removeItem("token")
-         delete $http.defaults.headers.common.Authorization
-         authManager.unauthenticate()
-         $rootScope.user = {}
+   $rootScope.logout = (route) ->
+     delete $http.defaults.headers.common.Authorization
+     Logout.post({}, [headers={}])
+     .then((auth) ->
+           localStorage.removeItem("token")
+           $rootScope.user = {}
+           delete $http.defaults.headers.common.Authorization
+           authManager.unauthenticate()
+           if(route)
+             $state.go(route)
+         , () ->
+           console.log("error Logout")
+           localStorage.removeItem("token")
+           $rootScope.user = {}
+           delete $http.defaults.headers.common.Authorization
+           authManager.unauthenticate()
      )
 
 )
 
-.controller('ArtistListingController', ($scope, Artists, $state) ->
+.controller('ArtistListingController', ($scope, Students, $state) ->
   $scope.letter = $state.params.letter || "a"
-  $scope.artists = Artists.getList({user__last_name__istartswith: $scope.letter, limit: 200}).$object
+  $scope.artists = Students.getList({user__last_name__istartswith: $scope.letter, limit: 200}).$object
   $scope.alphabet = "abcdefghijklmnopqrstuvwxyz".split("")
 )
 
@@ -112,15 +123,14 @@ angular.module('memoire.controllers', ['memoire.services'])
   $scope.students = Students.getList({promotion: $stateParams.id, limit: 500}).$object
 )
 
-.controller('ArtistController', ($scope, $stateParams, Artists, Artworks) ->
-  $scope.student = null
+.controller('ArtistController', ($scope, $stateParams, Students, Artists, Artworks) ->
   $scope.artworks = []
 
-  Artists.one().one($stateParams.id).get().then((artist) ->
-    $scope.student = artist
+  Students.one().one($stateParams.id).get().then((student) ->
+    $scope.artist = student.artist
 
     # Fetch artworks
-    for artwork_uri in $scope.student.artworks
+    for artwork_uri in $scope.artist.artworks
       matches = artwork_uri.match(/\d+$/)
       if matches
         artwork_id = matches[0]
@@ -143,6 +153,7 @@ angular.module('memoire.controllers', ['memoire.services'])
 
   Artworks.one().one($stateParams.id).get().then((artwork) ->
     $scope.artwork = artwork
+    console.log(artwork)
     for event_uri in $scope.artwork.events
       matches = event_uri.match(/\d+$/)
       if matches

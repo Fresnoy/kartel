@@ -14,7 +14,8 @@
       <span class="fr">CV / Justificatifs</span>
       <span class="en">CV / Justification</span>
    </h1>
-   <p>Envoyer nous votre CV complet : </p>
+   <p  class="fr">Envoyer nous votre CV complet : </p>
+   <p  class="en">Send us your full CV </p>
    <p>&nbsp;</p>
    <div class="field">
       <input name="cCV" ng-model="candidature.curriculum_vitae" hidden required />
@@ -61,11 +62,12 @@
       <label class="topborder" for="cv">
       <span class="field-state required"></span>
       <span class="fr">CV complet</span>
-      <span class="en">Complet CV </span>
+      <span class="en">Full CV </span>
       </label>
    </div>
    <hr/>
-   <p>Envoyer nous vos justificatifs de diplômes, certifications, ... (formats images ou pdfs)</p>
+   <p class="fr">Envoyer nous vos justificatifs de diplômes, certifications, ... (formats images ou pdfs)</p>
+   <p class="en">Send us copies of your diplomas, certificates, qualifications</p>
    <div class="field">
 
          <div ng-repeat="item in cursus_justifications.media | orderBy:'1*position' track by $index"
@@ -85,13 +87,14 @@
              </div>
              <div class="modal show" ng-if="!item.label">
                 <div class="modal-content">
-                  <p>Veuillez entrer le titre du justificatif : </p>
+                  <p class="fr">Veuillez entrer le titre du justificatif : </p>
+                  <p class="en">Please enter the document title: </p>
                   <input class="name no-border inline" type="text" placeholder="" ng-model="label[$index]" ng-change="" class="no-border" required />
 
                   <label class="topborder" for="cursus">
                     <span class="field-state required"></span>
                     <span class="fr">Titre</span>
-                    <span class="en">Tilte</span>
+                    <span class="en">Title</span>
                   </label>
                   <div class="btn green" ng-show="label[$index]" ng-click='item.label = label[$index]; item.patch({label: item.label})'>Valider</div>
                 </div>
@@ -122,7 +125,7 @@
              </div>
              <label class="topborder" for="cursus">
                <span class="fr">Ajouter un justificatif (diplôme, certification, ... )</span>
-               <span class="en">Add a document (degree, certificatie, ... )</span>
+               <span class="en">ADD A DOCUMENT (DIPLOMA, CERTIFCATE...)</span>
              </label>
            </div>
 
