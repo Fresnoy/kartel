@@ -796,7 +796,8 @@ body.en {
       }
 
       .next{
-          position: fixed;
+          position: relative;
+          width: 65%;
           right: 0px;
           &:after{
             content:"►";
