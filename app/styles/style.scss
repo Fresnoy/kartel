@@ -1209,7 +1209,7 @@ label{
 
 /* Portrait */
 @media only screen
-  
+
   and (max-device-width: 480px)
   and (-webkit-min-device-pixel-ratio: 2)
   and (orientation: portrait) {
@@ -1229,7 +1229,7 @@ label{
 
       .navigation.breadcrumb li .icon {
         width: 44pt;
-        height: 44pt;
+        height: 30pt;
       }
       .content {
         max-width: none;
@@ -1246,9 +1246,14 @@ label{
                 background-color: rgba(256,256,256,1);
                 padding: 0;
                 padding-bottom: 10px;
+                border-radius: 0;
 
                 ul {
                   padding: 0;
+                }
+
+                .name {
+                  text-transform: uppercase;
                 }
 
           }
