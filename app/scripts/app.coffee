@@ -217,7 +217,7 @@ angular.module('kartel',
                 url: '/:id',
                 views:
                   'main_content_view':
-                    templateUrl: 'views/student.html'
+                    templateUrl: 'views/artist.html'
                     controller: 'ArtistController'
         )
 

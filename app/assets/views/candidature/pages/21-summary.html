@@ -1,10 +1,14 @@
 <div class="summary">
 
-  <h1>Récapitulatif</h1>
+  <h1>
+    <span class="fr">Récapitulatif</span>
+    <span class="en">Overview</span>
+  </h1>
+
 
   <form name="form" ng-submit="form.$valid && submit()" class="css-form" novalidate>
 
-    <h2><span class="fr">Informations administratives</span><span class="en">Personnal Information</span></h2>
+    <h2><span class="fr">Informations administratives</span><span class="en">Administrative information</span></h2>
     <div class="row">
       <div class="col-xs-12 col-md-7 col-lg-7">
         <a class="pointer" ui-sref="candidature.administrative-informations">
@@ -76,7 +80,7 @@
     <div class="row">
       <div class="col-xs-12 col-md-6 col-lg-6">
         <a class="pointer" ui-sref="candidature.artistic-background">
-          <div class="field"><label><span class="fr">Parcours artistique</span><span class="en">Artistics backgrounds</span></label> <input class="hidden" type="text" ng-model="user.profile.cursus" readonly required/><span class="isvalid" /></div>
+          <div class="field"><label><span class="fr">Parcours artistique</span><span class="en">Artistic background</span></label> <input class="hidden" type="text" ng-model="user.profile.cursus" readonly required/><span class="isvalid" /></div>
         </a>
       </div>
 

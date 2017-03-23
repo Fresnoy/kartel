@@ -26,9 +26,24 @@
       <span class="en">Motivations</span>
    </h1>
    <form name="form" ng-submit="form.$valid && submit()" class="css-form" novalidate enctype="multipart/form-data">
-   <p>Merci de lire impérativement les <a class="pointer" ng-click="show_help(true)">informations</a> avant de compléter cette étape.</p>
+     <div class="fr">
+         <p>Merci de lire impérativement les <a class="pointer" ng-click="show_help(true)">informations</a> avant de compléter cette étape.</p>
+         <h3>Projets envisagés durant le cursus du Fresnoy</h3>
+         <p><strong>2<span class="exposant">e</span> année</strong> Travail sur les supports de la création
+            numérique et sur les écritures digitales.
+         </p>
+    </div>
+    <div class="en">
+        <p>Please read  <a class="pointer" ng-click="show_help(true)">the information</a>before completing this stage</p>
+        <h3>Projects imagined during the Fresnoy course</h3>
+        <p>  A second year of work on digital art and media.  </p>
+    </div>
 
-   <h3>Deuxième année</h3>
+
+   <h3>
+     <span class="fr">Deuxième année</span>
+     <span class="en">Second year</span>
+   </h3>
    <div class="field">
       <input name="cProject2" ng-model="candidature.considered_project_2" hidden required />
       <div id="considered-project-2"
@@ -73,7 +88,7 @@
       <label class="topborder" for="considered-project-2">
       <span class="field-state required"></span>
       <span class="fr">Projet envisagé <br/>pour la deuxieme année (1 page) </span>
-      <span class="en"> </span>
+      <span class="en">PROJECT IMAGINED FOR THE SECOND YEAR (1 PAGE)</span>
       </label>
    </div>
    <div class="field">
@@ -122,7 +137,7 @@
       <label class="topborder" for="artistic-referencies-project-2">
       <span class="field-state required"></span>
       <span class="fr">Références artistiques <br/>pour la deuxième année (20 lignes, format pdf)</span>
-      <span class="en">Artistic references for the second year's project, 20 lines, pdf</span>
+      <span class="en">ARTISTIC REFERENCES (20 LIGNS, PDF FORMAT)</span>
       </label>
    </div>
    </form>

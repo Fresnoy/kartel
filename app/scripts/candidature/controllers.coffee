@@ -272,13 +272,21 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 
   # logout
   $rootScope.logout = (route) ->
-    Logout.post({},{},{}).then((auth) ->
-        localStorage.removeItem("token")
-        $rootScope.user = []
-        delete $http.defaults.headers.common.Authorization
-        authManager.unauthenticate()
-        if(route)
-          $state.go(route)
+    delete $http.defaults.headers.common.Authorization
+    Logout.post({}, [headers={}])
+    .then((auth) ->
+          localStorage.removeItem("token")
+          $rootScope.user = {}
+          delete $http.defaults.headers.common.Authorization
+          authManager.unauthenticate()
+          if(route)
+            $state.go(route)
+        , () ->
+          console.log("error Logout")
+          localStorage.removeItem("token")
+          $rootScope.user = {}
+          delete $http.defaults.headers.common.Authorization
+          authManager.unauthenticate()
     )
 
 
@@ -427,8 +435,8 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
   $rootScope.step.current = "09"
   $rootScope.current_display_screen = candidature_config.screen.admin_infos
 
-  $scope.birthdateMin = $filter('date')(new Date($rootScope.current_year-$rootScope.age_min,11,31), 'yyyy-MM-dd')
-  $scope.birthdateMax = $filter('date')(new Date($rootScope.current_year-$rootScope.age_max+1,1,1), 'yyyy-MM-dd')
+  $scope.birthdateMin = $filter('date')(new Date($rootScope.current_year-$rootScope.age_min,1,31), 'yyyy-MM-dd')
+  $scope.birthdateMax = $filter('date')(new Date($rootScope.current_year-$rootScope.age_max+1,0,1), 'yyyy-MM-dd')
 
   # Gender
   $scope.gender =
