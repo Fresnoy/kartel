@@ -322,6 +322,14 @@ div.api-field {
 
 
 // Candidature
+
+
+// FLAGS ICON
+/* Change icon path */
+$flag-icon-css-path: '../images/flags' !default;
+@import "bower_components/flag-icon-css/sass/flag-icon";
+
+
 body.fr {
   .fr{
     display: inline-block;
