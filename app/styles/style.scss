@@ -796,7 +796,8 @@ body.en {
       }
 
       .next{
-          position: absolute;
+          position: relative;
+          width: 65%;
           right: 0px;
           &:after{
             content:"►";
@@ -1203,5 +1204,89 @@ label{
     .tab-content > .tab-pane {
         display: block !important; opacity: 1 !important;
         visibility: visible;
+    }
+}
+
+
+/* Portrait */
+@media only screen
+
+  and (max-device-width: 480px)
+  and (-webkit-min-device-pixel-ratio: 2)
+  and (orientation: portrait) {
+    .icon {
+      background-position: center center;
+      background-repeat: no-repeat;
+      width: 100%;
+      height: 20pt;
+      display: inline-block;
+    }
+    .student-app {
+      .navigation .next {
+        position: relative;
+        float: right;
+        width: 65%;
+      }
+
+      .navigation.breadcrumb li .icon {
+        width: 44pt;
+        height: 30pt;
+      }
+      .content {
+        max-width: none;
+
+
+        .mobile .breadcrumb {
+                position: static;
+                /* width: 100%; */
+                max-width: none;
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                z-index: 99;
+                background-color: rgba(256,256,256,1);
+                padding: 0;
+                padding-bottom: 10px;
+                border-radius: 0;
+
+                ul {
+                  padding: 0;
+                }
+
+                .name {
+                  text-transform: uppercase;
+                }
+
+          }
+      }
+    }
+    .col-xs-12 {
+      padding: 0;
+    }
+}
+
+
+/* Landscape */
+@media only screen
+  and (min-device-width: 320px)
+  and (max-device-width: 480px)
+  and (-webkit-min-device-pixel-ratio: 2)
+  and (orientation: landscape) {
+
+    .student-app {
+      .navigation .next {
+
+      }
+      .content {
+        max-width: none;
+
+
+        .mobile .breadcrumb {
+
+          }
+      }
+    }
+    .col-xs-12 {
+
     }
 }
