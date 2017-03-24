@@ -121,27 +121,27 @@ candidature_config =
 
     "14":
       image:
-        file:"leonard-martin_yoknapatawpha_2016_2.jpg"
-        copyright:"Léonard Martin - Léonard Martin, film 2016 - Promotion Manoel de Oliveira"
-        position: {x:"-200px",y:0}
+        file:"conjurer_l-angoisse_par_l-énumération_-6-.jpg"
+        copyright:"Gwendal Sartre - Conjurer l'angoisse par l'énumération, film 2016 - Promotion Alain Resnais"
+        position: {x:"0px",y:0}
       page:
         file:""
         state:"candidature.cv"
         group:"curiculum"
     "15":
       image:
-        file:"leonard-martin_yoknapatawpha_2016_2.jpg"
-        copyright:"Léonard Martin - Léonard Martin, film 2016 - Promotion Manoel de Oliveira"
-        position: {x:"-700px",y:0}
+        file:"acrocosme_130716_-3-.jpg"
+        copyright:"Alexandre Guerre - Acrocosme, film 2016 - Promotion Manoel de Oliveira"
+        position: {x:"-0px",y:0}
       page:
         file:""
         state:"candidature.artistic-background"
         group:"portfolio"
     "16":
       image:
-        file:"leonard-martin_yoknapatawpha_2016_2.jpg"
-        copyright:"Léonard Martin - Léonard Martin, film 2016 - Promotion Manoel de Oliveira"
-        position: {x:"-900px",y:0}
+        file:"acrocosme_130716_-3-.jpg"
+        copyright:"Alexandre Guerre - Acrocosme, film 2016 - Promotion Manoel de Oliveira"
+        position: {x:"-1100px", y:0}
       page:
         file:""
         state:"candidature.visual-elements"
@@ -150,34 +150,34 @@ candidature_config =
       image:
         file:"david-ayoun_deha-vani_2014_3.jpg"
         copyright:"David Ayoun - Deha Vãnĩ, film 2014 - Promotion Bill Viola"
-        position: {x:"-100px",y:0}
+        position: {x:"-0px",y:0}
       page:
         file:""
         state:"candidature.previous-applications"
         group:"intentions"
     "18":
       image:
-        file:"david-ayoun_deha-vani_2014_3.jpg"
-        copyright:"David Ayoun - Deha Vãnĩ, film 2014 - Promotion Bill Viola"
-        position: {x:"-200px",y:0}
+        file:"hon_me_220616_-2-.jpg"
+        copyright:"Laurie Dasnois - Hon mê, film 2016 - Promotion Manoel de Oliveira"
+        position: {x:"-0px",y:0}
       page:
         file:""
         state:"candidature.motivations"
         group:"intentions"
     "19":
       image:
-        file:"david-ayoun_deha-vani_2014_3.jpg"
-        copyright:"David Ayoun - Deha Vãnĩ, film 2014 - Promotion Bill Viola"
-        position: {x:"-400px",y:0}
+        file:"i_made_you_i_kill_you_230616_-4-.jpg"
+        copyright:"Alexandru Petru BǎdeliȚǎ - I made you, I kill you, film 2016 - Promotion Alain Resnais"
+        position: {x:"-0px",y:0}
       page:
         file:""
         state:"candidature.intentions-project-1"
         group:"intentions"
     "20":
       image:
-        file:"david-ayoun_deha-vani_2014_3.jpg"
-        copyright:"David Ayoun - Deha Vãnĩ, film 2014 - Promotion Bill Viola"
-        position: {x:"-600px",y:0}
+        file:"i_made_you_i_kill_you_230616_-4-.jpg"
+        copyright:"Alexandru Petru BǎdeliȚǎ - I made you, I kill you, film 2016 - Promotion Alain Resnais"
+        position: {x:"-400px",y:0}
       page:
         file:""
         state:"candidature.intentions-project-2"

@@ -16,7 +16,7 @@
      <span class="en">Photograph</span>
   </h1>
 
-  <p class="fr">Envoyer nous une photo de vous</p>
+  <p class="fr">Envoyez-nous une photo de vous</p>
   <p class="en">Send us a photograph of yourself</p>
 
    <form name="form4" ng-submit="form4.$valid && submit()" class="css-form" novalidate enctype="multipart/form-data">
@@ -47,13 +47,7 @@
             </div>
          </div>
          <label class="topborder" for="photo">
-            <div ng-show="form4.uPhoto.$invalid" ng-messages="form4.uPhoto.$error" class="help-block error">
-               <div ng-message="required">
-                  <span class="fr">Obligatoire</span>
-                  <span class="en">Required</span>
-               </div>
-            </div>
-            <div ng-show="invalidPhoto.$errorMessages" ng-messages="invalidPhoto.$errorMessages"
+            <div ng-show="!user.profile.photo && invalidPhoto.$errorMessages" ng-messages="invalidPhoto.$errorMessages"
                class="help-block error">
                <div ng-message="pattern">
                   <span class="fr">Formats acceptés jpg / png / gif</span>
