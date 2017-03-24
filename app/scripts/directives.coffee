@@ -14,10 +14,13 @@ angular.module('memoire.directives', ['memoire.services', 'bootstrapLightbox'])
       op: '='
     },
     template: (x, scope) ->
-      url = "http://media.lefresnoy.net/?url=http://api.lefresnoy.net/{{ url }}&w={{ width }}&h={{ height }}&fmt=jpg"
+      url = "http://media.lefresnoy.net/?url={{ url }}&w={{ width }}&h={{ height }}&fmt=jpg"
       if scope.op
         url += "&op=#{ scope.op }"
       return "<img ng-src=\"#{url}\" />"
+    controller: ($scope) ->
+      if($scope.url.indexOf("http") == -1)
+        $scope.url = "http://api.lefresnoy.net/"+$scope.url
   }
 )
 
