@@ -895,19 +895,19 @@ body.en {
     }
 
     .data-writing{
-        position: absolute;
-        right: 130px;
-        top:78px;
+        position: fixed;
+        left: 10%;
+        top:15px;
         font-size: 0.8em;
         box-shadow: 2px 1px 2px rgba(0,0,0,0.3);
         background: #B8E986;
         color: black;;
         border-radius: 10px;
         padding: 1px 10px;
-
         -webkit-transition: 0.1s linear all;
       	transition: 0.1s linear all;
       	opacity: 1;
+        z-index: 100;
         &.ng-hide{
           opacity:0;
         }
@@ -1266,7 +1266,15 @@ label{
                 }
 
           }
+        .data-writing{
+              position: fixed;
+              width: 100%;
+              top:0px;
+              left:0;
+              border-radius: 0px;
+          }
       }
+
     }
     .col-xs-12 {
       padding: 0;
