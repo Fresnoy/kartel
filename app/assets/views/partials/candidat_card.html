@@ -1,8 +1,9 @@
 <div class="candidat-card col-md-3"  ng-class="{
+        'ghost': !candidature.application_completed,
         'application_complete': candidature.application_complete,
         'remote_interview': candidature.remote_interview,
         'selected_for_interview': candidature.selected_for_interview,
-        'selected': candidature.selected}" ng-if='show_candidat(candidature)'>
+        'selected': candidature.selected}" ng-show="candidature.show">
 
     <div class="thumbnail">
       <div class="row">
@@ -21,6 +22,7 @@
         </div>
         <div class="col-md-4">
           <div class="oneline nationality">
+            {{ candidature.artist.user.profile.nationality }}
             <span ng-repeat="nationality in candidature.artist.user.profile.nationality.split(', ') track by $index">
               <span class="flag-icon flag-icon-{{nationality | lowercase}}" title="{{country.codeToCountry[nationality]}}" />
             </span>

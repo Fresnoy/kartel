@@ -244,12 +244,32 @@ angular.module('memoire.controllers', ['memoire.services'])
   ISO3166) ->
   # init
   $scope.candidatures = []
+  $scope.candidatures_filtered = []
   $scope.select_critere =
-    'Tri par' : ""
-    'Candidatures Completes' : "application_complete"
-    'Selectionnés pour les interview' : "selected_for_interview"
-    'Selectionnés' : "selected_for_interview"
-    'Liste d\'attente' : "wait_listed"
+    'voir tout' :
+      critere: "all"
+      critere_value: "undefined"
+    'Candidatures finalisées':
+      critere: "application_completed"
+      critere_value: true
+    'Candidatures visées' :
+      critere: "application_complete"
+      critere_value: true
+    'Selectionnés pour les interview' :
+      critere: "selected_for_interview"
+      critere_value: true
+    'Selectionnés' :
+      critere: "selected"
+      critere_value: true
+    'Liste d\'attente' :
+      critere: "wait_listed"
+      critere_value: true
+  $scope.select_order =
+    "nationalité":
+      order: "nationality"
+    "nom":
+      order: "last_name"
+
 
   $scope.country = ISO3166
   $scope.LANGUAGES_NAME = languageMappingList
@@ -258,10 +278,11 @@ angular.module('memoire.controllers', ['memoire.services'])
 
   Candidatures.getList({limit: 500}).then((candidatures) ->
     for candidature in candidatures
-      artist_id = candidature.artist.match(/\d+$/)[0]
-      if(candidature.application_completed || candidature.physical_content)
+        artist_id = candidature.artist.match(/\d+$/)[0]
+        candidature.show = true
+        # if(candidature.application_completed || candidature.physical_content)
         $scope.candidatures.push(candidature)
-        ArtistsV2.one(artist_id).get().then((artist) ->
+        ArtistsV2.one(artist_id).withHttpConfig({ cache: true}).get().then((artist) ->
             current_cantidature = _.filter(candidatures, (c) -> return c.artist == artist.url)
             current_cantidature[0].artist = artist
             for website in artist.websites
@@ -275,10 +296,13 @@ angular.module('memoire.controllers', ['memoire.services'])
               current_cantidature[0].artist.user = user_infos
             )
       )
+      $scope.candidatures_filtered = _.sortBy($scope.candidatures , "artist.user.first_name")
   )
 
   $scope.getStateCandidature = (candidature) ->
     $state = 0
+    if(!candidature)
+      return $state
     if(candidature.application_complete)
       $state = 1
     if(candidature.selected_for_interview)
@@ -289,10 +313,31 @@ angular.module('memoire.controllers', ['memoire.services'])
       $state = 4
     return $state
 
+  $scope.show_candidatures = (c) ->
+    c = JSON.parse(c)
+    $scope.candidatures_filtered = _.filter($scope.candidatures, (candidat) ->
+        if c.critere == "all"
+          return true
+        return candidat[c.critere] == c.critere_value
+    )
+    return true
 
-  $scope.show_candidat = (candidat, field, value) ->
-    if ($scope.critere)
-      return candidat[$scope.critere] == $scope.critere_bool
+  $scope.count_candidatures = (c) ->
+    arr = _.filter($scope.candidatures, (candidat) ->
+        if c.critere == "all"
+          return true
+        return candidat[c.critere] == c.critere_value
+    )
+    return arr.length
+
+  $scope.order_candidatures = (o, c) ->
+    o = JSON.parse(o)
+    $scope.candidatures = _.sortBy($scope.candidatures, (candidat) ->
+        if(o.order == "nationality")
+            return candidat.artist.user.profile[o.order]
+        return candidat.artist.user[o.order]
+    )
+    $scope.show_candidatures(c)
     return true
 
 

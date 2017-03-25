@@ -356,6 +356,10 @@ body.en {
 
 .candidat-card{
   font-size: 0.9em;
+  &.ghost{
+    pointer-events: none;
+    opacity: .1;
+  }
 
   .thumbnail{
     height: 150px;
