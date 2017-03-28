@@ -635,12 +635,16 @@ body.en {
       margin: 0px;
       &.error{
         color: black;
-        font-weight: bold;
+        font-weight: normal;
         text-decoration: none;
         text-transform: none;
         background: #dc4154; /* rgba(208,27,1,.75); */
         padding: 5px;
         margin: 5px 0px;
+      }
+      a {
+        color:#CCC;
+        text-decoration: underline;
       }
     }
     select{
