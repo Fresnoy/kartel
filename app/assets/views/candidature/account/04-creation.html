@@ -4,18 +4,18 @@
          <span class="en">Creating Your Account</span>
       </h1>
       <div class="fr">
-         <p>Pour les besoins de l'inscription (envoi postal ou en ligne), vous devez créer un compte.</p>
+         <p>Que vous ayez choisi l'inscription par envoi postal ou en ligne, il est nécessaire de vous créer un compte afin de poursuivre la procédure.</p>
       </div>
       <div class="en">
-         <p>To register (postal application or on line) you must create an account.</p>
+         <p>To pursue the application (even for postal application) you need to create an account.</p>
       </div>
       <form name="form" class="css-form" ng-submit="form.$valid && login()" novalidate>
          <div class="field">
             <input id="name" type="text" ng-change="setUserName(form, user)" ng-model="user.last_name" name="uName" required />
             <div ng-show="form.uName.$touched && form.uName.$invalid" ng-messages="form.uName.$error" class="help-block error">
                <div ng-message="required">
-                  <span class="fr">Nom requis</span>
-                  <span class="en">required</span>
+                  <span class="fr">Champs obligatoire</span>
+                  <span class="en">Required field</span>
                </div>
             </div>
             <label for="name">
@@ -28,8 +28,8 @@
             <input id="firstname" type="text"  ng-change="setUserName(form, user)" ng-model="user.first_name" name="uFirstName" required />
             <div ng-show="form.uFirstName.$touched  && form.uFirstName.$invalid" ng-messages="form.uFirstName.$error" class="help-block error">
                <div ng-message="required">
-                  <span class="fr">Prénom requis</span>
-                  <span class="en">required</span>
+                  <span class="fr">Champs obligatoire</span>
+                  <span class="en">Required field</span>
                </div>
             </div>
             <label for="firstname">
@@ -42,15 +42,15 @@
             <input type="text" id="username" ng-model="user.username" ng-minlength="4" name="uUserName" unique-user-field required />
             <div ng-show="form.uUserName.$viewValue.length>0 && form.uUserName.$invalid" ng-messages="form.uUserName.$error" class="help-block error">
                <div ng-message="minlength">
-                  <span class="fr">Minimum 4 signes</span>
+                  <span class="fr">Minimum 4 caractères</span>
                   <span class="en">At least 4 characters</span>
                </div>
                <div ng-message="required">
-                  <span class="fr">Nom requis</span>
-                  <span class="en">required</span>
+                 <span class="fr">Champs obligatoire</span>
+                 <span class="en">Required field</span>
                </div>
                <div ng-message="uniqueUserField">
-                  <span class="fr">Ce nom d'utilisateur est déjà utilisé, vous devez en choisir en un autre</span>
+                  <p class="fr">Ce nom d'utilisateur est déjà utilisé, vous devez en choisir en un autre ou <a ui-sref="candidature.account.login">connectez-vous sur votre compte</a></p>
                   <span class="en">This user name is already used, please choose another</span>
                </div>
             </div>
@@ -64,12 +64,12 @@
             <input id="email" type="email" ng-model="user.email" name="uEmail" unique-user-field required />
             <div ng-show="form.uEmail.$touched && form.uEmail.$invalid" ng-messages="form.uEmail.$error" class="help-block error">
                <div ng-message="required">
-                  <span class="fr">Requis</span>
-                  <span class="en">required</span>
+                 <span class="fr">Champs obligatoire</span>
+                 <span class="en">Required field</span>
                </div>
                <div ng-message="email">
                   <span class="fr">E-mail non valide</span>
-                  <span class="en">E-mail not valid</span>
+                  <span class="en">Invalid email</span>
                </div>
                <div ng-message="uniqueUserField">
                   <span class="fr">Cet email est déjà associé à un utilisateur, <a ui-sref="candidature.account.login">connectez vous</a></span>
@@ -86,21 +86,21 @@
             <input id="email-confirm" type="email" ng-model="emailconfirm" name="uEmailComfim" same-value-as="user.email" required />
             <div ng-show="form.uEmailComfim.$touched  && form.uEmailComfim.$invalid" ng-messages="form.uEmailComfim.$error" class="help-block error">
                <div ng-message="required">
-                  <span class="fr">Requis</span>
-                  <span class="en">required</span>
+                 <span class="fr">Champs obligatoire</span>
+                 <span class="en">Required field</span>
                </div>
                <div ng-message="email">
                   <span class="fr">E-mail non valide</span>
-                  <span class="en">This is not a valid email</span>
+                  <span class="en">Invalid email</span>
                </div>
                <div ng-message="sameValueAs">
-                  <span class="fr">Les deux emails doivent être les mêmes</span>
-                  <span class="en">Both e-mails must be the same</span>
+                  <span class="fr">Les e-mails ne sont pas identiques</span>
+                  <span class="en">Email mismatch</span>
                </div>
             </div>
             <label for="email-confirm">
             <span class="field-state required" ng-class="{ 'error': form.uEmail.$error, 'valid':form.uEmail.$valid, 'touched': form.uEmail.$touched }"></span>
-            <span class="fr">Confirmez votre E-mail</span>
+            <span class="fr">Confirmez votre e-mail</span>
             <span class="en">Confirm email</span>
             </label>
          </div>
