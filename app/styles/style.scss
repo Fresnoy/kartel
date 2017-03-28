@@ -539,6 +539,7 @@ body.en {
     }
     .field{
       position: relative;
+      margin-top:20px;
     }
     input, select, textarea{
       width:100%;
@@ -546,7 +547,6 @@ body.en {
       border: 0px;
       border-bottom: 3px solid black;
       margin:0px;
-      margin-top: 20px;
       padding-bottom: 5px;
       text-indent: 4px;
       font-size: 18px;
@@ -658,6 +658,7 @@ body.en {
       appearance:none;
       -moz-appearance:none; /* Firefox */
       -webkit-appearance:none;
+      margin: 0;
     }
     textarea{
       height: 50px;
