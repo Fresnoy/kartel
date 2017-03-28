@@ -18,18 +18,20 @@
   <!-- image -->
   <div class="lightbox-image-container">
     <!-- Video api Fresnoy -->
-    <video ng-if="(Lightbox.image.picture | isFresnoyUrl) && (Lightbox.image.medium_url)"
+    <video ng-if="(Lightbox.image.picture | isFresnoyUrl) && (Lightbox.image.medium_url) && (!Lightbox.image.iframe)"
       poster="http://media.lefresnoy.net/?url=http://api.lefresnoy.net/{{ Lightbox.image.picture }}&op=noop" ng-if="Lightbox.image.medium_url"
       controls ng-src="{{ Lightbox.image.medium_url }}">{{ Lightbox.image.description }}
     </video>
     <!-- Video anywhere  -->
-    <video ng-if="!(Lightbox.image.picture | isFresnoyUrl) && Lightbox.image.medium_url"
+    <video ng-if="!(Lightbox.image.picture | isFresnoyUrl) && Lightbox.image.medium_url && (!Lightbox.image.iframe)"
       poster="{{ Lightbox.image.picture }}"
       controls ng-src="{{ Lightbox.image.medium_url }}">{{ Lightbox.image.description }}
     </video>
+    <!-- iframe  -->
+    <iframe ng-if='Lightbox.image.iframe' ng-src='{{Lightbox.image.medium_url}}'/>
     <img ng-if="(Lightbox.image.picture | isFresnoyUrl) && !Lightbox.image.medium_url" lightbox-src="http://media.lefresnoy.net/?url=http://api.lefresnoy.net/{{ Lightbox.image.picture }}&w=1500&fmt=jpg"/>
     <img ng-if="!(Lightbox.image.picture | isFresnoyUrl) && !Lightbox.image.medium_url" lightbox-src="{{ Lightbox.image.picture }}"/>
-    <p> {{ Lightbox.image.description }} </p>
+    <p ng-bind-html="Lightbox.image.description | nl2br" />
   </div>
 
 </div>

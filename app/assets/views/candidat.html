@@ -27,7 +27,7 @@
     <br/>
     <i class="glyphicon glyphicon-facetime-video"></i>&nbsp;video :
     <a ng-if="candidature.presentation_video" target="_blank" href="{{candidature.presentation_video}}">Lien</a>
-    <a ng-click='lightbox([Lightbox{image: {medium_url:candidature.presentation_video, description:candidature.presentation_video_details} }], 0)'>Lien 2</a>
+    <a ng-click='lightbox(candidature.presentation_video, candidature.presentation_video_details)'>Lien 2</a>
     <span ng-if="!candidature.presentation_video && candidature.physical_content">
       <i class="glyphicon glyphicon-envelope green" title="courrrier reçu" ng-if='candidature.physical_content && candidature.physical_content_received' />
       <i class="glyphicon glyphicon-envelope red" title="courrrier non reçu"  ng-if='candidature.physical_content && !candidature.physical_content_received' />
@@ -92,9 +92,6 @@
                 <br/>Genre :  {{ gender[artist.user.profile.gender].fr }}
                 <br/>Statut familiale : {{artist.user.profile.family_status}}
               </p>
-
-              <iframe  class="print" width="100%" height="100%" ng-if='candidature.identity_card'
-                src="{{trustSrc(candidature.identity_card)}}"></iframe>
               <br/>
 
             </div>
@@ -133,13 +130,15 @@
 
           <div role="tabpanel" class="tab-pane" id="cursus">
             <h3>Cursus</h3>
-            <a class="name" target="_blank" href="{{candidature.curriculum_vitae}}" >CV </a>
+            <a ng-click='lightbox(candidature.curriculum_vitae, "CV")'>CV</a>
             <p ng-if='candidature.master_degree'>Diplome : Bac +5</p>
-            <p ng-if='!candidature.master_degree'><a href="{{candidature.experience_justification}}" target="_blanck">BAC + 7 années d'expérience professionnelle attestée - </a></p>
+            <p ng-if='!candidature.master_degree'>
+                <a ng-click='lightbox(candidature.experience_justification, "7 années Expérience artistiques jusification"' target="_blanck">Justificatif d'expérience artistique</a>
+            </p>
             <div ng-if="candidature.cursus_justifications">
               Justificatifs :
               <span class="justificatifs" ng-repeat="justif in candidature.cursus_justifications.media track by $index">
-                <a class="name"  target="_blank" href="{{justif.file || justif.picture}}" >{{justif.label}} </a> /
+                <a ng-click='lightbox(justif.file || justif.picture, justif.label)'>{{justif.label}} </a> /
               </span>
             </div>
             Résumé du parcours artistique :

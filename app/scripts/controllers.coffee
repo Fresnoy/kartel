@@ -388,9 +388,16 @@ angular.module('memoire.controllers', ['memoire.services'])
   $scope.trustSrc = (src) ->
     return $sce.trustAsResourceUrl(src)
 
-  $scope.lightbox = (gallery, index) ->
-    console.log(gallery)
-    Lightbox.openModal(gallery, index)
+  $scope.lightbox = (url, description) ->
+
+    image =
+      isvideo: new RegExp("aml|youtube|vimeo|mp4","gi").test(url);
+      medium_url: $sce.trustAsResourceUrl(url)
+      description: description
+      iframe: true
+
+    media = [image]
+    Lightbox.openModal(media, 0)
 
   Candidatures.one($stateParams.id).get().then((candidature) ->
     $scope.candidature = candidature
