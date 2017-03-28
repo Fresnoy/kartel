@@ -191,8 +191,8 @@ angular.module('memoire.controllers', ['memoire.services'])
           if archive.flvpath
 
             $scope.ame_artwork_gallery.media.push({
-              picture : archive.flvthumb
-              medium_url : $sce.trustAsResourceUrl(archive.flvpath)
+              picture : archive.flvthumb.replace("http://", "https://").replace(":80", ":443")
+              medium_url : $sce.trustAsResourceUrl(archive.flvpath.replace("http://", "https://").replace(":80", ":443"))
               description : archive.field8 #media ame title
            })
 
