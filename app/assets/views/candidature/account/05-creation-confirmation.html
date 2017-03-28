@@ -2,8 +2,8 @@
    <h1>
       Confirmation
    </h1>
-   <p class="fr"> Merci d'activer la création de votre compte en cliquant sur le lien de confirmation qui vous a été envoyé à l'adresse suivante : </p>
-   <p class="en"> Please activate the creation of your account by clicking on the confirmation link that was sent to the following address: </p>
+   <p class="fr"> Pour valider la cration de votre compte, merci de cliquer sur le lien de confirmation qui vous a été envoyé à l'adresse suivante : </p>
+   <p class="en"> Confirm the creation of your account by clicking on the confirmation link that was sent to the following email: </p>
    <br/>
    <form name="formConfirmation">
       <div>
@@ -15,8 +15,8 @@
          <input id="email" type="email" ng-model="user.email" name="uEmail" unique-user-field required />
          <div ng-show="formConfirmation.uEmail.$touched  && formConfirmation.uEmail.$invalid" ng-messages="formConfirmation.uEmail.$error" class="help-block error">
             <div ng-message="required">
-               <span class="fr">Requis</span>
-               <span class="en">required</span>
+              <span class="fr">Champs obligatoire</span>
+              <span class="en">Required field</span>
             </div>
             <div ng-message="email">
                <span class="fr">E-mail non valide</span>
@@ -40,16 +40,16 @@
       </div>
    </form>
    <p>
-     <span class="fr">Si vous ne recevez pas d'e-mail :</span>
-     <span class="en">If you have not received the e-mail:</span>
+     <span class="fr">Si vous ne recevez pas d'e-mail, pensez à :</span>
+     <span class="en">If you did not receive the e-mail you want to :</span>
   </p>
   <ul>
     <li>
-        <span class="fr">vérifier vos spam</span>
+        <span class="fr">vérifier votre courier indésirable</span>
         <span class="en">check your spam</span>
     </li>
     <li>
-      <span class="fr">vérifier l'email ci-dessus</span>
+      <span class="fr">vérifier que l'email ci-dessus est correct</span>
       <span class="en">check the e-mail above </span>
 
     </li>
