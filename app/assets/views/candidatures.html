@@ -10,13 +10,17 @@
       <h1>Candidatures ({{ candidatures_filtered.length }})</h1>
       <div class="row">
         <div class="col-md-3">
-          <select id="gender" ng-change="show_candidatures(critere)" ng-model="critere" name="cShow">
-             <option ng-repeat="(item, value) in select_critere" value="{{value}}">{{item}} ({{ count_candidatures(value) }})</option>
+          <select
+                ng-change="show_candidatures(critere, order)" ng-model="critere" ng-selected="critere"
+                ng-options="(item.title+' ('+count_candidatures(item)+')') for item in select_critere" >
+                  {{item.title}}({{count_candidatures(item)}})
           </select>
         </div>
         <div class="col-md-3">
-          <select id="gender" ng-change="order_candidatures(order, critere)" ng-model="order" name="cSort">
-             <option ng-repeat="(item, value) in select_order" value="{{value}}">{{item}}</option>
+          <select
+                ng-change="show_candidatures(critere, order)" ng-model="order" ng-selected="order"
+                ng-options="item.title for item in select_order" >
+                  {{item.title}}
           </select>
         </div>
 

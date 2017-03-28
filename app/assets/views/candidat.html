@@ -27,6 +27,7 @@
     <br/>
     <i class="glyphicon glyphicon-facetime-video"></i>&nbsp;video :
     <a ng-if="candidature.presentation_video" target="_blank" href="{{candidature.presentation_video}}">Lien</a>
+    <a ng-click='lightbox([Lightbox{image: {medium_url:candidature.presentation_video, description:candidature.presentation_video_details} }], 0)'>Lien 2</a>
     <span ng-if="!candidature.presentation_video && candidature.physical_content">
       <i class="glyphicon glyphicon-envelope green" title="courrrier reçu" ng-if='candidature.physical_content && candidature.physical_content_received' />
       <i class="glyphicon glyphicon-envelope red" title="courrrier non reçu"  ng-if='candidature.physical_content && !candidature.physical_content_received' />
@@ -34,8 +35,8 @@
     </span>
     <p>Description:</p>
     <p ng-bind-html="candidature.presentation_video_details | nl2br" />
-    <p ng-if="!candidature.first_time">Candidaté en {{candidature.last_applications_years}}</p>
-    <p ng-if="candidature.first_time">Première candidature</p>
+    <p ng-if="candidature.last_applications_years">Candidaté en {{candidature.last_applications_years}}</p>
+    <p ng-if="!candidature.last_applications_years">Première candidature</p>
     <p ng-if="candidature.remote_interview">Désire passer l'entretiens par Skype</p>
 
   </div>

@@ -356,9 +356,26 @@ body.en {
 
 .candidat-card{
   font-size: 0.9em;
+
+  .progress{
+    display: none;
+  }
   &.ghost{
     pointer-events: none;
-    opacity: .1;
+    .progress{
+      background: rgba(255,255,255,0.8);
+      height:100%;
+      display: block;
+      position: absolute;
+      width: 100%;
+      text-align: center;
+      font-size: 2em;
+      line-height: 160px;
+      z-index: 2;
+      box-shadow: none;
+
+    }
+
   }
 
   .thumbnail{

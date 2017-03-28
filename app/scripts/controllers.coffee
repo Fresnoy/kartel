@@ -245,31 +245,24 @@ angular.module('memoire.controllers', ['memoire.services'])
   # init
   $scope.candidatures = []
   $scope.candidatures_filtered = []
-  $scope.select_critere =
-    'voir tout' :
-      critere: "all"
-      critere_value: "undefined"
-    'Candidatures finalisées':
-      critere: "application_completed"
-      critere_value: true
-    'Candidatures visées' :
-      critere: "application_complete"
-      critere_value: true
-    'Selectionnés pour les interview' :
-      critere: "selected_for_interview"
-      critere_value: true
-    'Selectionnés' :
-      critere: "selected"
-      critere_value: true
-    'Liste d\'attente' :
-      critere: "wait_listed"
-      critere_value: true
-  $scope.select_order =
-    "nationalité":
-      order: "nationality"
-    "nom":
-      order: "last_name"
 
+  $scope.select_critere = [
+    {title: 'voir tout', critere: "all", critere_value: "undefined" },
+    {title: 'Candidatures courrier', critere: "physical_content", critere_value: true },
+    {title: 'Candidatures finalisées', critere: "application_completed", critere_value: true },
+    {title: 'Candidatures visées', critere: "application_complete", critere_value: true },
+    {title: 'Selectionnés pour les interview', critere: "selected_for_interview", critere_value: true },
+    {title: 'Selectionnés', critere: "selected", critere_value: true },
+    {title: 'Liste d\'attente', critere: "wait_listed", critere_value: true },
+  ]
+  $scope.select_order = [
+      {title: "id", order: "id", context: ""},
+      {title: "nationalité", order: "nationality", context: ".artist.user.profile"},
+      {title: "nom", order: "last_name", context: ".artist.user"},
+      {title: "progression", order: "progress", context: ""},
+  ]
+  $scope.critere = $scope.select_critere[0]
+  $scope.order = $scope.select_order[0]
 
   $scope.country = ISO3166
   $scope.LANGUAGES_NAME = languageMappingList
@@ -280,7 +273,6 @@ angular.module('memoire.controllers', ['memoire.services'])
     for candidature in candidatures
         artist_id = candidature.artist.match(/\d+$/)[0]
         candidature.show = true
-        # if(candidature.application_completed || candidature.physical_content)
         $scope.candidatures.push(candidature)
         ArtistsV2.one(artist_id).withHttpConfig({ cache: true}).get().then((artist) ->
             current_cantidature = _.filter(candidatures, (c) -> return c.artist == artist.url)
@@ -294,9 +286,11 @@ angular.module('memoire.controllers', ['memoire.services'])
             user_id = artist.user.match(/\d+$/)[0]
             current_cantidature[0].artist.user = Users.one(user_id).get().then((user_infos) ->
               current_cantidature[0].artist.user = user_infos
+              current_cantidature[0].progress = $scope.get_candidature_progress(current_cantidature[0])
             )
       )
-      $scope.candidatures_filtered = _.sortBy($scope.candidatures , "artist.user.first_name")
+      # $scope.candidatures_filtered = _.sortBy($scope.candidatures , "id")
+      $scope.show_candidatures($scope.critere, $scope.order)
   )
 
   $scope.getStateCandidature = (candidature) ->
@@ -313,8 +307,12 @@ angular.module('memoire.controllers', ['memoire.services'])
       $state = 4
     return $state
 
-  $scope.show_candidatures = (c) ->
-    c = JSON.parse(c)
+  $scope.show_candidatures = (c, o) ->
+    $scope.candidatures = _.sortBy($scope.candidatures, (candidature) ->
+      if(eval("candidature"+o.context) && eval("candidature"+o.context)[o.order])
+        return eval("candidature"+o.context)[o.order]
+      return false
+    )
     $scope.candidatures_filtered = _.filter($scope.candidatures, (candidat) ->
         if c.critere == "all"
           return true
@@ -330,16 +328,27 @@ angular.module('memoire.controllers', ['memoire.services'])
     )
     return arr.length
 
-  $scope.order_candidatures = (o, c) ->
-    o = JSON.parse(o)
-    $scope.candidatures = _.sortBy($scope.candidatures, (candidat) ->
-        if(o.order == "nationality")
-            return candidat.artist.user.profile[o.order]
-        return candidat.artist.user[o.order]
-    )
-    $scope.show_candidatures(c)
-    return true
+  $scope.get_candidature_progress = (candidature) ->
+    candidature_progress = candidature_total = user_progress = user_total = 0
+    candidature_plain = candidature.plain()
+    for field, value of candidature_plain
+      candidature_total++
+      if(value && value != null && value != "" && value != undefined )
+        candidature_progress++
+    candidature_total -= 6
+    candidature_progress +=3
+    user_plain = candidature.artist.user.plain().profile
+    for field, value of user_plain
+      user_total++
+      if(value && value != null && value != "" && value != undefined )
+        user_progress++
+    user_total -= 6
+    user_progress +=0
 
+    candidature_taux = (candidature_progress/candidature_total )*100
+    user_taux = (user_progress/user_total )*100
+
+    return Math.min(Math.round((candidature_taux + user_taux) / 2), 100)
 
   $scope.search = (search) ->
     $(".candidat-card").each((item) ->
@@ -360,7 +369,6 @@ angular.module('memoire.controllers', ['memoire.services'])
 .controller('CandidatController', ($rootScope, $scope, ISO3166, $stateParams, RestangularV2, Candidatures, ArtistsV2,
         WebsiteV2, Users, Galleries, Media, Lightbox, $sce) ->
   # init
-
   $scope.candidature = []
   $scope.artist = []
   $scope.administrative_galleries = []
@@ -380,34 +388,12 @@ angular.module('memoire.controllers', ['memoire.services'])
   $scope.trustSrc = (src) ->
     return $sce.trustAsResourceUrl(src)
 
-
-  loadGalleries = (galleries) ->
-
-    for gallery in galleries
-      gallery_id = gallery.match(/\d+$/)[0]
-      Galleries.one(gallery_id).get().then((gallery_infos) ->
-        gallery_index = galleries.indexOf(gallery_infos.url)
-        galleries[gallery_index] = gallery_infos
-
-        for medium in gallery_infos.media
-          medium_id = medium.match(/\d+$/)[0]
-          Media.one(medium_id).get().then((media) ->
-            media_index = galleries[gallery_index].media.indexOf(media.url)
-            gallery_infos.media[media_index] = media
-          )
-      )
-    return galleries
-
-
-
-
-
   $scope.lightbox = (gallery, index) ->
+    console.log(gallery)
     Lightbox.openModal(gallery, index)
 
   Candidatures.one($stateParams.id).get().then((candidature) ->
     $scope.candidature = candidature
-
 
     artist_id = candidature.artist.match(/\d+$/)[0]
     ArtistsV2.one(artist_id).get().then((artist) ->
