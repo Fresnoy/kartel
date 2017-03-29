@@ -259,7 +259,7 @@ angular.module('memoire.controllers', ['memoire.services'])
       {title: "id", order: "id", context: ""},
       {title: "nationalité", order: "nationality", context: ".artist.user.profile"},
       {title: "nom", order: "last_name", context: ".artist.user"},
-      {title: "progression", order: "progress", context: ""},
+      {title: "progression", order: "progress", reverse: true, context: ""},
   ]
   $scope.critere = $scope.select_critere[0]
   $scope.order = $scope.select_order[0]
@@ -272,7 +272,6 @@ angular.module('memoire.controllers', ['memoire.services'])
   Candidatures.getList({limit: 500}).then((candidatures) ->
     for candidature in candidatures
         artist_id = candidature.artist.match(/\d+$/)[0]
-        candidature.show = true
         $scope.candidatures.push(candidature)
         ArtistsV2.one(artist_id).withHttpConfig({ cache: true}).get().then((artist) ->
             current_cantidature = _.filter(candidatures, (c) -> return c.artist == artist.url)
@@ -309,13 +308,15 @@ angular.module('memoire.controllers', ['memoire.services'])
 
   $scope.show_candidatures = (c, o) ->
     $scope.candidatures = _.sortBy($scope.candidatures, (candidature) ->
-      if(eval("candidature"+o.context) && eval("candidature"+o.context)[o.order])
-        return eval("candidature"+o.context)[o.order]
+      e = eval("candidature"+o.context)
+      if e and e[o.order] then return e[o.order]
       return false
     )
+    if o.reverse
+      $scope.candidatures.reverse()
+
     $scope.candidatures_filtered = _.filter($scope.candidatures, (candidat) ->
-        if c.critere == "all"
-          return true
+        if c.critere == "all" then return true
         return candidat[c.critere] == c.critere_value
     )
     return true
@@ -388,16 +389,19 @@ angular.module('memoire.controllers', ['memoire.services'])
   $scope.trustSrc = (src) ->
     return $sce.trustAsResourceUrl(src)
 
-  $scope.lightbox = (url, description) ->
-
+  $scope.singleLightbox = (url, description) ->
+    # config image gallery
     image =
-      isvideo: new RegExp("aml|youtube|vimeo|mp4","gi").test(url);
-      medium_url: $sce.trustAsResourceUrl(url)
+      isvideo: new RegExp("aml|player.vimeo|mp4","gi").test(url);
+      iframe: /(\.pdf|vimeo\.com|youtube\.com)/i.test(url)
       description: description
-      iframe: true
-
-    media = [image]
-    Lightbox.openModal(media, 0)
+    # embed video youtube
+    url = url.replace("watch?v=","embed/")
+    # when url is image set picture var, otherwise set medium_url
+    if(/\.(jpe?g|png|gif|bmp)/i.test(url)) then image.picture= $sce.trustAsResourceUrl(url)
+    else  image.medium_url= $sce.trustAsResourceUrl(url)
+    Lightbox.one_media = true
+    Lightbox.openModal([image], 0)
 
   Candidatures.one($stateParams.id).get().then((candidature) ->
     $scope.candidature = candidature

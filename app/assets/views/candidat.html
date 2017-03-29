@@ -4,7 +4,30 @@
         </div>
 </div>
 <div class="candidat" ng-if="user.is_superuser">
-  <div class="info col-xs-9 col-md-9 col-lg-9">
+
+
+  <div class="photo visible-xs  col-xs-12 ">
+    <!-- MOBILE VIEW -->
+    <div class="thumbnail" ng-if="artist.user.profile.photo" >
+      <img src="{{artist.user.profile.photo}}" />
+    </div>
+    <!-- WEB -->
+    <div ng-if='artist.websites.length' >
+      <i class="glyphicon glyphicon-link"></i>&nbsp;Web :
+        <span class="website" ng-repeat="website in artist.websites track by $index">
+          <a href="{{ website.link }}" target="_blank">{{ website.link }}</a>
+        </span>
+    </div>
+    <!-- LAST APPLICATIONS -->
+    <p ng-if="candidature.last_applications_years">Candidaté en {{candidature.last_applications_years}}</p>
+    <p ng-if="!candidature.last_applications_years">Première candidature</p>
+
+    <!-- ITW -->
+    <p ng-if="candidature.remote_interview">Désire passer l'entretiens par Skype</p>
+
+
+  </div>
+  <div class="info col-md-9 col-lg-9">
     <h1>
         {{ artist.user.first_name }}  {{ artist.user.last_name }}
       </h1>
@@ -20,31 +43,42 @@
         </span>
       </li>
     </ul>
-    <i class="glyphicon glyphicon-link"></i>&nbsp;Web :
-      <span class="website" ng-repeat="website in artist.websites track by $index">
-        <a href="{{ website.link }}" target="_blank">{{ website.link }}</a>
-      </span>
     <br/>
-    <i class="glyphicon glyphicon-facetime-video"></i>&nbsp;video :
-    <a ng-if="candidature.presentation_video" target="_blank" href="{{candidature.presentation_video}}">Lien</a>
-    <a ng-click='lightbox(candidature.presentation_video, candidature.presentation_video_details)'>Lien 2</a>
+    <div ng-if="candidature.presentation_video">
+      <i class="glyphicon glyphicon-facetime-video"></i>&nbsp;
+      <a class="pointer" ng-click='singleLightbox(candidature.presentation_video, candidature.presentation_video_details)'> Voir la vidéo de 8 minutes</a>
+    </div>
     <span ng-if="!candidature.presentation_video && candidature.physical_content">
       <i class="glyphicon glyphicon-envelope green" title="courrrier reçu" ng-if='candidature.physical_content && candidature.physical_content_received' />
       <i class="glyphicon glyphicon-envelope red" title="courrrier non reçu"  ng-if='candidature.physical_content && !candidature.physical_content_received' />
       <p ng-bind-html="candidature.physical_content_description | nl2br" />
     </span>
-    <p>Description:</p>
-    <p ng-bind-html="candidature.presentation_video_details | nl2br" />
-    <p ng-if="candidature.last_applications_years">Candidaté en {{candidature.last_applications_years}}</p>
-    <p ng-if="!candidature.last_applications_years">Première candidature</p>
-    <p ng-if="candidature.remote_interview">Désire passer l'entretiens par Skype</p>
+    <div ng-if="candidature.presentation_video_details" class="toggleHeight">
+      <p>Voir la description de la vidéo:</p>
+      <p ng-bind-html="candidature.presentation_video_details | nl2br" />
+    </div>
+
 
   </div>
 
-  <div class="photo col-xs-2 col-md-2 col-lg-2">
+  <div class="photo hidden-xs col-md-2 col-lg-2">
     <div class="thumbnail" ng-if="artist.user.profile.photo" >
       <img src="{{artist.user.profile.photo}}" />
     </div>
+
+    <!-- WEB -->
+    <div ng-if='artist.websites.length' >
+      <i class="glyphicon glyphicon-link"></i>&nbsp;Web :
+        <span class="website" ng-repeat="website in artist.websites track by $index">
+          <a href="{{ website.link }}" target="_blank">{{ website.link }}</a>
+        </span>
+    </div>
+    <!-- LAST APPLICATIONS -->
+    <p ng-if="candidature.last_applications_years">Candidaté en {{candidature.last_applications_years}}</p>
+    <p ng-if="!candidature.last_applications_years">Première candidature</p>
+
+    <!-- ITW -->
+    <p ng-if="candidature.remote_interview">Désire passer l'entretiens par Skype</p>
   </div>
 
   <div class="info col-xs-12 col-md-12 col-lg-12">
@@ -88,7 +122,9 @@
             <div class="person">
               <p>
                 Né(e) en {{country.codeToCountry[artist.user.profile.birthplace_country]}} le {{ artist.user.profile.birthdate }}
-                ({{artist.user.profile.birthdate | ageFilter}} ans) - <a target="_blank" ng-href="{{candidature.identity_card}}">Justificatif</a>
+                ({{artist.user.profile.birthdate | ageFilter}} ans) -
+                  <a ng-show='candidature.identity_card' ng-click='singleLightbox(candidature.identity_card,"Justificatif d’identité")'>Justificatif</a>
+                  <span ng-if='!candidature.identity_card' class="text-danger warning">Justificatif d'identité absent</span>
                 <br/>Genre :  {{ gender[artist.user.profile.gender].fr }}
                 <br/>Statut familiale : {{artist.user.profile.family_status}}
               </p>
@@ -130,15 +166,15 @@
 
           <div role="tabpanel" class="tab-pane" id="cursus">
             <h3>Cursus</h3>
-            <a ng-click='lightbox(candidature.curriculum_vitae, "CV")'>CV</a>
+            <a ng-click='singleLightbox(candidature.curriculum_vitae, "CV")'>CV</a>
             <p ng-if='candidature.master_degree'>Diplome : Bac +5</p>
             <p ng-if='!candidature.master_degree'>
-                <a ng-click='lightbox(candidature.experience_justification, "7 années Expérience artistiques jusification"' target="_blanck">Justificatif d'expérience artistique</a>
+                <a ng-click='singleLightbox(candidature.experience_justification, "7 années Expérience artistiques jusification")' target="_blanck">Justificatif d'expérience artistique</a>
             </p>
             <div ng-if="candidature.cursus_justifications">
               Justificatifs :
               <span class="justificatifs" ng-repeat="justif in candidature.cursus_justifications.media track by $index">
-                <a ng-click='lightbox(justif.file || justif.picture, justif.label)'>{{justif.label}} </a> /
+                <a ng-click='singleLightbox(justif.file || justif.picture, justif.label)'>{{justif.label}} </a> /
               </span>
             </div>
             Résumé du parcours artistique :
