@@ -399,6 +399,10 @@ body.en {
   }
 }
 
+.field{
+  position: relative;
+  margin-top:20px;
+}
 
 .student-app{
     padding: 0;
@@ -537,10 +541,7 @@ body.en {
       }
 
     }
-    .field{
-      position: relative;
-      margin-top:20px;
-    }
+
     input, select, textarea{
       width:100%;
       margin: 5px 0px;
@@ -664,6 +665,7 @@ body.en {
       height: 50px;
       font-size: 16px;
       max-width: 100%;
+      background-color: #EEE;
       &:focus{
         height: auto;
       }
