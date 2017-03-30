@@ -296,14 +296,16 @@ angular.module('memoire.controllers', ['memoire.services'])
     $state = 0
     if(!candidature)
       return $state
-    if(candidature.application_complete)
+    if(candidature.application_completed)
       $state = 1
-    if(candidature.selected_for_interview)
+    if(candidature.application_complete)
       $state = 2
-    if(candidature.wait_listed)
+    if(candidature.selected_for_interview)
       $state = 3
     if(candidature.selected)
       $state = 4
+    if(candidature.wait_listed)
+      $state = 5
     return $state
 
   $scope.show_candidatures = (c, o) ->
@@ -361,10 +363,6 @@ angular.module('memoire.controllers', ['memoire.services'])
 
     )
     return true
-
-
-
-
 )
 
 .controller('CandidatController', ($rootScope, $scope, ISO3166, $stateParams, RestangularV2, Candidatures, ArtistsV2,
@@ -396,15 +394,32 @@ angular.module('memoire.controllers', ['memoire.services'])
       iframe: /(\.pdf|vimeo\.com|youtube\.com)/i.test(url)
       description: description
     # embed video youtube
-    url = url.replace("watch?v=","embed/")
+    url = url.replace("watch?v=","embed/").replace("&t=","#t=")
     # when url is image set picture var, otherwise set medium_url
     if(/\.(jpe?g|png|gif|bmp)/i.test(url)) then image.picture= $sce.trustAsResourceUrl(url)
     else  image.medium_url= $sce.trustAsResourceUrl(url)
     Lightbox.one_media = true
     Lightbox.openModal([image], 0)
 
+  $scope.getStateCandidature = (candidature) ->
+    $state = 0
+    if(!candidature)
+      return $state
+    if(candidature.application_completed)
+      $state = 1
+    if(candidature.application_complete)
+      $state = 2
+    if(candidature.selected_for_interview)
+      $state = 3
+    if(candidature.selected)
+      $state = 4
+    if(candidature.wait_listed)
+      $state = 5
+    return $state
+
   Candidatures.one($stateParams.id).get().then((candidature) ->
     $scope.candidature = candidature
+    $scope.candidature.state = $scope.getStateCandidature(candidature)
 
     artist_id = candidature.artist.match(/\d+$/)[0]
     ArtistsV2.one(artist_id).get().then((artist) ->

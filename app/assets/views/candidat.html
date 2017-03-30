@@ -38,9 +38,7 @@
     <p><i class="glyphicon glyphicon-flag"></i>&nbsp;Nationalité(s)</p>
     <ul class="list-inline">
       <li class="nationality" ng-repeat="nationality in artist.user.profile.nationality.split(', ') track by $index">
-        <span class="flag-icon flag-icon-{{nationality | lowercase}}" title="{{country.codeToCountry[nationality]}}">
-          {{country.codeToCountry[nationality]}}
-        </span>
+        <span class="flag-icon flag-icon-{{nationality | lowercase}}" title="{{country.codeToCountry[nationality]}}"></span>
       </li>
     </ul>
     <br/>
@@ -48,14 +46,17 @@
       <i class="glyphicon glyphicon-facetime-video"></i>&nbsp;
       <a class="pointer" ng-click='singleLightbox(candidature.presentation_video, candidature.presentation_video_details)'> Voir la vidéo de 8 minutes</a>
     </div>
-    <span ng-if="!candidature.presentation_video && candidature.physical_content">
+    <div ng-if="!candidature.presentation_video && candidature.physical_content">
       <i class="glyphicon glyphicon-envelope green" title="courrrier reçu" ng-if='candidature.physical_content && candidature.physical_content_received' />
       <i class="glyphicon glyphicon-envelope red" title="courrrier non reçu"  ng-if='candidature.physical_content && !candidature.physical_content_received' />
-      <p ng-bind-html="candidature.physical_content_description | nl2br" />
-    </span>
-    <div ng-if="candidature.presentation_video_details" class="toggleHeight">
-      <p>Voir la description de la vidéo:</p>
-      <p ng-bind-html="candidature.presentation_video_details | nl2br" />
+      <span ng-bind-html="candidature.physical_content_description | nl2br" />
+    </div>
+    <div ng-if="!candidature.presentation_video && !candidature.physical_content">
+      <span class="text-danger warning">Vidéo absente</span>
+    </div>
+    <div ng-if="candidature.presentation_video_details" class="pointer" ng-init="show_video_details = false">
+      <p ng-click="show_video_details = !show_video_details">Voir la description de la vidéo</p>
+      <p ng-show="show_video_details" ng-bind-html="candidature.presentation_video_details | nl2br" />
     </div>
 
 
@@ -131,9 +132,6 @@
               <br/>
 
             </div>
-
-
-
             <p>Numéro de Sécu: {{artist.user.profile.social_insurance_number}}</p>
 
           </div>
@@ -148,10 +146,11 @@
             <br/>
             <i class="glyphicon glyphicon-facetime-video"></i>&nbsp;Skype : <a href="skype:{{candidature.remote_interview_info}}?call" class="">{{ candidature.remote_interview_info }}</a>
             <br/>
-            <i class="glyphicon glyphicon-flag" title="Langues parlées"></i>&nbsp; Langues parlées :
+            <i class="glyphicon glyphicon-bullhorn" title="Langues parlées"></i>&nbsp; Langues parlées :
             <span class="name" ng-bind="LANGUAGES_NAME_short[artist.user.profile.mother_tongue].englishName.split('(')[0]" />
             <span ng-if="artist.user.profile.other_language">
-              <span class="language" ng-repeat="language in artist.user.profile.other_language.split(', ')  track by $index">, <span class="name" ng-bind="LANGUAGES_NAME_short[language].nativeName.split('(')[0]" /></span>
+              <span class="language" ng-repeat="language in artist.user.profile.other_language.split(', ')  track by $index">,
+                <span class="name" ng-bind="LANGUAGES_NAME_short[language].englishName.split('(')[0]" /></span>
             </span>
             <br/>
             <p><i class="glyphicon glyphicon-home"></i> Adresse :<br/>
@@ -166,10 +165,13 @@
 
           <div role="tabpanel" class="tab-pane" id="cursus">
             <h3>Cursus</h3>
-            <a ng-click='singleLightbox(candidature.curriculum_vitae, "CV")'>CV</a>
+            <a ng-show="candidature.curriculum_vitae" ng-click='singleLightbox(candidature.curriculum_vitae, "CV")'>Consulter le CV</a>
+              <span ng-if='!candidature.curriculum_vitae' class="text-danger warning">CV absent</span>
             <p ng-if='candidature.master_degree'>Diplome : Bac +5</p>
             <p ng-if='!candidature.master_degree'>
-                <a ng-click='singleLightbox(candidature.experience_justification, "7 années Expérience artistiques jusification")' target="_blanck">Justificatif d'expérience artistique</a>
+            <a ng-if="candidature.experience_justification" ng-click='singleLightbox(candidature.experience_justification, "7 années Expérience artistiques jusification")' target="_blanck">
+                Consulter le justificatif d'expérience artistique</a>
+                <span ng-if='!candidature.experience_justification' class="text-danger warning">Justificatif d'expérience artistique absent</span>
             </p>
             <div ng-if="candidature.cursus_justifications">
               Justificatifs :
@@ -184,17 +186,32 @@
 
 
         <div role="tabpanel" class="tab-pane" id="intentions">
-          <h3>intentions</h3>
-          <a class="name" target="_blank" href="{{candidature.justification_letter}}" >Lettre de motivation </a>
+          <h3>Intentions</h3>
+          <a ng-if='candidature.justification_letter'
+            ng-click='singleLightbox(candidature.justification_letter, "Lettre de motivation")' >
+            Lire la lettre de motivation </a>
+            <span ng-if='!candidature.justification_letter' class="text-danger warning">Lettre de motivation absente</span>
           <br/>
           <h4>Projet 1ere année</h4>
-          <a class="name" target="_blank" href="{{candidature.considered_project_1}}" >Description</a>
-          /
-          <a class="name" target="_blank" href="{{candidature.artistic_referencies_project_1}}" >Références</a>
+          <a ng-if='candidature.considered_project_1'
+            ng-click='singleLightbox(candidature.considered_project_1, "Projet de première année")' >
+            Consulter la description du projet de première année</a>
+            <span ng-if='!candidature.considered_project_1' class="text-danger warning">Description absente</span>
+          <br/>
+          <a ng-if='candidature.artistic_referencies_project_1'
+            ng-click='singleLightbox(candidature.artistic_referencies_project_1, "Références artistiques du projet de première année")' >
+            Consulter les références artistiques pour ce projet</a>
+            <span ng-if='!candidature.artistic_referencies_project_1' class="text-danger warning">Références absentes</span>
           <h4>Projet 2nd année</h4>
-          <a class="name" target="_blank" href="{{candidature.considered_project_2}}" >Description</a>
-          /
-          <a class="name" target="_blank" href="{{candidature.artistic_referencies_project_2}}" >Références</a>
+          <a ng-if='candidature.considered_project_2'
+            ng-click='singleLightbox(candidature.considered_project_2, "Projet de deuxième année")' >
+            Consulter la description du projet de deuxième année</a>
+            <span ng-if='!candidature.considered_project_2' class="text-danger warning">Description absente</span>
+          <br/>
+          <a ng-if='candidature.artistic_referencies_project_2'
+            ng-click='singleLightbox(candidature.artistic_referencies_project_2, "Références artistiques du projet de deuxième année")' >
+            Consulter les références artistiques pour ce projet</a>
+            <span ng-if='!candidature.artistic_referencies_project_2' class="text-danger warning">Références absentes</span>
 
         </div>
 
@@ -209,70 +226,94 @@
           <h3>Actions</h3>
 
 
-            <input type="checkbox" id="received" ng-model="candidature.application_completed"
-              ng-change="candidature.patch({application_completed: candidature.application_completed})" name="cReceived"
-              ng-value="!candidature.application_completed"
-              class="inline one check"
-            />
-            <label for="received" class="inline pointer one">
-              <span class="fr">Candidature non éditable</span>
-            </label>
-            <br/>
+            <!-- Candidature completed () STATE 1
+            <div ng-show="candidature.state==1" ng-init="click_cCompleted=false" >
+              <button type="button" ng-click='click_cCompleted=!click_cCompleted' class="btn btn-primary btn-md">
+                Rendre cette candiature rééditable pour que <span ng-bind="artist.user.first_name" /> puisse la compléter</button>
+              <div ng-show="click_cCompleted" >
+                <p class="alert alert-warning" role="alert">
+                  Attention cette action permettra au candidat de rééditer sa candidature (n'envoie aucun email)
+                  <br/> Vous ne pourrez plus accéder à la candidature tant <span ng-bind="artist.user.first_name" />
+                  n'a pas revalidé son dossier
+                </p>
+                <button type="button"
+                  ng-click="candidature.application_completed = false; candidature.patch({application_completed: candidature.application_completed})"
+                  class="btn btn-primary btn-md btn-warning">Valider</button>
+                <button type="button" ng-click='click_cCompleted=false' class="btn btn-primary btn-md btn-danger">Annuler</button>
+              </div>
+            </div>
+            -->
+            <!-- Courrier reçu -->
+            <div ng-show="candidature.physical_content && !candidature.physical_content_received" ng-init="click_cPhysicalContent=false" >
+              <button type="button" ng-click='click_cPhysicalContent=!click_cPhysicalContent' class="btn btn-primary btn-md">
+                <i class="glyphicon glyphicon-envelope" ></i> Courrier reçu</button>
+              <div ng-show="click_cPhysicalContent" >
+                <p class="alert alert-warning" role="alert">
+                  Cette action valide le fait qu'un courrier nous a été transmis.
+                  <br/>N'oubliez pas d'inscrire le numéro de la candidature sur l'enveloppe :
+                    <strong ng-bind="candidature.current_year_application_count" />
+                  <br/>Cette action n'envoie aucun email
+                </p>
+                <button type="button"
+                  ng-click="candidature.physical_content_received = true;
+                   candidature.application_completed = true;
+                   candidature.patch({physical_content_received: candidature.physical_content_received, application_completed: candidature.application_completed});
+                   candidature.state = getStateCandidature(candidature)"
+                  class="btn btn-primary btn-md btn-warning">Valider</button>
+                <button type="button" ng-click='click_cPhysicalContent=false' class="btn btn-primary btn-md btn-danger">Annuler</button>
+              </div>
+            </div>
+
+            <!-- STATE 1 = Candidature completed => Candidature complete  -->
+            <div ng-show="candidature.state==1" ng-init="click_cComplete=false" >
+              <button type="button" ng-click='click_cComplete=!click_cComplete' class="btn btn-primary btn-md">
+                Cette candidature est complète</button>
+              <div ng-show="click_cComplete" >
+                <p class="alert alert-warning" role="alert">
+                  Attention cette action valide cette candidature pour consultation du jury
+                  <br/>Cette action envoie un email automatique au Candidat
+                </p>
+                <button type="button"
+                  ng-click="candidature.application_complete = true;
+                  candidature.patch({application_complete: candidature.application_complete});
+                  candidature.state = getStateCandidature(candidature)"
+                  class="btn btn-primary btn-md btn-warning">Valider</button>
+                <button type="button" ng-click='click_cComplete=false' class="btn btn-primary btn-md btn-danger">Annuler</button>
+              </div>
+
+            </div>
+
+
+            <!-- STATE 2 = Candidature complete => Candidature interview  -->
+            <div ng-show="candidature.state==2" ng-init="click_cInterview=false" >
+              <button type="button" ng-click='click_cInterview=!click_cInterview' class="btn btn-primary btn-md btn-block">
+                Sélectionné pour l'entretien</button>
+              <div ng-show="click_cInterview" >
+                <p class="alert alert-warning" role="alert">
+                  Attention cette action selectionne le candidat pour l'entretien
+                  <br/><strong>Cette action n'envoie pas d'email au candidat !</strong>
+                </p>
+                <button type="button"
+                  ng-click="candidature.selected_for_interview = true;
+                  candidature.patch({selected_for_interview: candidature.selected_for_interview});
+                  candidature.state = getStateCandidature(candidature)"
+                  class="btn btn-primary btn-md btn-warning">Valider</button>
+                <button type="button" ng-click='click_cInterview=false' class="btn btn-primary btn-md btn-danger">Annuler</button>
+              </div>
+
+            </div>
+
+            <!-- STATE 3 = Candidature interview => Candidature liste d'attente  -->
+            <div ng-show="candidature.state==3" ng-init="click_cWaitListed=false" >
+
+              
+
+
+            </div>
 
 
 
-          <div ng-if="candidature.physical_content">
-            <input type="checkbox" id="received" ng-model="candidature.physical_content_received"
-              ng-change="candidature.patch({physical_content_received: candidature.physical_content_received})" name="cReceived" ng-value="true"
-              class="inline one check"
-            />
-            <label for="received" class="inline pointer one">
-              <span class="fr">Courrier reçu</span>
-            </label>
-            <br/>
-          </div>
 
-
-
-
-
-          <input type="checkbox" id="complete" ng-model="candidature.application_complete"
-            ng-change="candidature.patch({application_complete: candidature.application_complete})" name="cComplete" ng-value="true"
-            class="inline one check"
-          />
-          <label for="complete" class="inline pointer one">
-            <span class="fr">Dossier complet</span>
-          </label>
-          <br/>
-
-
-          <input type="checkbox" id="interview" ng-model="candidature.selected_for_interview"
-            ng-change="candidature.patch({selected_for_interview: candidature.selected_for_interview})" name="cInterview" ng-value="true"
-            class="inline one check"
-          />
-          <label for="interview" class="inline pointer one">
-            <span class="fr">Selectionné pour l'entretien</span>
-          </label>
-          <br/>
-
-
-
-          <input type="checkbox" id="wait" ng-model="candidature.wait_listed"
-            ng-change="candidature.patch({wait_listed: candidature.wait_listed})" name="cWait" ng-value="true"
-            class="inline one check"
-          />
-          <label for="wait" class="inline pointer one">
-            <span class="fr">En liste d'attente</span>
-          </label>
-          <br/>
-
-          <input type="checkbox" id="selected" ng-model="candidature.selected"
-            ng-change="candidature.patch({selected: candidature.selected})" name="cSelected" ng-value="true"
-            class="inline one check"
-          />
-          <label for="selected" class="inline pointer one">
-            <span class="fr">Selectionné</span>
-          </label>
           <br/>
 
 
