@@ -1,5 +1,17 @@
 .modal-dialog{
     min-width: 70%;
+
+    #frame{
+      width: 100%;
+      height: 50vh;
+
+    }
+
+    .modal-content{
+      height: auto !important;
+    }
+
+
 }
 
 .main-container {
@@ -137,7 +149,7 @@ div.api-field {
 
 }
 
-.pointer{
+.pointer, a[ng-click], a[ui-sref] {
   cursor: pointer;
 }
 
@@ -357,6 +369,27 @@ body.en {
 .candidat-card{
   font-size: 0.9em;
 
+  .progress{
+    display: none;
+  }
+  &.ghost{
+    pointer-events: none;
+    .progress{
+      background: rgba(255,255,255,0.8);
+      height:100%;
+      display: block;
+      position: absolute;
+      width: 100%;
+      text-align: center;
+      font-size: 2em;
+      line-height: 160px;
+      z-index: 2;
+      box-shadow: none;
+    }
+    .user-birthdate{display: none}
+
+  }
+
   .thumbnail{
     height: 150px;
     padding: 0px;
@@ -399,12 +432,54 @@ body.en {
 
 }
 
+.candidatures{
+
+  .form-group {
+    display: inline-block;
+    input[type="radio"] {
+      display: none;
+    }
+    input[type="radio"] {
+      + .btn-group > label span {
+        width: 20px;
+        &:first-child {
+            display: none;
+        }
+        &:last-child {
+            display: inline-block;
+        }
+      }
+      &:checked {
+        + .btn-group > label span{
+          &:first-child {
+              display: inline-block;
+          }
+          &:last-child {
+              display: none;
+          }
+        }
+      }
+    }
+  }
+}
 .candidat{
 
   .flag-icon{
     width: 100px;
     height: 100px;
   }
+
+  .toggleHeight{
+    cursor: pointer;
+    height: 20px;
+    overflow: hidden;
+    &:hover{
+      cursor: pointer;
+      height: auto;
+    }
+  }
+
+
 }
 
 
