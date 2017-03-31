@@ -2,10 +2,10 @@
    <span class="close" ng-click="show_help(false)">x</span>
    <h1><class class="fr">Aide</class><class class="en">Help</class></h1>
    <div class="fr">
-      <p>Curriculum vitae détaillé et copies de titres ou diplômes</p>
+      <p>Faites nous parvenir votre curriculum vitae détaillé et copies de vos titres ou diplômes au format PDF.</p>
    </div>
    <div class="en">
-      <p>Detailed curriculum vitae and copies of qualifications and diplomas</p>
+      <p>Send us your detailed curriculum vitae and copies of your qualifications and diplomas in PDF format.</p>
    </div>
 </div>
 
@@ -14,9 +14,8 @@
       <span class="fr">CV / Justificatifs</span>
       <span class="en">CV / Justification</span>
    </h1>
-   <p  class="fr">Envoyer nous votre CV complet : </p>
-   <p  class="en">Send us your full CV </p>
-   <p>&nbsp;</p>
+   <p  class="fr">CV complet : </p>
+   <p  class="en">Full CV </p>
    <div class="field">
       <input name="cCV" ng-model="candidature.curriculum_vitae" hidden required />
       <div id="cv"
@@ -66,8 +65,9 @@
       </label>
    </div>
    <hr/>
-   <p class="fr">Envoyer nous vos justificatifs de diplômes, certifications, ... (formats images ou pdfs)</p>
-   <p class="en">Send us copies of your diplomas, certificates, qualifications</p>
+   <p class="fr">Justificatifs de diplômes, certifications, ... <br/>
+     <em class="additionnalInfo">(formats images ou pdfs)</em></p>
+   <p class="en">Copies of your diplomas, certificates, qualifications</p>
    <div class="field">
 
          <div ng-repeat="item in cursus_justifications.media | orderBy:'1*position' track by $index"
