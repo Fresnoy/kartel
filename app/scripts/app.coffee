@@ -113,7 +113,6 @@ angular.module('kartel',
     is_xhtml = is_xhtml or true
     breakTag = if is_xhtml then '<br />' else '<br>'
     msg = (msg + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2')
-    console.log(msg)
     return $sce.trustAsHtml msg
 
 .filter('time', ->

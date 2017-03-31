@@ -7,46 +7,49 @@
   <div class="row">
 
     <div class="col-md-12">
-      <h1>Candidatures ({{ candidatures.length }})</h1>
+      <h1>Candidatures ({{ candidatures_filtered.length }})</h1>
       <div class="row">
-        <div class="col-md-3">
-          <select id="gender" ng-model="critere" name="uGender" required>
-             <option ng-repeat="(item, value) in select_critere" value="{{value}}">{{item}}</option>
-          </select>
-        </div>
-        <div class="pointer" class="col-md-2" ng-show='critere' ng-init="critere_bool = true">
-          <input type="radio"
-             ng-model="critere_bool"
-             name="cBool"
-             id="cbool-true"
-             ng-value="true"
-             class=""
+        <div class="col-md-12">
+          <div class="input-group">
+            <div class="input-group-btn">
+              <button type="button" class="btn btn-default">Voir</button>
 
-             />
-          <label class="inline" for="cbool-true">Oui</label>
-          <input type="radio"
-            ng-model="critere_bool"
-            name="cBool"
-            id="cbool-false"
-            ng-value="false"
-            class=""
-            />
-            <label class="inline" for="cbool-false">Non</label>
+              <button type="button" id="dropdown-menu-critere" class="btn btn-default dropdown-toggle"
+              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{critere.title}} <span class="caret"></span></button>
 
-        </div>
-        <div class="col-md-3">
-          <input type="text"
-             ng-model="search_candidat"
-             ng-change="search(search_candidat)"
-             placeholder="Recherche"
-             />
-        </div>
+              <ul class="dropdown-menu" id="critere" aria-labelledby="dropdown-menu-critere">
+                <li class="" ng-repeat="item in select_critere track by $index" >
+                  <a ng-click="$parent.critere=item;show_candidatures($parent.critere, $parent.order)">{{item.title}} ({{count_candidatures(item)}})</a>
+                </li>
+              </ul>
+            </div><!-- /btn-group -->
+            <div class="input-group-btn">
 
 
+              <button type="button" class="btn btn-default">Trié par</button>
+
+              <button type="button" class="btn btn-default dropdown-toggle"
+                data-toggle="dropdown" id="dropdown-menu-order" aria-haspopup="true" aria-expanded="false">
+                {{order.title}} <span class="caret"></span></button>
+
+              <ul class="dropdown-menu" id="order" aria-labelledby="dropdown-menu-order">
+                <li class="" ng-repeat="item in select_order track by $index" >
+                  <a ng-click="$parent.order=item;show_candidatures($parent.critere, $parent.order)">{{item.title}} ({{count_candidatures(item)}})</a>
+                </li>
+              </ul>
+
+            </div><!-- /btn-group -->
+
+            <input type="text" class="form-control" type="text"
+               ng-model="search_candidat"
+               ng-change="search(search_candidat)"
+               placeholder="Rechercher un candidat" />
+          </div><!-- /input-group -->
+        </div><!-- 12 -->
 
       </div>
 
-      <ng-include src="'views/partials/candidat_card.html'" ng-repeat="candidature in candidatures"></ng-include>
+      <ng-include src="'views/partials/candidat_card.html'" ng-repeat="candidature in candidatures_filtered"></ng-include>
     </div>
 
   </div>
