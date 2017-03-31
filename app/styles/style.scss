@@ -149,7 +149,7 @@ div.api-field {
 
 }
 
-.pointer, a[ng-click] {
+.pointer, a[ng-click], a[ui-sref] {
   cursor: pointer;
 }
 
