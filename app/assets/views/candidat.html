@@ -169,7 +169,7 @@
               <span ng-if='!candidature.curriculum_vitae' class="text-danger warning">CV absent</span>
             <p ng-if='candidature.master_degree'>Diplome : Bac +5</p>
             <p ng-if='!candidature.master_degree'>
-            <a ng-if="candidature.experience_justification" ng-click='singleLightbox(candidature.experience_justification, "7 années Expérience artistiques jusification")' target="_blanck">
+              <a ng-if="candidature.experience_justification" ng-click='singleLightbox(candidature.experience_justification, "7 années Expérience artistiques jusification")' target="_blanck">
                 Consulter le justificatif d'expérience artistique</a>
                 <span ng-if='!candidature.experience_justification' class="text-danger warning">Justificatif d'expérience artistique absent</span>
             </p>
@@ -306,7 +306,7 @@
             <!-- STATE 3 = Candidature interview => Candidature liste d'attente  -->
             <div ng-show="candidature.state==3" ng-init="click_cWaitListed=false" >
 
-              
+
 
 
             </div>

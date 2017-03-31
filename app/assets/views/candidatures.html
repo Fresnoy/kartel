@@ -9,30 +9,43 @@
     <div class="col-md-12">
       <h1>Candidatures ({{ candidatures_filtered.length }})</h1>
       <div class="row">
-        <div class="col-md-3">
-          <select
-                ng-change="show_candidatures(critere, order)" ng-model="critere" ng-selected="critere"
-                ng-options="(item.title+' ('+count_candidatures(item)+')') for item in select_critere" >
-                  {{item.title}}({{count_candidatures(item)}})
-          </select>
-        </div>
-        <div class="col-md-3">
-          <select
-                ng-change="show_candidatures(critere, order)" ng-model="order" ng-selected="order"
-                ng-options="item.title for item in select_order" >
-                  {{item.title}}
-          </select>
-        </div>
+        <div class="col-md-12">
+          <div class="input-group">
+            <div class="input-group-btn">
+              <button type="button" class="btn btn-default">Voir</button>
 
-        <div class="col-md-3">
-          <input type="text"
-             ng-model="search_candidat"
-             ng-change="search(search_candidat)"
-             placeholder="Recherche"
-             />
-        </div>
+              <button type="button" id="dropdown-menu-critere" class="btn btn-default dropdown-toggle"
+              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{critere.title}} <span class="caret"></span></button>
+
+              <ul class="dropdown-menu" id="critere" aria-labelledby="dropdown-menu-critere">
+                <li class="" ng-repeat="item in select_critere track by $index" >
+                  <a ng-click="$parent.critere=item;show_candidatures($parent.critere, $parent.order)">{{item.title}} ({{count_candidatures(item)}})</a>
+                </li>
+              </ul>
+            </div><!-- /btn-group -->
+            <div class="input-group-btn">
 
 
+              <button type="button" class="btn btn-default">Trié par</button>
+
+              <button type="button" class="btn btn-default dropdown-toggle"
+                data-toggle="dropdown" id="dropdown-menu-order" aria-haspopup="true" aria-expanded="false">
+                {{order.title}} <span class="caret"></span></button>
+
+              <ul class="dropdown-menu" id="order" aria-labelledby="dropdown-menu-order">
+                <li class="" ng-repeat="item in select_order track by $index" >
+                  <a ng-click="$parent.order=item;show_candidatures($parent.critere, $parent.order)">{{item.title}} ({{count_candidatures(item)}})</a>
+                </li>
+              </ul>
+
+            </div><!-- /btn-group -->
+
+            <input type="text" class="form-control" type="text"
+               ng-model="search_candidat"
+               ng-change="search(search_candidat)"
+               placeholder="Rechercher un candidat" />
+          </div><!-- /input-group -->
+        </div><!-- 12 -->
 
       </div>
 

@@ -247,19 +247,19 @@ angular.module('memoire.controllers', ['memoire.services'])
   $scope.candidatures_filtered = []
 
   $scope.select_critere = [
-    {title: 'voir tout', critere: "all", critere_value: "undefined" },
-    {title: 'Candidatures courrier', critere: "physical_content", critere_value: true },
-    {title: 'Candidatures finalisées', critere: "application_completed", critere_value: true },
-    {title: 'Candidatures visées', critere: "application_complete", critere_value: true },
-    {title: 'Selectionnés pour les interview', critere: "selected_for_interview", critere_value: true },
-    {title: 'Selectionnés', critere: "selected", critere_value: true },
-    {title: 'Liste d\'attente', critere: "wait_listed", critere_value: true },
+    {title: 'tout', critere: "all", critere_value: "undefined" },
+    {title: 'les candidatures avec envoie de courrier', critere: "physical_content", critere_value: true },
+    {title: 'les candidatures non validées', critere: "application_complete", critere_value: false },
+    {title: 'les candidature validées', critere: "application_complete", critere_value: true },
+    {title: 'les candidat admins pour l\'entretiens', critere: "selected_for_interview", critere_value: true },
+    {title: 'les candidates selectionnés', critere: "selected", critere_value: true },
+    {title: 'les candidats en liste d\'attente', critere: "wait_listed", critere_value: true },
   ]
   $scope.select_order = [
-      {title: "id", order: "id", context: ""},
-      {title: "nationalité", order: "nationality", context: ".artist.user.profile"},
-      {title: "nom", order: "last_name", context: ".artist.user"},
-      {title: "progression", order: "progress", reverse: true, context: ""},
+      {title: "Numéro d'inscription", order: "id", context: ""},
+      {title: "Nationalité", order: "nationality", context: ".artist.user.profile"},
+      {title: "Nom", order: "last_name", context: ".artist.user"},
+      {title: "Progression", order: "progress", reverse: true, context: ""},
   ]
   $scope.critere = $scope.select_critere[0]
   $scope.order = $scope.select_order[0]
