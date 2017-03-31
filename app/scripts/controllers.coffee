@@ -251,8 +251,8 @@ angular.module('memoire.controllers', ['memoire.services'])
     {title: 'les candidatures avec envoie de courrier', critere: "physical_content", critere_value: true },
     {title: 'les candidatures non validées', critere: "application_complete", critere_value: false },
     {title: 'les candidature validées', critere: "application_complete", critere_value: true },
-    {title: 'les candidat admins pour l\'entretiens', critere: "selected_for_interview", critere_value: true },
-    {title: 'les candidates selectionnés', critere: "selected", critere_value: true },
+    {title: 'les candidats admins pour l\'entretiens', critere: "selected_for_interview", critere_value: true },
+    {title: 'les candidats selectionnés', critere: "selected", critere_value: true },
     {title: 'les candidats en liste d\'attente', critere: "wait_listed", critere_value: true },
   ]
   $scope.select_order = [
