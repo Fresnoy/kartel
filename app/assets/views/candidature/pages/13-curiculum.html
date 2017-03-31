@@ -6,39 +6,16 @@
      <p>
         Les candidats doivent pouvoir justifier :
      <ul>
-        <li>soit du Baccalauréat (ou équivalence reconnue)
-           et 5 années d’études attestées par un titre ou
-           diplôme,
-        </li>
-        <li>soit du Baccalauréat (ou équivalence
-           reconnue) et 7 années d’expérience artistique
-           ou professionnelle, et sous réserve de joindre
-           au dossier d’inscription administrative un
-           argumentaire, une page maximum, précisant
-           en quoi leur expérience les a préparés au
-           cursus du Fresnoy.
+        <li>soit du Baccalauréat (ou équivalence reconnue) et 5 années d’études attestées par un titre ou diplôme,</li>
+        <li>soit du Baccalauréat (ou équivalence reconnue) et 7 années d’expérience artistique ou professionnelle, et sous réserve de joindre au dossier d’inscription administrative un argumentaire, une page maximum, précisant en quoi leur expérience les a préparés au cursus du Fresnoy.
         </li>
      </ul>
      </p>
    </div>
    <div class="en">
       <p>The candidates must be able to provide proof of:<ul>
-         <li> A levels or Baccalauréat (or recognized
-equivalent) and 5 years of study validated by a
-diploma; (or)</li>
-<li>A levels or Baccalauréat (or recognized
-equivalent) and 7 years of artistic or professional
-experience; in this case, a one page argument
-should be sent with the administrative application
-to explain how this experience is relevant to the
-course at Le Fresnoy.
-The candidates in the second case will sit a
-specific examination set by a special committee,
-who will judge and validate their application. Their
-decision is final. Participation in the selection
-procedure is free. Travel costs and living expenses
-of candidates during the entrance examinations
-are at the charge of the candidate.</li>
+         <li> A levels or Baccalauréat (or recognized equivalent) and 5 years of study validated by a diploma; (or)</li>
+         <li>A levels or Baccalauréat (or recognized equivalent) and 7 years of artistic or professional experience; in this case, a one page argument should be sent with the administrative application to explain how this experience is relevant to the course at Le Fresnoy. The candidates in the second case will sit a specific examination set by a special committee, who will judge and validate their application. Their decision is final. Participation in the selection procedure is free. Travel costs and living expenses of candidates during the entrance examinations are at the charge of the candidate.</li>
 </ul></p>
    </div>
 </div>
@@ -50,7 +27,7 @@ are at the charge of the candidate.</li>
    </h1>
    <form name="form" ng-submit="form.$valid && submit()" class="css-form" novalidate enctype="multipart/form-data">
       <div class="field">
-         <p class="fr">Cocher la case correspondant à votre situation : </p>
+         <p class="fr">Cochez la case correspondant à votre situation : </p>
          <p class="en">Please tick the corresponding box: </p>
          <input type="radio"
             id="master-degree"
@@ -80,8 +57,8 @@ are at the charge of the candidate.</li>
          </label>
       </div>
       <div ng-if="candidature.master_degree==false">
-         <p class="fr">Dites nous en quoi cette expérience vous a préparé au Fresnoy (1 page)</p>
-         <p class="en">Tell us how this experience has prepared you for Le Fresnoy (1 page)</p>
+         <p class="fr">En quoi cette expérience vous a-t-elle préparé au Fresnoy ? <em>(1 page max)</em></p>
+         <p class="en">In what way this experience has prepared you for Le Fresnoy ? <em>(1 page max)</em> </p>
          <input id="exp-justification" ng-model="candidature.experience_justification" required hidden />
          <div ng-model="candidature.experience_justification"
             class="media-upload"
