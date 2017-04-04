@@ -42,6 +42,12 @@ angular.module('memoire.controllers', ['memoire.services'])
       password:""
       error:""
 
+  $scope.show_search = () ->
+    console.log ($state.$current.name)
+    if $state.$current.name.indexOf("candidatures")>-1
+      return false
+    return true
+
   if(localStorage.getItem('token'))
     user_id = jwtHelper.decodeToken(localStorage.getItem('token')).user_id
     Users.one(user_id).get().then((user) ->

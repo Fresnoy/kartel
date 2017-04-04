@@ -26,7 +26,7 @@
             <div class="input-group-btn">
 
 
-              <button type="button" class="btn btn-default">Trié par</button>
+              <button type="button" class="btn btn-default">Trié(es) par</button>
 
               <button type="button" class="btn btn-default dropdown-toggle"
                 data-toggle="dropdown" id="dropdown-menu-order" aria-haspopup="true" aria-expanded="false">
@@ -38,13 +38,22 @@
                 </li>
               </ul>
 
-            </div><!-- /btn-group -->
 
+            </div><!-- /btn-group -->
             <input type="text" class="form-control" type="text"
                ng-model="search_candidat"
                ng-change="search(search_candidat)"
                placeholder="Rechercher un candidat" />
+
+            <div class="input-group-btn">
+
+
+              <button type="button" class="btn btn-success">Télécharger les informations</button>
+
+            </div>
+
           </div><!-- /input-group -->
+
         </div><!-- 12 -->
 
       </div>
