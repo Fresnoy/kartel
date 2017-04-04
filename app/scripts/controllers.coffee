@@ -182,7 +182,8 @@ angular.module('memoire.controllers', ['memoire.services'])
     search = ""
     #return all artwork video and filtre with idFrezsnoy - TODO search idFresnoy in api
     # AmeRestangular.setDefaultHeaders({'Content-Type': 'charset=UTF-8'})
-    AmeRestangular.all("api_search/").get('',{"search": search, "flvfile": "true", "previewsize":"scr"}, {authorization: undefined} ).then((ame_artwork) ->
+    # AmeRestangular.all("api_search/").get('',{"search": search, "flvfile": "true", "previewsize":"scr"}, {authorization: undefined} ).then((ame_artwork) ->
+    AmeRestangular.all("api_search/").get('apiresult.htm',{}, {authorization: undefined}).then((ame_artwork) ->
       for archive in ame_artwork
         # valid reference id Fresnoy => id AME
 
@@ -394,7 +395,9 @@ angular.module('memoire.controllers', ['memoire.services'])
       iframe: /(\.pdf|vimeo\.com|youtube\.com)/i.test(url)
       description: description
     # embed video youtube
-    url = url.replace("watch?v=","embed/").replace("&t=","#t=")
+    # url = url.replace("watch?v=","embed/").replace("&t=","#t=")
+    url = url.replace(/^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?/gm, 'http://www.youtube.com/embed/$5');
+    url = url.replace(/(?:http:\/\/)?(?:www\.)?(?:vimeo\.com)\/(.*?)\/(.*)/g, '//player.vimeo.com/video/$1')
     # when url is image set picture var, otherwise set medium_url
     if(/\.(jpe?g|png|gif|bmp)/i.test(url)) then image.picture= $sce.trustAsResourceUrl(url)
     else  image.medium_url= $sce.trustAsResourceUrl(url)
