@@ -43,7 +43,6 @@ angular.module('memoire.controllers', ['memoire.services'])
       error:""
 
   $scope.show_search = () ->
-    console.log ($state.$current.name)
     if $state.$current.name.indexOf("candidatures")>-1
       return false
     return true
@@ -247,20 +246,20 @@ angular.module('memoire.controllers', ['memoire.services'])
   )
 )
 
-.controller('CandidaturesController', ($rootScope, $scope, Candidatures, RestangularV2, ArtistsV2, Users,
-  ISO3166) ->
+.controller('CandidaturesController', ($rootScope, $scope, Candidatures, Galleries, Media, RestangularV2, ArtistsV2, Users,
+  ISO3166, cfpLoadingBar) ->
   # init
   $scope.candidatures = []
   $scope.candidatures_filtered = []
 
   $scope.select_critere = [
-    {title: 'tout', critere: "all", critere_value: "undefined" },
-    {title: 'les candidatures avec envoie de courrier', critere: "physical_content", critere_value: true },
-    {title: 'les candidatures non validées', critere: "application_complete", critere_value: false },
-    {title: 'les candidature validées', critere: "application_complete", critere_value: true },
-    {title: 'les candidats admins pour l\'entretiens', critere: "selected_for_interview", critere_value: true },
-    {title: 'les candidats selectionnés', critere: "selected", critere_value: true },
-    {title: 'les candidats en liste d\'attente', critere: "wait_listed", critere_value: true },
+    {title: 'tout', sortby: {"all": true} },
+    {title: 'les candidatures courrier', sortby: {"physical_content": true}},
+    {title: 'les candidatures en attente de validation', sortby: {"application_completed": true, "application_complete": false}},
+    {title: 'les candidature validées', sortby: {"application_complete": true}},
+    {title: 'les candidats admins pour l\'entretiens', sortby: {"selected_for_interview": true}},
+    {title: 'les candidats selectionnés', sortby: {"selected": true}},
+    {title: 'les candidats en liste d\'attente', sortby: {"wait_listed": true}},
   ]
   $scope.select_order = [
       {title: "Numéro d'inscription", order: "id", context: ""},
@@ -268,8 +267,9 @@ angular.module('memoire.controllers', ['memoire.services'])
       {title: "Nom", order: "last_name", context: ".artist.user"},
       {title: "Progression", order: "progress", reverse: true, context: ""},
   ]
-  $scope.critere = $scope.select_critere[0]
-  $scope.order = $scope.select_order[0]
+  $scope.sortby = $scope.select_critere[3]
+  $scope.order = $scope.select_order[2]
+  $scope.loading = cfpLoadingBar
 
   $scope.country = ISO3166
   $scope.LANGUAGES_NAME = languageMappingList
@@ -294,9 +294,21 @@ angular.module('memoire.controllers', ['memoire.services'])
               current_cantidature[0].artist.user = user_infos
               current_cantidature[0].progress = $scope.get_candidature_progress(current_cantidature[0])
             )
-      )
-      # $scope.candidatures_filtered = _.sortBy($scope.candidatures , "id")
-      $scope.show_candidatures($scope.critere, $scope.order)
+        )
+        # galeries
+        gallery_id = candidature.cursus_justifications.match(/\d+$/)[0]
+        Galleries.one(gallery_id).get().then((gallery_infos) ->
+          current_cantidature = _.filter(candidatures, (c) -> return c.cursus_justifications == gallery_infos.url)
+          current_cantidature[0].cursus_justifications = gallery_infos
+          for medium in gallery_infos.media
+            medium_id = medium.match(/\d+$/)[0]
+            Media.one(medium_id).get().then((media) ->
+              media_index = gallery_infos.media.indexOf(media.url)
+              gallery_infos.media[media_index] = media
+            )
+        )
+      $scope.show_candidatures($scope.sortby, $scope.order)
+
   )
 
   $scope.getStateCandidature = (candidature) ->
@@ -325,16 +337,19 @@ angular.module('memoire.controllers', ['memoire.services'])
       $scope.candidatures.reverse()
 
     $scope.candidatures_filtered = _.filter($scope.candidatures, (candidat) ->
-        if c.critere == "all" then return true
-        return candidat[c.critere] == c.critere_value
+        if c.sortby.all then return true
+        for item, value of c.sortby
+          if candidat[item] != value then return false
+        return true
     )
     return true
 
   $scope.count_candidatures = (c) ->
     arr = _.filter($scope.candidatures, (candidat) ->
-        if c.critere == "all"
-          return true
-        return candidat[c.critere] == c.critere_value
+        if c.sortby.all then return true
+        for item, value of c.sortby
+          if candidat[item] != value then return false
+        return true
     )
     return arr.length
 
@@ -370,6 +385,25 @@ angular.module('memoire.controllers', ['memoire.services'])
 
     )
     return true
+
+  $scope.download_data = ""
+  $scope.make_data = () ->
+    csvContent = "data:text/csv;charset=utf-8,";
+    csv = []
+    for line in document.querySelectorAll("table#data_candidatures tr")
+        row = []
+        for col in line.querySelectorAll("td, th")
+            t = $(col).text().replace(/\s\s+/g,' ')
+            row.push(t)
+        csv.push(row.join(","))
+
+    csvContent += csv.join('\n')
+    data_var = csvContent
+
+    csvFile  = new Blob(["\ufeff"+csv.join("\n")], {type: "text/csv;charset=utf-8"});
+    return window.URL.createObjectURL(csvFile);
+    return data_var
+
 )
 
 .controller('CandidatController', ($rootScope, $scope, ISO3166, $stateParams, RestangularV2, Candidatures, ArtistsV2,
@@ -402,8 +436,8 @@ angular.module('memoire.controllers', ['memoire.services'])
       description: description
     # embed video youtube
     # url = url.replace("watch?v=","embed/").replace("&t=","#t=")
-    url = url.replace(/^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?/gm, 'http://www.youtube.com/embed/$5');
-    url = url.replace(/(?:http:\/\/)?(?:www\.)?(?:vimeo\.com)\/(.*?)\/(.*)/g, '//player.vimeo.com/video/$1')
+    url = url.replace(/^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?/gm, 'https://www.youtube.com/embed/$5');
+    url = url.replace(/^https?:\/\/(?:www\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|album\/(\d+)\/video\/|)(\d+)(?:$|\/|\?)(.*)/g, "https://player.vimeo.com/video/$3")
     # when url is image set picture var, otherwise set medium_url
     if(/\.(jpe?g|png|gif|bmp)/i.test(url)) then image.picture= $sce.trustAsResourceUrl(url)
     else  image.medium_url= $sce.trustAsResourceUrl(url)

@@ -14,12 +14,12 @@
             <div class="input-group-btn">
               <button type="button" class="btn btn-default">Voir</button>
 
-              <button type="button" id="dropdown-menu-critere" class="btn btn-default dropdown-toggle"
-              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{critere.title}} <span class="caret"></span></button>
+              <button type="button" id="dropdown-menu-sortby" class="btn btn-default dropdown-toggle"
+              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{sortby.title}} <span class="caret"></span></button>
 
-              <ul class="dropdown-menu" id="critere" aria-labelledby="dropdown-menu-critere">
+              <ul class="dropdown-menu" id="sortby" aria-labelledby="dropdown-menu-sortby">
                 <li class="" ng-repeat="item in select_critere track by $index" >
-                  <a ng-click="$parent.critere=item;show_candidatures($parent.critere, $parent.order)">{{item.title}} ({{count_candidatures(item)}})</a>
+                  <a ng-click="$parent.sortby=item;show_candidatures($parent.sortby, $parent.order)">{{item.title}} ({{count_candidatures(item)}})</a>
                 </li>
               </ul>
             </div><!-- /btn-group -->
@@ -34,7 +34,7 @@
 
               <ul class="dropdown-menu" id="order" aria-labelledby="dropdown-menu-order">
                 <li class="" ng-repeat="item in select_order track by $index" >
-                  <a ng-click="$parent.order=item;show_candidatures($parent.critere, $parent.order)">{{item.title}} ({{count_candidatures(item)}})</a>
+                  <a ng-click="$parent.order=item;show_candidatures($parent.sortby, $parent.order)">{{item.title}}</a>
                 </li>
               </ul>
 
@@ -46,9 +46,10 @@
                placeholder="Rechercher un candidat" />
 
             <div class="input-group-btn">
-
-
-              <button type="button" class="btn btn-success">Télécharger les informations</button>
+              <a ng-click='download_data = make_data()' ng-href="{{download_data}}" target="_blank"
+              download="candidatures_{{sortby.title}}.csv" type="button"
+              ng-style="{'opacity': (loading.status() != 0) ? '0.5':'1'  }"
+               class="btn btn-success">Télécharger les informations</a>
 
             </div>
 
@@ -58,7 +59,58 @@
 
       </div>
 
-      <ng-include src="'views/partials/candidat_card.html'" ng-repeat="candidature in candidatures_filtered"></ng-include>
+      <ng-include src="'views/partials/candidat_card.html'" ng-repeat="candidature in candidatures_filtered track by $index"></ng-include>
+
+      <table style="width:100%" id="data_candidatures" class="hidden">
+        <tr>
+          <th>date arrivée</th>
+          <th>Nom / n° dossier</th>
+          <th>Prénom</th>
+          <th>Sexe</th>
+          <th>Date naiss</th>
+          <th>Nationalité</th>
+          <th>Email	</th>
+          <th>Adresse postale</th>
+          <th>Matériel</th>
+          <th>oral	</th>
+          <th>Note finale	</th>
+          <th>SKYPE	</th>
+          <th>note sélection 2	</th>
+          <th>note sélection 3	</th>
+          <th>diplôme	</th>
+          <th>Observations/commission	</th>
+        </tr>
+        <tr ng-repeat="candidature in candidatures_filtered">
+            <th>{{candidature.created_on.split("T")[0] | date:'MMMM d'}}</th>
+            <th>{{candidature.artist.user.last_name}} {{(candidature.current_year_application_count)}}</th>
+            <th>{{candidature.artist.user.first_name}}</th>
+            <th>{{candidature.artist.user.profile.gender}}</th>
+            <th>{{candidature.artist.user.profile.birthdate | date:'dd/MM/yyyy' }}</th>
+            <th>
+              <span ng-repeat="nationality in candidature.artist.user.profile.nationality.split(', ') track by $index">
+                {{country.codeToCountry[nationality]}}
+              </span>
+            </th>
+            <th>{{candidature.artist.user.email}}</th>
+            <th>{{candidature.artist.user.profile.homeland_adress}}
+              {{candidature.artist.user.profile.homeland_zipcode}}
+              {{candidature.artist.user.profile.homeland_town}}</th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th>{{candidature.remote_interview ? 'X' : ''}}	</th>
+            <th></th>
+            <th></th>
+            <th>
+              <span class="justificatifs" ng-repeat="justif in candidature.cursus_justifications.media track by $index">
+                {{justif.label}}
+              </span>
+            </th>
+            <th></th>
+        </tr>
+      </table>
+
+
     </div>
 
   </div>
