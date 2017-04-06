@@ -306,6 +306,45 @@
             <!-- STATE 3 = Candidature interview => Candidature liste d'attente  -->
             <div ng-show="candidature.state==3" ng-init="click_cWaitListed=false" >
 
+                <button type="button" ng-click='click_cWaitListed=!click_cWaitListed' class="btn btn-primary btn-md btn-block">
+                  En liste d'attente</button>
+                <div ng-show="click_cWaitListed" >
+                  <p class="alert alert-warning" role="alert">
+                    Attention cette action selectionne le candidat pour la liste d'attente
+                    <br/><strong>Cette action n'envoie pas d'email au candidat !</strong>
+                  </p>
+                  <button type="button"
+                    ng-click="candidature.wait_listed = true;
+                    candidature.patch({wait_listed: candidature.wait_listed});
+                    candidature.state = getStateCandidature(candidature)"
+                    class="btn btn-primary btn-md btn-warning">Valider</button>
+                  <button type="button" ng-click='click_cWaitListed=false' class="btn btn-primary btn-md btn-danger">Annuler</button>
+                </div>
+
+
+            </div>
+
+            <!-- STATE 4 = Candidature interview => Candidature liste d'attente  -->
+            <div ng-show="candidature.state==3" ng-init="click_cSelected=false" >
+
+                <button type="button" ng-click='click_cSelected=!click_cSelected' class="btn btn-primary btn-md btn-block">
+                  En liste d'attente</button>
+                <div ng-show="click_cSelected" >
+                  <p class="alert alert-warning" role="alert">
+                    Attention cette action selectionne le candidat pour la liste d'attente
+                    <br/><strong>Cette action n'envoie pas d'email au candidat !</strong>
+                  </p>
+                  <button type="button"
+                    ng-click="candidature.selected = true;
+                    candidature.patch({selected: candidature.selected});
+                    candidature.state = getStateCandidature(candidature)"
+                    class="btn btn-primary btn-md btn-warning">Valider</button>
+                  <button type="button" ng-click='click_cSelected=false' class="btn btn-primary btn-md btn-danger">Annuler</button>
+                </div>
+
+
+            </div>
+
 
 
 

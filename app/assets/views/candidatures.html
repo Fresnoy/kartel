@@ -47,9 +47,12 @@
 
             <div class="input-group-btn">
               <a ng-click='download_data = make_data()' ng-href="{{download_data}}" target="_blank"
-              download="candidatures_{{sortby.title}}.csv" type="button"
+              download="candidatures_{{sortby.title}}_{{today|date:'dd.MM.y_hh.mm.ss'}}.csv" type="button"
               ng-style="{'opacity': (loading.status() != 0) ? '0.5':'1'  }"
-               class="btn btn-success">Télécharger les informations</a>
+               class="btn btn-success">
+               <span ng-show="loading.status() == 0">Télécharger le fichier Excel</span>
+               <span ng-show="loading.status() != 0">{{(100*loading.status())| number:0}}%</span>
+              </a>
 
             </div>
 
@@ -62,8 +65,10 @@
       <ng-include src="'views/partials/candidat_card.html'" ng-repeat="candidature in candidatures_filtered track by $index"></ng-include>
 
       <table style="width:100%" id="data_candidatures" class="hidden">
+        <tr><th>Version du {{ today | date :  "dd.MM.y - hh:mm" }} //// {{ today.getTime() }}</th></tr>
+        <tr><th></th></tr>
         <tr>
-          <th>date arrivée</th>
+          <th>Date arrivée</th>
           <th>Nom / n° dossier</th>
           <th>Prénom</th>
           <th>Sexe</th>
@@ -72,16 +77,16 @@
           <th>Email	</th>
           <th>Adresse postale</th>
           <th>Matériel</th>
-          <th>oral	</th>
+          <th>Oral	</th>
           <th>Note finale	</th>
           <th>SKYPE	</th>
-          <th>note sélection 2	</th>
-          <th>note sélection 3	</th>
-          <th>diplôme	</th>
+          <th>Note sélection 2</th>
+          <th>Note sélection 3</th>
+          <th>Diplôme	</th>
           <th>Observations/commission	</th>
         </tr>
         <tr ng-repeat="candidature in candidatures_filtered">
-            <th>{{candidature.created_on.split("T")[0] | date:'MMMM d'}}</th>
+            <th>{{candidature.created_on.split("T")[0] | date:'dd/MM'}}</th>
             <th>{{candidature.artist.user.last_name}} {{(candidature.current_year_application_count)}}</th>
             <th>{{candidature.artist.user.first_name}}</th>
             <th>{{candidature.artist.user.profile.gender}}</th>
