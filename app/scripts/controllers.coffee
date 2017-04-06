@@ -251,7 +251,7 @@ angular.module('memoire.controllers', ['memoire.services'])
   # init
   $scope.candidatures = []
   $scope.candidatures_filtered = []
-
+  # order
   $scope.select_critere = [
     {title: 'tout', sortby: {"all": true} },
     {title: 'les candidatures courrier', sortby: {"physical_content": true}},
@@ -270,7 +270,7 @@ angular.module('memoire.controllers', ['memoire.services'])
   $scope.sortby = $scope.select_critere[3]
   $scope.order = $scope.select_order[2]
   $scope.loading = cfpLoadingBar
-
+  # language / country
   $scope.country = ISO3166
   $scope.LANGUAGES_NAME = languageMappingList
   $scope.LANGUAGES_NAME_short = {}
@@ -386,23 +386,21 @@ angular.module('memoire.controllers', ['memoire.services'])
     )
     return true
 
-  $scope.download_data = ""
+  # make CSV file
+  $scope.today = new Date()
   $scope.make_data = () ->
-    csvContent = "data:text/csv;charset=utf-8,";
+    csvContent = ""
     csv = []
     for line in document.querySelectorAll("table#data_candidatures tr")
         row = []
         for col in line.querySelectorAll("td, th")
             t = $(col).text().replace(/\s\s+/g,' ')
             row.push(t)
-        csv.push(row.join(","))
+        csv.push(row.join(";"))
 
-    csvContent += csv.join('\n')
-    data_var = csvContent
-
-    csvFile  = new Blob(["\ufeff"+csv.join("\n")], {type: "text/csv;charset=utf-8"});
-    return window.URL.createObjectURL(csvFile);
-    return data_var
+    csvContent += "\ufeff"+csv.join('\n')
+    csvFile  = new Blob([csvContent], {type: "text/csv;charset=utf-8"})
+    return window.URL.createObjectURL(csvFile)
 
 )
 
