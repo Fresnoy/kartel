@@ -1,54 +1,43 @@
-<div class="candidat-card col-md-3"  ng-class="{
+<div class="candidat-card col-md-4"  ng-class="{
         'ghost': !candidature.application_completed,
         'application_complete': candidature.application_complete,
         'remote_interview': candidature.remote_interview,
         'selected_for_interview': candidature.selected_for_interview,
         'selected': candidature.selected}">
-    <span class="progress" ng-bind="candidature.progress" />
+
 
     <div class="thumbnail">
       <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-3">
           <div class="photo">
-            <fresnoy-thumbnail ng-if="candidature.artist.user.profile.photo" thurl="candidature.artist.user.profile.photo" thwidth="50" thheight="50"></fresnoy-thumbnail>
-            <img ng-if="!candidature.artist.user.profile.photo" src="images/anonymous.jpg" alt="..">
+            <fresnoy-thumbnail ng-if="candidature.artist.user.profile.photo && candidature.application_completed"
+            thurl="candidature.artist.user.profile.photo" thwidth="70" thheight="80"></fresnoy-thumbnail>
+            <img ng-if="!candidature.artist.user.profile.photo || !candidature.application_completed" src="images/anonymous.jpg" alt="..">
           </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-6">
           <div class="user-infos">
-            <span class="user-first_name">{{ candidature.artist.user.first_name }}</span>
-            <span class="user-last_name">{{ candidature.artist.user.last_name }}</span>
-            <span class="user-birthdate">{{ candidature.artist.user.profile.birthdate | ageFilter}} ans</span>
+            <div>
+              <span class="user-first_name preserve-info">{{ candidature.artist.user.first_name }}</span>
+              <span class="oneline nationality hide-infos">
+                <span ng-repeat="nationality in candidature.artist.user.profile.nationality.split(', ') track by $index">
+                  <span class="flag-icon flag-icon-{{nationality | lowercase}}" title="{{country.codeToCountry[nationality]}}" />
+                </span>
+              </span>
+            </div>
+            <div class="user-last_name preserve-info">{{ candidature.artist.user.last_name }}</div>
+            <div class="user-birthdate preserve-info">{{ candidature.artist.user.profile.birthdate | ageFilter}} ans</div>
+            <div class="oneline langues hide-infos"> Parle
+              <span ng-if="candidature.artist.user.profile.other_language">
+                <span class="language" ng-repeat="language in candidature.artist.user.profile.other_language.split(', ')  track by $index"><span class="name" ng-bind="LANGUAGES_NAME_short[language].englishName.split('(')[0]" />, </span>
+              </span>
+            </div>
           </div>
         </div>
         <div class="col-md-4">
-          <div class="oneline nationality">
-            <span ng-repeat="nationality in candidature.artist.user.profile.nationality.split(', ') track by $index">
-              <span class="flag-icon flag-icon-{{nationality | lowercase}}" title="{{country.codeToCountry[nationality]}}" />
-            </span>
-          </div>
-          <div class="oneline langues">
-            <i class="glyphicon glyphicon-bullhorn" title="Langues parlées"></i>&nbsp;<span class="name" ng-bind="LANGUAGES_NAME_short[candidature.artist.user.profile.mother_tongue].englishName.split('(')[0]" />
-            <span ng-if="candidature.artist.user.profile.other_language">
-              <span class="language" ng-repeat="language in candidature.artist.user.profile.other_language.split(', ')  track by $index"><span class="name" ng-bind="LANGUAGES_NAME_short[language].englishName.split('(')[0]" />, </span>
-            </span>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-6">
-          <div class="oneline website">
-            <span ng-repeat="website in candidature.artist.websites track by $index">
-                <a href="{{ website.link }}" target="_blank" title="{{ website.link }}">Siteweb</a>
-            </span>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="oneline video">
-            <a ng-if="candidature.presentation_video" href="{{candidature.presentation_video}}" target="_blank" title="{{candidature.presentation_video_details}}" >vidéo</a>
-          </div>
-        </div>
 
+
+        </div>
       </div>
       <div class="row">
         <div class="col-md-8">
@@ -64,7 +53,10 @@
           <h3 class="state" ng-bind="getStateCandidature(candidature)" />
         </div>
       </div>
-      <a class="go glyphicon glyphicon-play-circle" ui-sref="candidatures.candidat({id: candidature.id})" />
+      <a class="go glyphicon glyphicon-play-circle hide-infos" ui-sref="candidatures.candidat({id: candidature.id})" />
+      <div class="progress">
+        <span class="bar" ng-style='{"width" : candidature.progress+"%"}'> {{candidature.progress}}%</span>
+      </div>
     </div>
 
 </div>

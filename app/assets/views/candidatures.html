@@ -7,19 +7,18 @@
   <div class="row">
 
     <div class="col-md-12">
-      <h1>Candidatures ({{ candidatures_filtered.length }})</h1>
+      <h1>Candidatures ({{ candidatures.length }})</h1>
       <div class="row">
         <div class="col-md-12">
           <div class="input-group">
             <div class="input-group-btn">
               <button type="button" class="btn btn-default">Voir</button>
-
               <button type="button" id="dropdown-menu-sortby" class="btn btn-default dropdown-toggle"
-              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{sortby.title}} <span class="caret"></span></button>
+              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{critere.title}} <span class="caret"></span></button>
 
               <ul class="dropdown-menu" id="sortby" aria-labelledby="dropdown-menu-sortby">
-                <li class="" ng-repeat="item in select_critere track by $index" >
-                  <a ng-click="$parent.sortby=item;show_candidatures($parent.sortby, $parent.order)">{{item.title}} ({{count_candidatures(item)}})</a>
+                <li class="" ng-repeat="item in select_criteres track by $index" >
+                  <a ng-click="$parent.critere=item;$parent.candidatures = getCandidatures($parent.critere, $parent.order)">{{item.title}} ({{item.count}})</a>
                 </li>
               </ul>
             </div><!-- /btn-group -->
@@ -33,8 +32,8 @@
                 {{order.title}} <span class="caret"></span></button>
 
               <ul class="dropdown-menu" id="order" aria-labelledby="dropdown-menu-order">
-                <li class="" ng-repeat="item in select_order track by $index" >
-                  <a ng-click="$parent.order=item;show_candidatures($parent.sortby, $parent.order)">{{item.title}}</a>
+                <li class="" ng-repeat="item in select_orders track by $index" >
+                  <a ng-click="$parent.order=item;$parent.candidatures = getCandidatures($parent.critere, $parent.order)">{{item.title}}</a>
                 </li>
               </ul>
 
@@ -62,7 +61,7 @@
 
       </div>
 
-      <ng-include src="'views/partials/candidat_card.html'" ng-repeat="candidature in candidatures_filtered track by $index"></ng-include>
+      <ng-include src="'views/partials/candidat_card.html'" ng-repeat="candidature in candidatures track by $index"></ng-include>
 
       <table style="width:100%" id="data_candidatures" class="hidden">
         <tr><th>Version du {{ today | date :  "dd.MM.y - hh:mm" }} //// {{ today.getTime() }}</th></tr>
@@ -85,7 +84,7 @@
           <th>Diplôme	</th>
           <th>Observations/commission	</th>
         </tr>
-        <tr ng-repeat="candidature in candidatures_filtered">
+        <tr ng-repeat="candidature in candidatures">
             <th>{{candidature.created_on.split("T")[0] | date:'dd/MM'}}</th>
             <th>{{candidature.artist.user.last_name}} {{(candidature.current_year_application_count)}}</th>
             <th>{{candidature.artist.user.first_name}}</th>

@@ -158,7 +158,6 @@ angular.module('memoire.controllers', ['memoire.services'])
 
   Artworks.one().one($stateParams.id).get().then((artwork) ->
     $scope.artwork = artwork
-    console.log(artwork)
     for event_uri in $scope.artwork.events
       matches = event_uri.match(/\d+$/)
       if matches
@@ -186,9 +185,7 @@ angular.module('memoire.controllers', ['memoire.services'])
 
     search = ""
     #return all artwork video and filtre with idFrezsnoy - TODO search idFresnoy in api
-    # AmeRestangular.setDefaultHeaders({'Content-Type': 'charset=UTF-8'})
-    # AmeRestangular.all("api_search/").get('',{"search": search, "flvfile": "true", "previewsize":"scr"}, {authorization: undefined} ).then((ame_artwork) ->
-    AmeRestangular.all("api_search/").get('apiresult.htm',{}, {authorization: undefined}).then((ame_artwork) ->
+    AmeRestangular.all("").get('',{"search": search, "flvfile": "true", "previewsize":"scr"}, {authorization: undefined} ).then((ame_artwork) ->
       for archive in ame_artwork
         # valid reference id Fresnoy => id AME
 
@@ -252,23 +249,29 @@ angular.module('memoire.controllers', ['memoire.services'])
   $scope.candidatures = []
   $scope.candidatures_filtered = []
   # order
-  $scope.select_critere = [
-    {title: 'tout', sortby: {"all": true} },
-    {title: 'les candidatures courrier', sortby: {"physical_content": true}},
-    {title: 'les candidatures en attente de validation', sortby: {"application_completed": true, "application_complete": false}},
-    {title: 'les candidature validées', sortby: {"application_complete": true}},
-    {title: 'les candidats admins pour l\'entretiens', sortby: {"selected_for_interview": true}},
-    {title: 'les candidats selectionnés', sortby: {"selected": true}},
-    {title: 'les candidats en liste d\'attente', sortby: {"wait_listed": true}},
+  # none = 1 | true = 2 | false = 3
+  $scope.select_criteres = [
+    {title: 'tout', sortby: {"search": ""}, count:0 },
+    {title: 'les candidatures courrier', sortby: {"physical_content": 2}, count:0},
+    {title: 'les candidatures en attente de validation', sortby: {"application_completed": 2, "application_complete": 3}, count:0},
+    {title: 'les candidature validées', sortby: {"application_complete": 2}, count:0},
+    {title: 'les candidats admins pour l\'entretiens', sortby: {"selected_for_interview": 2}, count:0},
+    {title: 'les candidats selectionnés', sortby: {"selected": 2}, count:0},
+    {title: 'les candidats en liste d\'attente', sortby: {"wait_listed": 2}, count:0},
   ]
-  $scope.select_order = [
-      {title: "Numéro d'inscription", order: "id", context: ""},
-      {title: "Nationalité", order: "nationality", context: ".artist.user.profile"},
-      {title: "Nom", order: "last_name", context: ".artist.user"},
-      {title: "Progression", order: "progress", reverse: true, context: ""},
+  $scope.select_orders = [
+      {title: "Numéro d'inscription", value: {ordering: "id"}}
+      {title: "Nationalité", value: {ordering: "artist__user_profile_nationality"}},
+      {title: "Nom", value: {ordering: "artist__user_last_name"}},
   ]
-  $scope.sortby = $scope.select_critere[3]
-  $scope.order = $scope.select_order[2]
+
+  $scope.getCandidaturesLength = (sort) ->
+    Candidatures.getList(sort.sortby).then((c) -> sort.count = c.length )
+
+  $scope.critere = $scope.select_criteres[0]
+  for item, value of $scope.select_criteres then $scope.getCandidaturesLength(value)
+
+  $scope.order = $scope.select_orders[2]
   $scope.loading = cfpLoadingBar
   # language / country
   $scope.country = ISO3166
@@ -276,40 +279,27 @@ angular.module('memoire.controllers', ['memoire.services'])
   $scope.LANGUAGES_NAME_short = {}
   $scope.LANGUAGES_NAME_short[obj.split("-")[0]] = val for obj, val of languageMappingList
 
-  Candidatures.getList({limit: 500}).then((candidatures) ->
-    for candidature in candidatures
-        artist_id = candidature.artist.match(/\d+$/)[0]
-        $scope.candidatures.push(candidature)
-        ArtistsV2.one(artist_id).withHttpConfig({ cache: true}).get().then((artist) ->
-            current_cantidature = _.filter(candidatures, (c) -> return c.artist == artist.url)
-            current_cantidature[0].artist = artist
-            for website in artist.websites
-                website_id = website.match(/\d+$/)[0]
-                RestangularV2.one('common/website', website_id).get().then((response_website) ->
-                    find_website = artist.websites.indexOf(response_website.url)
-                    artist.websites[find_website] = response_website
-                )
-            user_id = artist.user.match(/\d+$/)[0]
-            current_cantidature[0].artist.user = Users.one(user_id).get().then((user_infos) ->
-              current_cantidature[0].artist.user = user_infos
-              current_cantidature[0].progress = $scope.get_candidature_progress(current_cantidature[0])
-            )
-        )
-        # galeries
-        gallery_id = candidature.cursus_justifications.match(/\d+$/)[0]
-        Galleries.one(gallery_id).get().then((gallery_infos) ->
-          current_cantidature = _.filter(candidatures, (c) -> return c.cursus_justifications == gallery_infos.url)
-          current_cantidature[0].cursus_justifications = gallery_infos
-          for medium in gallery_infos.media
-            medium_id = medium.match(/\d+$/)[0]
-            Media.one(medium_id).get().then((media) ->
-              media_index = gallery_infos.media.indexOf(media.url)
-              gallery_infos.media[media_index] = media
-            )
-        )
-      $scope.show_candidatures($scope.sortby, $scope.order)
+  $scope.getCandidatures = (sort, order) ->
+    criteres = Object.assign(sort.sortby, order.value, arr)
+    arr = []
+    Candidatures.getList(criteres).then((candidatures) ->
+      for candidature in candidatures
+          artist_id = candidature.artist.match(/\d+$/)[0]
+          arr.push(candidature)
+          ArtistsV2.one(artist_id).withHttpConfig({ cache: true}).get().then((artist) ->
+              current_cantidature = _.filter(candidatures, (c) -> return c.artist == artist.url)
+              current_cantidature[0].artist = artist
+              # user
+              user_id = artist.user.match(/\d+$/)[0]
+              current_cantidature[0].artist.user = Users.one(user_id).get().then((user_infos) ->
+                current_cantidature[0].artist.user = user_infos
+                current_cantidature[0].progress = $scope.get_candidature_progress(current_cantidature[0])
+              )
+          )
+    )
+    return arr
 
-  )
+  $scope.candidatures = $scope.getCandidatures($scope.critere, $scope.order)
 
   $scope.getStateCandidature = (candidature) ->
     $state = 0
@@ -327,31 +317,6 @@ angular.module('memoire.controllers', ['memoire.services'])
       $state = 5
     return $state
 
-  $scope.show_candidatures = (c, o) ->
-    $scope.candidatures = _.sortBy($scope.candidatures, (candidature) ->
-      e = eval("candidature"+o.context)
-      if e and e[o.order] then return e[o.order]
-      return false
-    )
-    if o.reverse
-      $scope.candidatures.reverse()
-
-    $scope.candidatures_filtered = _.filter($scope.candidatures, (candidat) ->
-        if c.sortby.all then return true
-        for item, value of c.sortby
-          if candidat[item] != value then return false
-        return true
-    )
-    return true
-
-  $scope.count_candidatures = (c) ->
-    arr = _.filter($scope.candidatures, (candidat) ->
-        if c.sortby.all then return true
-        for item, value of c.sortby
-          if candidat[item] != value then return false
-        return true
-    )
-    return arr.length
 
   $scope.get_candidature_progress = (candidature) ->
     candidature_progress = candidature_total = user_progress = user_total = 0
