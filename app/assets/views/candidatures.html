@@ -7,49 +7,117 @@
   <div class="row">
 
     <div class="col-md-12">
-      <h1>Candidatures ({{ candidatures_filtered.length }})</h1>
+      <h1>Candidatures ({{ candidatures.length }})</h1>
       <div class="row">
         <div class="col-md-12">
           <div class="input-group">
             <div class="input-group-btn">
               <button type="button" class="btn btn-default">Voir</button>
-
-              <button type="button" id="dropdown-menu-critere" class="btn btn-default dropdown-toggle"
+              <button type="button" id="dropdown-menu-sortby" class="btn btn-default dropdown-toggle"
               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{critere.title}} <span class="caret"></span></button>
 
-              <ul class="dropdown-menu" id="critere" aria-labelledby="dropdown-menu-critere">
-                <li class="" ng-repeat="item in select_critere track by $index" >
-                  <a ng-click="$parent.critere=item;show_candidatures($parent.critere, $parent.order)">{{item.title}} ({{count_candidatures(item)}})</a>
+              <ul class="dropdown-menu" id="sortby" aria-labelledby="dropdown-menu-sortby">
+                <li class="" ng-repeat="item in select_criteres track by $index" >
+                  <a ng-click="$parent.critere=item;$parent.candidatures = getCandidatures($parent.critere, $parent.order)">{{item.title}} ({{item.count}})</a>
                 </li>
               </ul>
             </div><!-- /btn-group -->
             <div class="input-group-btn">
 
 
-              <button type="button" class="btn btn-default">Trié par</button>
+              <button type="button" class="btn btn-default">Trié(es) par</button>
 
               <button type="button" class="btn btn-default dropdown-toggle"
                 data-toggle="dropdown" id="dropdown-menu-order" aria-haspopup="true" aria-expanded="false">
                 {{order.title}} <span class="caret"></span></button>
 
               <ul class="dropdown-menu" id="order" aria-labelledby="dropdown-menu-order">
-                <li class="" ng-repeat="item in select_order track by $index" >
-                  <a ng-click="$parent.order=item;show_candidatures($parent.critere, $parent.order)">{{item.title}} ({{count_candidatures(item)}})</a>
+                <li class="" ng-repeat="item in select_orders track by $index" >
+                  <a ng-click="$parent.order=item;$parent.candidatures = getCandidatures($parent.critere, $parent.order)">{{item.title}}</a>
                 </li>
               </ul>
 
-            </div><!-- /btn-group -->
 
+            </div><!-- /btn-group -->
             <input type="text" class="form-control" type="text"
                ng-model="search_candidat"
                ng-change="search(search_candidat)"
                placeholder="Rechercher un candidat" />
+
+            <div class="input-group-btn">
+              <a ng-click='download_data = make_data()' ng-href="{{download_data}}" target="_blank"
+              download="candidatures_{{sortby.title}}_{{today|date:'dd.MM.y_hh.mm.ss'}}.csv" type="button"
+              ng-style="{'opacity': (loading.status() != 0) ? '0.5':'1'  }"
+               class="btn btn-success">
+               <span ng-show="loading.status() == 0">Télécharger le fichier Excel</span>
+               <span ng-show="loading.status() != 0">{{(100*loading.status())| number:0}}%</span>
+              </a>
+
+            </div>
+
           </div><!-- /input-group -->
+
         </div><!-- 12 -->
 
       </div>
+      <div class="row">
+        <div class="col-xs-12 col-md-6">
+          <ng-include src="'views/partials/candidat_card.html'" ng-repeat="candidature in candidatures track by $index"></ng-include>
+        </div>
+      </div>
 
-      <ng-include src="'views/partials/candidat_card.html'" ng-repeat="candidature in candidatures_filtered"></ng-include>
+      <table style="width:100%" id="data_candidatures" class="hidden">
+        <tr><th>Version du {{ today | date :  "dd.MM.y - hh:mm" }} //// {{ today.getTime() }}</th></tr>
+        <tr><th></th></tr>
+        <tr>
+          <th>Date arrivée</th>
+          <th>Nom / n° dossier</th>
+          <th>Prénom</th>
+          <th>Sexe</th>
+          <th>Date naiss</th>
+          <th>Nationalité</th>
+          <th>Email	</th>
+          <th>Adresse postale</th>
+          <th>Matériel</th>
+          <th>Oral	</th>
+          <th>Note finale	</th>
+          <th>SKYPE	</th>
+          <th>Note sélection 2</th>
+          <th>Note sélection 3</th>
+          <th>Diplôme	</th>
+          <th>Observations/commission	</th>
+        </tr>
+        <tr ng-repeat="candidature in candidatures">
+            <th>{{candidature.created_on.split("T")[0] | date:'dd/MM'}}</th>
+            <th>{{candidature.artist.user.last_name}} {{(candidature.current_year_application_count)}}</th>
+            <th>{{candidature.artist.user.first_name}}</th>
+            <th>{{candidature.artist.user.profile.gender}}</th>
+            <th>{{candidature.artist.user.profile.birthdate | date:'dd/MM/yyyy' }}</th>
+            <th>
+              <span ng-repeat="nationality in candidature.artist.user.profile.nationality.split(', ') track by $index">
+                {{country.codeToCountry[nationality]}}
+              </span>
+            </th>
+            <th>{{candidature.artist.user.email}}</th>
+            <th>{{candidature.artist.user.profile.homeland_adress}}
+              {{candidature.artist.user.profile.homeland_zipcode}}
+              {{candidature.artist.user.profile.homeland_town}}</th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th>{{candidature.remote_interview ? 'X' : ''}}	</th>
+            <th></th>
+            <th></th>
+            <th>
+              <span class="justificatifs" ng-repeat="justif in candidature.cursus_justifications.media track by $index">
+                {{justif.label}}
+              </span>
+            </th>
+            <th></th>
+        </tr>
+      </table>
+
+
     </div>
 
   </div>
