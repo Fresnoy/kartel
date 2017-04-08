@@ -48,7 +48,7 @@
             <li class="dropdown" ng-if='isAuthenticated'>
                 <a class="pointer dropdown-toggle" data-toggle="dropdown">{{user.username}}<b class="caret"></b></a>
                 <ul class="dropdown-menu pull-right">
-                    <li><a class="pointer" ng-click='logout()'><i class="icon-off"></i> Déconnection</a></li>
+                    <li><a class="pointer" ng-click='logout()'><i class="icon-off"></i> Déconnexion</a></li>
                 </ul>
             </li>
         </ul>
@@ -78,7 +78,7 @@
       </script>
 
       <form class="quicksearch navbar-form navbar-left" ng-controller="QuickSearch">
-        <input uib-typeahead="object for objects in search($viewValue)" typeahead-wait-ms="200" typeahead-min-length="3" typeahead-template-url="customTemplate.html" ng-model="selected" typeahead-loading="loading" typeahead-editable="false" typeahead-on-select="goTo($item, $model, $label)" type="text" class="form-control" placeholder="Rechercher...">
+        <input ng-show="show_search()" uib-typeahead="object for objects in search($viewValue)" typeahead-wait-ms="200" typeahead-min-length="3" typeahead-template-url="customTemplate.html" ng-model="selected" typeahead-loading="loading" typeahead-editable="false" typeahead-on-select="goTo($item, $model, $label)" type="text" class="form-control" placeholder="Rechercher...">
         <i ng-show="loading" class="loading-glyph glyphicon glyphicon-refresh"></i>
       </form>
     </div>
