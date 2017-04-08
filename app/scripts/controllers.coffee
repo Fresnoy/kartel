@@ -255,7 +255,7 @@ angular.module('memoire.controllers', ['memoire.services'])
     {title: 'les candidatures courrier', sortby: {"physical_content": 2}, count:0},
     {title: 'les candidatures en attente de validation', sortby: {"application_completed": 2, "application_complete": 3}, count:0},
     {title: 'les candidature validées', sortby: {"application_complete": 2}, count:0},
-    {title: 'les candidats admins pour l\'entretiens', sortby: {"selected_for_interview": 2}, count:0},
+    {title: 'les candidats admins pour l\'entretien', sortby: {"selected_for_interview": 2}, count:0},
     {title: 'les candidats selectionnés', sortby: {"selected": 2}, count:0},
     {title: 'les candidats en liste d\'attente', sortby: {"wait_listed": 2}, count:0},
   ]
@@ -268,7 +268,7 @@ angular.module('memoire.controllers', ['memoire.services'])
   $scope.getCandidaturesLength = (sort) ->
     Candidatures.getList(sort.sortby).then((c) -> sort.count = c.length )
 
-  $scope.critere = $scope.select_criteres[0]
+  $scope.critere = $scope.select_criteres[3]
   for item, value of $scope.select_criteres then $scope.getCandidaturesLength(value)
 
   $scope.order = $scope.select_orders[2]

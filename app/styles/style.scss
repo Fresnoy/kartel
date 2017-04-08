@@ -369,19 +369,33 @@ body.en {
 .candidat-card{
   font-size: 0.9em;
   height: 150px;
+  margin: 20px 0px;;
 
-  .photo{
+  .photo a{
 
     img{
       height: 100%;
       max-height: 80px;
+      max-width: none;
       width: auto;
     }
   }
 
-  .progress{
-    display: none;
+  .candidature-infos{
+    display: block;
+    margin: 0;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    z-index: 2;
+    box-shadow: none;
+    height: 15px;
+    background: #d8d8d8;
+    border-top-right-radius: 0px;
+    border-top-left-radius: 0px;
   }
+
+
   &.ghost{
     pointer-events: none;
 
@@ -397,25 +411,11 @@ body.en {
     .hide-infos{
       visibility: hidden;
     }
-
-    .progress{
-      display: block;
-      margin: 0;
-
+    .bar{
+      background: #4a4a4a;
+      text-align: right;
       position: absolute;
-      bottom: 0;
-      width: 100%;
-      z-index: 2;
-      box-shadow: none;
-      height: 15px;
       color:white;
-      border-top-right-radius: 0px;
-      border-top-left-radius: 0px;
-      .bar{
-        background: grey;
-        text-align: right;
-        position: absolute;
-      }
     }
     .user-birthdate{display: none}
 
