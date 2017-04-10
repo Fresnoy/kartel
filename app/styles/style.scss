@@ -381,6 +381,10 @@ body.en {
     }
   }
 
+  &.showing_details{
+    border:1px solid black;
+  }
+
   .candidature-infos{
     display: block;
     margin: 0;
@@ -397,7 +401,14 @@ body.en {
 
 
   &.ghost{
+
     pointer-events: none;
+    .photo {
+      a{
+        cursor: not-allowed;
+      }
+
+    }
 
     .preserve-info{
       position: relative;
@@ -465,6 +476,26 @@ body.en {
 }
 
 .candidatures{
+
+  .inner-addon {
+    position: relative;
+  }
+
+  /* style glyph */
+  .inner-addon .glyphicon {
+    position: absolute;
+    padding: 10px;
+    pointer-events: none;
+  }
+
+  /* align glyph */
+  .left-addon .glyphicon  { left:  0px;}
+  .right-addon .glyphicon { right: 0px;}
+
+  /* add padding  */
+  .left-addon input  { padding-left:  30px; }
+  .right-addon input { padding-right: 30px; }
+
 
   .form-group {
     display: inline-block;

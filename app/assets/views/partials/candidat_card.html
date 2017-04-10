@@ -1,16 +1,18 @@
 <div class="candidat-card col-md-6"  ng-class="{
         'ghost': !candidature.application_completed,
+        'showing_details': $parent.$parent.candidat_id == candidature.id,
         'application_complete': candidature.application_complete,
         'remote_interview': candidature.remote_interview,
         'selected_for_interview': candidature.selected_for_interview,
-        'selected': candidature.selected}">
+        'selected': candidature.selected,
+      }">
 
 
     <div class="thumbnail">
       <div class="row">
         <div class="col-md-3">
           <div class="photo">
-            <a ui-sref="candidatures.candidat({id: candidature.id})" >
+            <a ui-sref="candidatures.candidat({id: candidature.id})" ng-click="$parent.$parent.candidat_id = candidature.id; console.log($parent)" >
               <fresnoy-thumbnail ng-if="candidature.artist.user.profile.photo && candidature.application_completed"
               thurl="candidature.artist.user.profile.photo" thwidth="70" thheight="80"></fresnoy-thumbnail>
               <img ng-if="!candidature.artist.user.profile.photo || !candidature.application_completed" src="images/anonymous.jpg" alt="..">
@@ -66,9 +68,14 @@
         <!-- NON VISé -->
         <span ng-if="candidature.application_complete">
           <span ng-if="candidature.physical_content && !candidature.physical_content_received">En attente de courrier</span>
-          <span ng-if="candidature.selected_for_interview && !candidature.wait_listed && !candidature.selected">Entretien</span>
+          <span ng-if="candidature.selected_for_interview && !candidature.wait_listed && !candidature.selected">
+            Sélectionné<ng-pluralize count="candidature.artist.user.profile.gender.indexOf('F')" when="{'0': 'e'}"></ng-pluralize>
+            pour l'entretien</span>
           <span ng-if="candidature.wait_listed && !candidature.selected">En liste d'attente</span>
-          <span ng-if="candidature.selected">Sélectioné<span count="candidature.artist.user.profile.gender" when="{'F': 'e', 'other': ''}" /></span>
+          <span ng-if="candidature.selected">Sélectioné<ng-pluralize count="candidature.artist.user.profile.gender.indexOf('F')" when="{'0': 'e'}"
+            <span count="candidature.artist.user.profile.gender" when="{'F': 'e', 'other': ''}" />
+
+          </span>
         </span>
         <span ng-if='(!candidature.application_completed && !candidature.physical_content)' class="bar" ng-style='{"width" : candidature.progress+"%"}'> {{candidature.progress}}%</span>
       </div>

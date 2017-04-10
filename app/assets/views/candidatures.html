@@ -7,62 +7,95 @@
   <div class="row">
 
     <div class="col-md-12">
-      <h1>Candidatures ({{ candidatures.length }})</h1>
+
+      <h1>Candidatures ({{ candidatures.length }})
+
+        <a ng-click='download_data = make_data()' ng-href="{{download_data}}" target="_blank"
+      download="candidatures_{{sortby.title}}_{{today|date:'dd.MM.y_hh.mm.ss'}}.csv" type="button"
+      ng-style="{'opacity': (loading.status() != 0) ? '0.5':'1'  }"
+       class="btn btn-success btn-xs pull-right hidden-xs">
+       <span ng-show="loading.status() == 0">Télécharger le fichier Excel</span>
+       <span ng-show="loading.status() != 0">{{(100*loading.status())| number:0}}%</span>
+      </a>
+
+      </h1>
+
+
+      </div>
       <div class="row">
         <div class="col-md-12">
-          <div class="input-group">
-            <div class="input-group-btn">
-              <button type="button" class="btn btn-default">Voir</button>
-              <button type="button" id="dropdown-menu-sortby" class="btn btn-default dropdown-toggle"
-              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{critere.title}} <span class="caret"></span></button>
 
-              <ul class="dropdown-menu" id="sortby" aria-labelledby="dropdown-menu-sortby">
-                <li class="" ng-repeat="item in select_criteres track by $index" >
-                  <a ng-click="$parent.critere=item;$parent.candidatures = getCandidatures($parent.critere, $parent.order)">{{item.title}} ({{item.count}})</a>
-                </li>
-              </ul>
-            </div><!-- /btn-group -->
-            <div class="input-group-btn">
+          <div class="col-md-6" ng-show="!show_order_param">
 
+            <p>Rechercher un(e) candidat(e)</p>
 
-              <button type="button" class="btn btn-default">Trié(es) par</button>
+             <div class="inner-addon right-addon">
+               <i class="glyphicon glyphicon-search"></i>
+               <input type="text" class="form-control"
+                  type="text"
+                  ng-model="search_candidat"
+                  ng-change="search(search_candidat)"
+                  placeholder="Rechercher un candidat" />
+             </div>
 
-              <button type="button" class="btn btn-default dropdown-toggle"
-                data-toggle="dropdown" id="dropdown-menu-order" aria-haspopup="true" aria-expanded="false">
-                {{order.title}} <span class="caret"></span></button>
+          </div>
+          <div class="col-md-6" ng-show="!show_order_param" ng-init='show_order_param = false'>
+            <p>Filter / classer les candidatures</p>
+             <div class="btn-group " ng-click="show_order_param=true">
 
-              <ul class="dropdown-menu" id="order" aria-labelledby="dropdown-menu-order">
-                <li class="" ng-repeat="item in select_orders track by $index" >
-                  <a ng-click="$parent.order=item;$parent.candidatures = getCandidatures($parent.critere, $parent.order)">{{item.title}}</a>
-                </li>
-              </ul>
+                 <span class="btn btn-default">{{select_criteres[critere].title}} ({{select_criteres[critere].count}})</span>
 
+                 <span type="button" class="btn btn-default">{{select_orders[order].title}}</span>
 
-            </div><!-- /btn-group -->
-            <input type="text" class="form-control" type="text"
-               ng-model="search_candidat"
-               ng-change="search(search_candidat)"
-               placeholder="Rechercher un candidat" />
-
-            <div class="input-group-btn">
-              <a ng-click='download_data = make_data()' ng-href="{{download_data}}" target="_blank"
-              download="candidatures_{{sortby.title}}_{{today|date:'dd.MM.y_hh.mm.ss'}}.csv" type="button"
-              ng-style="{'opacity': (loading.status() != 0) ? '0.5':'1'  }"
-               class="btn btn-success">
-               <span ng-show="loading.status() == 0">Télécharger le fichier Excel</span>
-               <span ng-show="loading.status() != 0">{{(100*loading.status())| number:0}}%</span>
-              </a>
+                 <span type="button" class="btn btn-default " ng-class="{'dropup': asc!='true'}"><span class="caret"></span>
 
             </div>
 
-          </div><!-- /input-group -->
+          </div>
+
+          <div class="col-xs-12 col-md-12" ng-show="show_order_param">
+              <p>Afficher les candidatures : </p>
+              <select ng-model="critere">
+                <option ng-repeat="item in select_criteres track by $index"
+                value="{{$index}}">{{item.title}} ({{item.count}})</option>
+              </select>
+
+              <p>Trier les candidatures par : </p>
+              <select ng-model="order">
+                <option ng-repeat="item in select_orders track by $index"
+                value="{{$index}}">{{item.title}}</option>
+              </select>
+
+              <p>Ordre</p>
+              <select ng-model="asc">
+                <option value="true" ng-selected="asc == 'true'">Ascendant</option>
+                <option value="false" ng-selected="asc == 'false'">Descendant</option>
+              </select>
+
+              <p></p>
+                <a class="btn btn-success" ui-sref="{sortby: critere, orderby: order, asc: asc}">
+                  Valider
+                </a>
+
+                <a class="btn btn-cancel" ng-click="show_order_param=!show_order_param">
+                  Annuler
+                </a>
+
+
+          </div>
+
+
+
 
         </div><!-- 12 -->
 
       </div>
       <div class="row">
-        <div class="col-xs-12 col-md-6">
+        <div class="col-xs-12 col-md-6" ng-show="!show_order_param">
           <ng-include src="'views/partials/candidat_card.html'" ng-repeat="candidature in candidatures track by $index"></ng-include>
+        </div>
+        <div class="col-xs-12 col-md-6" ng-show="!show_order_param">
+          <div ui-view="candidat_view" style="position:fixed"></div>
         </div>
       </div>
 

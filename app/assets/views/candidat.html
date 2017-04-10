@@ -6,7 +6,7 @@
 <div class="candidat" ng-if="user.is_superuser">
 
 
-  <div class="photo visible-xs  col-xs-12 ">
+  <div class="photo visible-xs col-xs-12">
     <!-- MOBILE VIEW -->
     <div class="thumbnail" ng-if="artist.user.profile.photo" >
       <img src="{{artist.user.profile.photo}}" />
@@ -58,11 +58,9 @@
       <p ng-click="show_video_details = !show_video_details">Voir la description de la vidéo</p>
       <p ng-show="show_video_details" ng-bind-html="candidature.presentation_video_details | nl2br" />
     </div>
-
-
   </div>
 
-  <div class="photo hidden-xs col-md-2 col-lg-2">
+  <div class="photo hidden-xs col-md-3 col-lg-3">
     <div class="thumbnail" ng-if="artist.user.profile.photo" >
       <img src="{{artist.user.profile.photo}}" />
     </div>
@@ -71,7 +69,7 @@
     <div ng-if='artist.websites.length' >
       <i class="glyphicon glyphicon-link"></i>&nbsp;Web :
         <span class="website" ng-repeat="website in artist.websites track by $index">
-          <a href="{{ website.link }}" target="_blank">{{ website.link }}</a>
+          <a href="{{ website.link }}" title="{{ website.link }}" target="_blank"><i class="glyphicon glyphicon-globe"></i></a>
         </span>
     </div>
     <!-- LAST APPLICATIONS -->
@@ -287,7 +285,8 @@
             <!-- STATE 2 = Candidature complete => Candidature interview  -->
             <div ng-show="candidature.state==2" ng-init="click_cInterview=false" >
               <button type="button" ng-click='click_cInterview=!click_cInterview' class="btn btn-primary btn-md btn-block">
-                Sélectionné pour l'entretien</button>
+                Sélectionné<ng-pluralize count="candidature.artist.user.profile.gender.indexOf('F')" when="{'0': 'e'}"></ng-pluralize>
+                pour l'entretien</button>
               <div ng-show="click_cInterview" >
                 <p class="alert alert-warning" role="alert">
                   Attention cette action selectionne le candidat pour l'entretien

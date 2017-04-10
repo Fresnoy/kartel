@@ -243,15 +243,15 @@ angular.module('memoire.controllers', ['memoire.services'])
   )
 )
 
-.controller('CandidaturesController', ($rootScope, $scope, Candidatures, Galleries, Media, RestangularV2, ArtistsV2, Users,
+.controller('CandidaturesController', ($rootScope, $scope, $stateParams, $location, Candidatures, Galleries, Media, RestangularV2, ArtistsV2, Users,
   ISO3166, cfpLoadingBar) ->
   # init
   $scope.candidatures = []
-  $scope.candidatures_filtered = []
+  $scope.candidat_id = $stateParams.id
   # order
   # none = 1 | true = 2 | false = 3
   $scope.select_criteres = [
-    {title: 'tout', sortby: {"search": ""}, count:0 },
+    {title: 'toutes', sortby: {"search": ""}, count:0 },
     {title: 'les candidatures courrier', sortby: {"physical_content": 2}, count:0},
     {title: 'les candidatures en attente de validation', sortby: {"application_completed": 2, "application_complete": 3}, count:0},
     {title: 'les candidature validées', sortby: {"application_complete": 2}, count:0},
@@ -268,10 +268,11 @@ angular.module('memoire.controllers', ['memoire.services'])
   $scope.getCandidaturesLength = (sort) ->
     Candidatures.getList(sort.sortby).then((c) -> sort.count = c.length )
 
-  $scope.critere = $scope.select_criteres[3]
+  $scope.critere = if $stateParams.sortby then $stateParams.sortby else "3"
   for item, value of $scope.select_criteres then $scope.getCandidaturesLength(value)
 
-  $scope.order = $scope.select_orders[2]
+  $scope.order = if $stateParams.orderby then $stateParams.orderby else "2"
+  $scope.asc = if $stateParams.asc then $stateParams.asc else "true"
   $scope.loading = cfpLoadingBar
   # language / country
   $scope.country = ISO3166
@@ -281,6 +282,7 @@ angular.module('memoire.controllers', ['memoire.services'])
 
   $scope.getCandidatures = (sort, order) ->
     criteres = Object.assign(sort.sortby, order.value, arr)
+    if(!$scope.asc) then criteres.ordering = "-"+criteres.ordering
     arr = []
     Candidatures.getList(criteres).then((candidatures) ->
       for candidature in candidatures
@@ -299,7 +301,7 @@ angular.module('memoire.controllers', ['memoire.services'])
     )
     return arr
 
-  $scope.candidatures = $scope.getCandidatures($scope.critere, $scope.order)
+  $scope.candidatures = $scope.getCandidatures($scope.select_criteres[$scope.critere], $scope.select_criteres[$scope.order])
 
   $scope.getStateCandidature = (candidature) ->
     $state = 0
@@ -372,6 +374,7 @@ angular.module('memoire.controllers', ['memoire.services'])
 .controller('CandidatController', ($rootScope, $scope, ISO3166, $stateParams, RestangularV2, Candidatures, ArtistsV2,
         WebsiteV2, Users, Galleries, Media, Lightbox, $sce) ->
   # init
+  console.log("init Candidat Controller")
   $scope.candidature = []
   $scope.artist = []
   $scope.administrative_galleries = []
@@ -423,37 +426,37 @@ angular.module('memoire.controllers', ['memoire.services'])
       $state = 5
     return $state
 
-  Candidatures.one($stateParams.id).get().then((candidature) ->
-    $scope.candidature = candidature
-    $scope.candidature.state = $scope.getStateCandidature(candidature)
+  loadCandidat = (id) ->
+      Candidatures.one(id).get().then((candidature) ->
+        $scope.candidature = candidature
+        $scope.candidature.state = $scope.getStateCandidature(candidature)
 
-    artist_id = candidature.artist.match(/\d+$/)[0]
-    ArtistsV2.one(artist_id).get().then((artist) ->
-        $scope.artist = artist
-        for website in artist.websites
-            website_id = website.match(/\d+$/)[0]
-            RestangularV2.one('common/website', website_id).get().then((response_website) ->
-                find_website = artist.websites.indexOf(response_website.url)
-                artist.websites[find_website] = response_website
+        artist_id = candidature.artist.match(/\d+$/)[0]
+        ArtistsV2.one(artist_id).get().then((artist) ->
+            $scope.artist = artist
+            for website in artist.websites
+                website_id = website.match(/\d+$/)[0]
+                RestangularV2.one('common/website', website_id).get().then((response_website) ->
+                    find_website = artist.websites.indexOf(response_website.url)
+                    artist.websites[find_website] = response_website
+                )
+            user_id = artist.user.match(/\d+$/)[0]
+            $scope.artist.user = Users.one(user_id).get().then((user_infos) ->
+              $scope.artist.user = user_infos
             )
-        user_id = artist.user.match(/\d+$/)[0]
-        $scope.artist.user = Users.one(user_id).get().then((user_infos) ->
-          $scope.artist.user = user_infos
         )
+        gallery_id = candidature.cursus_justifications.match(/\d+$/)[0]
+        Galleries.one(gallery_id).get().then((gallery_infos) ->
+          candidature.cursus_justifications = gallery_infos
 
-    )
-    gallery_id = candidature.cursus_justifications.match(/\d+$/)[0]
-    Galleries.one(gallery_id).get().then((gallery_infos) ->
-      candidature.cursus_justifications = gallery_infos
-
-      for medium in gallery_infos.media
-        medium_id = medium.match(/\d+$/)[0]
-        Media.one(medium_id).get().then((media) ->
-          media_index = gallery_infos.media.indexOf(media.url)
-          gallery_infos.media[media_index] = media
+          for medium in gallery_infos.media
+            medium_id = medium.match(/\d+$/)[0]
+            Media.one(medium_id).get().then((media) ->
+              media_index = gallery_infos.media.indexOf(media.url)
+              gallery_infos.media[media_index] = media
+            )
         )
+      )
 
-    )
-
-  )
+  loadCandidat($stateParams.id)
 )
