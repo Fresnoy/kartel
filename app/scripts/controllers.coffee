@@ -251,13 +251,13 @@ angular.module('memoire.controllers', ['memoire.services'])
   # order
   # none = 1 | true = 2 | false = 3
   $scope.select_criteres = [
-    {title: 'toutes', sortby: {"search": ""}, count:0 },
-    {title: 'les candidatures courrier', sortby: {"physical_content": 2}, count:0},
-    {title: 'les candidatures en attente de validation', sortby: {"application_completed": 2, "application_complete": 3}, count:0},
-    {title: 'les candidature validées', sortby: {"application_complete": 2}, count:0},
-    {title: 'les candidats admins pour l\'entretien', sortby: {"selected_for_interview": 2}, count:0},
-    {title: 'les candidats selectionnés', sortby: {"selected": 2}, count:0},
-    {title: 'les candidats en liste d\'attente', sortby: {"wait_listed": 2}, count:0},
+    {title: 'Toutes', sortby: {"search": ""}, count:0 },
+    {title: 'Courrier', sortby: {"physical_content": 2}, count:0},
+    {title: 'Attente de validation', sortby: {"application_completed": 2, "application_complete": 3}, count:0},
+    {title: 'Validées', sortby: {"application_complete": 2}, count:0},
+    {title: 'Selectionnées pour l\'entretien', sortby: {"selected_for_interview": 2}, count:0},
+    {title: 'Selectionnés', sortby: {"selected": 2}, count:0},
+    {title: 'En liste d\'attente', sortby: {"wait_listed": 2}, count:0},
   ]
   $scope.select_orders = [
       {title: "Numéro d'inscription", value: {ordering: "id"}}

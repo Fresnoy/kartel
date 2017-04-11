@@ -84,9 +84,9 @@
       <tabset class="api-field">
         <!-- Desciption  tabs -->
         <ul class="nav nav-tabs" role="tablist">
-          <li role="admin-infos" class="active">
+          <li role="admin-infos" class="">
             <a data-target ="#admin-infos" role="tab" data-toggle="tab">
-              Infos administratives
+              Infos
             </a>
           </li>
           <li role="contact" class="">
@@ -99,7 +99,7 @@
               Cursus
             </a>
           </li>
-          <li role="intentions" class="">
+          <li role="intentions" class="active">
             <a data-target ="#intentions" role="tab" data-toggle="tab">
               Intentions
             </a>
@@ -117,7 +117,7 @@
         </ul>
           <!-- Desciption  content -->
         <div class="tab-content">
-          <div role="tabpanel" class="tab-pane active" id="admin-infos">
+          <div role="tabpanel" class="tab-pane" id="admin-infos">
             <div class="person">
               <p>
                 Né(e) en {{country.codeToCountry[artist.user.profile.birthplace_country]}} le {{ artist.user.profile.birthdate }}
@@ -183,7 +183,7 @@
 
 
 
-        <div role="tabpanel" class="tab-pane" id="intentions">
+        <div role="tabpanel" class="tab-pane active" id="intentions">
           <h3>Intentions</h3>
           <a ng-if='candidature.justification_letter'
             ng-click='singleLightbox(candidature.justification_letter, "Lettre de motivation")' >

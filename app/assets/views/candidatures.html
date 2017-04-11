@@ -54,48 +54,48 @@
           </div>
 
           <div class="col-xs-12 col-md-12" ng-show="show_order_param">
-              <p>Afficher les candidatures : </p>
+              <label>Afficher les candidatures : </label>
               <select ng-model="critere">
                 <option ng-repeat="item in select_criteres track by $index"
                 value="{{$index}}">{{item.title}} ({{item.count}})</option>
               </select>
 
-              <p>Trier les candidatures par : </p>
+              <label>Trier les candidatures par : </label>
               <select ng-model="order">
                 <option ng-repeat="item in select_orders track by $index"
                 value="{{$index}}">{{item.title}}</option>
               </select>
 
-              <p>Ordre</p>
+              <label>Ordre : </label>
               <select ng-model="asc">
                 <option value="true" ng-selected="asc == 'true'">Ascendant</option>
                 <option value="false" ng-selected="asc == 'false'">Descendant</option>
               </select>
 
-              <p></p>
-                <a class="btn btn-success" ui-sref="{sortby: critere, orderby: order, asc: asc}">
+              <hr/>
+                <a class="btn block btn-success" ui-sref="{sortby: critere, orderby: order, asc: asc}">
                   Valider
                 </a>
 
-                <a class="btn btn-cancel" ng-click="show_order_param=!show_order_param">
+                <a class="btn block btn-default" ng-click="show_order_param=!show_order_param">
                   Annuler
                 </a>
 
-
           </div>
-
-
 
 
         </div><!-- 12 -->
 
       </div>
       <div class="row">
-        <div class="col-xs-12 col-md-6" ng-show="!show_order_param">
+        <div class="col-xs-12 col-md-6" ng-class="{'hidden-xs' : candidat_id}" ng-show="!show_order_param">
           <ng-include src="'views/partials/candidat_card.html'" ng-repeat="candidature in candidatures track by $index"></ng-include>
         </div>
-        <div class="col-xs-12 col-md-6" ng-show="!show_order_param">
-          <div ui-view="candidat_view" style="position:fixed"></div>
+        <div ng-show="candidat_id" class="col-xs-12 col-md-6" ng-show="!show_order_param">
+
+          <div ui-view="candidat_view" class="candidat_view">
+            <a ui-sref="candidatures" ng-click="candidat_id = null">X</a>
+          </div>
         </div>
       </div>
 
