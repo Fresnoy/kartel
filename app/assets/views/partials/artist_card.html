@@ -1,5 +1,5 @@
 <div class="student-card col-md-2">
-  <a ui-sref="artist.detail({id: artist.id})">
+  <a ui-sref="artist.detail({id: artist.artist.id})">
     <div class="thumbnail">
       <fresnoy-thumbnail ng-if="artist.user.photo" thurl="'media/'+artist.user.photo" thwidth="300" thheight="200"></fresnoy-thumbnail>
       <img ng-if="!artist.user.photo" src="images/anonymous.jpg" alt="..">

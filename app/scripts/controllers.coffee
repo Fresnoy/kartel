@@ -131,8 +131,8 @@ angular.module('memoire.controllers', ['memoire.services'])
 .controller('ArtistController', ($scope, $stateParams, Students, Artists, Artworks) ->
   $scope.artworks = []
 
-  Students.one().one($stateParams.id).get().then((student) ->
-    $scope.artist = student.artist
+  Artists.one().one($stateParams.id).get().then((artist) ->
+    $scope.artist = artist
 
     # Fetch artworks
     for artwork_uri in $scope.artist.artworks
