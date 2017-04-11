@@ -281,8 +281,10 @@ angular.module('memoire.controllers', ['memoire.services'])
   $scope.LANGUAGES_NAME_short[obj.split("-")[0]] = val for obj, val of languageMappingList
 
   $scope.getCandidatures = (sort, order) ->
-    criteres = Object.assign(sort.sortby, order.value, arr)
+    criteres = Object.assign(sort.sortby, order.value)
+    console.log(criteres)
     if(!$scope.asc) then criteres.ordering = "-"+criteres.ordering
+
     arr = []
     Candidatures.getList(criteres).then((candidatures) ->
       for candidature in candidatures
@@ -301,7 +303,7 @@ angular.module('memoire.controllers', ['memoire.services'])
     )
     return arr
 
-  $scope.candidatures = $scope.getCandidatures($scope.select_criteres[$scope.critere], $scope.select_criteres[$scope.order])
+  $scope.candidatures = $scope.getCandidatures($scope.select_criteres[$scope.critere], $scope.select_orders[$scope.order])
 
   $scope.getStateCandidature = (candidature) ->
     $state = 0
