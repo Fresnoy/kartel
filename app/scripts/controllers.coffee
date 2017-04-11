@@ -252,12 +252,12 @@ angular.module('memoire.controllers', ['memoire.services'])
   # none = 1 | true = 2 | false = 3
   $scope.select_criteres = [
     {title: 'Toutes', sortby: {"search": ""}, count:0 },
-    {title: 'Courrier', sortby: {"physical_content": 2}, count:0},
-    {title: 'Attente de validation', sortby: {"application_completed": 2, "application_complete": 3}, count:0},
-    {title: 'Validées', sortby: {"application_complete": 2}, count:0},
-    {title: 'Selectionnées pour l\'entretien', sortby: {"selected_for_interview": 2}, count:0},
-    {title: 'Selectionnés', sortby: {"selected": 2}, count:0},
-    {title: 'En liste d\'attente', sortby: {"wait_listed": 2}, count:0},
+    {title: 'Courrier', sortby: {"physical_content": 2, "physical_content_received": 3}, count:0},
+    {title: 'En attente de validation', sortby: {"application_completed": 2, "application_complete": 3}, count:0},
+    {title: 'Visées', sortby: {"application_complete": 2}, count:0},
+    {title: 'Admies à l\'entretien', sortby: {"selected_for_interview": 2}, count:0},
+    {title: 'Selectionnées', sortby: {"selected": 2}, count:0},
+    {title: 'Sur liste d\'attente', sortby: {"wait_listed": 2}, count:0},
   ]
   $scope.select_orders = [
       {title: "Numéro d'inscription", value: {ordering: "id"}}
@@ -374,7 +374,6 @@ angular.module('memoire.controllers', ['memoire.services'])
 .controller('CandidatController', ($rootScope, $scope, ISO3166, $stateParams, RestangularV2, Candidatures, ArtistsV2,
         WebsiteV2, Users, Galleries, Media, Lightbox, $sce) ->
   # init
-  console.log("init Candidat Controller")
   $scope.candidature = []
   $scope.artist = []
   $scope.administrative_galleries = []
@@ -398,10 +397,9 @@ angular.module('memoire.controllers', ['memoire.services'])
     # config image gallery
     image =
       isvideo: new RegExp("aml|player.vimeo|mp4","gi").test(url);
-      iframe: /(\.pdf|vimeo\.com|youtube\.com)/i.test(url)
+      iframe: /(\.pdf|vimeo\.com|youtube\.com|youtu\.be)/i.test(url)
       description: description
     # embed video youtube
-    # url = url.replace("watch?v=","embed/").replace("&t=","#t=")
     url = url.replace(/^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?/gm, 'https://www.youtube.com/embed/$5');
     url = url.replace(/^https?:\/\/(?:www\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|album\/(\d+)\/video\/|)(\d+)(?:$|\/|\?)(.*)/g, "https://player.vimeo.com/video/$3")
     # when url is image set picture var, otherwise set medium_url

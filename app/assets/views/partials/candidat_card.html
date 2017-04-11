@@ -7,78 +7,74 @@
         'selected': candidature.selected,
       }">
 
+    <div class="corner" ng-class="{'red' : !candidature.application_complete, 'green' : candidature.application_complete}"> </div>
 
-    <div class="thumbnail">
-      <div class="row">
-        <div class="col-md-3">
-          <div class="photo">
-            <a ui-sref="candidatures.candidat({id: candidature.id})" ng-click="$parent.$parent.candidat_id = candidature.id; console.log($parent)" >
-              <fresnoy-thumbnail ng-if="candidature.artist.user.profile.photo && candidature.application_completed"
-              thurl="candidature.artist.user.profile.photo" thwidth="70" thheight="80"></fresnoy-thumbnail>
-              <img ng-if="!candidature.artist.user.profile.photo || !candidature.application_completed" src="images/anonymous.jpg" alt="..">
-            </a>
+
+        <div class="thumbnail">
+          <div class="row">
+            <div class="col-xs-3 col-md-3">
+              <div class="photo">
+                <a ui-sref="candidatures.candidat({id: candidature.id})" ng-click="$parent.$parent.candidat_id = candidature.id; console.log($parent)" >
+                  <fresnoy-thumbnail ng-if="candidature.artist.user.profile.photo && candidature.application_completed"
+                  thurl="candidature.artist.user.profile.photo" thwidth="70" thheight="75"></fresnoy-thumbnail>
+                  <img ng-if="!candidature.artist.user.profile.photo || !candidature.application_completed" src="images/anonymous.jpg" alt="..">
+                </a>
+              </div>
+            </div>
+            <div class="col-xs-9 col-md-9">
+              <div class="col-xs-9 col-md-9">
+                <div class="user-infos">
+                  <div>
+                    <strong class="user-first_name preserve-info">{{ candidature.artist.user.first_name }}</strong>
+                    <span class="oneline nationality hide-infos">
+                      <span ng-repeat="nationality in candidature.artist.user.profile.nationality.split(', ') track by $index">
+                        <span ng-if='nationality' class="flag-icon flag-icon-{{nationality | lowercase}}" title="{{country.codeToCountry[nationality]}}" />
+                      </span>
+                    </span>
+                  </div>
+                  <div class="user-last_name preserve-info">{{ candidature.artist.user.last_name }}</div>
+                  <div class="user-birthdate preserve-info">{{ candidature.artist.user.profile.birthdate | ageFilter}} ans</div>
+                  <div class="langues hide-infos"> Parle
+                    <span ng-if="candidature.artist.user.profile.other_language">
+                      <span class="language" ng-repeat="language in candidature.artist.user.profile.other_language.split(', ')  track by $index">
+                        <span class="name">{{LANGUAGES_NAME_short[language].englishName.split(' ')[0]}}</span></span></span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xs-3 col-md-3">
+                <div class="candidature-infos-icon">
+                  <div ng-if="candidature.physical_content && !candidature.physical_content_received"><i class="glyphicon glyphicon-envelope red"></i></div>
+                  <div ng-if="candidature.selected_for_interview"><i class="btn-lg glyphicon glyphicon-user grey"></i></div>
+                </div>
+                <span class="candidature-number">{{candidature.current_year_application_count}}</span>
+              </div>
+            </div>
+
+
+          <div class="candidature-infos">
+            <!-- NON VISé -->
+            <span ng-if="(!candidature.application_completed && candidature.physical_content && !candidature.physical_content_received) || (candidature.application_completed && !candidature.application_complete)">
+              <span ng-if="candidature.application_completed">Dossier validé en ligne</span>
+              <span ng-if="candidature.application_completed && candidature.physical_content && !candidature.physical_content_received">- En attente de courrier</span>
+              <span ng-if="!candidature.application_completed && candidature.physical_content">Inscription par courrier</span>
+              <strong>- Non visé</strong>
+            </span>
+            <!-- VISé -->
+            <span ng-if="candidature.application_complete">
+              <span ng-if="candidature.physical_content && !candidature.physical_content_received">En attente de courrier</span>
+              <span ng-if="candidature.selected_for_interview && !candidature.wait_listed && !candidature.selected">
+                Sélectionné<ng-pluralize count="candidature.artist.user.profile.gender.indexOf('F')" when="{'0': 'e'}"></ng-pluralize>
+                pour l'entretien</span>
+              <span ng-if="candidature.wait_listed && !candidature.selected">En liste d'attente</span>
+              <span ng-if="candidature.selected">Sélectioné<ng-pluralize count="candidature.artist.user.profile.gender.indexOf('F')" when="{'0': 'e'}"
+                <span count="candidature.artist.user.profile.gender" when="{'F': 'e', 'other': ''}" />
+
+              </span>
+            </span>
+            <span ng-if='(!candidature.application_completed && !candidature.physical_content)' class="bar" ng-style='{"width" : ""+candidature.progress+"%"}'> {{candidature.progress}}%</span>
           </div>
         </div>
-        <div class="col-md-6">
-          <div class="user-infos">
-            <div>
-              <span class="user-first_name preserve-info">{{ candidature.artist.user.first_name }}</span>
-              <span class="oneline nationality hide-infos">
-                <span ng-repeat="nationality in candidature.artist.user.profile.nationality.split(', ') track by $index">
-                  <span class="flag-icon flag-icon-{{nationality | lowercase}}" title="{{country.codeToCountry[nationality]}}" />
-                </span>
-              </span>
-            </div>
-            <div class="user-last_name preserve-info">{{ candidature.artist.user.last_name }}</div>
-            <div class="user-birthdate preserve-info">{{ candidature.artist.user.profile.birthdate | ageFilter}} ans</div>
-            <div class="oneline langues hide-infos"> Parle
-              <span ng-if="candidature.artist.user.profile.other_language">
-                <span class="language" ng-repeat="language in candidature.artist.user.profile.other_language.split(', ')  track by $index"><span class="name" ng-bind="LANGUAGES_NAME_short[language].englishName.split('(')[0]" />, </span>
-              </span>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-
-
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-8">
-          <h3>{{candidature.current_year_application_count}}</h3>
-
-        </div>
-        <div class="col-md-1">
-          <i class="glyphicon glyphicon-envelope green" title="courrrier  reçu" ng-if='candidature.physical_content && candidature.physical_content_received' />
-          <i class="glyphicon glyphicon-envelope red" title="courrrier non reçu"  ng-if='candidature.physical_content && !candidature.physical_content_received' />
-        </div>
-        <div class="col-md-1">
-          <h3 class="state" ng-bind="getStateCandidature(candidature)" />
-        </div>
       </div>
 
-      <div class="candidature-infos">
-        <!-- NON VISé -->
-        <span ng-if="(!candidature.application_completed && candidature.physical_content && !candidature.physical_content_received) || (candidature.application_completed && !candidature.application_complete)">
-          <span ng-if="candidature.application_completed">Dossier validé en ligne</span>
-          <span ng-if="candidature.application_completed && candidature.physical_content && !candidature.physical_content_received">- En attente de courrier</span>
-          <span ng-if="!candidature.application_completed && candidature.physical_content">Inscription par courrier</span>
-          <strong>- Non visé</strong>
-        </span>
-        <!-- NON VISé -->
-        <span ng-if="candidature.application_complete">
-          <span ng-if="candidature.physical_content && !candidature.physical_content_received">En attente de courrier</span>
-          <span ng-if="candidature.selected_for_interview && !candidature.wait_listed && !candidature.selected">
-            Sélectionné<ng-pluralize count="candidature.artist.user.profile.gender.indexOf('F')" when="{'0': 'e'}"></ng-pluralize>
-            pour l'entretien</span>
-          <span ng-if="candidature.wait_listed && !candidature.selected">En liste d'attente</span>
-          <span ng-if="candidature.selected">Sélectioné<ng-pluralize count="candidature.artist.user.profile.gender.indexOf('F')" when="{'0': 'e'}"
-            <span count="candidature.artist.user.profile.gender" when="{'F': 'e', 'other': ''}" />
-
-          </span>
-        </span>
-        <span ng-if='(!candidature.application_completed && !candidature.physical_content)' class="bar" ng-style='{"width" : candidature.progress+"%"}'> {{candidature.progress}}%</span>
-      </div>
-    </div>
 
 </div>

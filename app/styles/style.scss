@@ -360,43 +360,100 @@ body.en {
 }
 
 .red{
-  color:red;
+  color:#d0021b;
 }
 .green{
-  color:green;
+  color:#b8e986;
 }
 
 .candidat-card{
   font-size: 0.9em;
-  height: 150px;
-  margin: 20px 0px;;
+  height: 110px;
+  margin: 20px 0px;
 
-  .photo a{
+  .corner{
+    position: absolute;
+    right: 15px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 30px 30px 0;
+    border-color: transparent #bfbfbf transparent transparent;
+    z-index: 2;
+    &.red{
+      border-color: transparent #d0021b transparent transparent;
+    }
+    &.green{
+      border-color: transparent #b8e986 transparent transparent;
+    }
+  }
 
-    img{
-      height: 100%;
-      max-height: 80px;
-      max-width: none;
-      width: auto;
+  .user-first_name, .user-last_name, .user-birthdate{
+    font-size: 10pt;
+    line-height: 10pt;
+  }
+  .langues{
+    font-size: 8pt;
+    line-height: 12pt;
+    color: #4a4a4a;
+    .language:after{
+      content:",";
+    }
+    .language:last-child:after{
+        content:"";
+    }
+  }
+  .candidature-number{
+    text-align: right;
+    text-align-last: right;
+  }
+
+  .candidature-infos-icon{
+    height: 80px;
+    line-height: 100px;
+    .glyphicon{
+      font-size:28px;
+      padding: 0px;
+    }
+  }
+
+  .photo {
+    padding-top: 10px;
+    a{
+      img{
+        height: 100%;
+        max-height: 80px;
+        max-width: none;
+        width: auto;
+      }
     }
   }
 
   &.showing_details{
-    border:1px solid black;
+    .thumbnail{
+      border:5px solid black;
+      border-bottom:0px solid black;
+    }
   }
 
   .candidature-infos{
+    text-transform: uppercase;
+    font-size: 9px;
+    line-height: 15px;
+    vertical-align: middle;
+    text-indent: 5px;
     display: block;
     margin: 0;
     position: absolute;
-    bottom: 0;
-    width: 100%;
     z-index: 2;
     box-shadow: none;
     height: 15px;
     background: #d8d8d8;
     border-top-right-radius: 0px;
     border-top-left-radius: 0px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
   }
 
 
@@ -426,6 +483,7 @@ body.en {
       background: #4a4a4a;
       text-align: right;
       position: absolute;
+      left: -5px;
       color:white;
     }
     .user-birthdate{display: none}
@@ -436,21 +494,12 @@ body.en {
     padding: 0px;
     height: 100%;
     position: relative;
+    border-radius: 0px;
   }
 
   a{
     color:black;
 
-  }
-  .go{
-    position: absolute;
-    right: 30px;
-    top:auto;
-    bottom: 30px;
-    font-size: 20px;
-    &:hover{
-      text-decoration: none;
-    }
   }
   h3{
     padding: 0;
@@ -480,8 +529,12 @@ body.en {
   .inner-addon {
     position: relative;
   }
+  .btn-group{
+    text-transform: uppercase;
+    .btn{
 
-
+    }
+  }
 
   select{
     width:100%;
@@ -553,8 +606,9 @@ body.en {
 
 .candidat_view{
   position: fixed;
-  overflow: scroll;
-  height: 100%;
+  overflow-y: scroll;
+  height: 80%;
+  display: block;
   .candidat{
 
     .flag-icon{
