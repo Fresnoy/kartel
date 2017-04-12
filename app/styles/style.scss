@@ -332,6 +332,11 @@ div.api-field {
 
 }
 
+.no-gutter {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
 
 // Candidature
 
@@ -388,6 +393,7 @@ body.en {
     }
   }
 
+
   .user-first_name, .user-last_name, .user-birthdate{
     font-size: 10pt;
     line-height: 10pt;
@@ -406,11 +412,13 @@ body.en {
   .candidature-number{
     text-align: right;
     text-align-last: right;
+    font-size: 0.9em;
+
   }
 
   .candidature-infos-icon{
-    height: 80px;
-    line-height: 100px;
+    height: 70px;
+    line-height: 90px;
     .glyphicon{
       font-size:28px;
       padding: 0px;
@@ -418,13 +426,14 @@ body.en {
   }
 
   .photo {
-    padding-top: 10px;
+    overflow: hidden;
     a{
       img{
         height: 100%;
         max-height: 80px;
         max-width: none;
         width: auto;
+        margin: 0px;
       }
     }
   }
@@ -491,7 +500,7 @@ body.en {
   }
 
   .thumbnail{
-    padding: 0px;
+    padding: 10px 0px;
     height: 100%;
     position: relative;
     border-radius: 0px;

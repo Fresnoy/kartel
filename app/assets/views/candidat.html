@@ -49,14 +49,14 @@
     <div ng-if="!candidature.presentation_video && candidature.physical_content">
       <i class="glyphicon glyphicon-envelope green" title="courrrier reçu" ng-if='candidature.physical_content && candidature.physical_content_received' />
       <i class="glyphicon glyphicon-envelope red" title="courrrier non reçu"  ng-if='candidature.physical_content && !candidature.physical_content_received' />
-      <span ng-bind-html="candidature.physical_content_description | nl2br" />
+      <span ng-bind-html="candidature.physical_content_description | linky:'_blank' | nl2br" />
     </div>
     <div ng-if="!candidature.presentation_video && !candidature.physical_content">
       <span class="text-danger warning">Vidéo absente</span>
     </div>
     <div ng-if="candidature.presentation_video_details" class="pointer" ng-init="show_video_details = false">
       <p ng-click="show_video_details = !show_video_details">Voir la description de la vidéo</p>
-      <p ng-show="show_video_details" ng-bind-html="candidature.presentation_video_details | nl2br" />
+      <p ng-show="show_video_details" ng-bind-html="candidature.presentation_video_details | linky:'_blank' | nl2br" />
     </div>
   </div>
 
@@ -215,7 +215,7 @@
 
         <div role="tabpanel" class="tab-pane" id="message">
           <h3>Message</h3>
-          <p ng-bind-html="candidature.remark | nl2br" />
+          <p ng-bind-html="candidature.remark | linky:'_blank' | nl2br" />
 
 
         </div>
