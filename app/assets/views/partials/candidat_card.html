@@ -45,7 +45,9 @@
                 <div class="col-xs-4 col-md-4 .no-gutter">
                   <div class="candidature-infos-icon">
                     <div ng-if="candidature.physical_content && !candidature.physical_content_received"><i class="glyphicon glyphicon-envelope red"></i></div>
-                    <div ng-if="candidature.selected_for_interview"><i class="btn-lg glyphicon glyphicon-user grey"></i></div>
+                    <div ng-if="candidature.selected_for_interview && !candidature.wait_listed && !candidature.selected"><i class="btn-lg glyphicon glyphicon-user grey"></i></div>
+                    <div ng-if="candidature.wait_listed && !candidature.selected"><i class="btn-lg glyphicon glyphicon-ok grey"></i></div>
+                    <div ng-if="candidature.selected"><i class="btn-lg glyphicon glyphicon-ok green"></i></div>
                   </div>
                   <span class="candidature-number">{{candidature.current_year_application_count}}</span>
                 </div>

@@ -185,7 +185,7 @@ angular.module('memoire.controllers', ['memoire.services'])
 
     search = ""
     #return all artwork video and filtre with idFrezsnoy - TODO search idFresnoy in api
-    AmeRestangular.all("").get('',{"search": search, "flvfile": "true", "previewsize":"scr"}, {authorization: undefined} ).then((ame_artwork) ->
+    AmeRestangular.all("").get('apiresult.json',{"search": search, "flvfile": "true", "previewsize":"scr"}, {authorization: undefined} ).then((ame_artwork) ->
       for archive in ame_artwork
         # valid reference id Fresnoy => id AME
 
@@ -284,7 +284,6 @@ angular.module('memoire.controllers', ['memoire.services'])
     criteres = Object.assign(sort.sortby, order.value)
     console.log(criteres)
     if(!$scope.asc) then criteres.ordering = "-"+criteres.ordering
-
     arr = []
     Candidatures.getList(criteres).then((candidatures) ->
       for candidature in candidatures
