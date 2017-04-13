@@ -255,9 +255,9 @@ angular.module('memoire.controllers', ['memoire.services'])
     {title: 'Courrier', sortby: {"physical_content": 2, "physical_content_received": 3}, count:0},
     {title: 'En attente de validation', sortby: {"application_completed": 2, "application_complete": 3}, count:0},
     {title: 'Visées', sortby: {"application_complete": 2}, count:0},
-    {title: 'Admies à l\'entretien', sortby: {"selected_for_interview": 2}, count:0},
-    {title: 'Selectionnées', sortby: {"selected": 2}, count:0},
-    {title: 'Sur liste d\'attente', sortby: {"wait_listed": 2}, count:0},
+    {title: 'Selectionnés pour l\'entretien', sortby: {"selected_for_interview": 2}, count:0},
+    {title: 'Admis', sortby: {"selected": 2}, count:0},
+    {title: 'Admis sur liste d\'attente', sortby: {"wait_listed": 2}, count:0},
   ]
   $scope.select_orders = [
       {title: "Numéro d'inscription", value: {ordering: "id"}}
