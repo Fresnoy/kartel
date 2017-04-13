@@ -83,12 +83,8 @@
               </select>
 
               <hr/>
-                <a class="btn block btn-success" ui-sref="{sortby: critere, orderby: order, asc: asc}">
+                <a class="btn block btn-success" ng-click="show_order_param=false" ui-sref="{sortby: critere, orderby: order, asc: asc}">
                   Valider
-                </a>
-
-                <a class="btn block btn-default" ng-click="show_order_param=!show_order_param">
-                  Annuler
                 </a>
 
           </div>
