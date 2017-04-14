@@ -1,5 +1,17 @@
 .modal-dialog{
     min-width: 70%;
+
+    #frame{
+      width: 100%;
+      height: 50vh;
+
+    }
+
+    .modal-content{
+      height: auto !important;
+    }
+
+
 }
 
 .main-container {
@@ -137,7 +149,7 @@ div.api-field {
 
 }
 
-.pointer{
+.pointer, a[ng-click], a[ui-sref] {
   cursor: pointer;
 }
 
@@ -322,6 +334,14 @@ div.api-field {
 
 
 // Candidature
+
+
+// FLAGS ICON
+/* Change icon path */
+$flag-icon-css-path: '../images/flags' !default;
+@import "bower_components/flag-icon-css/sass/flag-icon";
+
+
 body.fr {
   .fr{
     display: inline-block;
@@ -354,10 +374,63 @@ body.en {
 
 .candidat-card{
   font-size: 0.9em;
+  height: 150px;
+  margin: 20px 0px;;
+
+  .photo a{
+
+    img{
+      height: 100%;
+      max-height: 80px;
+      max-width: none;
+      width: auto;
+    }
+  }
+
+  .candidature-infos{
+    display: block;
+    margin: 0;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    z-index: 2;
+    box-shadow: none;
+    height: 15px;
+    background: #d8d8d8;
+    border-top-right-radius: 0px;
+    border-top-left-radius: 0px;
+  }
+
+
+  &.ghost{
+    pointer-events: none;
+
+    .preserve-info{
+      position: relative;
+      visibility: hidden;
+    }
+    .preserve-info:before{
+      content: "XXXXX";
+      position: absolute;
+      visibility: visible;
+    }
+    .hide-infos{
+      visibility: hidden;
+    }
+    .bar{
+      background: #4a4a4a;
+      text-align: right;
+      position: absolute;
+      color:white;
+    }
+    .user-birthdate{display: none}
+
+  }
 
   .thumbnail{
-    height: 150px;
     padding: 0px;
+    height: 100%;
+    position: relative;
   }
 
   a{
@@ -387,7 +460,7 @@ body.en {
     white-space:nowrap;
   }
   .flag-icon{
-    height: 20px;
+    height: 10px;
     width: 20px;
   }
   .row > div{
@@ -397,12 +470,54 @@ body.en {
 
 }
 
+.candidatures{
+
+  .form-group {
+    display: inline-block;
+    input[type="radio"] {
+      display: none;
+    }
+    input[type="radio"] {
+      + .btn-group > label span {
+        width: 20px;
+        &:first-child {
+            display: none;
+        }
+        &:last-child {
+            display: inline-block;
+        }
+      }
+      &:checked {
+        + .btn-group > label span{
+          &:first-child {
+              display: inline-block;
+          }
+          &:last-child {
+              display: none;
+          }
+        }
+      }
+    }
+  }
+}
 .candidat{
 
   .flag-icon{
     width: 100px;
     height: 100px;
   }
+
+  .toggleHeight{
+    cursor: pointer;
+    height: 20px;
+    overflow: hidden;
+    &:hover{
+      cursor: pointer;
+      height: auto;
+    }
+  }
+
+
 }
 
 .field{
@@ -907,19 +1022,19 @@ body.en {
     }
 
     .data-writing{
-        position: absolute;
-        right: 130px;
-        top:78px;
+        position: fixed;
+        left: 10%;
+        top:15px;
         font-size: 0.8em;
         box-shadow: 2px 1px 2px rgba(0,0,0,0.3);
         background: #B8E986;
         color: black;;
         border-radius: 10px;
         padding: 1px 10px;
-
         -webkit-transition: 0.1s linear all;
       	transition: 0.1s linear all;
       	opacity: 1;
+        z-index: 100;
         &.ng-hide{
           opacity:0;
         }
@@ -931,6 +1046,7 @@ body.en {
       position: fixed;
       top:0px;
       left: 0px;
+      height : 100%;
       min-height: 100vh;
       width: 100%;
       background: rgba(255,255,255,0.8);
@@ -997,6 +1113,7 @@ body.en {
         background-position: center;
         display: inline-block;
         line-height: 20px;
+        vertical-align:top;
         mix-blend-mode: luminosity;
         &:hover{
           mix-blend-mode: normal;
@@ -1278,7 +1395,15 @@ label{
                 }
 
           }
+        .data-writing{
+              position: fixed;
+              width: 100%;
+              top:0px;
+              left:0;
+              border-radius: 0px;
+          }
       }
+
     }
     .col-xs-12 {
       padding: 0;

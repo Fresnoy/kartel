@@ -12,12 +12,10 @@
 <div class="photo">
 
   <h1>
-     <span class="fr">Photographie</span>
-     <span class="en">Photograph</span>
+     <span class="fr">Photo d'identité</span>
+     <span class="en">Passeport photo</span>
   </h1>
 
-  <p class="fr">Envoyer nous une photo de vous</p>
-  <p class="en">Send us a photograph of yourself</p>
 
    <form name="form4" ng-submit="form4.$valid && submit()" class="css-form" novalidate enctype="multipart/form-data">
       <div class="field">
@@ -47,26 +45,20 @@
             </div>
          </div>
          <label class="topborder" for="photo">
-            <div ng-show="form4.uPhoto.$invalid" ng-messages="form4.uPhoto.$error" class="help-block error">
-               <div ng-message="required">
-                  <span class="fr">Obligatoire</span>
-                  <span class="en">Required</span>
-               </div>
-            </div>
-            <div ng-show="invalidPhoto.$errorMessages" ng-messages="invalidPhoto.$errorMessages"
+            <div ng-show="!user.profile.photo && invalidPhoto.$errorMessages" ng-messages="invalidPhoto.$errorMessages"
                class="help-block error">
                <div ng-message="pattern">
                   <span class="fr">Formats acceptés jpg / png / gif</span>
                   <span class="en">Accepted formats : jpg / png / gif</span>
                </div>
                <div ng-message="maxSize">
-                  <span class="fr">Photo trop importante < 10MB</span>
-                  <span class="en">max size 10MB</span>
+                  <span class="fr">La taille de la photo doit être inférieure à 10MB</span>
+                  <span class="en">The picture can't exceed 10MB</span>
                </div>
             </div>
             <span class="field-state"></span>
-            <span class="fr">Photo d'identité (format jpg / png / gif)</span>
-            <span class="en">Passport Photograph (image only : jpg / png / gif) </span>
+            <span class="fr">Photo d'identité (format : jpg / png / gif)</span>
+            <span class="en">Passport photograph (format : jpg / png / gif) </span>
          </label>
       </div>
    </form>

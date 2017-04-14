@@ -2,23 +2,27 @@
 
   <h1>FAQ</h1>
   <h3 class="hidden pointer" ng-init="faq1 = false" ng-click="faq1 = !faq1">
-    Quels données sont stockées, pendant combien de temps
+    <span class="fr">Quels données sont stockées, pendant combien de temps</span>
+    <span class="en">What information is stored and for how long</span>
   </h3>
   <p ng-show="faq1">à compléter CNIL</p>
 
   <h3 class="hidden pointer" ng-init="faq2 = false" ng-click="faq2 = !faq2">
-    Je n'arrive pas à mettre mon film en ligne
+    <span class="fr">Je n'arrive pas à mettre mon film en ligne</span>
+    <span class="en">I can't upload my film</span>
   </h3>
   <p ng-show="faq2">à compléter</p>
 
   <h3 class="pointer" ng-init="faq3 = false" ng-click="faq3 = !faq3">
-    Je n'ai reçu aucun email de confirmation
+    <span class="fr">Je n'ai reçu aucun email de confirmation</span>
+    <span class="en">I have not received a confirmation e-mail</span>
   </h3>
-  <div ng-show="faq3">
-    <span class="fr">Tous les e-mails sont envoyés instantanément, si vous ne recevez pas d’e-mail de notre part, vérifiez vos spam, ou écrivez nous à
+  <p ng-show="faq3">
+    <span class="fr">Tous les e-mails sont envoyés instantanément, si vous ne recevez pas d’e-mail de notre part, vérifiez vos spam, ou écrivez-nous à
       <br/>selection-at-lefresnoy.net</span>
-    <span class="en"></span>
-  </div>
+    <span class="en">All the e-mails are sent instantaneously, if you have not received an e-mail from us, check your spam or write to us at:
+      <br/>selection-at-lefresnoy.net</span>
+  </p>
 
    <div class="navigation">
       <a class="btn prev" ui-sref="candidature.account.login"><span class="fr">Retour</span><span class="en">Back</span></a>

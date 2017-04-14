@@ -108,6 +108,13 @@ angular.module('kartel',
 
 )
 
+.filter 'nl2br', ($sce) ->
+  return (msg, is_xhtml) ->
+    is_xhtml = is_xhtml or true
+    breakTag = if is_xhtml then '<br />' else '<br>'
+    msg = (msg + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2')
+    return $sce.trustAsHtml msg
+
 .filter('time', ->
     return (value, unit, format, isPadded) ->
       time = value.split(":")
