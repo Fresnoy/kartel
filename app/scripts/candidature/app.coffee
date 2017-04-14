@@ -5,13 +5,13 @@ angular.module('candidature.application', ['candidature.controllers',
             'ui.router',
 ])
 
-.run(['$rootScope' ,'$state', ($rootScope, $state) ->
+.run(['$rootScope', '$state', ($rootScope, $state) ->
   $rootScope.$on('tokenHasExpired', () ->
     console.log('Your session has expired!')
     if( $rootScope.logout == Function)
       $rootScope.logout()
 
-    if($state.$urlRouter!=undefined && $state.$urlRouter.location.indexOf("candidature/"))
+    if($state.$urlRouter!=undefined && $state.$urlRouter.location.indexOf("candidature/")!=-1)
       setTimeout(() ->
         $state.go('candidature.account.login')
       , 200)
