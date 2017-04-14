@@ -19,11 +19,11 @@
         </span>
     </div>
     <!-- LAST APPLICATIONS -->
-    <p ng-if="candidature.last_applications_years">Candidaté en {{candidature.last_applications_years}}</p>
+    <p ng-if="candidature.last_applications_years">A déjà candidaté en {{candidature.last_applications_years}}</p>
     <p ng-if="!candidature.last_applications_years">Première candidature</p>
 
     <!-- ITW -->
-    <p ng-if="candidature.remote_interview">Désire passer l'entretiens par Skype</p>
+    <p ng-if="candidature.remote_interview">Désire passer l'entretien par Skype</p>
 
 
   </div>
@@ -125,12 +125,12 @@
                   <a ng-show='candidature.identity_card' ng-click='singleLightbox(candidature.identity_card,"Justificatif d’identité")'>Justificatif</a>
                   <span ng-if='!candidature.identity_card' class="text-danger warning">Justificatif d'identité absent</span>
                 <br/>Genre :  {{ gender[artist.user.profile.gender].fr }}
-                <br/>Statut familiale : {{artist.user.profile.family_status}}
+                <br/>Statut familial : {{artist.user.profile.family_status}}
               </p>
               <br/>
 
             </div>
-            <p>Numéro de Sécu: {{artist.user.profile.social_insurance_number}}</p>
+            <p>Numéro de Sécurité sociale : {{artist.user.profile.social_insurance_number}}</p>
 
           </div>
 
