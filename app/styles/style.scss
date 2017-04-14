@@ -332,6 +332,11 @@ div.api-field {
 
 }
 
+.no-gutter {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
 
 // Candidature
 
@@ -360,44 +365,122 @@ body.en {
 }
 
 .red{
-  color:red;
+  color:#d0021b;
 }
 .green{
-  color:green;
+  color:#b8e986;
 }
+
+.additionnalInfo {
+    color: #333;
+    font-size: 9pt;
+  }
+
 
 .candidat-card{
   font-size: 0.9em;
-  height: 150px;
-  margin: 20px 0px;;
+  height: 110px;
+  margin: 20px 0px;
 
-  .photo a{
+  .corner{
+    position: absolute;
+    right: 15px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 30px 30px 0;
+    border-color: transparent #bfbfbf transparent transparent;
+    z-index: 2;
+    &.red{
+      border-color: transparent #d0021b transparent transparent;
+    }
+    &.green{
+      border-color: transparent #b8e986 transparent transparent;
+    }
+  }
 
-    img{
-      height: 100%;
-      max-height: 80px;
-      max-width: none;
-      width: auto;
+
+  .user-first_name, .user-last_name, .user-birthdate{
+    font-size: 10pt;
+    line-height: 10pt;
+  }
+  .langues{
+    font-size: 8pt;
+    line-height: 12pt;
+    color: #4a4a4a;
+    .language:after{
+      content:",";
+    }
+    .language:last-child:after{
+        content:"";
+    }
+  }
+  .candidature-number{
+    text-align: right;
+    text-align-last: right;
+    font-size: 0.9em;
+
+  }
+
+  .candidature-infos-icon{
+    height: 70px;
+    line-height: 90px;
+    .glyphicon{
+      font-size:28px;
+      padding: 0px;
+    }
+  }
+
+  .photo {
+    overflow: hidden;
+    a{
+      img{
+        height: 100%;
+        max-height: 80px;
+        max-width: none;
+        width: auto;
+        margin: 0px;
+      }
+    }
+  }
+
+  &.showing_details{
+    .thumbnail{
+      border:5px solid black;
+      border-bottom:0px solid black;
     }
   }
 
   .candidature-infos{
+    text-transform: uppercase;
+    font-size: 9px;
+    line-height: 15px;
+    vertical-align: middle;
+    text-indent: 5px;
     display: block;
     margin: 0;
     position: absolute;
-    bottom: 0;
-    width: 100%;
     z-index: 2;
     box-shadow: none;
     height: 15px;
     background: #d8d8d8;
     border-top-right-radius: 0px;
     border-top-left-radius: 0px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
   }
 
 
   &.ghost{
+
     pointer-events: none;
+    .photo {
+      a{
+        cursor: not-allowed;
+      }
+
+    }
 
     .preserve-info{
       position: relative;
@@ -415,6 +498,7 @@ body.en {
       background: #4a4a4a;
       text-align: right;
       position: absolute;
+      left: -5px;
       color:white;
     }
     .user-birthdate{display: none}
@@ -422,24 +506,15 @@ body.en {
   }
 
   .thumbnail{
-    padding: 0px;
+    padding: 10px 0px;
     height: 100%;
     position: relative;
+    border-radius: 0px;
   }
 
   a{
     color:black;
 
-  }
-  .go{
-    position: absolute;
-    right: 30px;
-    top:auto;
-    bottom: 30px;
-    font-size: 20px;
-    &:hover{
-      text-decoration: none;
-    }
   }
   h3{
     padding: 0;
@@ -465,6 +540,55 @@ body.en {
 }
 
 .candidatures{
+
+  .inner-addon {
+    position: relative;
+  }
+  .btn-group{
+    text-transform: uppercase;
+    .btn{
+
+    }
+  }
+
+  select{
+    width:100%;
+    margin: 5px 0px;
+    border: 0px;
+    box-shadow: 0px 1px 3px rgba(0,0,0,0.5);
+    margin:0px;
+    font-size: 18px;
+    line-height: 50px;
+    height: 50px;
+    vertical-align: middle;
+    text-align-last:center; /* chrome tricks */
+    box-sizing: content-box;
+    text-transform: uppercase;
+
+
+    &.no-border{
+      border-bottom: 0px solid black;
+    }
+    &:focus{
+      outline:none;
+      background-color: rgba(0,0,0,.05)
+    }
+  }
+  /* style glyph */
+  .inner-addon .glyphicon {
+    position: absolute;
+    padding: 10px;
+    pointer-events: none;
+  }
+
+  /* align glyph */
+  .left-addon .glyphicon  { left:  0px;}
+  .right-addon .glyphicon { right: 0px;}
+
+  /* add padding  */
+  .left-addon input  { padding-left:  30px; }
+  .right-addon input { padding-right: 30px; }
+
 
   .form-group {
     display: inline-block;
@@ -494,26 +618,35 @@ body.en {
     }
   }
 }
-.candidat{
 
-  .flag-icon{
-    width: 100px;
-    height: 100px;
-  }
+.candidat_view{
+  position: fixed;
+  overflow-y: scroll;
+  height: 80%;
+  display: block;
+  .candidat{
 
-  .toggleHeight{
-    cursor: pointer;
-    height: 20px;
-    overflow: hidden;
-    &:hover{
+    .flag-icon{
+      width: 100px;
+      height: 100px;
+    }
+
+    .toggleHeight{
       cursor: pointer;
-      height: auto;
+      height: 20px;
+      overflow: hidden;
+      &:hover{
+        cursor: pointer;
+        height: auto;
+      }
     }
   }
-
-
 }
 
+.field{
+  position: relative;
+  margin-top:20px;
+}
 
 .student-app{
     padding: 0;
@@ -652,16 +785,18 @@ body.en {
       }
 
     }
+
     .field{
       position: relative;
+      margin-top:20px;
     }
+
     input, select, textarea{
       width:100%;
       margin: 5px 0px;
       border: 0px;
       border-bottom: 3px solid black;
       margin:0px;
-      margin-top: 20px;
       padding-bottom: 5px;
       text-indent: 4px;
       font-size: 18px;
@@ -750,12 +885,18 @@ body.en {
       margin: 0px;
       &.error{
         color: black;
-        font-weight: bold;
+        font-weight: normal;
+        text-align: left;
         text-decoration: none;
         text-transform: none;
-        background: #dc4154; /* rgba(208,27,1,.75); */
-        padding: 5px;
+        background: #dc4154;
+        /* rgba(208,27,1,.75); */
+        padding: 5px 10px;
         margin: 5px 0px;
+      }
+      a {
+        color:#CCC;
+        text-decoration: underline;
       }
     }
     select{
@@ -767,11 +908,13 @@ body.en {
       appearance:none;
       -moz-appearance:none; /* Firefox */
       -webkit-appearance:none;
+      margin: 0;
     }
     textarea{
       height: 50px;
       font-size: 16px;
       max-width: 100%;
+      background-color: #EEE;
       &:focus{
         height: auto;
       }
@@ -1213,11 +1356,12 @@ body.en {
 
       }
       .step-infos{
+          color: black;
           top:23%;
           position: absolute;
           margin-left: 80px;
           padding-left: 20px;
-          border-left: 5px solid rgb(51, 51, 51);
+          border-left: 5px solid rgb(0, 0, 0);
           .current{
             font-size: 64px;
             font-weight: bold;
@@ -1262,7 +1406,7 @@ body.en {
   }
   &.green{
     background: #B8E986;
-    color: #9B9B9B;
+    color: #4A4A4A;
   }
   &.grey{
     background: grey;
