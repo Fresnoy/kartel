@@ -1233,11 +1233,12 @@ body.en {
 
       }
       .step-infos{
+          color: black;
           top:23%;
           position: absolute;
           margin-left: 80px;
           padding-left: 20px;
-          border-left: 5px solid rgb(51, 51, 51);
+          border-left: 5px solid rgb(0, 0, 0);
           .current{
             font-size: 64px;
             font-weight: bold;
