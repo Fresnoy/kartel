@@ -6,7 +6,7 @@
 <div class="candidat" ng-if="user.is_superuser">
 
 
-  <div class="photo visible-xs  col-xs-12 ">
+  <div class="photo visible-xs col-xs-12">
     <!-- MOBILE VIEW -->
     <div class="thumbnail" ng-if="artist.user.profile.photo" >
       <img src="{{artist.user.profile.photo}}" />
@@ -19,11 +19,11 @@
         </span>
     </div>
     <!-- LAST APPLICATIONS -->
-    <p ng-if="candidature.last_applications_years">Candidaté en {{candidature.last_applications_years}}</p>
+    <p ng-if="candidature.last_applications_years">A déjà candidaté en {{candidature.last_applications_years}}</p>
     <p ng-if="!candidature.last_applications_years">Première candidature</p>
 
     <!-- ITW -->
-    <p ng-if="candidature.remote_interview">Désire passer l'entretiens par Skype</p>
+    <p ng-if="candidature.remote_interview">Désire passer l'entretien par Skype</p>
 
 
   </div>
@@ -49,20 +49,18 @@
     <div ng-if="!candidature.presentation_video && candidature.physical_content">
       <i class="glyphicon glyphicon-envelope green" title="courrrier reçu" ng-if='candidature.physical_content && candidature.physical_content_received' />
       <i class="glyphicon glyphicon-envelope red" title="courrrier non reçu"  ng-if='candidature.physical_content && !candidature.physical_content_received' />
-      <span ng-bind-html="candidature.physical_content_description | nl2br" />
+      <span ng-bind-html="candidature.physical_content_description | linky:'_blank' | nl2br" />
     </div>
     <div ng-if="!candidature.presentation_video && !candidature.physical_content">
       <span class="text-danger warning">Vidéo absente</span>
     </div>
     <div ng-if="candidature.presentation_video_details" class="pointer" ng-init="show_video_details = false">
       <p ng-click="show_video_details = !show_video_details">Voir la description de la vidéo</p>
-      <p ng-show="show_video_details" ng-bind-html="candidature.presentation_video_details | nl2br" />
+      <p ng-show="show_video_details" ng-bind-html="candidature.presentation_video_details | linky:'_blank' | nl2br" />
     </div>
-
-
   </div>
 
-  <div class="photo hidden-xs col-md-2 col-lg-2">
+  <div class="photo hidden-xs col-md-3 col-lg-3">
     <div class="thumbnail" ng-if="artist.user.profile.photo" >
       <img src="{{artist.user.profile.photo}}" />
     </div>
@@ -71,7 +69,7 @@
     <div ng-if='artist.websites.length' >
       <i class="glyphicon glyphicon-link"></i>&nbsp;Web :
         <span class="website" ng-repeat="website in artist.websites track by $index">
-          <a href="{{ website.link }}" target="_blank">{{ website.link }}</a>
+          <a href="{{ website.link }}" title="{{ website.link }}" target="_blank"><i class="glyphicon glyphicon-globe"></i></a>
         </span>
     </div>
     <!-- LAST APPLICATIONS -->
@@ -86,9 +84,9 @@
       <tabset class="api-field">
         <!-- Desciption  tabs -->
         <ul class="nav nav-tabs" role="tablist">
-          <li role="admin-infos" class="active">
+          <li role="admin-infos" class="">
             <a data-target ="#admin-infos" role="tab" data-toggle="tab">
-              Infos administratives
+              Infos
             </a>
           </li>
           <li role="contact" class="">
@@ -101,7 +99,7 @@
               Cursus
             </a>
           </li>
-          <li role="intentions" class="">
+          <li role="intentions" class="active">
             <a data-target ="#intentions" role="tab" data-toggle="tab">
               Intentions
             </a>
@@ -119,7 +117,7 @@
         </ul>
           <!-- Desciption  content -->
         <div class="tab-content">
-          <div role="tabpanel" class="tab-pane active" id="admin-infos">
+          <div role="tabpanel" class="tab-pane" id="admin-infos">
             <div class="person">
               <p>
                 Né(e) en {{country.codeToCountry[artist.user.profile.birthplace_country]}} le {{ artist.user.profile.birthdate }}
@@ -127,12 +125,12 @@
                   <a ng-show='candidature.identity_card' ng-click='singleLightbox(candidature.identity_card,"Justificatif d’identité")'>Justificatif</a>
                   <span ng-if='!candidature.identity_card' class="text-danger warning">Justificatif d'identité absent</span>
                 <br/>Genre :  {{ gender[artist.user.profile.gender].fr }}
-                <br/>Statut familiale : {{artist.user.profile.family_status}}
+                <br/>Statut familial : {{artist.user.profile.family_status}}
               </p>
               <br/>
 
             </div>
-            <p>Numéro de Sécu: {{artist.user.profile.social_insurance_number}}</p>
+            <p>Numéro de Sécurité sociale : {{artist.user.profile.social_insurance_number}}</p>
 
           </div>
 
@@ -185,7 +183,7 @@
 
 
 
-        <div role="tabpanel" class="tab-pane" id="intentions">
+        <div role="tabpanel" class="tab-pane active" id="intentions">
           <h3>Intentions</h3>
           <a ng-if='candidature.justification_letter'
             ng-click='singleLightbox(candidature.justification_letter, "Lettre de motivation")' >
@@ -217,7 +215,7 @@
 
         <div role="tabpanel" class="tab-pane" id="message">
           <h3>Message</h3>
-          <p ng-bind-html="candidature.remark | nl2br" />
+          <p ng-bind-html="candidature.remark | linky:'_blank' | nl2br" />
 
 
         </div>
@@ -287,7 +285,8 @@
             <!-- STATE 2 = Candidature complete => Candidature interview  -->
             <div ng-show="candidature.state==2" ng-init="click_cInterview=false" >
               <button type="button" ng-click='click_cInterview=!click_cInterview' class="btn btn-primary btn-md btn-block">
-                Sélectionné pour l'entretien</button>
+                Sélectionné<ng-pluralize count="candidature.artist.user.profile.gender.indexOf('F')" when="{'0': 'e'}"></ng-pluralize>
+                pour l'entretien</button>
               <div ng-show="click_cInterview" >
                 <p class="alert alert-warning" role="alert">
                   Attention cette action selectionne le candidat pour l'entretien

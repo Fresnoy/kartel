@@ -265,22 +265,26 @@ angular.module('kartel',
         # - Candidatures LISTS
 
         $stateProvider.state('candidatures',
-                url: '/candidatures'
+                url: '/candidatures?orderby&sortby&asc'
+                params:
+                  orderby: null
+                  sortby: null
+                  asc: null
                 views:
                   'main_view':
                     templateUrl: 'kartel.html'
                     controller: 'NavController'
                   'main_view.main_content_view':
-                      templateUrl: 'views/candidatures.html'
-                      controller: 'CandidaturesController'
+                    templateUrl: 'views/candidatures.html'
+                    controller: 'CandidaturesController'
         )
 
         $stateProvider.state('candidatures.candidat',
                 url: '/:id'
                 views:
-                  'main_content_view':
-                      templateUrl: 'views/candidat.html'
-                      controller: 'CandidatController'
+                  'main_content_view.candidat_view':
+                    templateUrl: 'views/candidat.html'
+                    controller: 'CandidatController'
         )
 
 

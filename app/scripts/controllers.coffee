@@ -131,8 +131,8 @@ angular.module('memoire.controllers', ['memoire.services'])
 .controller('ArtistController', ($scope, $stateParams, Students, Artists, Artworks) ->
   $scope.artworks = []
 
-  Students.one().one($stateParams.id).get().then((student) ->
-    $scope.artist = student.artist
+  Artists.one().one($stateParams.id).get().then((artist) ->
+    $scope.artist = artist
 
     # Fetch artworks
     for artwork_uri in $scope.artist.artworks
@@ -185,7 +185,7 @@ angular.module('memoire.controllers', ['memoire.services'])
 
     search = ""
     #return all artwork video and filtre with idFrezsnoy - TODO search idFresnoy in api
-    AmeRestangular.all("").get('',{"search": search, "flvfile": "true", "previewsize":"scr"}, {authorization: undefined} ).then((ame_artwork) ->
+    AmeRestangular.all("").get('apiresult.json',{"search": search, "flvfile": "true", "previewsize":"scr"}, {authorization: undefined} ).then((ame_artwork) ->
       for archive in ame_artwork
         # valid reference id Fresnoy => id AME
 
@@ -243,35 +243,36 @@ angular.module('memoire.controllers', ['memoire.services'])
   )
 )
 
-.controller('CandidaturesController', ($rootScope, $scope, Candidatures, Galleries, Media, RestangularV2, ArtistsV2, Users,
+.controller('CandidaturesController', ($rootScope, $scope, $stateParams, $location, Candidatures, Galleries, Media, RestangularV2, ArtistsV2, Users,
   ISO3166, cfpLoadingBar) ->
   # init
   $scope.candidatures = []
-  $scope.candidatures_filtered = []
+  $scope.candidat_id = $stateParams.id
   # order
   # none = 1 | true = 2 | false = 3
   $scope.select_criteres = [
-    {title: 'tout', sortby: {"search": ""}, count:0 },
-    {title: 'les candidatures courrier', sortby: {"physical_content": 2}, count:0},
-    {title: 'les candidatures en attente de validation', sortby: {"application_completed": 2, "application_complete": 3}, count:0},
-    {title: 'les candidature validées', sortby: {"application_complete": 2}, count:0},
-    {title: 'les candidats admins pour l\'entretien', sortby: {"selected_for_interview": 2}, count:0},
-    {title: 'les candidats selectionnés', sortby: {"selected": 2}, count:0},
-    {title: 'les candidats en liste d\'attente', sortby: {"wait_listed": 2}, count:0},
+    {title: 'Toutes', sortby: {"search": ""}, count:0 },
+    {title: 'Courrier', sortby: {"physical_content": 2, "physical_content_received": 3}, count:0},
+    {title: 'En attente de validation', sortby: {"application_completed": 2, "application_complete": 3}, count:0},
+    {title: 'Visées', sortby: {"application_complete": 2}, count:0},
+    {title: 'Selectionnés pour l\'entretien', sortby: {"selected_for_interview": 2}, count:0},
+    {title: 'Admis', sortby: {"selected": 2}, count:0},
+    {title: 'Admis sur liste d\'attente', sortby: {"wait_listed": 2}, count:0},
   ]
   $scope.select_orders = [
       {title: "Numéro d'inscription", value: {ordering: "id"}}
-      {title: "Nationalité", value: {ordering: "artist__user_profile_nationality"}},
-      {title: "Nom", value: {ordering: "artist__user_last_name"}},
+      {title: "Nationalité", value: {ordering: "artist__user__profile__nationality"}},
+      {title: "Nom", value: {ordering: "artist__user__last_name"}},
   ]
 
   $scope.getCandidaturesLength = (sort) ->
     Candidatures.getList(sort.sortby).then((c) -> sort.count = c.length )
 
-  $scope.critere = $scope.select_criteres[3]
+  $scope.critere = if $stateParams.sortby then $stateParams.sortby else "3"
   for item, value of $scope.select_criteres then $scope.getCandidaturesLength(value)
 
-  $scope.order = $scope.select_orders[2]
+  $scope.order = if $stateParams.orderby then $stateParams.orderby else "2"
+  $scope.asc = if $stateParams.asc then $stateParams.asc else "true"
   $scope.loading = cfpLoadingBar
   # language / country
   $scope.country = ISO3166
@@ -280,7 +281,8 @@ angular.module('memoire.controllers', ['memoire.services'])
   $scope.LANGUAGES_NAME_short[obj.split("-")[0]] = val for obj, val of languageMappingList
 
   $scope.getCandidatures = (sort, order) ->
-    criteres = Object.assign(sort.sortby, order.value, arr)
+    criteres = Object.assign(sort.sortby, order.value)
+    if($scope.asc == 'false') then criteres.ordering = "-"+criteres.ordering
     arr = []
     Candidatures.getList(criteres).then((candidatures) ->
       for candidature in candidatures
@@ -299,7 +301,7 @@ angular.module('memoire.controllers', ['memoire.services'])
     )
     return arr
 
-  $scope.candidatures = $scope.getCandidatures($scope.critere, $scope.order)
+  $scope.candidatures = $scope.getCandidatures($scope.select_criteres[$scope.critere], $scope.select_orders[$scope.order])
 
   $scope.getStateCandidature = (candidature) ->
     $state = 0
@@ -395,10 +397,9 @@ angular.module('memoire.controllers', ['memoire.services'])
     # config image gallery
     image =
       isvideo: new RegExp("aml|player.vimeo|mp4","gi").test(url);
-      iframe: /(\.pdf|vimeo\.com|youtube\.com)/i.test(url)
+      iframe: /(\.pdf|vimeo\.com|youtube\.com|youtu\.be)/i.test(url)
       description: description
     # embed video youtube
-    # url = url.replace("watch?v=","embed/").replace("&t=","#t=")
     url = url.replace(/^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?/gm, 'https://www.youtube.com/embed/$5');
     url = url.replace(/^https?:\/\/(?:www\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|album\/(\d+)\/video\/|)(\d+)(?:$|\/|\?)(.*)/g, "https://player.vimeo.com/video/$3")
     # when url is image set picture var, otherwise set medium_url
@@ -423,37 +424,37 @@ angular.module('memoire.controllers', ['memoire.services'])
       $state = 5
     return $state
 
-  Candidatures.one($stateParams.id).get().then((candidature) ->
-    $scope.candidature = candidature
-    $scope.candidature.state = $scope.getStateCandidature(candidature)
+  loadCandidat = (id) ->
+      Candidatures.one(id).get().then((candidature) ->
+        $scope.candidature = candidature
+        $scope.candidature.state = $scope.getStateCandidature(candidature)
 
-    artist_id = candidature.artist.match(/\d+$/)[0]
-    ArtistsV2.one(artist_id).get().then((artist) ->
-        $scope.artist = artist
-        for website in artist.websites
-            website_id = website.match(/\d+$/)[0]
-            RestangularV2.one('common/website', website_id).get().then((response_website) ->
-                find_website = artist.websites.indexOf(response_website.url)
-                artist.websites[find_website] = response_website
+        artist_id = candidature.artist.match(/\d+$/)[0]
+        ArtistsV2.one(artist_id).get().then((artist) ->
+            $scope.artist = artist
+            for website in artist.websites
+                website_id = website.match(/\d+$/)[0]
+                RestangularV2.one('common/website', website_id).get().then((response_website) ->
+                    find_website = artist.websites.indexOf(response_website.url)
+                    artist.websites[find_website] = response_website
+                )
+            user_id = artist.user.match(/\d+$/)[0]
+            $scope.artist.user = Users.one(user_id).get().then((user_infos) ->
+              $scope.artist.user = user_infos
             )
-        user_id = artist.user.match(/\d+$/)[0]
-        $scope.artist.user = Users.one(user_id).get().then((user_infos) ->
-          $scope.artist.user = user_infos
         )
+        gallery_id = candidature.cursus_justifications.match(/\d+$/)[0]
+        Galleries.one(gallery_id).get().then((gallery_infos) ->
+          candidature.cursus_justifications = gallery_infos
 
-    )
-    gallery_id = candidature.cursus_justifications.match(/\d+$/)[0]
-    Galleries.one(gallery_id).get().then((gallery_infos) ->
-      candidature.cursus_justifications = gallery_infos
-
-      for medium in gallery_infos.media
-        medium_id = medium.match(/\d+$/)[0]
-        Media.one(medium_id).get().then((media) ->
-          media_index = gallery_infos.media.indexOf(media.url)
-          gallery_infos.media[media_index] = media
+          for medium in gallery_infos.media
+            medium_id = medium.match(/\d+$/)[0]
+            Media.one(medium_id).get().then((media) ->
+              media_index = gallery_infos.media.indexOf(media.url)
+              gallery_infos.media[media_index] = media
+            )
         )
+      )
 
-    )
-
-  )
+  loadCandidat($stateParams.id)
 )
