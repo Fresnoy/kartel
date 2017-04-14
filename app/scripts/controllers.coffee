@@ -261,8 +261,8 @@ angular.module('memoire.controllers', ['memoire.services'])
   ]
   $scope.select_orders = [
       {title: "Numéro d'inscription", value: {ordering: "id"}}
-      {title: "Nationalité", value: {ordering: "artist__user_profile_nationality"}},
-      {title: "Nom", value: {ordering: "artist__user_last_name"}},
+      {title: "Nationalité", value: {ordering: "artist__user__profile__nationality"}},
+      {title: "Nom", value: {ordering: "artist__user__last_name"}},
   ]
 
   $scope.getCandidaturesLength = (sort) ->
@@ -282,8 +282,7 @@ angular.module('memoire.controllers', ['memoire.services'])
 
   $scope.getCandidatures = (sort, order) ->
     criteres = Object.assign(sort.sortby, order.value)
-    console.log(criteres)
-    if(!$scope.asc) then criteres.ordering = "-"+criteres.ordering
+    if($scope.asc == 'false') then criteres.ordering = "-"+criteres.ordering
     arr = []
     Candidatures.getList(criteres).then((candidatures) ->
       for candidature in candidatures
