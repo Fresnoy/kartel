@@ -7,7 +7,7 @@
         'selected': candidature.selected,
       }">
 
-    <div class="corner" ng-class="{'red' : !candidature.application_complete, 'green' : candidature.application_complete}"> </div>
+    <div class="corner" ng-class="{'red' : !candidature.application_complete && candidature.application_completed, 'green' : candidature.application_complete}"> </div>
 
 
         <div class="thumbnail">

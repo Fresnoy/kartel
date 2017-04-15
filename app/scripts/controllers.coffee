@@ -287,17 +287,19 @@ angular.module('memoire.controllers', ['memoire.services'])
     Candidatures.getList(criteres).then((candidatures) ->
       for candidature in candidatures
           artist_id = candidature.artist.match(/\d+$/)[0]
+          candidature.progress = $scope.get_candidature_progress(candidature)
           arr.push(candidature)
-          ArtistsV2.one(artist_id).withHttpConfig({ cache: true}).get().then((artist) ->
-              current_cantidature = _.filter(candidatures, (c) -> return c.artist == artist.url)
-              current_cantidature[0].artist = artist
-              # user
-              user_id = artist.user.match(/\d+$/)[0]
-              current_cantidature[0].artist.user = Users.one(user_id).get().then((user_infos) ->
-                current_cantidature[0].artist.user = user_infos
-                current_cantidature[0].progress = $scope.get_candidature_progress(current_cantidature[0])
+
+          if(candidature.application_completed)
+              ArtistsV2.one(artist_id).withHttpConfig({ cache: true}).get().then((artist) ->
+                  current_cantidature = _.filter(candidatures, (c) -> return c.artist == artist.url)
+                  current_cantidature[0].artist = artist
+                  # user
+                  user_id = artist.user.match(/\d+$/)[0]
+                  current_cantidature[0].artist.user = Users.one(user_id).get().then((user_infos) ->
+                    current_cantidature[0].artist.user = user_infos
+                  )
               )
-          )
     )
     return arr
 
@@ -328,19 +330,10 @@ angular.module('memoire.controllers', ['memoire.services'])
       if(value && value != null && value != "" && value != undefined )
         candidature_progress++
     candidature_total -= 6
-    candidature_progress +=3
-    user_plain = candidature.artist.user.plain().profile
-    for field, value of user_plain
-      user_total++
-      if(value && value != null && value != "" && value != undefined )
-        user_progress++
-    user_total -= 6
-    user_progress +=0
+    candidature_progress +=2
 
-    candidature_taux = (candidature_progress/candidature_total )*100
-    user_taux = (user_progress/user_total )*100
-
-    return Math.min(Math.round((candidature_taux + user_taux) / 2), 100)
+    c = Math.round(Math.min((candidature_progress/candidature_total )*100, 100))
+    return c
 
   $scope.search = (search) ->
     $(".candidat-card").each((item) ->
