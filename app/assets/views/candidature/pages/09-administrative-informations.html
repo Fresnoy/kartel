@@ -67,14 +67,16 @@
          </div>
          <div class="field">
             <input hidden readonly type="text" ng-min="birthdateMax" name="uBirthDate" ng-max="birthdateMin" ng-model="user.profile.birthdate"
-               ng-change="saveUserModel(user)" required />
+               required />
             <datepicker id="birthdate"
                date-format='yyyy-MM-dd'
                date-set="{{user.profile.birthdate}}"
                date-min-limit="{{birthdateMax}}"
                date-max-limit="{{birthdateMin}}"
                >
-               <input class="date" readonly type="text" ng-model="user.profile.birthdate" ng-change="saveUserModel(user)" required />
+            <input class="date" readonly type="text"  ng-model-options='{ debounce: 1000 }'
+               ng-change="user.patch({'profile':{'birthdate': user.profile.birthdate}});"
+               ng-model="user.profile.birthdate" required />
             </datepicker>
             <div ng-show="form1.uBirthDate.$touched && form1.uBirthDate.$invalid" ng-messages="form1.uBirthDate.$error" class="help-block error">
                <div ng-message="required">
