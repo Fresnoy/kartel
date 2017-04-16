@@ -281,6 +281,8 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
       (browser.name == "Opera" && browser.version <= 36) ||
       (browser.name == "Firefox" && browser.version <= 42) )
           $scope.is_old_browser = true
+  console.log(browser)
+  console.log ($scope.is_old_browser)
   # phone
   $rootScope.phone_pattern = /^\+?[0-9-]{2,5}[-. ]?\d{5,12}$/
 
