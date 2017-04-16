@@ -66,6 +66,9 @@
             </label>
          </div>
          <div class="field">
+           <input type="date" ng-min="birthdateMax" name="uBirthDate" ng-max="birthdateMin" ng-model="birthdate.value"
+           ng-change="user.profile.birthdate = (birthdate.value | date:'yyyy-MM-dd'); user.patch({'profile':{'birthdate': user.profile.birthdate}}); " required />
+            <!--
             <input hidden readonly type="text" ng-min="birthdateMax" name="uBirthDate" ng-max="birthdateMin" ng-model="user.profile.birthdate"
                required />
             <datepicker id="birthdate"
@@ -78,6 +81,7 @@
                ng-change="user.patch({'profile':{'birthdate': user.profile.birthdate}});"
                ng-model="user.profile.birthdate" required />
             </datepicker>
+            -->
             <div ng-show="form1.uBirthDate.$touched && form1.uBirthDate.$invalid" ng-messages="form1.uBirthDate.$error" class="help-block error">
                <div ng-message="required">
                   <span class="fr">Obligatoire</span>

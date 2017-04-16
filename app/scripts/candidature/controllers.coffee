@@ -437,6 +437,12 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 
   $scope.birthdateMin = $filter('date')(new Date($rootScope.current_year-$rootScope.age_min,1,31), 'yyyy-MM-dd')
   $scope.birthdateMax = $filter('date')(new Date($rootScope.current_year-$rootScope.age_max+1,0,0), 'yyyy-MM-dd')
+  $scope.birthdate = { value: new Date($rootScope.current_year-$rootScope.age_max+1,0,0) }
+
+  $scope.$watch("user.profile.birthdate", (newValue, oldValue) ->
+    if(newValue)
+      $scope.birthdate.value = new Date(newValue)
+  )
 
   # Gender
   $scope.gender =
