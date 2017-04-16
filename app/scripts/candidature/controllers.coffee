@@ -245,6 +245,42 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
   $rootScope.age_min = 18
   $rootScope.age_max = 36
 
+  # browser detection
+  navigator.sayswho = do ->
+    ua = navigator.userAgent
+    tem = undefined
+    M = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) or []
+    if /trident/i.test(M[1])
+      tem = /\brv[ :]+(\d+)/g.exec(ua) or []
+      return 'IE ' + (tem[1] or '')
+    if M[1] == 'Chrome'
+      tem = ua.match(/\b(OPR|Edge)\/(\d+)/)
+      if tem != null
+        return tem.slice(1).join(' ').replace('OPR', 'Opera')
+    M = if M[2] then [
+      M[1]
+      M[2]
+    ] else [
+      navigator.appName
+      navigator.appVersion
+      '-?'
+    ]
+    if (tem = ua.match(/version\/(\d+)/i)) != null
+      M.splice 1, 1, tem[1]
+    M.join ' '
+
+  $scope.is_old_browser = false
+  browser =
+    name: navigator.sayswho.split(" ")[0]
+    version: parseInt(navigator.sayswho.split(" ")[1])
+
+  if((browser.name == "MSIE" && browser.version <= 9) ||
+      (browser.name == "IE" && browser.version <= 9) ||
+      (browser.name == "Chrome" && browser.version <= 50) ||
+      (browser.name == "Safari" && browser.version <= 5) ||
+      (browser.name == "Opera" && browser.version <= 36) ||
+      (browser.name == "Firefox" && browser.version <= 42) )
+          $scope.is_old_browser = true
   # phone
   $rootScope.phone_pattern = /^\+?[0-9-]{2,5}[-. ]?\d{5,12}$/
 
