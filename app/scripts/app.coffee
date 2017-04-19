@@ -282,9 +282,6 @@ angular.module('kartel',
         $stateProvider.state('candidatures.candidat',
                 url: '/:id'
                 views:
-                  'main_view.main_content_view':
-                    templateUrl: 'views/candidatures.html'
-                    controller: 'CandidaturesController'
                   'main_content_view.candidat_view':
                     templateUrl: 'views/candidat.html'
                     controller: 'CandidatController'
