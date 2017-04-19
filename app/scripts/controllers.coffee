@@ -248,7 +248,7 @@ angular.module('memoire.controllers', ['memoire.services'])
   # init
   $scope.candidatures = []
   $scope.candidat_id = $stateParams.id
-  
+
   # order
   # none = 1 | true = 2 | false = 3
   $scope.select_criteres = [
@@ -291,7 +291,7 @@ angular.module('memoire.controllers', ['memoire.services'])
           candidature.progress = $scope.get_candidature_progress(candidature)
           arr.push(candidature)
 
-          if(candidature.application_completed)
+          if(candidature.application_completed || candidature.physical_content)
               ArtistsV2.one(artist_id).withHttpConfig({ cache: true}).get().then((artist) ->
                   current_cantidature = _.filter(candidatures, (c) -> return c.artist == artist.url)
                   current_cantidature[0].artist = artist
