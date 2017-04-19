@@ -74,5 +74,8 @@
         "dist/MarkerCluster.Default.css"
       ]
     }
+  },
+  "resolutions": {
+    "angular": "~1.x"
   }
 }
