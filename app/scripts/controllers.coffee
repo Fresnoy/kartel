@@ -305,23 +305,6 @@ angular.module('memoire.controllers', ['memoire.services'])
 
   $scope.candidatures = $scope.getCandidatures($scope.select_criteres[$scope.critere], $scope.select_orders[$scope.order])
 
-  $scope.getStateCandidature = (candidature) ->
-    $state = 0
-    if(!candidature)
-      return $state
-    if(candidature.application_completed)
-      $state = 1
-    if(candidature.application_complete)
-      $state = 2
-    if(candidature.selected_for_interview)
-      $state = 3
-    if(candidature.selected)
-      $state = 4
-    if(candidature.wait_listed)
-      $state = 5
-    return $state
-
-
   $scope.get_candidature_progress = (candidature) ->
     candidature_progress = candidature_total = user_progress = user_total = 0
     candidature_plain = candidature.plain()
@@ -401,27 +384,9 @@ angular.module('memoire.controllers', ['memoire.services'])
     Lightbox.one_media = true
     Lightbox.openModal([image], 0)
 
-  $scope.getStateCandidature = (candidature) ->
-    $state = 0
-    if(!candidature)
-      return $state
-    if(candidature.application_completed)
-      $state = 1
-    if(candidature.application_complete)
-      $state = 2
-    if(candidature.selected_for_interview)
-      $state = 3
-    if(candidature.selected)
-      $state = 4
-    if(candidature.wait_listed)
-      $state = 5
-    return $state
-
   loadCandidat = (id) ->
       Candidatures.one(id).get().then((candidature) ->
         $scope.candidature = candidature
-        $scope.candidature.state = $scope.getStateCandidature(candidature)
-
         artist_id = candidature.artist.match(/\d+$/)[0]
         ArtistsV2.one(artist_id).get().then((artist) ->
             $scope.artist = artist
