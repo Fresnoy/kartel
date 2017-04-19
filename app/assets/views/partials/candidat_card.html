@@ -1,5 +1,5 @@
 <div class="candidat-card col-md-6"  ng-class="{
-        'ghost': !candidature.application_completed,
+        'ghost': (!candidature.application_completed && !candidature.physical_content),
         'showing_details': $parent.$parent.candidat_id == candidature.id,
         'application_complete': candidature.application_complete,
         'remote_interview': candidature.remote_interview,
