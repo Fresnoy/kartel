@@ -255,8 +255,7 @@
                 <button type="button"
                   ng-click="candidature.physical_content_received = true;
                    candidature.application_completed = true;
-                   candidature.patch({physical_content_received: candidature.physical_content_received, application_completed: candidature.application_completed});
-                   candidature.state = getStateCandidature(candidature)"
+                   candidature.patch({physical_content_received: candidature.physical_content_received, application_completed: candidature.application_completed});"
                   class="btn btn-primary btn-md btn-warning">Valider</button>
                 <button type="button" ng-click='click_cPhysicalContent=false' class="btn btn-primary btn-md btn-danger">Annuler</button>
               </div>
@@ -273,8 +272,7 @@
                 </p>
                 <button type="button"
                   ng-click="candidature.application_complete = true;
-                  candidature.patch({application_complete: candidature.application_complete});
-                  candidature.state = getStateCandidature(candidature)"
+                  candidature.patch({application_complete: candidature.application_complete});"
                   class="btn btn-primary btn-md btn-warning">Valider</button>
                 <button type="button" ng-click='click_cComplete=false' class="btn btn-primary btn-md btn-danger">Annuler</button>
               </div>
@@ -294,8 +292,7 @@
                 </p>
                 <button type="button"
                   ng-click="candidature.selected_for_interview = true;
-                  candidature.patch({selected_for_interview: candidature.selected_for_interview});
-                  candidature.state = getStateCandidature(candidature)"
+                  candidature.patch({selected_for_interview: candidature.selected_for_interview});"
                   class="btn btn-primary btn-md btn-warning">Valider</button>
                 <button type="button" ng-click='click_cInterview=false' class="btn btn-primary btn-md btn-danger">Annuler</button>
               </div>
@@ -314,8 +311,7 @@
                   </p>
                   <button type="button"
                     ng-click="candidature.wait_listed = true;
-                    candidature.patch({wait_listed: candidature.wait_listed});
-                    candidature.state = getStateCandidature(candidature)"
+                    candidature.patch({wait_listed: candidature.wait_listed});"
                     class="btn btn-primary btn-md btn-warning">Valider</button>
                   <button type="button" ng-click='click_cWaitListed=false' class="btn btn-primary btn-md btn-danger">Annuler</button>
                 </div>
@@ -335,8 +331,7 @@
                   </p>
                   <button type="button"
                     ng-click="candidature.selected = true;
-                    candidature.patch({selected: candidature.selected});
-                    candidature.state = getStateCandidature(candidature)"
+                    candidature.patch({selected: candidature.selected});"
                     class="btn btn-primary btn-md btn-warning">Valider</button>
                   <button type="button" ng-click='click_cSelected=false' class="btn btn-primary btn-md btn-danger">Annuler</button>
                 </div>
