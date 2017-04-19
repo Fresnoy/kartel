@@ -250,7 +250,7 @@ angular.module('memoire.controllers', ['memoire.services'])
   $scope.candidat_id = $stateParams.id
   console.log ("Candidatures : ")
   console.log($scope.candidat_id)
-  console.log(stateParams)
+  console.log($stateParams)
   # order
   # none = 1 | true = 2 | false = 3
   $scope.select_criteres = [
