@@ -99,12 +99,13 @@
         </div>
       </div>
 
-      <table style="width:100%" id="data_candidatures" class="hidden">
+      <table style="width:100%" id="data_candidatures" class="">
         <tr><th>Version du {{ today | date :  "dd.MM.y - hh:mm" }} //// {{ today.getTime() }}</th></tr>
         <tr><th></th></tr>
         <tr>
           <th>Index</th>
-          <th>Date arrivée</th>
+          <th>Date</th>
+          <th>Dernière Modification</th>
           <th>N° dossier</th>
           <th>Nom</th>
           <th>Prénom</th>
@@ -125,6 +126,7 @@
         <tr ng-repeat="candidature in candidatures track by $index">
             <th>{{$index+1}}</th>
             <th>{{candidature.created_on.split("T")[0] | date:'dd/MM'}}</th>
+            <th>{{candidature.updated_on.split(".")[0] | date:'dd/MM hh:mm'}}</th>
             <th>{{candidature.current_year_application_count}}</th>
             <th>{{candidature.artist.user.last_name}}</th>
             <th>{{candidature.artist.user.first_name}}</th>
