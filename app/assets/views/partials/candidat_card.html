@@ -1,5 +1,5 @@
 <div class="candidat-card col-md-6"  ng-class="{
-        'ghost': !candidature.application_completed,
+        'ghost': (!candidature.application_completed && !candidature.physical_content),
         'showing_details': $parent.$parent.candidat_id == candidature.id,
         'application_complete': candidature.application_complete,
         'remote_interview': candidature.remote_interview,
@@ -7,7 +7,7 @@
         'selected': candidature.selected,
       }">
 
-    <div class="corner" ng-class="{'red' : !candidature.application_complete, 'green' : candidature.application_complete}"> </div>
+    <div class="corner" ng-class="{'red' : !candidature.application_complete && candidature.application_completed, 'green' : candidature.application_complete}"> </div>
 
 
         <div class="thumbnail">
@@ -35,7 +35,8 @@
                     </div>
                     <div class="user-last_name preserve-info">{{ candidature.artist.user.last_name }}</div>
                     <div class="user-birthdate preserve-info">{{ candidature.artist.user.profile.birthdate | ageFilter}} ans</div>
-                    <div class="langues hide-infos"> Parle
+                    <div ng-show="candidature.artist.user.profile.mother_tongue" class="langues hide-infos"> Parle
+                      {{LANGUAGES_NAME_short[candidature.artist.user.profile.mother_tongue].englishName.split(' ')[0]}}, 
                       <span ng-if="candidature.artist.user.profile.other_language">
                         <span class="language" ng-repeat="language in candidature.artist.user.profile.other_language.split(', ')  track by $index">
                           <span class="name">{{LANGUAGES_NAME_short[language].englishName.split(' ')[0]}}</span></span></span>

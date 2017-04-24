@@ -371,6 +371,12 @@ body.en {
   color:#b8e986;
 }
 
+.additionnalInfo {
+    color: #333;
+    font-size: 9pt;
+  }
+
+
 .candidat-card{
   font-size: 0.9em;
   height: 110px;
@@ -637,6 +643,10 @@ body.en {
   }
 }
 
+.field{
+  position: relative;
+  margin-top:20px;
+}
 
 .student-app{
     padding: 0;
@@ -775,16 +785,18 @@ body.en {
       }
 
     }
+
     .field{
       position: relative;
+      margin-top:20px;
     }
+
     input, select, textarea{
       width:100%;
       margin: 5px 0px;
       border: 0px;
       border-bottom: 3px solid black;
       margin:0px;
-      margin-top: 20px;
       padding-bottom: 5px;
       text-indent: 4px;
       font-size: 18px;
@@ -873,12 +885,18 @@ body.en {
       margin: 0px;
       &.error{
         color: black;
-        font-weight: bold;
+        font-weight: normal;
+        text-align: left;
         text-decoration: none;
         text-transform: none;
-        background: #dc4154; /* rgba(208,27,1,.75); */
-        padding: 5px;
+        background: #dc4154;
+        /* rgba(208,27,1,.75); */
+        padding: 5px 10px;
         margin: 5px 0px;
+      }
+      a {
+        color:#CCC;
+        text-decoration: underline;
       }
     }
     select{
@@ -890,11 +908,13 @@ body.en {
       appearance:none;
       -moz-appearance:none; /* Firefox */
       -webkit-appearance:none;
+      margin: 0;
     }
     textarea{
       height: 50px;
       font-size: 16px;
       max-width: 100%;
+      background-color: #EEE;
       &:focus{
         height: auto;
       }
@@ -1336,11 +1356,12 @@ body.en {
 
       }
       .step-infos{
+          color: black;
           top:23%;
           position: absolute;
           margin-left: 80px;
           padding-left: 20px;
-          border-left: 5px solid rgb(51, 51, 51);
+          border-left: 5px solid rgb(0, 0, 0);
           .current{
             font-size: 64px;
             font-weight: bold;
@@ -1385,7 +1406,7 @@ body.en {
   }
   &.green{
     background: #B8E986;
-    color: #9B9B9B;
+    color: #4A4A4A;
   }
   &.grey{
     background: grey;
