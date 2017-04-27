@@ -56,7 +56,7 @@
     </div>
     <div ng-if="candidature.presentation_video_details" class="pointer" ng-init="show_video_details = false">
       <p ng-click="show_video_details = !show_video_details">Voir la description de la vidéo</p>
-      <p ng-show="show_video_details" ng-bind-html="candidature.presentation_video_details | linky:'_blank' | nl2br" />
+      <p ng-show="show_video_details" ng-bind-html="candidature.presentation_video_details | linky:'_blank' | nl2br  " />
     </div>
   </div>
 

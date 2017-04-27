@@ -1,6 +1,6 @@
 <div class="candidatures" ng-if="!user.is_superuser">
         <div class="centered">
-          <h2 class="text-center">Veuillez vous connecter <span ng-show="isAuthenticated"><br/>avec un compte administrateur<br/></span> pour acceder à cette page</h2>
+          <h2 class="text-center">Veuillez vous connecter <span ng-show="isAuthenticated"><br/>avec un compte administrateur<br/></span> pour accéder à cette page</h2>
         </div>
 </div>
 <div class="candidatures" ng-if="user.is_superuser">
@@ -99,8 +99,8 @@
         </div>
       </div>
 
-      <table style="width:100%" id="data_candidatures" class="">
-        <tr><th>Version du {{ today | date :  "dd.MM.y - hh:mm" }} //// {{ today.getTime() }}</th></tr>
+      <table style="width:100%" id="data_candidatures" class="hidden">
+        <tr><th>Version du {{ today | date :  "dd.MM.y - HH:mm" }} //// {{ today.getTime() }}</th></tr>
         <tr><th></th></tr>
         <tr>
           <th>Index</th>
