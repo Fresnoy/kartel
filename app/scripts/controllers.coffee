@@ -302,6 +302,18 @@ angular.module('memoire.controllers', ['memoire.services'])
                     current_cantidature[0].artist.user = user_infos
                   )
               )
+              gallery_id = candidature.cursus_justifications.match(/\d+$/)[0]
+              Galleries.one(gallery_id).get().then((gallery_infos) ->
+                current_cantidature = _.filter(candidatures, (c) -> return c.cursus_justifications == gallery_infos.url)
+                current_cantidature[0].cursus_justifications = gallery_infos
+
+                for medium in gallery_infos.media
+                  medium_id = medium.match(/\d+$/)[0]
+                  Media.one(medium_id).get().then((media) ->
+                    media_index = gallery_infos.media.indexOf(media.url)
+                    gallery_infos.media[media_index] = media
+                  )
+              )
     )
     return arr
 
@@ -383,9 +395,6 @@ angular.module('memoire.controllers', ['memoire.services'])
     # when url is image set picture var, otherwise set medium_url
     if(/\.(jpe?g|png|gif|bmp|tif)/i.test(url)) then image.picture = url
     else  image.medium_url= $sce.trustAsResourceUrl(url)
-    console.log (image)
-    console.log (image.picture)
-    console.log (url)
     Lightbox.one_media = true
     Lightbox.openModal([image], 0)
 
