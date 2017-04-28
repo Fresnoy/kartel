@@ -39,7 +39,7 @@
             </label>
          </div>
          <div class="field">
-            <input type="text" id="username" ng-model="user.username" ng-minlength="4" name="uUserName" unique-user-field required />
+            <input type="text" id="username" ng-model="user.username" ng-trim="false" ng-pattern="/^[a-zA-Z0-9._-]*$/" ng-minlength="4" name="uUserName" unique-user-field required />
             <div ng-show="form.uUserName.$viewValue.length>0 && form.uUserName.$invalid" ng-messages="form.uUserName.$error" class="help-block error">
                <div ng-message="minlength">
                   <span class="fr">Minimum 4 caractères</span>
@@ -48,6 +48,10 @@
                <div ng-message="required">
                  <span class="fr">Champs obligatoire</span>
                  <span class="en">Required field</span>
+               </div>
+               <div ng-message="pattern">
+                 <span class="fr">Le nom d'utilisateur ne dois être composé que de lettres et de chiffres</span>
+                 <span class="en">Username must be letters and numbers only</span>
                </div>
                <div ng-message="uniqueUserField">
                   <p class="fr">Ce nom d'utilisateur est déjà utilisé, vous devez en choisir en un autre ou <a ui-sref="candidature.account.login">connectez-vous sur votre compte</a></p>
