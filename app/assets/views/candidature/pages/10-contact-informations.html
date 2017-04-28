@@ -80,7 +80,7 @@ qui peut servir de base).</li><li>
             name="uHomelandCity"
             id="homeland_city"
             ng-model="user.profile.homeland_town"
-            ng-change="saveUserModel(user)"
+            ng-change="user.patch({'profile':{'homeland_town': user.profile.homeland_town}});"
             ng-model-options='{ debounce: 1000 }'
             required
             />
@@ -122,12 +122,11 @@ qui peut servir de base).</li><li>
          <input
             id="phone"
             type="text"
-            ng-change="saveUserModel(user)"
             placeholder="+33320283982"
             name="uHomelandPhone"
             ng-pattern="phone_pattern"
             ng-model="user.profile.homeland_phone"
-            ng-change="saveUserModel(user)"
+            ng-change="user.patch({'profile':{'homeland_phone': user.profile.homeland_phone}});"
             ng-minlength="9" ng-maxlength="20" required
             hidden
             />

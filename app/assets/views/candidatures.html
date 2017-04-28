@@ -99,7 +99,7 @@
         </div>
       </div>
 
-      <table style="width:100%" id="data_candidatures" class="hidden">
+      <table style="width:100%" id="data_candidatures" class="hiddeen">
         <tr><th>Version du {{ today | date :  "dd.MM.y - HH:mm" }} //// {{ today.getTime() }}</th></tr>
         <tr><th></th></tr>
         <tr>
@@ -148,6 +148,7 @@
             <th></th>
             <th></th>
             <th>
+              <span ng-if='candidature.master_degree'>Bac +5</span>
               <span class="justificatifs" ng-repeat="justif in candidature.cursus_justifications.media track by $index">
                 {{justif.label}}
               </span>
