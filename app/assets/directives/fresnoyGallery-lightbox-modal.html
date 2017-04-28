@@ -6,39 +6,62 @@
     <div class="btn-group">
       <a ng-if="!Lightbox.one_media" class="btn btn-xs btn-default" ng-click="Lightbox.prevImage()">‹ Précédente</a>
 
+      <!-- Original link -->
+        <!-- IMAGE FIELD (and is an ipicture) -->
+        <!-- api v1 -->
+        <a ng-if="!(Lightbox.image.isvideo) && (Lightbox.image.picture | isFresnoyUrl) && (Lightbox.image.picture.indexOf('api.lefresnoy')<0)" class="btn btn-xs btn-default" target="_blank"
+          href="http://media.lefresnoy.net/?url=http://api.lefresnoy.net/{{ Lightbox.image.picture }}&op=noop" download="Image">
+          <i class="glyphicon glyphicon-link"></i>&nbsp;Lien vers l'original</a>
+        <!-- api v2 -->
+        <a ng-if="!(Lightbox.image.isvideo) && (Lightbox.image.picture | isFresnoyUrl) && (Lightbox.image.picture.indexOf('api.lefresnoy')>0)" class="btn btn-xs btn-default" target="_blank"
+            href="http://media.lefresnoy.net/?url={{ Lightbox.image.picture }}&op=noop" download="Image">
+            <i class="glyphicon glyphicon-link"></i>&nbsp;Lien vers l'original</a>
 
-      <a ng-if="!(Lightbox.image.isvideo) && (Lightbox.image.picture | isFresnoyUrl)" class="btn btn-xs btn-default" target="_blank"
-        href="http://media.lefresnoy.net/?url=http://api.lefresnoy.net/{{ Lightbox.image.picture }}&op=noop" download="Image">
-        <i class="glyphicon glyphicon-link"></i>&nbsp;Lien vers l'original</a>
-      <a ng-if="!(Lightbox.image.isvideo) && !Lightbox.image.medium_url && Lightbox.image.picture && !(Lightbox.image.picture | isFresnoyUrl) " class="btn btn-xs btn-default" target="_blank"
-       href="{{ Lightbox.image.picture}}" download="Image"><i class="glyphicon glyphicon-link">
-        </i>&nbsp;Lien vers l'original</a>
-      <a ng-if="Lightbox.image.medium_url " class="btn btn-xs btn-default" target="_blank"
-        href="{{ Lightbox.image.medium_url}}"><i class="glyphicon glyphicon-link"></i>&nbsp;Lien vers l'original</a>
+        <!-- IMAGE Field but non image (???) -->
+        <a ng-if="!(Lightbox.image.isvideo) && !Lightbox.image.medium_url && Lightbox.image.picture && !(Lightbox.image.picture | isFresnoyUrl) "
+         class="btn btn-xs btn-default" target="_blank"
+         href="{{ Lightbox.image.picture}}" download="Image"><i class="glyphicon glyphicon-link">
+          </i>&nbsp;Lien vers l'original</a>
+        <!-- OTHER FIELD TYPE - MEDIUM_URL -->
+        <a ng-if="Lightbox.image.medium_url " class="btn btn-xs btn-default" target="_blank"
+          href="{{ Lightbox.image.medium_url}}"><i class="glyphicon glyphicon-link"></i>&nbsp;Lien vers l'original</a>
+      <!-- // Original link -->
 
-
-      <a ng-if="!Lightbox.one_media"  class="btn btn-xs btn-default" ng-click="Lightbox.nextImage()">Suivante ›</a>
+      <!-- NEXT -->
+        <a ng-if="!Lightbox.one_media"  class="btn btn-xs btn-default" ng-click="Lightbox.nextImage()">Suivante ›</a>
+      <!-- NEXT -->
     </div>
   </div>
-  <!-- video -->
-  <!-- image -->
   <div class="lightbox-image-container">
-    <!-- Video api Fresnoy -->
-    <video ng-if="(Lightbox.image.picture | isFresnoyUrl) && !Lightbox.image.iframe && Lightbox.image.medium_url"
-      poster="http://media.lefresnoy.net/?url=http://api.lefresnoy.net/{{ Lightbox.image.picture }}&op=noop"
-      controls ng-src="{{ Lightbox.image.medium_url }}">
-    </video>
-    <!-- Video anywhere  -->
-    <video ng-if="!(Lightbox.image.picture | isFresnoyUrl) && Lightbox.image.medium_url && (!Lightbox.image.iframe)"
-      poster="{{ Lightbox.image.picture || '' }}"
-      controls ng-src="{{ Lightbox.image.medium_url }}"
-      >
-
-    </video>
+    <!-- // video -->
+      <!-- Video api Fresnoy -->
+      <video ng-if="(Lightbox.image.picture | isFresnoyUrl) && !Lightbox.image.iframe && Lightbox.image.medium_url"
+        poster="http://media.lefresnoy.net/?url=http://api.lefresnoy.net/{{ Lightbox.image.picture }}&op=noop"
+        controls ng-src="{{ Lightbox.image.medium_url }}">
+      </video>
+      <!-- Video anywhere  -->
+      <video ng-if="!(Lightbox.image.picture | isFresnoyUrl) && Lightbox.image.medium_url && (!Lightbox.image.iframe)"
+        poster="{{ Lightbox.image.picture || '' }}"
+        controls ng-src="{{ Lightbox.image.medium_url }}"
+        >
+      </video>
+    <!-- // video -->
     <!-- iframe  -->
-    <iframe  id="frame" scrolling="no" ng-if='Lightbox.image.iframe' ng-src='{{Lightbox.image.medium_url}}' allowfullscreen />
-    <img ng-if="(Lightbox.image.picture | isFresnoyUrl) && !Lightbox.image.medium_url" lightbox-src="http://media.lefresnoy.net/?url=http://api.lefresnoy.net/{{ Lightbox.image.picture }}&w=1500&fmt=jpg"/>
-    <img ng-if="!(Lightbox.image.picture | isFresnoyUrl) && !Lightbox.image.medium_url" lightbox-src="{{ Lightbox.image.picture }}"/>
+      <iframe  id="frame" scrolling="no" ng-if='Lightbox.image.iframe' ng-src='{{Lightbox.image.medium_url}}' allowfullscreen />
+    <!-- ///iframe  -->
+
+    <!-- image -->
+      <!-- FRESNOY IMAGE -->
+      <!-- api v1 -->
+      <img ng-if="(Lightbox.image.picture | isFresnoyUrl) && !(Lightbox.image.medium_url) && (Lightbox.image.picture.indexOf('api.lefresnoy')<0)"
+         lightbox-src="http://media.lefresnoy.net/?url=https://api.lefresnoy.net/{{ Lightbox.image.picture }}&w=1500&fmt=jpg" />
+      <!-- api v2 -->
+       <img ng-if="(Lightbox.image.picture | isFresnoyUrl) && !(Lightbox.image.medium_url) && (Lightbox.image.picture.indexOf('api.lefresnoy')>0)"
+          lightbox-src="http://media.lefresnoy.net/?url={{ Lightbox.image.picture }}&w=1500&fmt=jpg" />
+      <!-- Anywhere IMAGE -->
+       <img ng-if="!(Lightbox.image.picture | isFresnoyUrl) && !Lightbox.image.medium_url" lightbox-src="{{ Lightbox.image.picture }}"/>
+    <!-- //image -->
+
     <p ng-bind-html="Lightbox.image.description | linky:'_blank' | nl2br" />
   </div>
 

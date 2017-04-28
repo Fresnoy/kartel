@@ -254,6 +254,7 @@ angular.module('memoire.controllers', ['memoire.services'])
   $scope.select_criteres = [
     {title: 'Toutes', sortby: {"search": ""}, count:0 },
     {title: 'Courrier', sortby: {"physical_content": 2, "physical_content_received": 3}, count:0},
+    {title: 'Non finalisées', sortby: {"application_completed": 3}, count:0},
     {title: 'En attente de validation', sortby: {"application_completed": 2, "application_complete": 3}, count:0},
     {title: 'Visées', sortby: {"application_complete": 2}, count:0},
     {title: 'Selectionnés pour l\'entretien', sortby: {"selected_for_interview": 2}, count:0},
@@ -380,8 +381,11 @@ angular.module('memoire.controllers', ['memoire.services'])
     url = url.replace(/^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?/gm, 'https://www.youtube.com/embed/$5');
     url = url.replace(/^https?:\/\/(?:www\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|album\/(\d+)\/video\/|)(\d+)(?:$|\/|\?)(.*)/g, "https://player.vimeo.com/video/$3")
     # when url is image set picture var, otherwise set medium_url
-    if(/\.(jpe?g|png|gif|bmp)/i.test(url)) then image.picture= $sce.trustAsResourceUrl(url)
+    if(/\.(jpe?g|png|gif|bmp|tif)/i.test(url)) then image.picture = url
     else  image.medium_url= $sce.trustAsResourceUrl(url)
+    console.log (image)
+    console.log (image.picture)
+    console.log (url)
     Lightbox.one_media = true
     Lightbox.openModal([image], 0)
 
