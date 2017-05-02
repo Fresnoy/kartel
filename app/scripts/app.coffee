@@ -158,10 +158,13 @@ angular.module('kartel',
                 return response || $q.when(response)
             responseError: (response)  ->
                 $rootScope.$broadcast('data:read')
-                # candidature expired
                 if(response.data && response.data.candidature)
+                  # candidature expired
                   if (response.data.candidature == "expired")
-                    $state.go("candidature.expired")
+                    # user candidate (url candidature)
+                    if($state.$current.name.indexOf("candidature.")!=-1)
+                      # go to expiration page
+                      $state.go("candidature.expired")
                 return $q.reject(response);
         }
 ])
