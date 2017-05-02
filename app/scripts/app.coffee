@@ -162,7 +162,7 @@ angular.module('kartel',
                   # candidature expired
                   if (response.data.candidature == "expired")
                     # user candidate
-                    if($state.$urlRouter!=undefined && $state.$urlRouter.location.indexOf("candidature/")!=-1)
+                    if($state.$current!=undefined && $state.$current.name.indexOf("candidature.")!=-1)
                       # go to expiration page
                       $state.go("candidature.expired")
                 return $q.reject(response);
