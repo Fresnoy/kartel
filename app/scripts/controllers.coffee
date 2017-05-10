@@ -388,6 +388,7 @@ angular.module('memoire.controllers', ['memoire.services'])
     image =
       isvideo: new RegExp("aml|player.vimeo|mp4","gi").test(url);
       iframe: /(\.pdf|vimeo\.com|youtube\.com|youtu\.be)/i.test(url)
+      original: url
       description: description
     # embed video youtube
     url = url.replace(/^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?/gm, 'https://www.youtube.com/embed/$5');
