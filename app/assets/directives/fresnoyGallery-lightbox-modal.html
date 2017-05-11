@@ -24,7 +24,7 @@
           </i>&nbsp;Lien vers l'original</a>
         <!-- OTHER FIELD TYPE - MEDIUM_URL -->
         <a ng-if="Lightbox.image.medium_url " class="btn btn-xs btn-default" target="_blank"
-          href="{{ Lightbox.image.medium_url}}"><i class="glyphicon glyphicon-link"></i>&nbsp;Lien vers l'original</a>
+          href="{{ Lightbox.image.original || Lightbox.image.medium_url }}"><i class="glyphicon glyphicon-link"></i>&nbsp;Lien vers l'original</a>
       <!-- // Original link -->
 
       <!-- NEXT -->
