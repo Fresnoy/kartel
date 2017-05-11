@@ -26,17 +26,17 @@
                 <div class="col-xs-8 col-md-8">
                   <div class="user-infos">
                     <div>
-                      <strong class="user-first_name preserve-info">{{ candidature.artist.user.first_name }}</strong>
+                      <span class="user-last_name preserve-info">{{ candidature.artist.user.last_name }}</span>
                       <span class="oneline nationality hide-infos">
                         <span ng-repeat="nationality in candidature.artist.user.profile.nationality.split(', ') track by $index">
                           <span ng-if='nationality' class="flag-icon flag-icon-{{nationality | lowercase}}" title="{{country.codeToCountry[nationality]}}" />
                         </span>
                       </span>
                     </div>
-                    <div class="user-last_name preserve-info">{{ candidature.artist.user.last_name }}</div>
+                    <div class="user-first_name preserve-info">{{ candidature.artist.user.first_name }}</div>
                     <div class="user-birthdate preserve-info">{{ candidature.artist.user.profile.birthdate | ageFilter}} ans</div>
                     <div ng-show="candidature.artist.user.profile.mother_tongue" class="langues hide-infos"> Parle
-                      {{LANGUAGES_NAME_short[candidature.artist.user.profile.mother_tongue].englishName.split(' ')[0]}}, 
+                      {{LANGUAGES_NAME_short[candidature.artist.user.profile.mother_tongue].englishName.split(' ')[0]}},
                       <span ng-if="candidature.artist.user.profile.other_language">
                         <span class="language" ng-repeat="language in candidature.artist.user.profile.other_language.split(', ')  track by $index">
                           <span class="name">{{LANGUAGES_NAME_short[language].englishName.split(' ')[0]}}</span></span></span>
