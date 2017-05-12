@@ -32,9 +32,12 @@
         {{ artist.user.first_name }}  {{ artist.user.last_name }}
       </h1>
 
-    <p><i class="glyphicon glyphicon-dashboard"></i>&nbsp;
+    <p><i class="glyphicon glyphicon-dashboard"></i>
         Inscription n° {{ candidature.current_year_application_count }}</p>
-
+    <p ng-if="candidature.physical_content_description=='Envoi Postal'">
+      <i class="glyphicon glyphicon-envelope"></i>
+        Candidature intégralement envoyée par courrier
+    </p>
     <p><i class="glyphicon glyphicon-flag"></i>&nbsp;Nationalité(s)</p>
     <ul class="list-inline">
       <li class="nationality" ng-repeat="nationality in artist.user.profile.nationality.split(', ') track by $index">
@@ -55,7 +58,10 @@
       <span class="text-danger warning">Vidéo absente</span>
     </div>
     <div ng-if="candidature.presentation_video_details" class="pointer" ng-init="show_video_details = false">
-      <p ng-click="show_video_details = !show_video_details">Voir la description de la vidéo</p>
+      <p ng-click="show_video_details = !show_video_details">
+        Voir la description de la vidéo
+        <i ng-class="{'glyphicon-triangle-bottom':!show_video_details, 'glyphicon-triangle-top':show_video_details  }" class="small glyphicon glyphicon-triangle-bottom"></i>
+      </p>
       <p ng-show="show_video_details" ng-bind-html="candidature.presentation_video_details | linky:'_blank' | nl2br  " />
     </div>
   </div>

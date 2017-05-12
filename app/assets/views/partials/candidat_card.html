@@ -58,6 +58,7 @@
 
 
           <div class="candidature-infos">
+
             <!-- NON VISé -->
             <span ng-if="(!candidature.application_completed && candidature.physical_content && !candidature.physical_content_received) || (candidature.application_completed && !candidature.application_complete)">
               <span ng-if="candidature.application_completed">Dossier validé en ligne</span>
@@ -67,6 +68,9 @@
             </span>
             <!-- VISé -->
             <span ng-if="candidature.application_complete">
+              <span ng-if="candidature.physical_content_description=='Envoi Postal'">
+                <i class="glyphicon glyphicon-envelope" title="Candidature intégralement envoyée par courrier"></i>
+              </span>
               <span ng-if="candidature.physical_content && !candidature.physical_content_received">En attente de courrier</span>
               <span ng-if="candidature.selected_for_interview && !candidature.wait_listed && !candidature.selected">
                 Sélectionné<ng-pluralize count="candidature.artist.user.profile.gender.indexOf('F')" when="{'0': 'e'}"></ng-pluralize>
