@@ -11,14 +11,15 @@
 
 
         <div class="thumbnail">
+          <a class="" ui-sref="candidatures.candidat({id: candidature.id})" ng-click="$parent.$parent.candidat_id = candidature.id; console.log($parent)" >
           <div>
             <div class="col-xs-4 col-md-4">
               <div class="photo">
-                <a class="" ui-sref="candidatures.candidat({id: candidature.id})" ng-click="$parent.$parent.candidat_id = candidature.id; console.log($parent)" >
+
                   <fresnoy-thumbnail ng-if="candidature.artist.user.profile.photo && candidature.application_completed"
                   thurl="candidature.artist.user.profile.photo" thwidth="70" thheight="75"></fresnoy-thumbnail>
                   <img class="" ng-if="!candidature.artist.user.profile.photo || !candidature.application_completed" src="images/anonymous.jpg" alt="..">
-                </a>
+
               </div>
             </div>
             <div class="col-xs-8 col-md-8 no-gutter">
@@ -57,6 +58,7 @@
 
 
           <div class="candidature-infos">
+
             <!-- NON VISé -->
             <span ng-if="(!candidature.application_completed && candidature.physical_content && !candidature.physical_content_received) || (candidature.application_completed && !candidature.application_complete)">
               <span ng-if="candidature.application_completed">Dossier validé en ligne</span>
@@ -66,6 +68,9 @@
             </span>
             <!-- VISé -->
             <span ng-if="candidature.application_complete">
+              <span ng-if="candidature.physical_content_description=='Envoi Postal'">
+                <i class="glyphicon glyphicon-envelope" title="Candidature intégralement envoyée par courrier"></i>
+              </span>
               <span ng-if="candidature.physical_content && !candidature.physical_content_received">En attente de courrier</span>
               <span ng-if="candidature.selected_for_interview && !candidature.wait_listed && !candidature.selected">
                 Sélectionné<ng-pluralize count="candidature.artist.user.profile.gender.indexOf('F')" when="{'0': 'e'}"></ng-pluralize>
@@ -78,7 +83,7 @@
             </span>
             <span ng-if='(!candidature.application_completed && !candidature.physical_content)' class="bar" ng-style='{"width" : ""+candidature.progress+"%"}'> {{candidature.progress}}%</span>
           </div>
-        </div>
+        </div></a>
       </div>
 
 
