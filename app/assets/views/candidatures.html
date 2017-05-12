@@ -56,7 +56,8 @@
 
           <div ng-show="candidat_id" class="col-xs-12 col-md-6">
             <div class="candidat_view" ng-show="!show_order_param">
-                  <button title="Close" class="btn btn-default pull-right"><i ui-sref="candidatures" ng-click="candidat_id = null" class="glyphicon glyphicon-remove"></i></button>
+                  <button title="Close" ng-sref='candidatures' ng-click="candidat_id = null" class="btn btn-default pull-right">
+                    <i class="glyphicon glyphicon-remove"></i></button>
                   <div ui-view="candidat_view"></div>
             </div>
           </div>
