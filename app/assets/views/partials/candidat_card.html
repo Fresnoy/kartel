@@ -11,14 +11,15 @@
 
 
         <div class="thumbnail">
+          <a class="" ui-sref="candidatures.candidat({id: candidature.id})" ng-click="$parent.$parent.candidat_id = candidature.id; console.log($parent)" >
           <div>
             <div class="col-xs-4 col-md-4">
               <div class="photo">
-                <a class="" ui-sref="candidatures.candidat({id: candidature.id})" ng-click="$parent.$parent.candidat_id = candidature.id; console.log($parent)" >
+
                   <fresnoy-thumbnail ng-if="candidature.artist.user.profile.photo && candidature.application_completed"
                   thurl="candidature.artist.user.profile.photo" thwidth="70" thheight="75"></fresnoy-thumbnail>
                   <img class="" ng-if="!candidature.artist.user.profile.photo || !candidature.application_completed" src="images/anonymous.jpg" alt="..">
-                </a>
+
               </div>
             </div>
             <div class="col-xs-8 col-md-8 no-gutter">
@@ -78,7 +79,7 @@
             </span>
             <span ng-if='(!candidature.application_completed && !candidature.physical_content)' class="bar" ng-style='{"width" : ""+candidature.progress+"%"}'> {{candidature.progress}}%</span>
           </div>
-        </div>
+        </div></a>
       </div>
 
 
