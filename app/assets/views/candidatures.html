@@ -95,9 +95,10 @@
 
       </div>
       <div class="row">
-        <div class="col-xs-12 col-md-6" ng-class="{'hidden-xs' : candidat_id}" ng-show="!show_order_param">
+        <div class="col-xs-12 col-md-6" ng-class="{'hidden-xs hidden-sm' : candidat_id}" ng-show="!show_order_param">
           <ng-include src="'views/partials/candidat_card.html'" ng-repeat="candidature in candidatures track by $index"></ng-include>
         </div>
+
       </div>
 
       <table style="width:100%" id="data_candidatures" class="hidden">
