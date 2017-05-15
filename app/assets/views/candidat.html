@@ -297,7 +297,8 @@
                 </p>
                 <button type="button"
                   ng-click="candidature.selected_for_interview = true;
-                  candidature.patch({selected_for_interview: candidature.selected_for_interview});"
+                  candidature.patch({selected_for_interview: candidature.selected_for_interview});
+                  click_cInterview=false"
                   class="btn btn-primary btn-md btn-warning">Valider</button>
                 <button type="button" ng-click='click_cInterview=false' class="btn btn-primary btn-md btn-danger">Annuler</button>
               </div>
@@ -306,6 +307,10 @@
 
             <!-- STATE 3 = Candidature interview => Candidature liste d'attente  -->
             <div ng-show="candidature.selected_for_interview && !candidature.wait_listed" ng-init="click_cWaitListed=false" >
+
+              <button type="button" ng-click="candidature.selected_for_interview = false;
+              candidature.patch({selected_for_interview: candidature.selected_for_interview});" class="btn btn-outline-secondary btn-md btn-block">
+                Ne plus sélectionner pour l'entretien</button>
 
                 <button type="button" ng-click='click_cWaitListed=!click_cWaitListed' class="btn btn-primary btn-md btn-block">
                   En liste d'attente</button>
