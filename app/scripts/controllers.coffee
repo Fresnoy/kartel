@@ -283,7 +283,7 @@ angular.module('memoire.controllers', ['memoire.services'])
   $scope.LANGUAGES_NAME_short[obj.split("-")[0]] = val for obj, val of languageMappingList
 
   $scope.getCandidatures = (sort, order) ->
-    criteres = Object.assign(sort.sortby, order.value)
+    criteres = _.extend(sort.sortby, order.value)
     if($scope.asc == 'false') then criteres.ordering = "-"+criteres.ordering
     arr = []
     Candidatures.getList(criteres).then((candidatures) ->
