@@ -158,7 +158,7 @@
             </span>
             <br/>
             <p><i class="glyphicon glyphicon-home"></i> Adresse :<br/>
-                {{artist.user.profile.homeland_address}}<br/>
+                <span ng-bind-html="artist.user.profile.homeland_address | nl2br" /><br/>
                 {{artist.user.profile.homeland_zipcode}}
                 {{artist.user.profile.homeland_town}}<br/>
                 {{country.codeToCountry[artist.user.profile.homeland_country]}}<br/>
