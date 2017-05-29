@@ -115,7 +115,10 @@
           <th>Date naiss</th>
           <th>Nationalité</th>
           <th>Email	</th>
-          <th>Adresse postale</th>
+          <th>Adresse</th>
+          <th>Code postal</th>
+          <th>Ville</th>
+          <th>Pays</th>
           <th>Matériel</th>
           <th>Oral	</th>
           <th>Note finale	</th>
@@ -140,9 +143,10 @@
               </span>
             </th>
             <th>{{candidature.artist.user.email}}</th>
-            <th>{{candidature.artist.user.profile.homeland_adress}}
-              {{candidature.artist.user.profile.homeland_zipcode}}
-              {{candidature.artist.user.profile.homeland_town}}</th>
+            <th>{{candidature.artist.user.profile.homeland_address}}</th>
+            <th>{{candidature.artist.user.profile.homeland_zipcode}}</th>
+            <th>{{candidature.artist.user.profile.homeland_town}}</th>
+            <th>{{country.codeToCountry[candidature.artist.user.profile.homeland_country]}}</th>
             <th></th>
             <th></th>
             <th></th>
