@@ -174,6 +174,7 @@ angular.module('memoire.controllers', ['memoire.services'])
           $scope.artwork.collaborators[key] = Collaborators.one(collaborator_id).get().$object
 
 
+
     for partner_uri,key in $scope.artwork.partners
       if typeof partner_uri.match == Function
         matches = partner_uri.match(/\d+$/)
@@ -181,7 +182,12 @@ angular.module('memoire.controllers', ['memoire.services'])
           partner_id = matches[0]
           $scope.artwork.partners[key] = Partners.one(partner_id).get().$object
 
-
+    $scope.artwork.partners.tasks = {}
+    for partner in $scope.artwork.partners
+       if partner.task
+          if !$scope.artwork.partners.tasks[partner.task.label]
+            $scope.artwork.partners.tasks[partner.task.label] = []
+          $scope.artwork.partners.tasks[partner.task.label].push(partner.organization)
 
     search = ""
     #return all artwork video and filtre with idFrezsnoy - TODO search idFresnoy in api
