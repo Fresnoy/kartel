@@ -258,6 +258,7 @@ angular.module('memoire.controllers', ['memoire.services'])
     {title: 'En attente de validation', sortby: {"application_completed": 2, "application_complete": 3}, count:0},
     {title: 'Visées', sortby: {"application_complete": 2}, count:0},
     {title: 'Selectionnés pour l\'entretien', sortby: {"selected_for_interview": 2}, count:0},
+    {title: 'Entretien Skype', sortby: {"selected_for_interview": 2, "remote_interview": 2}, count:0},
     {title: 'Admis', sortby: {"selected": 2}, count:0},
     {title: 'Admis sur liste d\'attente', sortby: {"wait_listed": 2}, count:0},
   ]
