@@ -228,9 +228,10 @@
       <li ng-repeat="event in events">{{ event.title }}</li>
     </ul>
 
+    <h3><i class="glyphicon glyphicon-th-large"></i> Crédits</h3>
     <ul class="list-unstyled" ng-repeat="(task, organizations) in artwork.partners.tasks track by $index">
         <li>
-          <h3><i class="glyphicon glyphicon-th-large"></i>&nbsp;{{task}}<span ng-if="organizations.length>1"/>s</span></h3>
+          <h4>{{task}}<span ng-if="organizations.length>1"/>s</span></h4>
           <ul>
             <li ng-repeat="organization in organizations track by $index">{{ organization.name }}</li>
           </ul>
