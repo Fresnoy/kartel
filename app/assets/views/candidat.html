@@ -158,7 +158,7 @@
             </span>
             <br/>
             <p><i class="glyphicon glyphicon-home"></i> Adresse :<br/>
-                {{artist.user.profile.homeland_address}}<br/>
+                <span ng-bind-html="artist.user.profile.homeland_address | nl2br" /><br/>
                 {{artist.user.profile.homeland_zipcode}}
                 {{artist.user.profile.homeland_town}}<br/>
                 {{country.codeToCountry[artist.user.profile.homeland_country]}}<br/>
@@ -323,7 +323,7 @@
             <div ng-show="candidature.selected_for_interview && !candidature.wait_listed" ng-init="click_cWaitListed=false" >
 
                 <button type="button" ng-click='click_cWaitListed=!click_cWaitListed' class="btn btn-primary btn-md btn-block">
-                  Admis sur liste d'attente</button>
+                  Admis<ng-pluralize count="artist.user.profile.gender.indexOf('F')" when="{'0': 'e'}"></ng-pluralize> sur liste d'attente</button>
                 <div ng-show="click_cWaitListed" >
                   <p class="alert alert-warning" role="alert">
                     Attention cette action selectionne le candidat pour la liste d'attente
@@ -345,7 +345,7 @@
             <div ng-show="candidature.selected_for_interview && !candidature.selected" ng-init="click_cSelected=false" >
 
                 <button type="button" ng-click='click_cSelected=!click_cSelected' class="btn btn-success btn-md btn-block">
-                  Admis</button>
+                  Admis<ng-pluralize count="artist.user.profile.gender.indexOf('F')" when="{'0': 'e'}"></ng-pluralize></button>
                 <div ng-show="click_cSelected" >
                   <p class="alert alert-warning" role="alert">
                     Attention cette action selectionne le candidat pour la rentrée prochaine

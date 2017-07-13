@@ -4,7 +4,11 @@
       <fresnoy-thumbnail ng-if="student.user.photo" thurl="'media/'+student.user.photo" thwidth="300" thheight="200"></fresnoy-thumbnail>
       <img ng-if="!student.user.photo" src="images/anonymous.jpg" alt="..">
       <div class="caption">
-        {{ student.user.first_name }} <strong>{{ student.user.last_name }}</strong>
+        <strong ng-if='student.artist.nickname'>{{ student.artist.nickname }}</strong>
+        <span ng-if='!student.artist.nickname'>
+          {{  student.user.first_name }} <strong>{{ student.user.last_name }}</strong>
+        </span>
+      </div>
       </div>
     </div>
   </a>

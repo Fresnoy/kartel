@@ -6,24 +6,28 @@
 </div>
 
 <div class="nature">
-  {{ artwork.type }}
+  <span>{{ artwork.type }}</span>
   <ul class="genres list list-inline" ng-show="artworks.genre">
     <li ng-repeat="genre in artwork.genres">
       <a ui-sref="genre({genre: genre.label})">{{ genre.label }}</a></li>
   </ul>
-  de
+  <span>de</span>
   <ul class="authors list list-inline">
     <li ng-repeat="author in artwork.authors">
       <a ui-sref="artist.detail({id: author.id})">
         <span ng-show="author.nickname" class="nickname">{{ author.nickname }}</span>
-        <span ng-show="!author.nickname" class="firstname">{{ author.user.first_name }}</span> <span class="lastname">{{ author.user.last_name }}</span></a>
+        <span ng-show="!author.nickname">
+          <span class="firstname">{{ author.user.first_name }}</span>
+          <span class="lastname">{{ author.user.last_name }}</span>
+        </span>
+      </a>
     </li>
   </ul>
 </div>
 
 <div class="technic">
   <ul class="list list-unstyled list-inline" ng-if="artwork.type=='film'">
-    <li ng-if="artwork.duration" class="duration" title="Durée">{{ artwork.duration | time:"hh:mm:ss":"hh h mm minutes ss"  }}</li>
+    <li ng-if="artwork.duration" class="duration" title="Durée">{{ artwork.duration | time:"hh:mm:ss":"hh h mm minutes"  }}</li>
     <li ng-if="artwork.shooting_format" class="format" title="Format">{{ artwork.shooting_format }}</li>
     <li ng-if="artwork.process" class="process" title="Procédé">{{ artwork.process }}</li>
     <li ng-if="artwork.aspect_ratio" class="ratio" title="Ratio">{{ artwork.aspect_ratio  }}</li>
@@ -219,16 +223,20 @@
   </div>
 
   <div class="col-md-2 sidebar">
-    <h3><i class="glyphicon glyphicon-bullhorn"></i>&nbsp;Diffusions</h3>
+    <h3><i class="glyphicon glyphicon-bullhorn"></i>&nbsp;Diffusion<span ng-if="events.length>1"/>s</span></h3>
     <ul>
       <li ng-repeat="event in events">{{ event.title }}</li>
     </ul>
 
-    <h3><i class="glyphicon glyphicon-th-large"></i>&nbsp;Partenaires</h3>
-    <ul>
-      <li ng-repeat="partner in artwork.partners track by $index">{{ partner.organization.name }} ({{ partner.task.label }})</li>
+    <h3><i class="glyphicon glyphicon-th-large"></i> Crédits</h3>
+    <ul class="list-unstyled" ng-repeat="(task, organizations) in artwork.partners.tasks track by $index">
+        <li>
+          <h4>{{task}}<span ng-if="organizations.length>1"/>s</span></h4>
+          <ul>
+            <li ng-repeat="organization in organizations track by $index">{{ organization.name }}</li>
+          </ul>
+        </li>
     </ul>
-
   </div>
 
 

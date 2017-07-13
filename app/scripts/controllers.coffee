@@ -173,6 +173,7 @@ angular.module('memoire.controllers', ['memoire.services'])
           $scope.artwork.collaborators[key] = Collaborators.one(collaborator_id).get().$object
 
 
+
     for partner_uri,key in $scope.artwork.partners
       if typeof partner_uri.match == Function
         matches = partner_uri.match(/\d+$/)
@@ -180,7 +181,12 @@ angular.module('memoire.controllers', ['memoire.services'])
           partner_id = matches[0]
           $scope.artwork.partners[key] = Partners.one(partner_id).get().$object
 
-
+    $scope.artwork.partners.tasks = {}
+    for partner in $scope.artwork.partners
+       if partner.task
+          if !$scope.artwork.partners.tasks[partner.task.label]
+            $scope.artwork.partners.tasks[partner.task.label] = []
+          $scope.artwork.partners.tasks[partner.task.label].push(partner.organization)
 
     search = ""
     #return all artwork video and filtre with idFrezsnoy - TODO search idFresnoy in api
@@ -257,6 +263,7 @@ angular.module('memoire.controllers', ['memoire.services'])
     {title: 'En attente de validation', sortby: {"application_completed": 2, "application_complete": 3}, count:0},
     {title: 'Visées', sortby: {"application_complete": 2}, count:0},
     {title: 'Selectionnés pour l\'entretien', sortby: {"selected_for_interview": 2}, count:0},
+    {title: 'Entretien Skype', sortby: {"selected_for_interview": 2, "remote_interview": 2}, count:0},
     {title: 'Admis', sortby: {"selected": 2}, count:0},
     {title: 'Admis sur liste d\'attente', sortby: {"wait_listed": 2}, count:0},
   ]
@@ -351,6 +358,7 @@ angular.module('memoire.controllers', ['memoire.services'])
         row = []
         for col in line.querySelectorAll("td, th")
             t = $(col).text().replace(/\s\s+/g,' ')
+            t = $(col).text().replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n|&#10;&#13;|&#13;&#10;|&#10;|&#13;)/g, ' ')
             row.push(t)
         csv.push(row.join(";"))
 
