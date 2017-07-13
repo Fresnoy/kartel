@@ -92,6 +92,11 @@ angular.module('kartel',
         $httpProvider.defaults.headers.common.Authorization = "JWT "+ localStorage.getItem('token')
 
 )
+
+# whitelist href - for skype
+.config(['$compileProvider', ($compileProvider) ->
+    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|tel|local|file|data|blob|webcal|skype):/);
+])
 .run((authManager) ->
 
     authManager.checkAuthOnRefresh()
