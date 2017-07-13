@@ -124,8 +124,7 @@ angular.module('memoire.controllers', ['memoire.services'])
 
 
   $scope.promotion = Promotions.one($stateParams.id).get().$object
-
-  $scope.students = Students.getList({promotion: $stateParams.id, limit: 500}).$object
+  $scope.students = Students.getList({promotion: $stateParams.id, order_by:'user__last_name', limit: 500}).$object
 )
 
 .controller('ArtistController', ($scope, $stateParams, Students, Artists, Artworks) ->
