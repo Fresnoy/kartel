@@ -3,35 +3,9 @@
     <span class="fr">Inscription</span>
     <span class="en">Inscription</span>
   </h1>
-  <div ng-show="!online_candidature" ng-init='online_candidature=false'>
-    <p class="fr">
-      Cette année deux choix s'offrent à vous pour postuler :
-    </p>
-    <p class="en">
-      This year, you can choose to apply:
-    </p>
-    <hr/>
 
-      <span ng-show="!user.profile.birthdate">
-        <a class="btn green" ng-click='online_candidature = true'>
-          <span class="fr">En ligne</span>
-          <span class="en">ON LINE</span>
-        </a>
-      </span>
-      <span ng-if="user.profile.birthdate">
-          <a class="btn green" ui-sref="candidature.summary">
-            <span class="fr">En ligne<br/><span style='text-transform:none'>(Continuer l'inscription)</span></span>
-            <span class="en">ON LINE (Continue inscription)</span>
-          </a>
-      </span>
-      <hr/>
-      <a class="btn grey" ui-sref="candidature.mail" >
-        <span class="fr">Par courrier</span>
-          <span class="en">By post</span>
-      </a>
-  </div>
 
-  <div class="" ng-show='online_candidature'>
+  <div class="">
       <div class="fr">
         <h2>Liste des documents nécessaires (au format numérique)</h2>
         <ul>
