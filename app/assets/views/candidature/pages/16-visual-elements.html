@@ -61,7 +61,7 @@
       <p>Please connect the video link towards a work or a series of extracts of your works that are particularly representative of your artistic approach</p>
       <p>This video of a maximum length of 8 minutes will be seen by two panels (during the pre-selection phase and the interview)</p>
     </div>
-      <div class="field" ng-show="!candidature.physical_content">
+    <div class="field" ng-show="!candidature.physical_content">
          <input
             type="url"
             id = "video"
@@ -124,34 +124,35 @@
                 <span class="en">delete video</span>
               </strong>
            </a>
-        </div>
+         </div>
       </div>
       <br>
       <br>
       <hr/>
-      <div class='' ng-show="!candidature.physical_content" >
+      <div class='bg-grey'>
+        <div ng-show="!candidature.physical_content">
             <h4>
 
               <span class="fr">Si vous ne pouvez pas fournir un lien vers une vidéo,<br/>Vous avez la possibilité de :</span>
               <span class="en">If you cannot provide a link towards a video, <br/>YOU MAY</span>
 
-
-
             </h4>
-            <p class="fr"> - nous envoyer la vidéo, en cliquant ci-dessous : </p>
-            <p class="en"> - send us the video, by clicking below: </p>
-            <div ng-model="video" name="uVideo"
-               ngf-select="uploadVimeo(video, candidature, 'presentation_video')"
-               ngf-capture="'camera'"
-               accept="video/*"
-               ngf-accept="'video/*'"
-               ngf-pattern="'video/*'"
-               ngf-model-invalid="invalidVideo"
-               ng-show="!candidature.presentation_video"
-               class="media-upload"
-               ng-show='!candidature.presentation_video'
-               >
-               <span class="upload-file" />
+            <div ng-if='!candidature.presentation_video'>
+                <p class="fr"> - nous envoyer la vidéo (téléchargement), en cliquant ci-dessous : </p>
+                <p class="en"> - send us the video (upload), by clicking below: </p>
+                <div ng-model="video" name="uVideo"
+                   ngf-select="uploadVimeo(video, candidature, 'presentation_video')"
+                   ngf-capture="'camera'"
+                   accept="video/*"
+                   ngf-accept="'video/*'"
+                   ngf-pattern="'video/*'"
+                   ngf-model-invalid="invalidVideo"
+                   ng-show="!candidature.presentation_video"
+                   class="media-upload"
+                   ng-show='!candidature.presentation_video'
+                   >
+                   <span class="upload-file" />
+                </div>
             </div>
             <div ng-show="invalidVideo.$errorMessages" ng-messages="invalidVideo.$errorMessages" class="help-block error">
                <div ng-message="pattern">
@@ -159,72 +160,70 @@
                   <span class="en">this is not a vidéo file</span>
                </div>
             </div>
-
             <p>
                <a href='https://vimeo.com/help/compression' target='_blank'>
                  <span class="fr">voir les spécifications pour un rendu optimal</span>
                  <span class="en">See specifications for optimal rendering</span>
-
              </a>
             </p>
-            <p class="fr">- nous envoyer la vidéo par courrier (cocher la case ci-dessous)</p>
-            <p class="en">- send us the video by post (tick the box below)</p>
       </div>
+      <p class="fr">- nous envoyer la vidéo par courrier (cocher la case ci-dessous)</p>
+      <p class="en">- send us the video by post (tick the box below)</p>
       <div class="field">
-         <input
-            type="checkbox"
-            id="asynchronous-element"
-            ng-model="candidature.physical_content"
-            name="aAsynchone"
-            class="one check"
-            ng-value=true
-            />
-         <label class="check one pointer" for='asynchronous-element'>
-             <span class="fr">J'envoie un fichier MP4 ou
-             ProRes sur une clef USB en indiquant la référence de mon dossier</span>
-             <span class="en">I am sending MP4 or ProRes files on a USB memory stick with my application reference.</span>
-         </label>
-         <div ng-if="!candidature.physical_content" class="alert" >
-            <div ng-init='candidature.patch({physical_content_description: "", physical_content: false})' ></div>
-          </div>
-         <div ng-if="candidature.physical_content" class="alert" >
-            <div ng-init='candidature.patch({physical_content_description: "Film sur Clef USB", physical_content: true})' />
-            <p class="fr">Préciser la nature et le contexte des éléments visuels : </p>
-            <p class="en">Please explain the nature and the context of the visual elements:</p>
-            <textarea
-               ng-model="candidature.presentation_video_details"
-               ng-model-options='{ debounce: 1000 }'
-               ng-change="candidature.patch({presentation_video_details : candidature.presentation_video_details||''})"
-               placeholder=""
-               rows="2"
-               required=""
-               >
-            </textarea>
-            <label>
-                <span class="field-state required"></span>
-                <span class="fr">Contenu visuels</span>
-                <span class="en">Visuel content</span>
-            </label>
-            <span class="fr"> Il est impératif d'indiquer la référence de votre dossier sur la clef USB.</span>
-            <span class="en"> Don't forget to give us your application number </span>
-            <strong>{{candidature.current_year_application_count}}</strong>
-            <p>
-               à l'adresse suivante :
-            </p>
-            <p>
-               Pédagogie - Concours 2017<br/>
-               Le Fresnoy - Studio national <br/>des arts contemporains<br/>
-               22 rue du Fresnoy <br/>
-               BP 80179 <br/>
-               59202 Tourcoing Cedex <br/>
-               France
-            </p>
+           <input
+              type="checkbox"
+              id="asynchronous-element"
+              ng-model="candidature.physical_content"
+              name="aAsynchone"
+              class="one check"
+              ng-value=true
+              />
+           <label class="check one pointer" for='asynchronous-element'>
+               <span class="fr">J'envoie un fichier MP4 ou
+               ProRes sur une clef USB en indiquant la référence de mon dossier</span>
+               <span class="en">I am sending MP4 or ProRes files on a USB memory stick with my application reference.</span>
+           </label>
+           <div ng-if="!candidature.physical_content" class="alert" >
+              <div ng-init='candidature.patch({physical_content_description: "", physical_content: false})' ></div>
+           </div>
+           <div ng-if="candidature.physical_content" class="alert" >
+              <div ng-init='candidature.patch({physical_content_description: "Film sur Clef USB", physical_content: true})' ></div>
+              <p class="fr">Préciser la nature et le contexte des éléments visuels : </p>
+              <p class="en">Please explain the nature and the context of the visual elements:</p>
+              <textarea
+                 ng-model="candidature.presentation_video_details"
+                 ng-model-options='{ debounce: 1000 }'
+                 ng-change="candidature.patch({presentation_video_details : candidature.presentation_video_details||''})"
+                 placeholder=""
+                 rows="2"
+                 required=""
+                 >
+              </textarea>
+              <label>
+                  <span class="field-state required"></span>
+                  <span class="fr">Contenu visuels</span>
+                  <span class="en">Visuel content</span>
+              </label>
+              <span class="fr"> Il est impératif d'indiquer la référence de votre dossier sur la clef USB.</span>
+              <span class="en"> Don't forget to give us your application number </span>
+              <strong>{{candidature.current_year_application_count}}</strong>
+              <p>
+                 à l'adresse suivante :
+              </p>
+              <p>
+                 Pédagogie - Concours 2017<br/>
+                 Le Fresnoy - Studio national <br/>des arts contemporains<br/>
+                 22 rue du Fresnoy <br/>
+                 BP 80179 <br/>
+                 59202 Tourcoing Cedex <br/>
+                 France
+              </p>
 
-         </div>
-
+           </div>
       </div>
-      <hr/>
-      <div class="field">
+    </div>
+    <hr/>
+    <div class="field">
          <input
             type="checkbox"
             id="honor"
@@ -233,11 +232,11 @@
             class="one check"
             />
          <label class="check one pointer" for='honor'>
-         <span class="fr">Je déclare sur l'honneur que tous
-         les documents soumis au jury sont réalisés par moi seul, sans aucune aide ou intervention extérieure.</span>
-         <span class="en">I declare that all the visual documents submitted have been created by me, without any help or outside sourcing.</span>
+             <span class="fr">Je déclare sur l'honneur que tous
+             les documents soumis au jury sont réalisés par moi seul, sans aucune aide ou intervention extérieure.</span>
+             <span class="en">I declare that all the visual documents submitted have been created by me, without any help or outside sourcing.</span>
          </label>
-      </div>
+    </div>
    </form>
    <div class="navigation">
       <a class="btn prev" ui-sref="candidature.artistic-background"><span class="fr">Retour</span><span class="en">Back</span></a>

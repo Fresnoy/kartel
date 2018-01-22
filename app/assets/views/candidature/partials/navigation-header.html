@@ -1,5 +1,7 @@
 <div class="navigation header">
-
+  <div id="ref-candidature" ng-if="isAuthenticated">
+    <div class="" >Candidature n° <span class="number">{{ candidature.current_year_application_count }}  </span></div>
+  </div>
   <ul class="list-inline small">
     <li class="help"><a class="pointer" ui-sref="candidature.user-guide"><span class='fr'>Guide</span><span class='en'>User guide</span></a> |</li>
     <li class="help"><a class="pointer" ui-sref="candidature.faq">FAQ</a> | </li>

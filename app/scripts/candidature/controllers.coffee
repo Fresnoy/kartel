@@ -421,10 +421,10 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
         $state.go("candidature.error_admin_user")
         return
 
-      Candidatures.getList().then((candidatures) ->
+      Candidatures.getList({'ordering':'-id'}).then((candidatures) ->
 
-
-        candidature = candidatures[candidatures.length-1]
+        # candidature = candidatures[candidatures.length-1]
+        candidature = candidatures[0]
         scope.candidature = candidature
         if(candidature.application_completed)
           $state.go("candidature.confirmation")
@@ -788,8 +788,8 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 
                           Vimeo.one(location).patch(video_info).then((patch_response) ->
                             # console.log("Video set Title and description")
-                            # put video in album 4370111 (candidature 2017)
-                            album_id = 4370111
+                            # put video in album 4943258 (candidature 2018)
+                            album_id = 4943258
                             Vimeo.one(account_infos.data.uri).customPUT({}, "albums/"+album_id+"/videos/"+video_id).then((response_album) ->
                                 # console.log("Video in specific album : " + album_id)
                             )
