@@ -222,6 +222,9 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
   if(!$rootScope.current_display_screen)
     $rootScope.current_display_screen = candidature_config.screen.home
 
+  # Set candidatures open
+  $rootScope.candidatures_open = new Date(candidature_config.open_date) < new Date()
+  $rootScope.candidatures_close = new Date() > new Date(candidature_config.close_date)
 
 
   # init step in parent controller

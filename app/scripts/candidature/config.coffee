@@ -1,5 +1,7 @@
 candidature_config =
   path: "http://app.lefresnoy.net/candidatures/artworks/selected/"
+  open_date:"2018-01-31T23:59:59"
+  close_date:"2018-04-31"
   screen:
     "01":
       image:
