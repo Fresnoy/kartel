@@ -2,14 +2,10 @@
    <span class="close" ng-click="show_help(false)">x</span>
    <h1><class class="fr">Aide</class><class class="en">Help</class></h1>
    <div class="fr">
-      <p>Résumé du parcours et/ou des études (10 lignes).<br/>
-Ce document décrira le parcours personnel qui
-a conduit à la candidature</p>
+      <p>Résumé du parcours et/ou des études.</p>
    </div>
    <div class="en">
-      <p>Résumé of candidate’s background and/or
-studies (10 lines). <br/>This document explains how the
-candidate’s background led him/her to apply</p>
+      <p>Résumé of candidate’s background and/or studies.</p>
    </div>
 </div>
 
@@ -27,6 +23,7 @@ candidate’s background led him/her to apply</p>
           <div class="field">
                       <textarea
                         id="cursus"
+                        class="small-font"
                           ng-model="user.profile.cursus"
                           ng-model-options='{ debounce: 1000 }'
                           ng-change="user.patch({profile : {cursus: (user.profile.cursus||'')}})"
