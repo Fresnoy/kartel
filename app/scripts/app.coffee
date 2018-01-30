@@ -29,6 +29,7 @@ angular.module('kartel',
                   'ngAnimate', 'chieffancypants.loadingBar', 'ui.bootstrap', 'ngMessages',
                   'ngSanitize', 'markdown', '720kb.datepicker',
                   'iso-3166-country-codes', 'ngFileUpload', 'ngPlacesAutocomplete',
+                  'angular-google-analytics',
               ])
 
 # CORS
@@ -104,6 +105,16 @@ angular.module('kartel',
 
 )
 
+
+.config(['AnalyticsProvider', (AnalyticsProvider) ->
+   # Add configuration code as desired
+   AnalyticsProvider.setAccount('UA-16448202-2');
+])
+
+.run(['Analytics', (Analytics) ->
+   # codes
+   console.log("coucou")
+])
 
 .filter("isFresnoyUrl", ->
   return (input, str = "/media/") ->
