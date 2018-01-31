@@ -105,17 +105,6 @@ angular.module('kartel',
 
 )
 
-
-.config(['AnalyticsProvider', (AnalyticsProvider) ->
-   # Add configuration code as desired
-   AnalyticsProvider.setAccount('UA-16448202-2');
-])
-
-.run(['Analytics', (Analytics) ->
-   # codes
-   console.log("coucou")
-])
-
 .filter("isFresnoyUrl", ->
   return (input, str = "/media/") ->
     if typeof input isnt 'string'
@@ -320,8 +309,23 @@ angular.module('kartel',
         # $rootScope.loginService = loginService
 
 
-
 ])
+
+
+.config(['AnalyticsProvider', (AnalyticsProvider) ->
+   # Add configuration code as desired
+   AnalyticsProvider.setAccount('UA-16448202-2')
+   AnalyticsProvider.trackUrlParams(true);
+])
+
+.run(['Analytics', '$rootScope', (Analytics, $rootScope) ->
+
+    $rootScope.$on("$locationChangeStart", (event, next, current) ->
+        Analytics.trackPage(Analytics.getUrl());
+    );
+   # codes
+])
+
 
 
 
