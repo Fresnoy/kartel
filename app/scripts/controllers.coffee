@@ -254,18 +254,22 @@ angular.module('memoire.controllers', ['memoire.services'])
   $scope.candidatures = []
   $scope.candidat_id = $stateParams.id
 
+  current_year = new Date().getFullYear()
   # order
   # none = 1 | true = 2 | false = 3
   $scope.select_criteres = [
-    {title: 'Toutes', sortby: {"search": ""}, count:0 },
-    {title: 'Courrier', sortby: {"physical_content": 2, "physical_content_received": 3}, count:0},
-    {title: 'Non finalisées', sortby: {"application_completed": 3}, count:0},
-    {title: 'En attente de validation', sortby: {"application_completed": 2, "application_complete": 3}, count:0},
-    {title: 'Visées', sortby: {"application_complete": 2}, count:0},
-    {title: 'Selectionnés pour l\'entretien', sortby: {"selected_for_interview": 2}, count:0},
-    {title: 'Entretien Skype', sortby: {"selected_for_interview": 2, "remote_interview": 2}, count:0},
-    {title: 'Admis', sortby: {"selected": 2}, count:0},
-    {title: 'Admis sur liste d\'attente', sortby: {"wait_listed": 2}, count:0},
+    {title: 'Toutes', sortby: {"search": current_year, "unselected": 3}, count:0 },
+    {title: 'Refusées', sortby: {"search": current_year, "unselected": 2}, count:0 },
+    {title: 'Courrier', sortby: {"search": current_year, "unselected": 3, "physical_content": 2, "physical_content_received": 3}, count:0},
+    {title: 'Non finalisées', sortby: {"search": current_year, "unselected": 3, "application_completed": 3}, count:0},
+    {title: 'En attente de validation', sortby: {"search": current_year, "unselected": 3, "application_completed": 2, "application_complete": 3}, count:0},
+    {title: 'Visées', sortby: {"search": current_year, "unselected": 3, "application_complete": 2}, count:0},
+    {title: 'Selectionnés en d\'attente pour l\'entretien', sortby: {"search": current_year, "unselected": 3, "wait_listed_for_interview": 2}, count:0},
+    {title: 'Selectionnés pour l\'entretien', sortby: {"search": current_year, "unselected": 3, "selected_for_interview": 2}, count:0},
+    {title: 'Entretien Skype', sortby: {"search": current_year, "unselected": 3, "selected_for_interview": 2, "remote_interview": 2}, count:0},
+    {title: 'Admis sur liste d\'attente', sortby: {"search": current_year, "unselected": 3, "wait_listed": 2}, count:0},
+    {title: 'Admis', sortby: {"search": current_year,  "unselected": 3, "selected": 2}, count:0},
+
   ]
   $scope.select_orders = [
       {title: "Numéro d'inscription", value: {ordering: "id"}}
@@ -375,6 +379,33 @@ angular.module('memoire.controllers', ['memoire.services'])
   $scope.artist = []
   $scope.administrative_galleries = []
   $scope.artwork_galleries = []
+
+  # observation
+  obj_observation = {}
+  separator = "**--**\n"
+
+  add_observation = () ->
+
+    if(!obj_observation[$rootScope.user.username])
+      obj_observation[$rootScope.user.username] = ""
+    if(!obj_observation['jury'])
+      obj_observation.jury = ''
+
+    str_observation = JSON.stringify(obj_observation)
+    $scope.candidature.patch({observation: str_observation})
+
+  $scope.$watch("candidature.observation", (newValue, oldValue) ->
+    if(newValue == "")
+      add_observation()
+    if(newValue)
+      obj_observation = JSON.parse(newValue)
+      $scope.jury_observation = obj_observation.jury
+      $scope.personal_observation = obj_observation[$rootScope.user.username]
+  )
+  $scope.add_observation =  (field, value) ->
+      obj_observation[field] = value
+      add_observation()
+
 
   $scope.gender =
     M: fr: "Homme", en: "Male"
