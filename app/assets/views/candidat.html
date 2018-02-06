@@ -115,17 +115,12 @@
               Message
             </a>
           </li>
-          <li role="my_notes" class="">
-            <a data-target ="#my_notes" role="tab" data-toggle="tab">
-              Mes notes
+          <li role="observations" class="admin">
+            <a data-target ="#observations" role="tab" data-toggle="tab">
+              Notes du Jury
             </a>
           </li>
-          <li role="jury_notes" class="">
-            <a data-target ="#jury_notes" role="tab" data-toggle="tab">
-              Notes du jury
-            </a>
-          </li>
-          <li role="actions" class="">
+          <li role="actions" class="admin">
             <a data-target ="#actions" role="tab" data-toggle="tab">
               Actions
             </a>
@@ -234,33 +229,33 @@
           <p ng-bind-html="candidature.remark | linky:'_blank' | nl2br" />
         </div>
 
-        <div role="tabpanel" class="tab-pane" id="my_notes">
-            <h3>Mes notes</h3>
-            <textarea
+        <div role="tabpanel" class="tab-pane admin" id="observations">
+            <h3>Notes du jury</h3>
 
-               ng-model="personal_observation"
-               ng-model-options='{ debounce: 1000 }'
-               ng-change="add_observation(user.username, personal_observation)"
-               placeholder="Message"
-               rows="10"
-               />
+              <p>Ces notes sont partagés avec le jury</p>
+               <textarea
+                  ng-model="jury_observation"
+                  ng-model-options='{ debounce: 1000 }'
+                  ng-change="add_observation('jury', jury_observation )"
+                  placeholder="Message"
+                  rows="10"
+                  />
+
+              <h3>Mes notes</h3>
+              <p>Ces notes sont personelles (accessibles qu'avec mon compte)</p>
+                  <textarea
+                     ng-model="personal_observation"
+                     ng-model-options='{ debounce: 1000 }'
+                     ng-change="add_observation(user.username, personal_observation)"
+                     placeholder="Message"
+                     rows="10"
+                     />
+
 
         </div>
 
-        <div role="tabpanel" class="tab-pane" id="jury_notes">
-              <h3>Notes du jury</h3>
-              <textarea
-                 ng-model="jury_observation"
-                 ng-model-options='{ debounce: 1000 }'
-                 ng-change="add_observation('jury', jury_observation )"
-                 placeholder="Message"
-                 rows="10"
-                 />
 
-
-        </div>
-
-        <div role="tabpanel" class="tab-pane" id="actions">
+        <div role="tabpanel" class="tab-pane admin" id="actions">
           <h3>Actions</h3>
           <p>Statut :
             <span ng-show="candidature.unselected">Ce candidat n'a pas été selectionné par le jury</span>

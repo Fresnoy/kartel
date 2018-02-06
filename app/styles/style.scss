@@ -118,6 +118,10 @@ li.promotion {
         margin-top: 0px;
         margin-bottom: 0;
     }
+    li.admin:not(.active) a{
+      background-color: #337ab7;
+      color: white;
+    }
 }
 
 div.api-field {
@@ -597,6 +601,10 @@ body.en {
   /* add padding  */
   .left-addon input  { padding-left:  30px; }
   .right-addon input { padding-right: 30px; }
+
+  textarea{
+    width: 100%;
+  }
 
 
   .form-group {

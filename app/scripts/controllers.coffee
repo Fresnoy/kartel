@@ -382,30 +382,33 @@ angular.module('memoire.controllers', ['memoire.services'])
 
   # observation
   obj_observation = {}
-  separator = "**--**\n"
 
   add_observation = () ->
-
+    # set default values
     if(!obj_observation[$rootScope.user.username])
       obj_observation[$rootScope.user.username] = ""
     if(!obj_observation['jury'])
       obj_observation.jury = ''
-
+    # encode values
     str_observation = JSON.stringify(obj_observation)
+    # save values
     $scope.candidature.patch({observation: str_observation})
 
   $scope.$watch("candidature.observation", (newValue, oldValue) ->
+    # set default values
     if(newValue == "")
       add_observation()
+    # displays values
     if(newValue)
+      # decode text
       obj_observation = JSON.parse(newValue)
+      # assign text to user / jury
       $scope.jury_observation = obj_observation.jury
       $scope.personal_observation = obj_observation[$rootScope.user.username]
   )
   $scope.add_observation =  (field, value) ->
       obj_observation[field] = value
       add_observation()
-
 
   $scope.gender =
     M: fr: "Homme", en: "Male"
