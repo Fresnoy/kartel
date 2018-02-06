@@ -29,7 +29,7 @@ angular.module('kartel',
                   'ngAnimate', 'chieffancypants.loadingBar', 'ui.bootstrap', 'ngMessages',
                   'ngSanitize', 'markdown', '720kb.datepicker',
                   'iso-3166-country-codes', 'ngFileUpload', 'ngPlacesAutocomplete',
-                  'angular-google-analytics',
+                  'angular-google-analytics', 'ngMeta',
               ])
 
 # CORS
@@ -197,6 +197,11 @@ angular.module('kartel',
               'main_view.main_content_view':
                   templateUrl: 'views/school.html'
                   controller: 'SchoolController'
+            # meta data
+            data:
+              meta:
+                title: 'Ecole'
+                'og:title': 'Ecole'
         )
 
         $stateProvider.state('school.promotion',
@@ -213,6 +218,11 @@ angular.module('kartel',
                 'content_school_view':
                     templateUrl: 'views/student.html'
                     controller: 'StudentController'
+              # meta data
+              data:
+                meta:
+                  title: 'Artsite Étudiant'
+                  'og:title': 'Artsite Étudiant'
 
         )
 
@@ -226,6 +236,11 @@ angular.module('kartel',
                   'main_view.main_content_view':
                     templateUrl: 'views/artists.html'
                     controller: 'ArtistListingController'
+                # meta data
+                data:
+                  meta:
+                    title: 'Artsites'
+                    'og:title': 'Artsites'
         )
 
         $stateProvider.state('artist.detail',
@@ -234,10 +249,14 @@ angular.module('kartel',
                   'main_content_view':
                     templateUrl: 'views/artist.html'
                     controller: 'ArtistController'
+                # meta data
+                data:
+                  meta:
+                    title: 'Artsite'
+                    'og:title': 'Artsite'
         )
 
         # ARTWORK
-
         $stateProvider.state('genre',
                 url: '/artwork/?genre'
                 views:
@@ -257,6 +276,12 @@ angular.module('kartel',
                   'main_view.main_content_view':
                       templateUrl: 'views/artworks.html'
                       controller: 'ArtworkListingController'
+                # meta data
+                data:
+                  meta:
+                    title: 'Oeuvres'
+                    'og:title': 'Oeuvres'
+
         )
 
         $stateProvider.state('artwork-detail',
@@ -268,6 +293,11 @@ angular.module('kartel',
                   'main_view.main_content_view':
                       templateUrl: 'views/artwork.html'
                       controller: 'ArtworkController'
+                # meta data
+                data:
+                  meta:
+                    title: 'Oeuvre'
+                    'og:title': 'Oeuvre'
         )
 
         # - Candidatures LISTS
@@ -285,6 +315,11 @@ angular.module('kartel',
                   'main_view.main_content_view':
                     templateUrl: 'views/candidatures.html'
                     controller: 'CandidaturesController'
+                # meta data
+                data:
+                  meta:
+                    title: 'Candidatures'
+                    'og:title': 'Candidatures'
         )
 
         $stateProvider.state('candidatures.candidat',

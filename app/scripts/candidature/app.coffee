@@ -2,7 +2,7 @@
 "use strict"
 
 angular.module('candidature.application', ['candidature.controllers',
-            'ui.router',
+            'ui.router', 'ngMeta'
 ])
 
 .run(['$rootScope', '$state', ($rootScope, $state) ->
@@ -17,9 +17,10 @@ angular.module('candidature.application', ['candidature.controllers',
       , 200)
   )
 ])
-.config(['$locationProvider', '$stateProvider', '$urlRouterProvider', ($locationProvider,
+.config(['$locationProvider', '$stateProvider', '$urlRouterProvider', 'ngMetaProvider', ($locationProvider,
                                                                       $stateProvider,
-                                                                      $urlRouterProvider) ->
+                                                                      $urlRouterProvider,
+                                                                      ngMetaProvider) ->
       # - CANDIDATURE Root
       $stateProvider.state('candidature',
               url: '/candidature'
@@ -36,6 +37,16 @@ angular.module('candidature.application', ['candidature.controllers',
                 'main_view.application_breadcrumb_view':
                     templateUrl: 'views/candidature/partials/navigation-breadcrumb.html',
                     controller: 'CandidatureBreadcrumbController'
+              # meta data
+              data:
+                meta:
+                  title: 'Candidatures ' + new Date().getFullYear()
+                  'og:title': 'Candidatures ' + new Date().getFullYear()
+                  'og:type': 'website'
+                  'og:url': window.location.href
+                  'og:image': "http://media.lefresnoy.net/?url="+candidature_config.path+candidature_config.screen['01'].image.file+"&w=1200&h=630&fmt=jpg"
+                  'description': candidature_config.screen['01'].image.copyright
+
       )
       # PAGE - FAQ
       $stateProvider.state('candidature.faq',
@@ -317,3 +328,7 @@ angular.module('candidature.application', ['candidature.controllers',
 
 
 ])
+
+.run(['ngMeta', (ngMeta) ->
+  ngMeta.init();
+]);

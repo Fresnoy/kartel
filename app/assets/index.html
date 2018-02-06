@@ -4,6 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <title ng-bind="ngMeta.title"></title>
+    <!-- Arbitrary tags -->
+    <meta property="og:title" content="{{ngMeta['og:title']}}" />
+    <meta property="og:type" content="{{ngMeta['og:type']}}" />
+    <meta property="og:url" content="{{ngMeta['og:url']}}" />
+    <meta property="og:image" content="{{ngMeta['og:image']}}" />
+
+    <meta property="og:description" content="{{ngMeta.description}}" />
+
     <link href='https://fonts.googleapis.com/css?family=Oswald:400,300' rel='stylesheet' type='text/css'>
 
     <script src="js/config.js" type="text/javascript"></script>
