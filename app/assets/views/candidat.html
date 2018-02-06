@@ -75,7 +75,7 @@
     <div ng-if='artist.websites.length' >
       <i class="glyphicon glyphicon-link"></i>&nbsp;Web :
         <span class="website" ng-repeat="website in artist.websites track by $index">
-          <a href="{{ website.link }}" title="{{ website.link }}" target="_blank"><i class="glyphicon glyphicon-globe"></i></a>
+          <a href="{{ website.link }}" title="{{ website.link }}" target="_blank">{{ website.link }}</a>
         </span>
     </div>
     <!-- LAST APPLICATIONS -->
@@ -242,7 +242,7 @@
                   />
 
               <h3>Mes notes</h3>
-              <p>Ces notes sont personelles (accessibles qu'avec mon compte)</p>
+              <p>Ces notes sont personnelles (accessibles qu'avec mon compte)</p>
                   <textarea
                      ng-model="personal_observation"
                      ng-model-options='{ debounce: 1000 }'
