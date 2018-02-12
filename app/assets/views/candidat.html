@@ -184,9 +184,11 @@
             </p>
             <div ng-if="candidature.cursus_justifications">
               Justificatifs :
-              <span class="justificatifs" ng-repeat="justif in candidature.cursus_justifications.media track by $index">
+              <ul>
+              <li class="justificatifs" ng-repeat="justif in candidature.cursus_justifications.media track by $index">
                 <a ng-click='singleLightbox(justif.file || justif.picture, justif.label)'>{{justif.label}} </a> /
-              </span>
+              </li>
+            </ul>
             </div>
             Résumé du parcours artistique :
             <p ng-bind-html="artist.user.profile.cursus | nl2br" />
