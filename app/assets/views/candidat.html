@@ -234,7 +234,7 @@
         <div role="tabpanel" class="tab-pane admin" id="observations">
             <h3>Notes du jury</h3>
 
-              <p>Ces notes sont partagés avec le jury</p>
+              <p>Ces notes sont partagées avec le jury</p>
                <textarea
                   ng-model="jury_observation"
                   ng-model-options='{ debounce: 1000 }'
@@ -244,7 +244,8 @@
                   />
 
               <h3>Mes notes</h3>
-              <p>Ces notes sont personnelles (accessibles qu'avec mon compte)</p>
+              <p>Ces notes sont personnelles <br/>
+                <small>Utilisateur: <strong>{{user.username}}</strong></small></p>
                   <textarea
                      ng-model="personal_observation"
                      ng-model-options='{ debounce: 1000 }'
