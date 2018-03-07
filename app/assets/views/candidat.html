@@ -192,6 +192,12 @@
             </div>
             Résumé du parcours artistique :
             <p ng-bind-html="artist.user.profile.cursus | nl2br" />
+            <div ng-if="candidature.free_document">
+              <p>Document libre / Profolio : 
+                <a ng-click='singleLightbox(candidature.free_document, "Document libre")'>Consulter le document</a>
+              </p>
+            </div>
+
           </div>
 
 
