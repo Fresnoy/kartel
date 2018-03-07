@@ -17,6 +17,9 @@
   </h1>
 
   <form name="form" ng-submit="form.$valid && submit()" class="css-form" novalidate enctype="multipart/form-data">
+
+
+
     <p class="fr">Résumé du parcours artistique : </p>
     <p class="en">Summary of your artistic career: </p>
 
@@ -44,6 +47,12 @@
                         <span class="en">Cursus</span>
                       </label>
               </div>
+
+
+
+
+
+
 
 
       <p class="fr">Site(s) web : </p>
@@ -89,11 +98,65 @@
               <span class="fr">Site Web <br/>(http://www.monsite.com)</span>
               <span class="en">Website <br/>(http://www.mywebsite.com)</span>
           </label>
-
-
-
-
       </div>
+
+      <hr />
+      <h2></h2>
+
+      <div class="Portfolio">
+         <p  class="fr">Document libre / Portfolio – facultatif<br/>
+           <em class="additionnalInfo">Format pdf</em></p>
+         </p>
+         <p  class="en">Free document / Portfolio – optional<br/>
+           <em class="additionnalInfo">Pdf format</em></p>
+         </p>
+         <div class="field">
+            <input name="cPortfolio" ng-model="candidature.free_document" hidden />
+            <div id="portfolio"
+               class="media-upload"
+               ng-show="!candidature.free_document"
+               ng-model="candidature.free_document"
+               name="cPortfolio"
+               ngf-select="upload(candidature.free_document, candidature, 'free_document') " ngf-capture="'camera'"
+               accept="application/pdf"
+               ngf-accept="'application/pdf'"
+               ngf-pattern="'application/pdf'"
+               ngf-model-invalid="invalidFORTFOLIO"
+               required
+               >
+               <span class="upload-file" />
+            </div>
+            <div class="item" ng-if="candidature.free_document" ng-init='RC_PORTFOLIO=false'>
+               <a class="link" target='_blank' href="{{candidature.free_document}}"><img  /></a>
+               <span class="name">{{candidature.free_document.split('.').pop()}}</span>
+               <span class="trash" ng-click="RC_PORTFOLIO=true" />
+               <div class="delete-pane" ng-show="RC_PORTFOLIO">
+                  <span class="trash" ng-click="candidature.free_document=''; RC_PORTFOLIO=false; candidature.patch({'free_document': null});" />
+                  <span class="name"><span class="fr">Supprimer</span><span class="en">Delete</span></span>
+                  <span class="cancel" ng-click="RC_PORTFOLIO=false"></span>
+               </div>
+            </div>
+            <div ng-show="invalidFORTFOLIO.$errorMessages" ng-messages="invalidFORTFOLIO.$errorMessages" class="help-block error">
+               <div ng-message="pattern">
+                  <span class="fr">Ce n'est pas un fichier pdf</span>
+                  <span class="en">Only Pdf accepted</span>
+               </div>
+            </div>
+            <div ng-show="form.cPortfolio.$touched && form.cPortfolio.$invalid" ng-messages="form.cPortfolio.$error" class="help-block error">
+
+               <div ng-message="justification_letter">
+                  <span class="fr">Valeur éronnée</span>
+                  <span class="en">Value Error</span>
+               </div>
+            </div>
+            <label class="topborder" for="portfolio">
+            <span class="fr">Document libre</span>
+            <span class="en">Free document</span>
+            </label>
+         </div>
+
+
+
     </form>
 
 

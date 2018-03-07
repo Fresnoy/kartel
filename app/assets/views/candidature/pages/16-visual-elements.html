@@ -128,8 +128,6 @@
            </a>
          </div>
       </div>
-      <br>
-      <br>
       <hr/>
       <div class='bg-grey'>
         <div ng-show="!candidature.physical_content">
@@ -139,9 +137,13 @@
               <span class="en">If you cannot provide a link towards a video, <br/>YOU MAY</span>
 
             </h4>
+            <br/>
             <div ng-if='!candidature.presentation_video'>
-                <p class="fr"> - nous envoyer la vidéo (téléchargement), en cliquant ci-dessous : </p>
-                <p class="en"> - send us the video (upload), by clicking below: </p>
+                <p class="fr"> - nous envoyer la vidéo par téléchargement
+                  (<a href='https://vimeo.com/help/compression' style="color:grey" target='_blank'>voir les spécifications pour un rendu optimal</a>), en cliquant ci-dessous : </p>
+                <p class="en"> - send us the video by upload
+                  (<a href='https://vimeo.com/help/compression' style="color:grey" target='_blank'>See specifications for optimal rendering</a>), by clicking below: </p>
+
                 <div ng-model="video" name="uVideo"
                    ngf-select="uploadVimeo(video, candidature, 'presentation_video')"
                    ngf-capture="'camera'"
@@ -162,13 +164,10 @@
                   <span class="en">this is not a vidéo file</span>
                </div>
             </div>
-            <p>
-               <a href='https://vimeo.com/help/compression' target='_blank'>
-                 <span class="fr">voir les spécifications pour un rendu optimal</span>
-                 <span class="en">See specifications for optimal rendering</span>
-             </a>
-            </p>
+            <br/>
+
       </div>
+      <br/>
       <p class="fr">- nous envoyer la vidéo par courrier (cocher la case ci-dessous)</p>
       <p class="en">- send us the video by post (tick the box below)</p>
       <div class="field">
@@ -223,7 +222,9 @@
 
            </div>
       </div>
+
     </div>
+
     <hr/>
     <div class="field">
          <input
