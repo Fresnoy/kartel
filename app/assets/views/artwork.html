@@ -6,12 +6,11 @@
 </div>
 
 <div class="nature">
-  <span>{{ artwork.type }}</span>
   <ul class="genres list list-inline" ng-show="artworks.genre">
     <li ng-repeat="genre in artwork.genres">
       <a ui-sref="genre({genre: genre.label})">{{ genre.label }}</a></li>
   </ul>
-  <span>de</span>
+  <span>De</span>
   <ul class="authors list list-inline">
     <li ng-repeat="author in artwork.authors">
       <a ui-sref="artist.detail({id: author.id})">
@@ -23,6 +22,8 @@
       </a>
     </li>
   </ul>
+  <span class="type">{{ artwork.type }}</span>
+  <span>{{ artwork.production_date.split('-')[0] }}</span>
 </div>
 
 <div class="technic">

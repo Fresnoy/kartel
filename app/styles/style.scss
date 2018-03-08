@@ -239,12 +239,18 @@ div.api-field {
         }
 
         li:last-child:after{
-            content: '.';
+            content: '';
         }
 
         .lastname {
             text-transform: uppercase;
         }
+    }
+    .type{
+      &:before{
+          content: " - "
+      }
+      text-transform: capitalize;
     }
 
 
