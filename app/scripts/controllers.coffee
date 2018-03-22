@@ -427,7 +427,7 @@ angular.module('memoire.controllers', ['memoire.services'])
   $scope.singleLightbox = (url, description) ->
     # config image gallery
     image =
-      isvideo: new RegExp("aml|player.vimeo|mp4","gi").test(url);
+      isvideo: new RegExp("aml|ame|player.vimeo|mp4","gi").test(url);
       iframe: /(\.pdf|vimeo\.com|youtube\.com|youtu\.be)/i.test(url)
       original: url
       description: description
