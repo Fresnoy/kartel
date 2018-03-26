@@ -20,9 +20,9 @@ angular.module('memoire.directives', ['memoire.services', 'bootstrapLightbox'])
       $scope.$watch("url", (value) ->
           if(value)
             if(value.indexOf('http') == -1)
-              $scope.url_image = "http://media.lefresnoy.net/?url=http://api.lefresnoy.net/"+value+"&w="+$scope.width+"h="+$scope.height+"&fmt=jpg"
+              $scope.url_image = "https://media.lefresnoy.net/?url=https://api.lefresnoy.net/"+value+"&w="+$scope.width+"h="+$scope.height+"&fmt=jpg"
             else
-              $scope.url_image = "http://media.lefresnoy.net/?url="+value+"&w="+$scope.width+"h="+$scope.height+"&fmt=jpg"
+              $scope.url_image = "https://media.lefresnoy.net/?url="+value+"&w="+$scope.width+"h="+$scope.height+"&fmt=jpg"
 
             if $scope.op
               $scope.url_image += "&op=#{ scope.op }"
