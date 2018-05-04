@@ -151,6 +151,10 @@ div.api-field {
     min-width:300px;
   }
 
+  .firstname{
+    text-transform: capitalize;
+  }
+
 }
 
 .pointer, a[ng-click], a[ui-sref] {
