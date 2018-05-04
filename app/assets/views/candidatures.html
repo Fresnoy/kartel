@@ -106,7 +106,7 @@
         <tr><th></th></tr>
         <tr>
           <th>Index</th>
-          <th>Date</th>
+          <th>Date de création</th>
           <th>Dernière Modification</th>
           <th>N° dossier</th>
           <th>Nom</th>
@@ -131,16 +131,16 @@
         <tr ng-repeat="candidature in candidatures track by $index">
             <th>{{$index+1}}</th>
             <th>{{candidature.created_on.split("T")[0] | date:'dd/MM'}}</th>
-            <th>{{candidature.updated_on.split(".")[0] | date:'dd/MM hh:mm'}}</th>
+            <th>{{candidature.updated_on.split(".")[0] | date:'dd/MM'}}</th>
             <th>{{candidature.current_year_application_count}}</th>
             <th>{{candidature.artist.user.last_name}}</th>
             <th>{{candidature.artist.user.first_name}}</th>
             <th>{{candidature.artist.user.profile.gender}}</th>
             <th>{{candidature.artist.user.profile.birthdate | date:'dd/MM/yyyy' }}</th>
             <th>
-              <span ng-repeat="nationality in candidature.artist.user.profile.nationality.split(', ') track by $index">
-                {{country.codeToCountry[nationality]}}
-              </span>
+              <span
+                ng-repeat="nationality in candidature.artist.user.profile.nationality.split(', ') track by $index"
+                >{{country.codeToCountry[nationality]}}</span>
             </th>
             <th>{{candidature.artist.user.email}}</th>
             <th>{{candidature.artist.user.profile.homeland_address}}</th>
@@ -155,9 +155,8 @@
             <th></th>
             <th>
               <span ng-if='candidature.master_degree'>Bac +5</span>
-              <span class="justificatifs" ng-repeat="justif in candidature.cursus_justifications.media track by $index">
-                {{justif.label}}
-              </span>
+              <span class="justificatifs" ng-repeat="justif in candidature.cursus_justifications.media track by $index"
+                >{{justif.label}}</span>
             </th>
             <th></th>
         </tr>

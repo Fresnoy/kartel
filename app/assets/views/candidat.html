@@ -15,7 +15,7 @@
     <div ng-if='artist.websites.length' >
       <i class="glyphicon glyphicon-link"></i>&nbsp;Web :
         <span class="website" ng-repeat="website in artist.websites track by $index">
-          <a href="{{ website.link }}" target="_blank">{{ website.link }}</a>
+          <a href="{{ website.link }}" target="_blank">{{ $(website.link).attr('hostname'); }}</a>
         </span>
     </div>
     <!-- LAST APPLICATIONS -->
@@ -83,7 +83,7 @@
     <p ng-if="!candidature.last_applications_years">Première candidature</p>
 
     <!-- ITW -->
-    <p ng-if="candidature.remote_interview">Désire passer l'entretiens par Skype</p>
+    <p ng-if="candidature.remote_interview">Désire passer l'entretien par Skype</p>
   </div>
 
   <div class="info col-xs-12 col-md-12 col-lg-12">
@@ -182,21 +182,26 @@
                 Consulter le justificatif d'expérience artistique</a>
                 <span ng-if='!candidature.experience_justification' class="text-danger warning">Justificatif d'expérience artistique absent</span>
             </p>
-            <div ng-if="candidature.cursus_justifications">
-              Justificatifs :
+            <div ng-if="candidature.cursus_justifications.media.length">
+              <h4>Justificatifs de diplômes</h4>
               <ul>
               <li class="justificatifs" ng-repeat="justif in candidature.cursus_justifications.media track by $index">
                 <a ng-click='singleLightbox(justif.file || justif.picture, justif.label)'>{{justif.label}} </a> /
               </li>
-            </ul>
+              </ul>
             </div>
-            Résumé du parcours artistique :
-            <p ng-bind-html="artist.user.profile.cursus | nl2br" />
+            <span ng-if='!candidature.cursus_justifications.media.length && !candidature.experience_justification'
+              class="text-danger warning">Pas de justificatifs de diplômes</span>
+
             <div ng-if="candidature.free_document">
-              <p>Document libre / Portfolio : 
+              <h4>Document libre / Portfolio</h4>
+              <p>
                 <a ng-click='singleLightbox(candidature.free_document, "Document libre")'>Consulter le document</a>
               </p>
             </div>
+
+            <h4>Résumé du parcours artistique</h4>
+            <p ng-bind-html="artist.user.profile.cursus | nl2br" />
 
           </div>
 
