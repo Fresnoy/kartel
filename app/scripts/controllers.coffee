@@ -144,7 +144,7 @@ angular.module('memoire.controllers', ['memoire.services'])
   )
 )
 
-.controller('ArtworkController', ($scope, $stateParams, $sce, $http, Lightbox, Artworks, AmeRestangular,  Events, Collaborators, Partners) ->
+.controller('ArtworkController', ($scope, $stateParams, $sce, $http, Lightbox, Artworks, AmeRestangular, Events, Collaborators, Partners, Candidatures) ->
   $scope.artwork = null
   $scope.events = []
 
@@ -171,8 +171,6 @@ angular.module('memoire.controllers', ['memoire.services'])
         if matches
           collaborator_id = matches[0]
           $scope.artwork.collaborators[key] = Collaborators.one(collaborator_id).get().$object
-
-
 
     for partner_uri,key in $scope.artwork.partners
       if typeof partner_uri.match == Function
@@ -214,11 +212,34 @@ angular.module('memoire.controllers', ['memoire.services'])
       picture: artwork.picture
       description: 'Visuel principal'
     })
-
-
-
+    #
+    $scope.history = null
+    for authors in artwork.authors
+        critere = {search: authors.user.username}
+        Candidatures.getList(critere).then((candidatures) ->
+            if(candidatures.length)
+                production_year = artwork.production_date.split("-")[0]
+                candidature = candidatures[0]
+                $scope.history = {candidature: candidature}
+                console.log(candidature)
+                # candidature + 1 an = premiere oeuvre
+                if(candidature.created_on.indexOf((production_year-1))>=0 )
+                   $scope.history.candidature.projet_1 = candidature.considered_project_1
+                # candidature + 1 an = deuxieme oeuvre
+                if(candidature.created_on.indexOf((production_year-2))>=0 )
+                  $scope.history.candidature.projet_2 = candidature.considered_project_2
+        )
   )
-
+  $scope.singleLightboxIframe = (url) ->
+    # config image gallery
+    image =
+      isvideo: false
+      iframe: true
+      original: url
+    # embed video youtube
+    image.medium_url= $sce.trustAsResourceUrl(url)
+    Lightbox.one_media = true
+    Lightbox.openModal([image], 0)
 )
 
 .controller('StudentController', ($scope, $stateParams, Students, Artworks, Promotions) ->

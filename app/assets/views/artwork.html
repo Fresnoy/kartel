@@ -50,16 +50,22 @@
           <i class="glyphicon glyphicon-picture"></i>&nbsp;Media
         </a>
       </li>
+      <li role="presentation">
+        <a data-target ="#history" ng:class="history==null ? 'disabled' : ''" aria-controls="history" role="tab" data-toggle="tab">
+          <i class="glyphicon glyphicon-transfer"></i>&nbsp;Processus
+        </a>
+      </li>
       <li role="presentation" ng:class="ame_access==0||ame_artwork_gallery.media.length==0 ? 'disabled' : ''">
         <a data-target ="#archive" aria-controls="archive" role="tab" data-toggle="tab">
           <i class="glyphicon disabled glyphicon-film"></i>&nbsp;Archive
         </a>
       </li>
+
     </ul>
     <!-- Nav tabs content -->
     <tabset class="tab-content artwork-about">
       <div role="tabpanel" class="tab-pane active" id="infos">
-        <tabset class="api-field">
+        <tabset class="api-field">1
           <!-- Desciption  tabs -->
           <ul class="nav nav-tabs" role="tablist">
             <li role="presentation" class="text">
@@ -215,6 +221,19 @@
           </div>
         </div>
       </div>
+
+      <div role="tabpanel" class="tab-pane" id="history" ng-if="isAuthenticated">
+        <h4><i class="glyphicon glyphicon-picture"></i>&nbsp;Processus</h4>
+        <a class="pointer" ng-if="history.candidature.projet_1"
+          ng-click='singleLightboxIframe(history.candidature.projet_1)'>
+          Voir la proposition initiale (1ere année)</a>
+          <a class="pointer" ng-if="history.candidature.projet_2"
+            ng-click='singleLightbox(history.candidature.projet_2, history.candidature.projet_2)'>
+            Voir la proposition initiale (2eme année)</a>
+        <div class="clearfix"></div>
+      </div>
+
+
 
       <div role="tabpanel" class="tab-pane" id="archive">
         <h4><i class="glyphicon glyphicon-video"></i>&nbsp;Archive</h4>
