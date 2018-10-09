@@ -312,18 +312,19 @@ angular.module('memoire.controllers', ['memoire.services'])
                     current_cantidature[0].artist.user = user_infos
                   )
               )
-              gallery_id = candidature.cursus_justifications.match(/\d+$/)[0]
-              Galleries.one(gallery_id).get().then((gallery_infos) ->
-                current_cantidature = _.filter(candidatures, (c) -> return c.cursus_justifications == gallery_infos.url)
-                current_cantidature[0].cursus_justifications = gallery_infos
+              if(candidature.cursus_justifications != null)
+                  gallery_id = candidature.cursus_justifications.match(/\d+$/)[0]
+                  Galleries.one(gallery_id).get().then((gallery_infos) ->
+                    current_cantidature = _.filter(candidatures, (c) -> return c.cursus_justifications == gallery_infos.url)
+                    current_cantidature[0].cursus_justifications = gallery_infos
 
-                for medium in gallery_infos.media
-                  medium_id = medium.match(/\d+$/)[0]
-                  Media.one(medium_id).get().then((media) ->
-                    media_index = gallery_infos.media.indexOf(media.url)
-                    gallery_infos.media[media_index] = media
+                    for medium in gallery_infos.media
+                      medium_id = medium.match(/\d+$/)[0]
+                      Media.one(medium_id).get().then((media) ->
+                        media_index = gallery_infos.media.indexOf(media.url)
+                        gallery_infos.media[media_index] = media
+                      )
                   )
-              )
     )
     return arr
 
@@ -457,17 +458,18 @@ angular.module('memoire.controllers', ['memoire.services'])
               $scope.artist.user = user_infos
             )
         )
-        gallery_id = candidature.cursus_justifications.match(/\d+$/)[0]
-        Galleries.one(gallery_id).get().then((gallery_infos) ->
-          candidature.cursus_justifications = gallery_infos
+        if(candidature.cursus_justifications != null)
+            gallery_id = candidature.cursus_justifications.match(/\d+$/)[0]
+            Galleries.one(gallery_id).get().then((gallery_infos) ->
+              candidature.cursus_justifications = gallery_infos
 
-          for medium in gallery_infos.media
-            medium_id = medium.match(/\d+$/)[0]
-            Media.one(medium_id).get().then((media) ->
-              media_index = gallery_infos.media.indexOf(media.url)
-              gallery_infos.media[media_index] = media
+              for medium in gallery_infos.media
+                medium_id = medium.match(/\d+$/)[0]
+                Media.one(medium_id).get().then((media) ->
+                  media_index = gallery_infos.media.indexOf(media.url)
+                  gallery_infos.media[media_index] = media
+                )
             )
-        )
       )
 
   loadCandidat($stateParams.id)
