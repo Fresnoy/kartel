@@ -146,7 +146,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 .controller('CandidatureBreadcrumbController', ($rootScope, $scope, $state) ->
 
     $scope.getProgression = (type) ->
-      if(!$scope.isAuthenticated || !$rootScope.candidature || $rootScope.user.is_superuser)
+      if(!$scope.isAuthenticated || !$rootScope.candidature)
         return false
 
       if(type == "administrative-informations")
@@ -420,45 +420,54 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
     user_id = jwtHelper.decodeToken(localStorage.getItem('token')).user_id
     Users.one(user_id).get().then((user) ->
       scope.user = user
-      if (user.is_superuser)
-        $state.go("candidature.error_admin_user")
-        return
-
-      Candidatures.getList({'ordering':'-id'}).then((candidatures) ->
-
-        # candidature = candidatures[candidatures.length-1]
-        candidature = candidatures[0]
-        scope.candidature = candidature
-        if(candidature.application_completed)
-          $state.go("candidature.confirmation")
+      current_year = new Date().getFullYear()
+      # search for current year candidature for this user
+      search_current_application = {'search':user.username+","+current_year}
+      Candidatures.getList(search_current_application).then((candidatures) ->
+        if(!candidatures.length)
+          # no candidatures, we create it
+          Candidatures.post().then((candidature) ->
+            # reload infos
+            loadInfos()
+          ,(userInfos_error) ->
+            console.log("creation de candidature echouée")
+            $state.go("candidature.error")
+          )
           return
-
-        if(scope.candidature.cursus_justifications)
-          getGalleryWithMedia(scope.candidature.cursus_justifications, scope.cursus_justifications)
         else
-          #
-          createNewGallery(
-            scope,
-            scope.candidature,
-            "cursus_justifications",
-            "Cursus",
-            "Candidatures de "+ user.last_name + " " + user.first_name + " | " + candidature.current_year_application_count,
-            scope.cursus_justifications
-          )
-        # get Artist
-        matches = candidature.artist.match(/\d+$/)
-        if matches
-          artist_id = matches[0]
-          # console.log(scope.candidature.plain())
-          ArtistsV2.one(artist_id).get().then((artist) ->
-              scope.artist = artist
-              for website in artist.websites
-                  website_id = website.match(/\d+$/)[0]
-                  RestangularV2.one('common/website', website_id).get().then((response_website) ->
-                      find_website = artist.websites.indexOf(response_website.url)
-                      artist.websites[find_website] = response_website
-                  )
-          )
+          # candidature = candidatures[candidatures.length-1]
+          candidature = candidatures[0]
+          scope.candidature = candidature
+          if(candidature.application_completed)
+            $state.go("candidature.confirmation")
+            return
+
+          if(scope.candidature.cursus_justifications)
+            getGalleryWithMedia(scope.candidature.cursus_justifications, scope.cursus_justifications)
+          else
+            #
+            createNewGallery(
+              scope,
+              scope.candidature,
+              "cursus_justifications",
+              "Cursus",
+              "Candidatures de "+ user.last_name + " " + user.first_name + " | " + candidature.current_year_application_count,
+              scope.cursus_justifications
+            )
+          # get Artist
+          matches = candidature.artist.match(/\d+$/)
+          if matches
+            artist_id = matches[0]
+            # console.log(scope.candidature.plain())
+            ArtistsV2.one(artist_id).get().then((artist) ->
+                scope.artist = artist
+                for website in artist.websites
+                    website_id = website.match(/\d+$/)[0]
+                    RestangularV2.one('common/website', website_id).get().then((response_website) ->
+                        find_website = artist.websites.indexOf(response_website.url)
+                        artist.websites[find_website] = response_website
+                    )
+            )
       )
     , (userInfos_error) ->
       console.log("error user infos")
