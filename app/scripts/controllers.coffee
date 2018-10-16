@@ -236,7 +236,6 @@ angular.module('memoire.controllers', ['memoire.services'])
       isvideo: false
       iframe: true
       original: url
-    # embed video youtube
     image.medium_url= $sce.trustAsResourceUrl(url)
     Lightbox.one_media = true
     Lightbox.openModal([image], 0)
