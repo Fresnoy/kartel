@@ -66,8 +66,10 @@
    </div>
    <hr/>
    <p class="fr">Justificatifs de diplômes, certifications, ... <br/>
-     <em class="additionnalInfo">(formats images ou pdfs)</em></p>
-   <p class="en">Copies of your diplomas, certificates, qualifications</p>
+     <em class="additionnalInfo">(formats images ou pdf)</em></p>
+   <p class="en">Copies of your diplomas, certificates, qualifications<br/>
+     <em class="additionnalInfo">(images formats or pdf)</em></p>
+   </p>
    <div class="field">
 
          <div ng-repeat="item in cursus_justifications.media | orderBy:'1*position' track by $index"
@@ -77,7 +79,7 @@
 
              <div class="item" ng-if="item.file || item.picture" ng-init='RC_CursusJustif[$index]=false'>
                <a class="link" target='_blank' href="{{item.file || item.picture}}"><img  /></a>
-               <input class="name no-border" type="text" placeholder="" ng-model="item.label" ng-change="item.patch({label: item.label})" class="no-border" required />
+               <input class="name small-font no-border" type="text" placeholder="" ng-model="item.label" ng-change="item.patch({label: item.label})" class="no-border" required />
                <span class="trash" ng-click="RC_CursusJustif[$index]=true" />
                <div class="delete-pane" ng-show="RC_CursusJustif[$index]">
                    <span class="trash" ng-click="removeItem(cursus_justifications.media, $index); RC_CursusJustif[$index]=false" />
@@ -87,8 +89,13 @@
              </div>
              <div class="modal show" ng-if="!item.label">
                 <div class="modal-content">
-                  <p class="fr">Veuillez entrer le titre du justificatif : </p>
-                  <p class="en">Please enter the document title: </p>
+                  <p class="fr">Veuillez entrer le titre du justificatif
+                    <br/><small> Format Pays/ville + Type (école/Universite) + Titre du diplome
+                    <br/><small>Exemple : France Lyon - University - DNSEP Design d'espace</small></small> </p>
+                  <p class="en">Please enter the document title  <br/>
+                  <small>Format : Country/town + Type (school/University) + degree title <br>
+                  <small>Example : US Chicago - University - Bachelor of Fine Arts</small></small>
+                </p>
                   <input class="name no-border inline" type="text" placeholder="" ng-model="label[$index]" ng-change="" class="no-border" required />
 
                   <label class="topborder" for="cursus">

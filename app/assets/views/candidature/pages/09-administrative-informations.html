@@ -2,7 +2,7 @@
    <span class="close" ng-click="show_help(false)">x</span>
    <h1><class class="fr">Aide</class><class class="en">Help</class></h1>
    <div class="fr">
-      <p>La procédure de sélection est ouverte à tous les candidats, sans distinction de sexe ou de nationalité, âgés de 35 ans au plus au 1er janvier de l’année du concours (nés après le 31 décembre 1981)</p>
+      <p>La procédure de sélection est ouverte à tous les candidats, sans distinction de sexe ou de nationalité, âgés de 35 ans au plus au 1er janvier de l’année du concours (nés après le 31 décembre <span ng-bind="(current_year-age_max)" />).</p>
    </div>
    <div class="en">
       <p>The selection procedure is open to all candidates, of any sex or nationality, aged 35 years maximum on 1st January of the current year (i.e. born after 31st December <span ng-bind="(current_year-age_max)" />)).</p>
@@ -127,7 +127,7 @@
             <label for="birth-country">
             <span class="field-state required" ng-class="{ 'error': form1.uGender.$error, 'valid':form1.uGender.$valid, 'touched': form1.uGender.$touched }"></span>
             <span class="fr">Pays de naissance</span>
-            <span class="en">Gender</span>
+            <span class="en">Birth Country</span>
             </label>
          </div>
          <div class="field">
