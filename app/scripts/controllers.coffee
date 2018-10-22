@@ -144,7 +144,7 @@ angular.module('memoire.controllers', ['memoire.services'])
   )
 )
 
-.controller('ArtworkController', ($scope, $stateParams, $sce, $http, Lightbox, Artworks, AmeRestangular,  Events, Collaborators, Partners) ->
+.controller('ArtworkController', ($scope, $stateParams, $sce, $http, Lightbox, Artworks, AmeRestangular, Events, Collaborators, Partners, Candidatures) ->
   $scope.artwork = null
   $scope.events = []
 
@@ -171,8 +171,6 @@ angular.module('memoire.controllers', ['memoire.services'])
         if matches
           collaborator_id = matches[0]
           $scope.artwork.collaborators[key] = Collaborators.one(collaborator_id).get().$object
-
-
 
     for partner_uri,key in $scope.artwork.partners
       if typeof partner_uri.match == Function
@@ -214,11 +212,33 @@ angular.module('memoire.controllers', ['memoire.services'])
       picture: artwork.picture
       description: 'Visuel principal'
     })
-
-
-
+    #
+    $scope.history = null
+    for authors in artwork.authors
+        critere = {search: authors.user.username}
+        Candidatures.getList(critere).then((candidatures) ->
+            if(candidatures.length)
+                production_year = artwork.production_date.split("-")[0]
+                candidature = candidatures[0]
+                $scope.history = {candidature: candidature}
+                console.log(candidature)
+                # candidature + 1 an = premiere oeuvre
+                if(candidature.created_on.indexOf((production_year-1))>=0 )
+                   $scope.history.candidature.projet_1 = candidature.considered_project_1
+                # candidature + 1 an = deuxieme oeuvre
+                if(candidature.created_on.indexOf((production_year-2))>=0 )
+                  $scope.history.candidature.projet_2 = candidature.considered_project_2
+        )
   )
-
+  $scope.singleLightboxIframe = (url) ->
+    # config image gallery
+    image =
+      isvideo: false
+      iframe: true
+      original: url
+    image.medium_url= $sce.trustAsResourceUrl(url)
+    Lightbox.one_media = true
+    Lightbox.openModal([image], 0)
 )
 
 .controller('StudentController', ($scope, $stateParams, Students, Artworks, Promotions) ->
@@ -254,18 +274,22 @@ angular.module('memoire.controllers', ['memoire.services'])
   $scope.candidatures = []
   $scope.candidat_id = $stateParams.id
 
+  current_year = new Date().getFullYear()
   # order
   # none = 1 | true = 2 | false = 3
   $scope.select_criteres = [
-    {title: 'Toutes', sortby: {"search": ""}, count:0 },
-    {title: 'Courrier', sortby: {"physical_content": 2, "physical_content_received": 3}, count:0},
-    {title: 'Non finalisées', sortby: {"application_completed": 3}, count:0},
-    {title: 'En attente de validation', sortby: {"application_completed": 2, "application_complete": 3}, count:0},
-    {title: 'Visées', sortby: {"application_complete": 2}, count:0},
-    {title: 'Selectionnés pour l\'entretien', sortby: {"selected_for_interview": 2}, count:0},
-    {title: 'Entretien Skype', sortby: {"selected_for_interview": 2, "remote_interview": 2}, count:0},
-    {title: 'Admis', sortby: {"selected": 2}, count:0},
-    {title: 'Admis sur liste d\'attente', sortby: {"wait_listed": 2}, count:0},
+    {title: 'Toutes', sortby: {"search": current_year, "unselected": 3}, count:0 },
+    {title: 'Refusées', sortby: {"search": current_year, "unselected": 2}, count:0 },
+    {title: 'Courrier', sortby: {"search": current_year, "unselected": 3, "physical_content": 2, "physical_content_received": 3}, count:0},
+    {title: 'Non finalisées', sortby: {"search": current_year, "unselected": 3, "application_completed": 3}, count:0},
+    {title: 'En attente de validation', sortby: {"search": current_year, "unselected": 3, "application_completed": 2, "application_complete": 3}, count:0},
+    {title: 'Visées', sortby: {"search": current_year, "unselected": 3, "application_complete": 2}, count:0},
+    {title: 'Selectionnés en d\'attente pour l\'entretien', sortby: {"search": current_year, "unselected": 3, "wait_listed_for_interview": 2}, count:0},
+    {title: 'Selectionnés pour l\'entretien', sortby: {"search": current_year, "unselected": 3, "selected_for_interview": 2}, count:0},
+    {title: 'Entretien Skype', sortby: {"search": current_year, "unselected": 3, "selected_for_interview": 2, "remote_interview": 2}, count:0},
+    {title: 'Admis sur liste d\'attente', sortby: {"search": current_year, "unselected": 3, "wait_listed": 2}, count:0},
+    {title: 'Admis', sortby: {"search": current_year,  "unselected": 3, "selected": 2}, count:0},
+
   ]
   $scope.select_orders = [
       {title: "Numéro d'inscription", value: {ordering: "id"}}
@@ -308,18 +332,19 @@ angular.module('memoire.controllers', ['memoire.services'])
                     current_cantidature[0].artist.user = user_infos
                   )
               )
-              gallery_id = candidature.cursus_justifications.match(/\d+$/)[0]
-              Galleries.one(gallery_id).get().then((gallery_infos) ->
-                current_cantidature = _.filter(candidatures, (c) -> return c.cursus_justifications == gallery_infos.url)
-                current_cantidature[0].cursus_justifications = gallery_infos
+              if(candidature.cursus_justifications != null)
+                  gallery_id = candidature.cursus_justifications.match(/\d+$/)[0]
+                  Galleries.one(gallery_id).get().then((gallery_infos) ->
+                    current_cantidature = _.filter(candidatures, (c) -> return c.cursus_justifications == gallery_infos.url)
+                    current_cantidature[0].cursus_justifications = gallery_infos
 
-                for medium in gallery_infos.media
-                  medium_id = medium.match(/\d+$/)[0]
-                  Media.one(medium_id).get().then((media) ->
-                    media_index = gallery_infos.media.indexOf(media.url)
-                    gallery_infos.media[media_index] = media
+                    for medium in gallery_infos.media
+                      medium_id = medium.match(/\d+$/)[0]
+                      Media.one(medium_id).get().then((media) ->
+                        media_index = gallery_infos.media.indexOf(media.url)
+                        gallery_infos.media[media_index] = media
+                      )
                   )
-              )
     )
     return arr
 
@@ -376,6 +401,36 @@ angular.module('memoire.controllers', ['memoire.services'])
   $scope.administrative_galleries = []
   $scope.artwork_galleries = []
 
+  # observation
+  obj_observation = {}
+
+  add_observation = () ->
+    # set default values
+    if(!obj_observation[$rootScope.user.username])
+      obj_observation[$rootScope.user.username] = ""
+    if(!obj_observation['jury'])
+      obj_observation.jury = ''
+    # encode values
+    str_observation = JSON.stringify(obj_observation)
+    # save values
+    $scope.candidature.patch({observation: str_observation})
+
+  $scope.$watch("candidature.observation", (newValue, oldValue) ->
+    # set default values
+    if(newValue == "")
+      add_observation()
+    # displays values
+    if(newValue)
+      # decode text
+      obj_observation = JSON.parse(newValue)
+      # assign text to user / jury
+      $scope.jury_observation = obj_observation.jury
+      $scope.personal_observation = obj_observation[$rootScope.user.username]
+  )
+  $scope.add_observation =  (field, value) ->
+      obj_observation[field] = value
+      add_observation()
+
   $scope.gender =
     M: fr: "Homme", en: "Male"
     F: fr: "Femme", en: "Female"
@@ -393,7 +448,7 @@ angular.module('memoire.controllers', ['memoire.services'])
   $scope.singleLightbox = (url, description) ->
     # config image gallery
     image =
-      isvideo: new RegExp("aml|player.vimeo|mp4","gi").test(url);
+      isvideo: new RegExp("aml|ame|player.vimeo|mp4","gi").test(url);
       iframe: /(\.pdf|vimeo\.com|youtube\.com|youtu\.be)/i.test(url)
       original: url
       description: description
@@ -423,17 +478,18 @@ angular.module('memoire.controllers', ['memoire.services'])
               $scope.artist.user = user_infos
             )
         )
-        gallery_id = candidature.cursus_justifications.match(/\d+$/)[0]
-        Galleries.one(gallery_id).get().then((gallery_infos) ->
-          candidature.cursus_justifications = gallery_infos
+        if(candidature.cursus_justifications != null)
+            gallery_id = candidature.cursus_justifications.match(/\d+$/)[0]
+            Galleries.one(gallery_id).get().then((gallery_infos) ->
+              candidature.cursus_justifications = gallery_infos
 
-          for medium in gallery_infos.media
-            medium_id = medium.match(/\d+$/)[0]
-            Media.one(medium_id).get().then((media) ->
-              media_index = gallery_infos.media.indexOf(media.url)
-              gallery_infos.media[media_index] = media
+              for medium in gallery_infos.media
+                medium_id = medium.match(/\d+$/)[0]
+                Media.one(medium_id).get().then((media) ->
+                  media_index = gallery_infos.media.indexOf(media.url)
+                  gallery_infos.media[media_index] = media
+                )
             )
-        )
       )
 
   loadCandidat($stateParams.id)

@@ -1,14 +1,69 @@
 <div class="landing-page">
+
+
     <h1>
-      <span class="fr">Concours 2017</span>
-      <span class="en">2017 Entrance exam</span>
+      <span class="fr">Concours 2018</span>
+      <span class="en">2018 Entrance exam</span>
     </h1>
-    <h2>
-      <span class="fr">Procédure de sélection <br/>Inscription</span>
-      <span class="en">Selection procedure <br/>Enrolment</span>
-    </h2>
-    <div class="navigation">
-      <a class="btn lang" ui-sref="candidature.terms-of-access" ng-click="setLang('fr');">Français</a>
-      <a class="btn lang" ui-sref="candidature.terms-of-access" ng-click="setLang('en');" >English</a>
+
+
+    <div ng-show="candidatures_open && !candidatures_close" >
+
+        <h2>
+          <span class="fr">Procédure de sélection <br/>Inscription</span>
+          <span class="en">Selection procedure <br/>Enrolment</span>
+        </h2>
+
+        <div class="navigation">
+          <a class="btn lang" ui-sref="candidature.terms-of-access" ng-click="setLang('fr');">Français</a>
+          <a class="btn lang" ui-sref="candidature.terms-of-access" ng-click="setLang('en');" >English</a>
+        </div>
+
     </div>
+
+    <div ng-show="!candidatures_open && !candidatures_close" >
+      <div class="fr">
+        <p>Les inscriptions au concours 2018 seront possibles à partir du jeudi 1er février.<br/>
+          Dans cette attente nous vous proposons de <a href="http://www.lefresnoy.net/sites/prod/files/2018/downloads/basic-page/inscription//procedure-selection-2018.pdf"
+            target="_blank">télécharger la procédure</a> qui vous donnera toutes les informations
+          afin de préparer votre inscription.
+        </p>
+
+
+      </div>
+
+      <div class="en">
+        <p>The 2018 applications process opens at Le Fresnoy on Thursday 1 February..<br/>
+            A full information pack can be
+            <a href="http://www.lefresnoy.net/sites/prod/files/2018/downloads/basic-page/inscription//procedure-selection-2018.pdf"
+              target="_blank">
+              downloaded
+            </a>
+        to guide candidates through this procedure.
+        </p>
+
+      </div>
+    </div>
+
+
+    <div ng-show="candidatures_open && candidatures_close" >
+      <p>
+        <span class="fr">Les inscriptions pour l’année 2018/2019 sont closes.<br/>
+            Aucune modification ne peut être effectuée sur les dossiers déposés.<br/>
+            Nous vous donnons rendez-vous l’année prochaine !
+        </span>
+        <span class="en">The application phase for 2018/2019 is now closed.<br/>
+            You can no longer change your application.<br/>
+            We look forward to hearing from you next year
+        </span>
+      </p>
+
+
+    </div>
+
+
+</div>
+
+
+
 </div>

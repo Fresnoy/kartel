@@ -73,11 +73,11 @@
               </span>
               <span ng-if="candidature.physical_content && !candidature.physical_content_received">En attente de courrier</span>
               <span ng-if="candidature.selected_for_interview && !candidature.wait_listed && !candidature.selected">
-                Sélectionné<ng-pluralize count="candidature.artist.user.profile.gender.indexOf('F')" when="{'0': 'e'}"></ng-pluralize>
+                Sélectionné<ng-pluralize count="candidature.artist.user.profile.gender.indexOf('F')" when="{'0': 'e', 'other': ''}"></ng-pluralize>
                 pour l'entretien</span>
               <span ng-if="candidature.wait_listed && !candidature.selected">En liste d'attente</span>
-              <span ng-if="candidature.selected">Sélectioné<ng-pluralize count="candidature.artist.user.profile.gender.indexOf('F')" when="{'0': 'e'}"
-                <span count="candidature.artist.user.profile.gender" when="{'F': 'e', 'other': ''}" />
+              <span ng-if="candidature.selected">Sélectioné<ng-pluralize count="candidature.artist.user.profile.gender.indexOf('F')" when="{'0': 'e', 'other': ''}"
+                <ng-pluralize count="candidature.artist.user.profile.gender" when="{'F': 'e', 'other': ''}" />
 
               </span>
             </span>
