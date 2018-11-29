@@ -3,14 +3,14 @@
 
 
   <h1>
-    <span class="fr">Inscriptions {{campain.promotion.starting_year}} </span>
+    <span class="fr">Inscriptions {{campain.promotion.starting_year}} bientôt ouvertes</span>
     <span class="en">Application {{campain.promotion.starting_year}} pending</span>
   </h1>
   <p class="fr">
     Les inscriptions au concours {{campain.promotion.starting_year}} seront possibles à partir du <br/>
-    <span ng-bind="campain.candidature_date_start | date : 'd MMMM yyyy' | translate_en_to_fr" />.<br/>
+    <strong ng-bind="campain.candidature_date_start | date : 'd MMMM yyyy' | translate_en_to_fr" />.<br/>
     Dans cette attente nous vous proposons de
-    <a href="http://apps.lefresnoy.net/candidatures/assets/procedure.php"
+    <a href="http://app.lefresnoy.net/candidatures/assets/procedure.php"
       target="_blank">
       télécharger la procédure
     </a>
@@ -19,10 +19,10 @@
   </p>
   <p class="en">
     <span class="en">
-    The 2018 applications process opens at Le Fresnoy on <br/>
-    <span ng-bind="campain.candidature_date_start | date : 'd MMMM'" />.<br/>
+    The {{campain.promotion.starting_year}} applications process opens at Le Fresnoy on <br/>
+    <strong ng-bind="campain.candidature_date_start | date : 'd MMMM yyyy'" />.<br/>
     A full information pack can be
-    <a href="http://apps.lefresnoy.net/candidatures/assets/procedure.php"
+    <a href="http://app.lefresnoy.net/candidatures/assets/procedure.php"
       target="_blank">  downloaded
       </a>
     to guide candidates through this procedure.

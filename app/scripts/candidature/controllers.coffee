@@ -242,6 +242,11 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
       $rootScope.candidatures_open = new Date($rootScope.campain.candidature_date_start) < new Date()
       $rootScope.candidatures_close = new Date() > new Date($rootScope.campain.candidature_date_end)
 
+  ,() ->
+        #error
+        console.log("server api problem")
+        $state.go('candidature.error')
+
   )
   # init step in parent controller
   $rootScope.step = []
