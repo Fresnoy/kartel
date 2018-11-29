@@ -222,11 +222,27 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
   if(!$rootScope.current_display_screen)
     $rootScope.current_display_screen = candidature_config.screen.home
 
-  # Set candidatures open
-  $rootScope.candidatures_open = new Date(candidature_config.open_date) < new Date()
-  $rootScope.candidatures_close = new Date() > new Date(candidature_config.close_date)
+  # Get candidature Setup
+  RestangularV2.all('school/student-application-setup').getList({'is_current_setup': 2})
+  .then((setup_response) ->
+      $rootScope.campain = setup_response[0]
+      id_promo = setup_response[0].promotion.match(/\d+$/)[0]
+      Restangular.one("school/promotion/"+id_promo).get().then((promo_response) ->
+        $rootScope.campain.promotion = promo_response
+      )
+      # candidature are not open
+      if (!$rootScope.campain.candidature_open)
+        # pending?
+        if (new Date($rootScope.campain.candidature_date_start) > new Date())
+          $state.go('candidature.pending')
+        # expired ?
+        if (new Date($rootScope.campain.candidature_date_end) < new Date())
+          $state.go('candidature.expired')
 
+      $rootScope.candidatures_open = new Date($rootScope.campain.candidature_date_start) < new Date()
+      $rootScope.candidatures_close = new Date() > new Date($rootScope.campain.candidature_date_end)
 
+  )
   # init step in parent controller
   $rootScope.step = []
   $rootScope.step.total = 24
@@ -246,7 +262,6 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
   # Dates
   $rootScope.current_year = new Date().getFullYear()
   $rootScope.age_min = 18
-  $rootScope.age_max = 36
 
   # browser detection
   navigator.sayswho = do ->

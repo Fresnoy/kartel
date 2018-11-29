@@ -1,6 +1,5 @@
 # -*- tab-width: 2 -*-
 "use strict"
-
 angular.module('candidature.application', ['candidature.controllers',
             'ui.router',
 ])
@@ -72,6 +71,13 @@ angular.module('candidature.application', ['candidature.controllers',
                 views:
                     'application_content_view':
                         templateUrl: 'views/candidature/pages/expired.html',
+      )
+      # PAGE - CANDIDATURE - en attente
+      $stateProvider.state('candidature.pending',
+                url: '/pending'
+                views:
+                    'application_content_view':
+                        templateUrl: 'views/candidature/pages/pending.html',
       )
       # ACCOUNT
       $stateProvider.state('candidature.account',

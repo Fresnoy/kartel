@@ -2,8 +2,8 @@
 
 
     <h1>
-      <span class="fr">Concours 2018</span>
-      <span class="en">2018 Entrance exam</span>
+      <span class="fr">Concours {{campain.promotion.starting_year}}</span>
+      <span class="en">{{campain.promotion.starting_year}} Entrance exam</span>
     </h1>
 
 
@@ -21,29 +21,6 @@
 
     </div>
 
-    <div ng-show="!candidatures_open && !candidatures_close" >
-      <div class="fr">
-        <p>Les inscriptions au concours 2018 seront possibles à partir du jeudi 1er février.<br/>
-          Dans cette attente nous vous proposons de <a href="http://www.lefresnoy.net/sites/prod/files/2018/downloads/basic-page/inscription//procedure-selection-2018.pdf"
-            target="_blank">télécharger la procédure</a> qui vous donnera toutes les informations
-          afin de préparer votre inscription.
-        </p>
-
-
-      </div>
-
-      <div class="en">
-        <p>The 2018 applications process opens at Le Fresnoy on Thursday 1 February..<br/>
-            A full information pack can be
-            <a href="http://www.lefresnoy.net/sites/prod/files/2018/downloads/basic-page/inscription//procedure-selection-2018.pdf"
-              target="_blank">
-              downloaded
-            </a>
-        to guide candidates through this procedure.
-        </p>
-
-      </div>
-    </div>
 
 
     <div ng-show="candidatures_open && candidatures_close" >
