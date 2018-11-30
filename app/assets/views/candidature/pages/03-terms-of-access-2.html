@@ -8,12 +8,14 @@
       <span class="en">Language skills</span>
    </h2>
    <div class="fr">
-      <p>Les candidats doivent posséder une connaissance du français et de l’anglais parlés. Toutes les étapes de la procédure de sélection (dossier et entretien oral) se font en français ou en anglais, au choix du candidat.
+      <p>Les candidats doivent posséder une connaissance du français et de l’anglais parlés. Toutes les étapes de la procédure de sélection
+        (dossier et entretien oral) se font en français ou en anglais, au choix du candidat.
          <br/> Il est rappelé aux candidats admis que les études au Fresnoy se font ensuite en français.
       </p>
    </div>
    <div class="en">
-      <p>Candidates must have knowledge of spoken French and English. All the stages of the selection procedure (application and interviews) are in French or English, as the candidate wishes.
+      <p>Candidates must have knowledge of spoken French and English. All the stages of the selection procedure
+        (application and interviews) are in French or English, as the candidate wishes.
          <br/>Candidates admitted to Le Fresnoy are reminded that the course is carried out in French.
       </p>
    </div>
@@ -25,18 +27,35 @@
          La sélection des étudiants est annuelle et se déroulera en une seule session selon les étapes et le calendrier suivants :
       </p>
       <ul>
-         <li>Dossier de candidature (inscription administrative et dossier artistique), enregistrement en ligne, au plus tard le lundi 30 avril 2018 minuit, heure de Paris (un mail de confirmation de votre inscription vous sera adressé à la fin
+         <li>Dossier de candidature (inscription administrative et dossier artistique), enregistrement en ligne, au plus tard le
+           <strong>{{ campain.candidature_date_end | date : "EEEE d MMMM yyyy à HH" | translate_en_to_fr | lowercase }}h, heure de Paris</strong>
+           (un mail de confirmation de votre inscription vous sera adressé à la fin
 de la procédure d’enregistrement de votre candidature, il est indispensable pour sa validation)</li>
-         <li>Présélection sur dossier, annonce des résultats le mardi 22 mai 2018</li>
-         <li>Entretiens oraux du lundi 25 au vendredi 29 juin 2018, annonce des résultats le samedi 30 juin 2018</li>
+         <li>Présélection sur dossier, annonce des résultats le<br/>
+           <strong>{{ campain.interviews_publish_date | date : "EEEE d MMMM yyyy à HH'h'" | translate_en_to_fr | lowercase }}</strong>
+         </li>
+         <li>Entretiens oraux du<br/>
+            {{ campain.interviews_start_date | date : "EEEE d" | translate_en_to_fr | lowercase }}
+            au
+            {{ campain.interviews_end_date | date : "EEEE d MMMM yyyy" | translate_en_to_fr | lowercase }}
+            , annonce des résultats le<br/>
+            <strong>{{ campain.selected_publish_date | date : "EEEE d MMMM yyyy à HH'h'" | translate_en_to_fr | lowercase }}</strong>
+          </li>
       </ul>
    </div>
    <div class="en">
       <p>The selection process is annual; it will take place according to the following schedule:</p>
       <ul>
-         <li>Administrative registration and dispatch of artistic dossier no later than midnight on Friday April 30, 2018 (Paris time)
-         <li>1st selection of applications. List made public and on line on Tuesday May 22, 2018</li>
-         <li>Interviews, from Monday June 25 to Friday June 29, 2018. List made public and on line on Monday June 30, 2018.</li>
+         <li>Administrative registration and dispatch of artistic dossier no later than midnight on<br/>
+          <strong>{{ campain.candidature_date_end | date : "EEEE MMMM d, yyyy  HH" }}h, (Paris time)</strong>
+         <li>1st selection of applications. List made public and on line on<br/>
+           {{ campain.selected_publish_date | date : "EEEE MMMM d, yyyy" }}
+         </li>
+         <li>Interviews, from<br/>
+           {{ campain.interviews_start_date | date : "EEEE MMMM d" }} to
+           {{ campain.interviews_end_date | date : "EEEE MMMM d, yyyy" }}.
+           List made public and on line on<br/>
+           {{ campain.selected_publish_date | date : "EEEE MMMM d, yyyy 'at' h a" }}.</li>
       </ul>
    </div>
    <div class="navigation">

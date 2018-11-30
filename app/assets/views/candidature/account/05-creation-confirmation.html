@@ -2,8 +2,8 @@
    <h1>
       Confirmation
    </h1>
-   <p class="fr"> Pour valider la création de votre compte, merci de cliquer sur le lien de confirmation qui vous a été envoyé à l'adresse suivante : </p>
-   <p class="en"> Confirm the creation of your account by clicking on the confirmation link that was sent to the following email: </p>
+   <p class="fr"> Pour valider la création de votre compte, merci de cliquer sur le lien de confirmation qui vous a été envoyé à l'adresse e-mail suivante : </p>
+   <p class="en"> To confirm the creation of your account please use the click on the confirmation link that was sent to the following email: </p>
    <br/>
    <form name="formConfirmation">
       <div>
@@ -40,8 +40,8 @@
       </div>
    </form>
    <p>
-     <span class="fr">Si vous ne recevez pas d'e-mail, pensez à :</span>
-     <span class="en">If you did not receive the e-mail you want to :</span>
+     <span class="fr">Si vous ne recevez pas d'e-mail :</span>
+     <span class="en">If you did not receive the e-mail :</span>
   </p>
   <ul>
     <li>
@@ -50,14 +50,14 @@
     </li>
     <li>
       <span class="fr">vérifier que l'email ci-dessus est correct</span>
-      <span class="en">check the e-mail above </span>
+      <span class="en">check the e-mail above is valid</span>
 
     </li>
     <li><a class="pointer" ng-click="edit_email = true">
       <span class="fr">corriger l'email</span>
       <span class="en">correct the e-mail</span>
       </a></li>
-  </li>
+  </ul>
 
    <div class="navigation">
       <a class="btn btn-inv" ng-click="update_infos(formConfirmation, user)" ng-show="(!formConfirmation.$invalid && send_email>=1 && !edit_email)" >
