@@ -215,7 +215,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
   # Media
 .controller('ParentCandidatureController', ($rootScope, $scope, $state, jwtHelper, $q,
             Restangular, RestangularV2, Vimeo, Logout, $http, cfpLoadingBar, authManager, ISO3166,
-            Users, Candidatures, ArtistsV2, Galleries, Media, Upload) ->
+            Users, Candidatures, ArtistsV2, Galleries, Media, Upload, ) ->
 
   # Media
 
@@ -223,6 +223,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
     $rootScope.current_display_screen = candidature_config.screen.home
 
   # Get candidature Setup
+  $rootScope.campain = {}
   RestangularV2.all('school/student-application-setup').getList({'is_current_setup': 2})
   .then((setup_response) ->
       $rootScope.campain = setup_response[0]
@@ -241,7 +242,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 
       $rootScope.candidatures_open = new Date($rootScope.campain.candidature_date_start) < new Date()
       $rootScope.candidatures_close = new Date() > new Date($rootScope.campain.candidature_date_end)
-
+      $rootScope.countdown = Math.round(new Date($rootScope.campain.candidature_date_end).getTime()/1000 - new Date().getTime()/1000)
   ,() ->
         #error
         console.log("server api problem")
@@ -440,12 +441,11 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
     user_id = jwtHelper.decodeToken(localStorage.getItem('token')).user_id
     Users.one(user_id).get().then((user) ->
       scope.user = user
-      current_year = new Date().getFullYear()
-      # search for current year candidature for this user
-      search_current_application = {'search':user.username+","+current_year}
+      # search for a candidature for this user
+      search_current_application = {'search':user.username, 'campain__is_current_setup':2}
       Candidatures.getList(search_current_application).then((candidatures) ->
         if(!candidatures.length)
-          # no candidatures, we create it
+          # CREATE A CANDIDATURE
           Candidatures.post().then((candidature) ->
             # reload infos
             loadInfos()
@@ -455,17 +455,18 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
           )
           return
         else
-          # candidature = candidatures[candidatures.length-1]
+          # candidature exist
           candidature = candidatures[0]
           scope.candidature = candidature
+          # candidature complete
           if(candidature.application_completed)
             $state.go("candidature.confirmation")
             return
-
+          # get galleries
           if(scope.candidature.cursus_justifications)
             getGalleryWithMedia(scope.candidature.cursus_justifications, scope.cursus_justifications)
           else
-            #
+            # CREATE GALLERIES
             createNewGallery(
               scope,
               scope.candidature,
@@ -488,6 +489,10 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
                         artist.websites[find_website] = response_website
                     )
             )
+
+      ,(candidatureInfos_error) ->
+        console.log("error Candidatures infos")
+        $state.go("candidature.error")
       )
     , (userInfos_error) ->
       console.log("error user infos")
@@ -503,13 +508,17 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
   $rootScope.step.current = "09"
   $rootScope.current_display_screen = candidature_config.screen.admin_infos
 
-  $scope.birthdateMin = $filter('date')(new Date($rootScope.current_year-$rootScope.age_min,1,31), 'yyyy-MM-dd')
-  $scope.birthdateMax = $filter('date')(new Date($rootScope.current_year-$rootScope.age_max+1,0,0), 'yyyy-MM-dd')
+  $scope.birthdateMin = $filter('date')(new Date($rootScope.campain.date_of_birth_max), 'yyyy-MM-dd')
+  $scope.birthdateMax = $filter('date')(new Date($rootScope.current_year-$rootScope.age_min+1,0,0), 'yyyy-MM-dd')
   $scope.birthdate = { value: new Date($rootScope.current_year-$rootScope.age_max+1,0,0) }
 
   $scope.$watch("user.profile.birthdate", (newValue, oldValue) ->
     if(newValue)
       $scope.birthdate.value = new Date(newValue)
+  )
+  $scope.$watch("campain", (newValue, oldValue) ->
+    if(newValue)
+      $scope.birthdateMin = $filter('date')(new Date($rootScope.campain.date_of_birth_max), 'yyyy-MM-dd')
   )
 
   # Gender

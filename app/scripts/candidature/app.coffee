@@ -1,7 +1,7 @@
 # -*- tab-width: 2 -*-
 "use strict"
 angular.module('candidature.application', ['candidature.controllers',
-            'ui.router',
+            'ui.router', 'timer'
 ])
 
 .run(['$rootScope', '$state', ($rootScope, $state) ->

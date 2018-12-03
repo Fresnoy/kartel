@@ -27,7 +27,7 @@ angular.module('kartel',
                   'memoire', 'candidature', 'ui.router',
                   'restangular', 'angular-jwt',
                   'ngAnimate', 'chieffancypants.loadingBar', 'ui.bootstrap', 'ngMessages',
-                  'ngSanitize', 'markdown', '720kb.datepicker',
+                  'ngSanitize', 'markdown',
                   'iso-3166-country-codes', 'ngFileUpload', 'ngPlacesAutocomplete',
                   'angular-google-analytics',
               ])

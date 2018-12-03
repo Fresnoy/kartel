@@ -2,10 +2,13 @@
    <span class="close" ng-click="show_help(false)">x</span>
    <h1><class class="fr">Aide</class><class class="en">Help</class></h1>
    <div class="fr">
-      <p>La procédure de sélection est ouverte à tous les candidats, sans distinction de sexe ou de nationalité, âgés de 35 ans au plus au 1er janvier de l’année du concours (nés après le 31 décembre <span ng-bind="(current_year-age_max)" />).</p>
+      <p>La procédure de sélection est ouverte à tous les candidats, sans distinction de sexe ou de nationalité,
+        âgés de 35 ans au plus au 1er janvier de l’année du concours (nés après le <span ng-bind="campain.date_of_birth_max | date : 'd MMMM yyyy' | translate_en_to_fr" />).</p>
    </div>
    <div class="en">
-      <p>The selection procedure is open to all candidates, of any sex or nationality, aged 35 years maximum on 1st January of the current year (i.e. born after 31st December <span ng-bind="(current_year-age_max)" />)).</p>
+      <p>The selection procedure is open to all candidates, of any sex or nationality, aged 35 years maximum on 1st January of the current year
+        (i.e. born after
+        <span ng-bind="campain.date_of_birth_max | date : 'd MMMM yyyy'" />).</p>
    </div>
 </div>
 
@@ -70,21 +73,10 @@
             </label>
          </div>
          <div class="field">
-           <input ng-if="is_old_browser" type="date" ng-min="birthdateMax" name="uBirthDate" ng-max="birthdateMin" ng-model="birthdate.value"
-           ng-change="user.profile.birthdate = (birthdate.value | date:'yyyy-MM-dd'); user.patch({'profile':{'birthdate': user.profile.birthdate}}); " required />
+           <input type="date" ng-min="birthdateMin" name="uBirthDate" ng-max="birthdateMax" ng-model="birthdate.value"
+           ng-change="user.profile.birthdate = (birthdate.value | date:'yyyy-MM-dd');
+           user.patch({'profile':{'birthdate': user.profile.birthdate}}); " required />
 
-            <input ng-if="!is_old_browser" hidden readonly type="text" ng-min="birthdateMax" name="uBirthDate" ng-max="birthdateMin" ng-model="user.profile.birthdate"
-               required />
-            <datepicker ng-if="!is_old_browser" id="birthdate"
-               date-format='yyyy-MM-dd'
-               date-set="{{user.profile.birthdate}}"
-               date-min-limit="{{birthdateMax}}"
-               date-max-limit="{{birthdateMin}}"
-               >
-            <input class="date" readonly type="text"  ng-model-options='{ debounce: 1000 }'
-               ng-change="user.patch({'profile':{'birthdate': user.profile.birthdate}});"
-               ng-model="user.profile.birthdate" required />
-            </datepicker>
 
             <div ng-show="form1.uBirthDate.$touched && form1.uBirthDate.$invalid" ng-messages="form1.uBirthDate.$error" class="help-block error">
                <div ng-message="required">
@@ -92,7 +84,7 @@
                   <span class="en">Required</span>
                </div>
                <div ng-message="min">
-                  <span class="fr">Il faut avoir moins de 35 ans (être nés avant  le {{deadline_text}}) </span>
+                  <span class="fr">Il faut avoir moins de 35 ans (être nés apres  le <span ng-bind="campain.date_of_birth_max | date : 'd MMMM yyyy'" />) </span>
                   <span class="en">to be completed</span>
                </div>
                <div ng-message="max">
@@ -102,8 +94,8 @@
             </div>
             <label for="birthdate">
             <span class="field-state required"></span>
-            <span class="fr">Date de naissance</span>
-            <span class="en">Birthdate</span>
+            <span class="fr">Date de naissance : jj/mm/aaaa </span>
+            <span class="en">Birthdate : dd/mm/yyyy</span>
             </label>
          </div>
          <div class="field">
