@@ -176,8 +176,9 @@
             <h3>Cursus</h3>
             <a ng-show="candidature.curriculum_vitae" ng-click='singleLightbox(candidature.curriculum_vitae, "CV")'>Consulter le CV</a>
               <span ng-if='!candidature.curriculum_vitae' class="text-danger warning">CV absent</span>
-            <p ng-if='candidature.master_degree'>Diplome : Bac +5</p>
-            <p ng-if='!candidature.master_degree'>
+            <p ng-if='candidature.master_degree=="Y"'>Diplome : Bac +5</p>
+            <p ng-if='candidature.master_degree=="P"'>Diplome : Bac +5 en cours</p>
+            <p ng-if='!candidature.master_degree=="N"'>
               <a ng-if="candidature.experience_justification" ng-click='singleLightbox(candidature.experience_justification, "7 années Expérience artistiques jusification")' target="_blanck">
                 Consulter le justificatif d'expérience artistique</a>
                 <span ng-if='!candidature.experience_justification' class="text-danger warning">Justificatif d'expérience artistique absent</span>

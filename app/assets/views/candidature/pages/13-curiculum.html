@@ -7,7 +7,13 @@
         Les candidats doivent pouvoir justifier :
      <ul>
         <li>soit du Baccalauréat (ou équivalence reconnue) et 5 années d’études attestées par un titre ou diplôme,</li>
-        <li>soit du Baccalauréat (ou équivalence reconnue) et 7 années d’expérience artistique ou professionnelle, et sous réserve de joindre au dossier d’inscription administrative un argumentaire, une page maximum, précisant en quoi leur expérience les a préparés au cursus du Fresnoy.
+        <li>soit du Baccalauréat (ou équivalence reconnue) et 7 années d’expérience artistique ou professionnelle,
+          et sous réserve de joindre au dossier d’inscription administrative un argumentaire, une page maximum,
+          précisant en quoi leur expérience les a préparés au cursus du Fresnoy.<br/>
+          Les candidatures présentées sous cette deuxième
+            condition feront l’objet d’un examen par une
+            commission spéciale, apte à les évaluer et à les
+            valider, et dont les décisions seront sans appel.
         </li>
      </ul>
      </p>
@@ -15,7 +21,13 @@
    <div class="en">
       <p>The candidates must be able to provide proof of:<ul>
          <li> A levels or Baccalauréat (or recognized equivalent) and 5 years of study validated by a diploma; (or)</li>
-         <li>A levels or Baccalauréat (or recognized equivalent) and 7 years of artistic or professional experience; in this case, a one page argument should be sent with the administrative application to explain how this experience is relevant to the course at Le Fresnoy. The candidates in the second case will sit a specific examination set by a special committee, who will judge and validate their application. Their decision is final. Participation in the selection procedure is free. Travel costs and living expenses of candidates during the entrance examinations are at the charge of the candidate.</li>
+         <li>A levels or Baccalauréat (or recognized equivalent) and 7 years of artistic or professional experience; in
+           this case, a one page argument should be sent with the administrative application to explain how
+           this experience is relevant to the course at Le Fresnoy. <br/>
+           The candidates in the second case will sit a specific examination set by a special committee, who will
+           evaluate and validate their application. Their decision is final. Participation in the selection
+           procedure is free. Travel costs and living expenses of candidates during the entrance examinations
+           are at the charge of the candidate.</li>
 </ul></p>
    </div>
 </div>
@@ -34,13 +46,33 @@
             ng-model="candidature.master_degree"
             ng-change="candidature.patch({master_degree: candidature.master_degree})"
             name="cMaster"
-            ng-value="true"
+            ng-value="'Y'"
             class="one check "
             />
          <label for="master-degree" class="checkbox one big pointer">
          <span class="fr">J'ai un master (bac + 5)</span>
          <span class="en">I have a master's degree (bac + 5, - high school diploma + 5 years)</span>
          </label>
+         <div ng-if="candidature.master_degree=='Y'">
+           <p><span class='fr'>Un justificatif du diplôme sera nécessaire à la page suivante</span>
+           <span class='en'>Proof of the diploma will be required on the next page</span>
+          </p>
+         </div>
+      </div>
+      <div class="field">
+         <input type="radio"
+            id="pending-master-degree"
+            ng-model="candidature.master_degree"
+            ng-change="candidature.patch({master_degree: candidature.master_degree})"
+            name="cMaster"
+            ng-value="'P'"
+            class="one check"
+            />
+         <label for="pending-master-degree" class="checkbox one big pointer">
+         <span class="fr">Master (bac + 5) en cours</span>
+         <span class="en">Master (bac + 5) en cours</span>
+         </label>
+
       </div>
       <div class="field">
          <input type="radio"
@@ -48,15 +80,15 @@
             ng-model="candidature.master_degree"
             ng-change="candidature.patch({master_degree: candidature.master_degree})"
             name="cMaster"
-            ng-value="false"
+            ng-value="'N'"
             class="one check"
             />
          <label for="no-master-degree" class="checkbox one big pointer">
-         <span class="fr">BAC + 7 années<br/><small>d'expérience professionnelle attestée</small></span>
-         <span class="en">BAC or high school diploma + 7 years<br/><small>of proven professional experience</small></span>
+         <span class="fr">BAC + 7 années<br/><strong>d'expérience professionnelle attestée</strong></span>
+         <span class="en">BAC or high school diploma + 7 years<br/><strong>of proven professional experience</strong></span>
          </label>
       </div>
-      <div ng-if="candidature.master_degree==false">
+      <div ng-if="candidature.master_degree=='N'">
          <p class="fr">En quoi cette expérience vous a-t-elle préparé au Fresnoy ? <em>(1 page max)</em></p>
          <p class="en">In what way this experience has prepared you for Le Fresnoy ? <em>(1 page max)</em> </p>
          <input id="exp-justification" ng-model="candidature.experience_justification" required hidden />

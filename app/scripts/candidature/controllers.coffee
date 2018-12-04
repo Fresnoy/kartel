@@ -168,8 +168,9 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
       if(type == "curiculum")
         total = 2
         progress = 0
-        if($rootScope.candidature.master_degree ||
-          (!$rootScope.candidature.master_degree && $rootScope.candidature.experience_justification)
+        if(($rootScope.candidature.master_degree=="Y" && $rootScope.cursus_justifications.media.length) ||
+           $rootScope.candidature.master_degree=="P" ||
+          (!$rootScope.candidature.master_degree=='N' && $rootScope.candidature.experience_justification)
         )
           progress++
         if($rootScope.candidature.curriculum_vitae)
@@ -242,7 +243,8 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 
       $rootScope.candidatures_open = new Date($rootScope.campain.candidature_date_start) < new Date()
       $rootScope.candidatures_close = new Date() > new Date($rootScope.campain.candidature_date_end)
-      $rootScope.countdown = Math.round(new Date($rootScope.campain.candidature_date_end).getTime()/1000 - new Date().getTime()/1000)
+      $rootScope.countdown = Math.round((new Date($rootScope.campain.candidature_date_end).getTime() - new Date().getTime())/1000)
+      console.log($rootScope.countdown)
   ,() ->
         #error
         console.log("server api problem")
@@ -448,7 +450,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
           # CREATE A CANDIDATURE
           Candidatures.post().then((candidature) ->
             # reload infos
-            loadInfos()
+            $rootScope.loadInfos(scope)
           ,(userInfos_error) ->
             console.log("creation de candidature echouée")
             $state.go("candidature.error")
@@ -489,6 +491,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
                         artist.websites[find_website] = response_website
                     )
             )
+
 
       ,(candidatureInfos_error) ->
         console.log("error Candidatures infos")
