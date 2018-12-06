@@ -279,25 +279,35 @@ angular.module('candidature.application', ['candidature.controllers',
                           $rootScope.step.current = "20"
       )
 
-      # ONLINE CANDIDATURE - 21 - Summary
+      # ONLINE CANDIDATURE - 22 - Doctorate
+      $stateProvider.state('candidature.doctorate',
+                  url: '/doctorate'
+                  views:
+                    'application_content_view':
+                        templateUrl: 'views/candidature/pages/21-doctorate.html',
+                        controller: ($rootScope) ->
+                          $rootScope.loadInfos($rootScope)
+                          $rootScope.step.current = "22"
+      )
+      # ONLINE CANDIDATURE - 22 - Summary
       $stateProvider.state('candidature.summary',
                   url: '/summary'
                   views:
                     'application_content_view':
-                        templateUrl: 'views/candidature/pages/21-summary.html',
+                        templateUrl: 'views/candidature/pages/22-summary.html',
                         controller: ($rootScope) ->
                           $rootScope.loadInfos($rootScope)
-                          $rootScope.step.current = "21"
+                          $rootScope.step.current = "22"
       )
-      # ONLINE CANDIDATURE - 22 - ITW
+      # ONLINE CANDIDATURE - 23 - ITW
       $stateProvider.state('candidature.interview',
                   url: '/interview'
                   views:
                     'application_content_view':
-                        templateUrl: 'views/candidature/pages/22-interview.html',
+                        templateUrl: 'views/candidature/pages/23-interview.html',
                         controller: ($rootScope) ->
                           $rootScope.loadInfos($rootScope)
-                          $rootScope.step.current = "22"
+                          $rootScope.step.current = "23"
 
       )
       # ONLINE CANDIDATURE - 23 - Confirmation
@@ -305,20 +315,20 @@ angular.module('candidature.application', ['candidature.controllers',
                   url: '/finalization'
                   views:
                     'application_content_view':
-                        templateUrl: 'views/candidature/pages/23-finalization.html',
+                        templateUrl: 'views/candidature/pages/24-finalization.html',
                         controller: ($rootScope) ->
                           $rootScope.loadInfos($rootScope)
-                          $rootScope.step.current = "23"
+                          $rootScope.step.current = "24"
       )
         # ONLINE CANDIDATURE - 24 - Confirmation
       $stateProvider.state('candidature.confirmation',
                     url: '/confirmation'
                     views:
                       'application_content_view':
-                          templateUrl: 'views/candidature/pages/24-confirmed.html',
+                          templateUrl: 'views/candidature/pages/25-confirmed.html',
                           controller: ($rootScope) ->
                             $rootScope.loadInfos($rootScope)
-                            $rootScope.step.current = "24"
+                            $rootScope.step.current = "25"
         )
 
 

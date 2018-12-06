@@ -1,11 +1,11 @@
 <div class="navigation header">
   <div id="ref-candidature" ng-if="isAuthenticated">
     <div class=""  ng-show='candidature.current_year_application_count' >
-      <div id="timer-countdown"><span class="fr">Il reste </span>
-      <span class="en"></span>
-        <timer countdown="countdown" language="{{language}}"
-              max-time-unit="'day'" interval="1000"
-              finish-callback="console.log('finish')">{{monthUnit}}</timer>
+      <div id="timer-countdown" ng-if='timer_countdown>0'>
+        <span class="fr">Il reste </span>
+        <span class="en"></span>
+        <timer language="language"
+              countdown="timer_countdown" interval="1000" >{{monthUnit}}</timer>
       <span class="en">left</span>
       </div>
       <div>Candidature n° <span class="number">{{ candidature.current_year_application_count }}</span></div>

@@ -202,6 +202,10 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
           for item, i in ar
             if(item)
               progress++
+          if($rootScope.candidature.binomial_application)
+              total++
+              if($rootScope.candidature.binomial_application_with)
+                  progress++
 
           return $scope.progress_intentions = progress/total*100
 
@@ -219,38 +223,41 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
             Users, Candidatures, ArtistsV2, Galleries, Media, Upload, ) ->
 
   # Media
-
   if(!$rootScope.current_display_screen)
     $rootScope.current_display_screen = candidature_config.screen.home
 
   # Get candidature Setup
   $rootScope.campain = {}
-  RestangularV2.all('school/student-application-setup').getList({'is_current_setup': 2})
-  .then((setup_response) ->
-      $rootScope.campain = setup_response[0]
-      id_promo = setup_response[0].promotion.match(/\d+$/)[0]
-      Restangular.one("school/promotion/"+id_promo).get().then((promo_response) ->
-        $rootScope.campain.promotion = promo_response
-      )
-      # candidature are not open
-      if (!$rootScope.campain.candidature_open)
-        # pending?
-        if (new Date($rootScope.campain.candidature_date_start) > new Date())
-          $state.go('candidature.pending')
-        # expired ?
-        if (new Date($rootScope.campain.candidature_date_end) < new Date())
-          $state.go('candidature.expired')
+  $rootScope.timer_countdown = 0
+  getCandidatureSetup = (scope) ->
+    RestangularV2.all('school/student-application-setup').getList({'is_current_setup': 2})
+    .then((setup_response) ->
+        scope.campain = setup_response[0]
+        id_promo = setup_response[0].promotion.match(/\d+$/)[0]
+        Restangular.one("school/promotion/"+id_promo).get().then((promo_response) ->
+          scope.campain.promotion = promo_response
+        )
+        # candidature are not open
+        if (!scope.campain.candidature_open)
+          # pending?
+          if (new Date(scope.campain.candidature_date_start) > new Date())
+            $state.go('candidature.pending')
+          # expired ?
+          if (new Date(scope.campain.candidature_date_end) < new Date())
+            $state.go('candidature.expired')
 
-      $rootScope.candidatures_open = new Date($rootScope.campain.candidature_date_start) < new Date()
-      $rootScope.candidatures_close = new Date() > new Date($rootScope.campain.candidature_date_end)
-      $rootScope.countdown = Math.round((new Date($rootScope.campain.candidature_date_end).getTime() - new Date().getTime())/1000)
-      console.log($rootScope.countdown)
-  ,() ->
-        #error
-        console.log("server api problem")
-        $state.go('candidature.error')
+        scope.candidatures_open = new Date(scope.campain.candidature_date_start) < new Date()
+        scope.candidatures_close = new Date() > new Date(scope.campain.candidature_date_end)
+        scope.timer_countdown = Math.round((new Date(scope.campain.candidature_date_end).getTime() - new Date().getTime())/1000)
+    ,() ->
+          #error
+          console.log("server api problem")
+          $state.go('candidature.error')
+    )
+  getCandidatureSetup($rootScope)
 
-  )
+
+
   # init step in parent controller
   $rootScope.step = []
   $rootScope.step.total = 24
@@ -271,42 +278,6 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
   $rootScope.current_year = new Date().getFullYear()
   $rootScope.age_min = 18
 
-  # browser detection
-  navigator.sayswho = do ->
-    ua = navigator.userAgent
-    tem = undefined
-    M = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) or []
-    if /trident/i.test(M[1])
-      tem = /\brv[ :]+(\d+)/g.exec(ua) or []
-      return 'IE ' + (tem[1] or '')
-    if M[1] == 'Chrome'
-      tem = ua.match(/\b(OPR|Edge)\/(\d+)/)
-      if tem != null
-        return tem.slice(1).join(' ').replace('OPR', 'Opera')
-    M = if M[2] then [
-      M[1]
-      M[2]
-    ] else [
-      navigator.appName
-      navigator.appVersion
-      '-?'
-    ]
-    if (tem = ua.match(/version\/(\d+)/i)) != null
-      M.splice 1, 1, tem[1]
-    M.join ' '
-
-  $scope.is_old_browser = false
-  browser =
-    name: navigator.sayswho.split(" ")[0]
-    version: parseInt(navigator.sayswho.split(" ")[1])
-
-  if((browser.name == "MSIE" && browser.version <= 9) ||
-      (browser.name == "IE" && browser.version <= 9) ||
-      (browser.name == "Chrome" && browser.version <= 50) ||
-      (browser.name == "Safari" && browser.version <= 5) ||
-      (browser.name == "Opera" && browser.version <= 36) ||
-      (browser.name == "Firefox" && browser.version <= 42) )
-          $scope.is_old_browser = true
   # phone
   $rootScope.phone_pattern = /^\+?[0-9-]{2,5}[-. ]?\d{5,12}$/
 
@@ -502,8 +473,6 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
       $state.go("candidature.error")
     )
 )
-
-
 .controller('AdministrativeInformationsController', ($rootScope, $scope, $state, $filter, ISO3166,
         Restangular, RestangularV2, Media, Upload) ->
 
