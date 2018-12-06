@@ -278,17 +278,15 @@ angular.module('memoire.controllers', ['memoire.services'])
   # order
   # none = 1 | true = 2 | false = 3
   $scope.select_criteres = [
-    {title: 'Toutes', sortby: {"search": current_year, "unselected": 3}, count:0 },
-    {title: 'Refusées', sortby: {"search": current_year, "unselected": 2}, count:0 },
-    {title: 'Courrier', sortby: {"search": current_year, "unselected": 3, "physical_content": 2, "physical_content_received": 3}, count:0},
-    {title: 'Non finalisées', sortby: {"search": current_year, "unselected": 3, "application_completed": 3}, count:0},
-    {title: 'En attente de validation', sortby: {"search": current_year, "unselected": 3, "application_completed": 2, "application_complete": 3}, count:0},
-    {title: 'Visées', sortby: {"search": current_year, "unselected": 3, "application_complete": 2}, count:0},
-    {title: 'Selectionnés en d\'attente pour l\'entretien', sortby: {"search": current_year, "unselected": 3, "wait_listed_for_interview": 2}, count:0},
-    {title: 'Selectionnés pour l\'entretien', sortby: {"search": current_year, "unselected": 3, "selected_for_interview": 2}, count:0},
-    {title: 'Entretien Skype', sortby: {"search": current_year, "unselected": 3, "selected_for_interview": 2, "remote_interview": 2}, count:0},
-    {title: 'Admis sur liste d\'attente', sortby: {"search": current_year, "unselected": 3, "wait_listed": 2}, count:0},
-    {title: 'Admis', sortby: {"search": current_year,  "unselected": 3, "selected": 2}, count:0},
+    {title: 'Toutes', sortby: {'campain__is_current_setup':2, "unselected": 3}, count:0 },
+    {title: 'Refusées', sortby: {'campain__is_current_setup':2, "unselected": 2}, count:0 },
+    {title: 'Non finalisées', sortby: {'campain__is_current_setup':2, "unselected": 3, "application_completed": 3}, count:0},
+    {title: 'En attente de validation', sortby: {'campain__is_current_setup':2, "unselected": 3, "application_completed": 2, "application_complete": 3}, count:0},
+    {title: 'Visées', sortby: {'campain__is_current_setup':2, "unselected": 3, "application_complete": 2}, count:0},
+    {title: 'Entretien : liste d\'attente', sortby: {'campain__is_current_setup':2, "unselected": 3, "wait_listed_for_interview": 2}, count:0},
+    {title: 'Entretien : Selectionnés', sortby: {'campain__is_current_setup':2, "unselected": 3, "selected_for_interview": 2}, count:0},
+    {title: 'Admis : liste d\'attente', sortby: {'campain__is_current_setup':2, "unselected": 3, "wait_listed": 2}, count:0},
+    {title: 'Admis', sortby: {'campain__is_current_setup':2, "unselected": 3, "selected": 2}, count:0},
 
   ]
   $scope.select_orders = [
@@ -322,7 +320,7 @@ angular.module('memoire.controllers', ['memoire.services'])
           candidature.progress = $scope.get_candidature_progress(candidature)
           arr.push(candidature)
 
-          if(candidature.application_completed || candidature.physical_content)
+          if(candidature.application_completed)
               ArtistsV2.one(artist_id).withHttpConfig({ cache: true}).get().then((artist) ->
                   current_cantidature = _.filter(candidatures, (c) -> return c.artist == artist.url)
                   current_cantidature[0].artist = artist
@@ -448,7 +446,7 @@ angular.module('memoire.controllers', ['memoire.services'])
   $scope.singleLightbox = (url, description) ->
     # config image gallery
     image =
-      isvideo: new RegExp("aml|ame|player.vimeo|mp4","gi").test(url);
+      isvideo: new RegExp("aml|ame|youtu|player.vimeo|mp4","gi").test(url);
       iframe: /(\.pdf|vimeo\.com|youtube\.com|youtu\.be)/i.test(url)
       original: url
       description: description

@@ -182,9 +182,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
          progress = 0
          if($rootScope.user.profile.cursus)
             progress++
-         if($rootScope.candidature.presentation_video ||
-            ($rootScope.candidature.physical_content)
-         )
+         if($rootScope.candidature.presentation_video)
             progress++
          if($rootScope.candidature.presentation_video_details)
            progress++
