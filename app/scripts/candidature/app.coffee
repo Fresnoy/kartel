@@ -287,7 +287,7 @@ angular.module('candidature.application', ['candidature.controllers',
                         templateUrl: 'views/candidature/pages/21-doctorate.html',
                         controller: ($rootScope) ->
                           $rootScope.loadInfos($rootScope)
-                          $rootScope.step.current = "22"
+                          $rootScope.step.current = "21"
       )
       # ONLINE CANDIDATURE - 22 - Summary
       $stateProvider.state('candidature.summary',

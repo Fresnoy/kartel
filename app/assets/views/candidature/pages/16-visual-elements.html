@@ -49,14 +49,19 @@
    </h1>
    <form name="form1" ng-submit="form.$valid && submit()" class="css-form" novalidate>
      <div class="fr">
-      <p>Merci de saisir ci-dessous le lien vidéo vers une œuvre ou un ensemble d’extraits d’œuvres <u>(lien vers une seule vidéo, nous n'acceptons pas de lien vers une playlist de vidéos)</u>
-         que vous avez réalisés et
+      <p>Merci de saisir ci-dessous le lien vidéo vers une œuvre ou un ensemble d’extraits d’œuvres que vous avez réalisés et
          particulièrement représentatifs de votre démarche artistique.
       </p>
       <p>Cette vidéo d'une <strong>durée maximale de 8 minutes</strong> sera vue successivement par les deux jurys (de présélection et de l'entretien oral).</p>
+      <p>Le lien doit pointer directement vers un fichier vidéo pérenne ou vers une plateforme de diffusion
+        de vidéos (type Viméo, Youtube, ...).  <br/>
+        Nous n'acceptons pas de lien vers une playlist de vidéos, ou une plateforme d'envoi de fichier
+        (type Wetransfer, Send Anywhere, Google Drive, OneDrive, Dropbox)
+      </p>
     </div>
     <div class="en">
-      <p>Please connect the video link towards a work or a series of extracts of your works <u>(link to a single video, we do not accept links to a video playlist)</u>
+      <p>Please connect the video link towards a work or a series of extracts of your works <u>(link to a single video,
+         we do not accept links to a video playlist)</u>
         that are particularly representative of your artistic approach</p>
       <p>This video of a maximum length of 8 minutes will be seen by two panels (during the pre-selection phase and the interview)</p>
     </div>
@@ -67,7 +72,8 @@
             ng-model="candidature.presentation_video"
             ng-model-options='{ debounce: 1000 }'
             ng-change="candidature.patch({presentation_video : candidature.presentation_video||''})"
-            placeholder="Ex : http://vmo.com/280151180"
+            placeholder="http://vimeo.com/280151180"
+            pattern="^(?!.*(google\.|wetransfer\.|send-anywhere\.|onedrive\.|dropbox\.|sharepoint\.)).*$"
             required
             />
          <div ng-show="form1.cVideo.$touched && form1.cVideo.$invalid" ng-messages="form1.cVideo.$error" class="help-block error">
@@ -78,6 +84,10 @@
             <div ng-message="url">
                <span class="fr">URL mal formatée</span>
                <span class="en">Error url</span>
+            </div>
+            <div ng-message="pattern">
+               <span class="fr">Le domaine n'est pas accepté</span>
+               <span class="en">Domain not accepted</span>
             </div>
          </div>
          <label for="video">
@@ -140,7 +150,8 @@
                La vidéo est bien envoyée et sera disponible pour vérification dans quelques minutes,
                n'hésitez pas à revenir plus tard sur votre inscription pour la consulter
              </span>
-             <span class="en">The video has been sent and will be available for verification in several minutes, do not hesitate to come back to your inscription to consult it.</span>
+             <span class="en">The video has been sent and will be available for verification in several minutes,
+               do not hesitate to come back to your inscription to consult it.</span>
              </strong>
 
             </div>
@@ -157,16 +168,24 @@
         <div >
             <h4>
 
-              <span class="fr">Si vous ne pouvez pas fournir un lien vers une vidéo,<br/>Vous avez la possibilité de :</span>
-              <span class="en">If you cannot provide a link towards a video, <br/>you may</span>
+              <span class="fr">Si vous ne pouvez pas fournir un lien vers une vidéo</span>
+              <span class="en">If you cannot provide a link towards a video</span>
 
             </h4>
             <br/>
             <div ng-if='!candidature.presentation_video'>
-                <p class="fr"> nous envoyer la vidéo par téléchargement
-                  (<a href='https://vimeo.com/help/compression' style="color:grey" target='_blank'>voir les spécifications pour un rendu optimal</a>), en cliquant ci-dessous : </p>
-                <p class="en"> send us the video by upload
-                  (<a href='https://vimeo.com/help/compression' style="color:grey" target='_blank'>See specifications for optimal rendering</a>), by clicking below: </p>
+                <p class="fr">Vous avez la possibilité de nous envoyer la vidéo par téléversement
+                  (<a href='https://vimeo.com/help/compression' style="color:grey" target='_blank'>Voir
+                    les spécifications pour un rendu optimal</a>),
+                    en cliquant ci-dessous :
+                    <br/>
+                      Vous ne pourrez pas continuer d'éditer votre dossier de candidature pendant le téléversement de la vidéo,
+                      cela peut prendre de quelques minutes à quelques heures selon votre connexion.<br/>
+
+                  </p>
+                <p class="en">You may send us the video by upload
+                  (<a href='https://vimeo.com/help/compression' style="color:grey" target='_blank'>See
+                    specifications for optimal rendering</a>), by clicking below: </p>
 
                 <div ng-model="video" name="uVideo"
                    ngf-select="uploadVimeo(video, candidature, 'presentation_video')"

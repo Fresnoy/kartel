@@ -16,7 +16,7 @@ angular.module('candidature.services', ['restangular'])
 
 .factory('Vimeo', (Restangular) ->
         return Restangular.withConfig((RestangularConfigurer) ->
-              RestangularConfigurer.setBaseUrl(config.vimeo_rest_url)
+              RestangularConfigurer.setBaseUrl(candidature_config.vimeo_rest_url)
               RestangularConfigurer.setFullResponse(true)
               # RestangularConfigurer.setDefaultHeaders({Authorization: "Bearer "+ localStorage.getItem('vimeo_upload_token')})
         )
