@@ -1,6 +1,6 @@
 {
   "name": "kartel",
-  "version": "0.0.1",
+  "version": "0.0.2",                                           
   "repository": "https://github.com/Fresnoy/kartel",
   "description": "XXXX.",
   "author": {
@@ -9,17 +9,16 @@
   },
   "main": "./lib/index",
   "dependencies": {
-    "sass-brunch": "latest"
+    "sass-brunch": "2.6.0"
   },
   "devDependencies": {
-    "bower": "latest",
-    "brunch": "latest",
-    "javascript-brunch": "latest",
-    "coffee-script-brunch": "latest",
-    "sass-brunch": "latest",
-    "css-brunch": "latest",
-    "ng-annotate-uglify-js-brunch": "latest",
-    "clean-css-brunch": "latest",
-    "auto-reload-brunch": "latest"
+    "bower": "1.7.7",
+    "brunch": "2.6.1",
+    "javascript-brunch": "2.0.0",
+    "coffee-script-brunch": "2.0.0",
+    "css-brunch": "2.6.1",
+    "ng-annotate-uglify-js-brunch": "^1.2.1",
+    "clean-css-brunch": "2.0.0",
+    "auto-reload-brunch": "2.1.0"
   }
 }
