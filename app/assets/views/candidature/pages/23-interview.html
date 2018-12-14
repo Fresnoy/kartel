@@ -93,10 +93,16 @@ incident).
          </span>
          </label>
          <div class="" ng-if="!candidature.remote_interview">
-           <div class="" ng-init='candidature.remote_interview_type = ""; candidature.patch({remote_interview_type : candidature.remote_interview_type,remote_interview: candidature.remote_interview })' />
+           <div class="" ng-init='candidature.remote_interview_type = "";
+           candidature.patch({remote_interview_type : candidature.remote_interview_type})' />
+           <!-- data sent one by one due to restriction -->
+           <div class="" ng-init='candidature.patch({remote_interview: candidature.remote_interview })' />
          </div>
          <div class="" ng-if="candidature.remote_interview">
-            <div ng-init='candidature.remote_interview_type = "skype"; candidature.patch({remote_interview_type :candidature.remote_interview_type, remote_interview: candidature.remote_interview })' />
+           <!-- data sent one by one due to restriction -->
+            <div ng-init='candidature.remote_interview_type = "skype";
+            candidature.patch({remote_interview_type : candidature.remote_interview_type})' />
+            <div class="" ng-init='candidature.patch({remote_interview: candidature.remote_interview })' />
             <div class="">
                <input
                   id="remote-interview-info"
