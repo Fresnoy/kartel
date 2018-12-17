@@ -8,7 +8,7 @@
   </h1>
   <p class="fr">
     Les inscriptions au concours {{campain.promotion.starting_year}} seront possibles à partir du <br/>
-    <strong ng-bind="campain.candidature_date_start | date : 'd MMMM yyyy' | translate_en_to_fr" />.<br/>
+    <strong>{{ campain.candidature_date_start | date : "EEEE d MMMM yyyy à HH'h'" | translate_en_to_fr | lowercase }}</strong>.<br/>
     Dans cette attente nous vous proposons de
     <a href="http://app.lefresnoy.net/candidatures/assets/procedure.php"
       target="_blank">
@@ -20,7 +20,8 @@
   <p class="en">
     <span class="en">
     The {{campain.promotion.starting_year}} applications process opens at Le Fresnoy on <br/>
-    <strong ng-bind="campain.candidature_date_start | date : 'd MMMM yyyy'" />.<br/>
+
+    <strong>{{ campain.candidature_date_start | date : "EEEE MMMM d, yyyy 'at' h a" }}</strong>.<br/>
     A full information pack can be
     <a href="http://app.lefresnoy.net/candidatures/assets/procedure.php"
       target="_blank">  downloaded
@@ -29,6 +30,6 @@
   </p>
 
    <div class="navigation">
-
+     <a ng-if="campain.candidature_open" class="btn prev" ui-sref="candidature"><span class="fr">Retour</span><span class="en">Back</span></a>
    </div>
 </div>

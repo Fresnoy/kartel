@@ -230,6 +230,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
   getCandidatureSetup = (scope) ->
     RestangularV2.all('school/student-application-setup').getList({'is_current_setup': 2})
     .then((setup_response) ->
+        console.log("getCandidature")
         scope.campain = setup_response[0]
         id_promo = setup_response[0].promotion.match(/\d+$/)[0]
         Restangular.one("school/promotion/"+id_promo).get().then((promo_response) ->
