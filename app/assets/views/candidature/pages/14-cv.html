@@ -2,10 +2,10 @@
    <span class="close" ng-click="show_help(false)">x</span>
    <h1><class class="fr">Aide</class><class class="en">Help</class></h1>
    <div class="fr">
-      <p>Faites nous parvenir votre curriculum vitae détaillé et copies de vos titres ou diplômes au format PDF.</p>
+      <p>Merci de nous transmettre votre curriculum vitae détaillé et copies de vos titres ou diplômes au format PDF.</p>
    </div>
    <div class="en">
-      <p>Send us your detailed curriculum vitae and copies of your qualifications and diplomas in PDF format.</p>
+      <p>Please send us your detailed curriculum vitae and copies of your qualifications and diplomas in PDF format.</p>
    </div>
 </div>
 
@@ -65,9 +65,10 @@
       </label>
    </div>
    <hr/>
-   <p class="fr">Justificatifs de diplômes, certifications, ... <br/>
+
+   <p class="fr">Justificatifs de diplômes <span ng-if="candidature.master_degree=='Y'">(master)</span>, certifications, ... <br/>
      <em class="additionnalInfo">(formats images ou pdf)</em></p>
-   <p class="en">Copies of your diplomas, certificates, qualifications<br/>
+   <p class="en">Copies of your diplomas <span ng-if="candidature.master_degree=='Y'">(master)</span>, certificates, qualifications<br/>
      <em class="additionnalInfo">(images formats or pdf)</em></p>
    </p>
    <div class="field">

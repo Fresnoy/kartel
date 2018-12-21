@@ -1,13 +1,13 @@
 <div class="create-account-page">
       <h1>
          <span class="fr">Création de votre compte</span>
-         <span class="en">Creating Your Account</span>
+         <span class="en">Create your account</span>
       </h1>
       <div class="fr">
-         <p>Il est nécessaire de vous créer un compte afin de poursuivre la procédure.</p>
+         <p>Il est nécessaire de créer un compte afin de poursuivre la procédure.</p>
       </div>
       <div class="en">
-         <p>You need to create an account.</p>
+         <p>An account is required to continue the selection procedure. If you already have an account, click on the ‘LOGIN’ button.</p>
       </div>
       <form name="form" class="css-form" ng-submit="form.$valid && login()" novalidate>
          <div class="field">
@@ -115,7 +115,8 @@
          </div>
       </form>
       <div class="btn green" ng-class="{ 'has-error': form.$invalid }" ng-click="create(form, user)">
-         Créer un compte
+         <span class="fr">Créer un compte</span>
+         <span class="en">Create an account</span>
       </div>
       <div class="navigation">
          <span class="fr">J'ai déjà un compte</span><span class="en">I already have an account</span>

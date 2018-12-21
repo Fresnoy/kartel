@@ -26,21 +26,81 @@
       <span class="en">Intentions</span>
    </h1>
    <form name="form" ng-submit="form.$valid && submit()" class="css-form" novalidate enctype="multipart/form-data">
+
+     <h3 class='fr'>Candidature en duo</h3>
+     <h3 class='en'>Applying as a duo </h3>
+     <p>
+       <span class='fr'>Il est possible de candidater en duo, avec le même portfolio, pour un seul budget, et sous la
+         condition expresse que les membres du duo participent à l’intégralité des propositions pédagogiques
+         (conjointement et non en alternance) </span>
+         <span class='en'>It is possible to apply as a duo, with the same portfolio and a single budget, providing that
+           both members of the duo participate fully in the pedagogical propositions (jointly and not alternately). </span>
+           <div class="field">
+              <input
+                 type="checkbox"
+                 id="binomial-application"
+                 ng-model="candidature.binomial_application"
+                 name="cBinome"
+                 ng-change="candidature.patch({binomial_application: candidature.binomial_application})"
+                 class="one check"
+                 ng-value="true"
+                 />
+              <label for="binomial-application" class="check one pointer">
+              <span class="fr">
+              Je candidate en binôme
+              </span>
+              <span class="en">
+                I am applying as a duo
+              </span>
+              </label>
+              <div class="" ng-if="candidature.binomial_application">
+                 <div class="">
+                    <input
+                       id="binomial-application-with"
+                       type="text"
+                       ng-model="candidature.binomial_application_with"
+                       ng-change="candidature.patch({binomial_application_with : candidature.binomial_application_with||''})"
+                       ng-model-options='{ debounce: 1000 }'
+                       name="cBinomeWith"
+                       placeholder = ""
+                       required
+                       />
+                    <div ng-show="form.cBinomeWith.$error.required" class="help-block error">
+
+                           <span class="fr">
+                           Champs requis
+                           </span>
+                           <span class="en">
+                           required
+                           </span>
+                    </div>
+                    <label for="binomial-application-with">
+                    <span class="field-state"></span>
+                    <span class="fr">Nom et Prénom du binôme</span>
+                    <span class="en">Name and surname of the binomial</span>
+                    </label>
+                 </div>
+              </div>
+           </div>
+
+
+     <hr/>
      <div class="fr">
-         <p>Merci de lire impérativement les <a class="pointer" ng-click="show_help(true)">informations</a> avant de compléter cette étape.</p>
+
          <h3>Projets envisagés durant le cursus du Fresnoy</h3>
-         <p><strong>1<span class="exposant">re</span> année </strong>Travail sur les supports traditionnels,
+         <p>Merci de lire impérativement les <a class="pointer" ng-click="show_help(true)">informations</a> avant de compléter cette étape.</p>
+         <p><strong>Première année </strong>Travail sur les supports traditionnels,
             argentiques et électroniques, du cinéma, de la
             photographie, de la vidéo et des arts visuels.<br>
-            <strong>2<span class="exposant">e</span> année</strong> Travail sur les supports de la création
+            <strong>Deuxième année</strong> Travail sur les supports de la création
             numérique et sur les écritures digitales.
          </p>
     </div>
     <div class="en">
+        <h3>Projects imagined during Le Fresnoy course</h3>
         <p>Please read  <a class="pointer" ng-click="show_help(true)">the information</a>before completing this stage</p>
-        <h3>Projects imagined during the Fresnoy course</h3>
-        <p>A first year of work on traditional media, electronic or not, of cinema, photography, video art, and visual arts. <br>
-           A second year of work on digital art and media.
+        <p><strong>First year</strong> of work on traditional media, electronic or not, of cinema, photography, video art, and visual arts. <br>
+           <strong>second year</strong> of work on digital art and media.
         </p>
     </div>
 

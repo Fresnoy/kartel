@@ -1,0 +1,35 @@
+<div class="expired-page">
+
+
+
+  <h1>
+    <span class="fr">Inscriptions {{campain.promotion.starting_year}} bientôt ouvertes</span>
+    <span class="en">Application {{campain.promotion.starting_year}} pending</span>
+  </h1>
+  <p class="fr">
+    Les inscriptions au concours {{campain.promotion.starting_year}} seront possibles à partir du <br/>
+    <strong>{{ campain.candidature_date_start | date : "EEEE d MMMM yyyy à HH'h'" | translate_en_to_fr | lowercase }}</strong>.<br/>
+    Dans cette attente nous vous proposons de
+    <a href="http://app.lefresnoy.net/candidatures/assets/procedure.php"
+      target="_blank">
+      télécharger la procédure
+    </a>
+    qui vous donnera toutes les informations
+    afin de préparer votre inscription.
+  </p>
+  <p class="en">
+    <span class="en">
+    The {{campain.promotion.starting_year}} applications process opens on <br/>
+
+    <strong>{{ campain.candidature_date_start | date : "EEEE MMMM d, yyyy 'at' h a" }}</strong>.<br/>
+    A full information pack can be
+    <a href="http://app.lefresnoy.net/candidatures/assets/procedure.php"
+      target="_blank">  downloaded
+      </a>
+    to guide candidates through this procedure.
+  </p>
+
+   <div class="navigation">
+     <a ng-if="campain.candidature_open" class="btn prev" ui-sref="candidature"><span class="fr">Retour</span><span class="en">Back</span></a>
+   </div>
+</div>

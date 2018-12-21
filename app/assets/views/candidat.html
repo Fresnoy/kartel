@@ -34,10 +34,6 @@
 
     <p><i class="glyphicon glyphicon-dashboard"></i>
         Inscription n° {{ candidature.current_year_application_count }}</p>
-    <p ng-if="candidature.physical_content_description=='Envoi Postal'">
-      <i class="glyphicon glyphicon-envelope"></i>
-        Candidature intégralement envoyée par courrier
-    </p>
     <p><i class="glyphicon glyphicon-flag"></i>&nbsp;Nationalité(s)</p>
     <ul class="list-inline">
       <li class="nationality" ng-repeat="nationality in artist.user.profile.nationality.split(', ') track by $index">
@@ -47,14 +43,10 @@
     <br/>
     <div ng-if="candidature.presentation_video">
       <i class="glyphicon glyphicon-facetime-video"></i>&nbsp;
-      <a class="pointer" ng-click='singleLightbox(candidature.presentation_video, candidature.presentation_video_details)'> Voir la vidéo de 8 minutes</a>
+      <a class="pointer" ng-click='singleLightbox(candidature.presentation_video, candidature.presentation_video_details)'>
+        Voir la vidéo de 8 minutes</a>
     </div>
-    <div ng-if="!candidature.presentation_video && candidature.physical_content">
-      <i class="glyphicon glyphicon-envelope green" title="courrrier reçu" ng-if='candidature.physical_content && candidature.physical_content_received' />
-      <i class="glyphicon glyphicon-envelope red" title="courrrier non reçu"  ng-if='candidature.physical_content && !candidature.physical_content_received' />
-      <span ng-bind-html="candidature.physical_content_description | linky:'_blank' | nl2br" />
-    </div>
-    <div ng-if="!candidature.presentation_video && !candidature.physical_content">
+    <div ng-if="!candidature.presentation_video">
       <span class="text-danger warning">Vidéo absente</span>
     </div>
     <div ng-if="candidature.presentation_video_details" class="pointer" ng-init="show_video_details = false">
@@ -176,8 +168,9 @@
             <h3>Cursus</h3>
             <a ng-show="candidature.curriculum_vitae" ng-click='singleLightbox(candidature.curriculum_vitae, "CV")'>Consulter le CV</a>
               <span ng-if='!candidature.curriculum_vitae' class="text-danger warning">CV absent</span>
-            <p ng-if='candidature.master_degree'>Diplome : Bac +5</p>
-            <p ng-if='!candidature.master_degree'>
+            <p ng-if='candidature.master_degree=="Y"'>Diplome : Bac +5</p>
+            <p ng-if='candidature.master_degree=="P"'>Diplome : Bac +5 en cours</p>
+            <p ng-if='!candidature.master_degree=="N"'>
               <a ng-if="candidature.experience_justification" ng-click='singleLightbox(candidature.experience_justification, "7 années Expérience artistiques jusification")' target="_blanck">
                 Consulter le justificatif d'expérience artistique</a>
                 <span ng-if='!candidature.experience_justification' class="text-danger warning">Justificatif d'expérience artistique absent</span>
@@ -214,6 +207,11 @@
             Lire la lettre de motivation </a>
             <span ng-if='!candidature.justification_letter' class="text-danger warning">Lettre de motivation absente</span>
           <br/>
+          <div ng-if="candidature.binomial_application">
+            <h4>Candidature en binôme</h4>
+            <p>Candidate en binôme avec : {{candidature.binomial_application_with}}</p>
+            <span ng-if='!candidature.binomial_application_with' class="text-danger warning">Nom du binome absent</span>
+          </div>
           <h4>Projet 1ere année</h4>
           <a ng-if='candidature.considered_project_1'
             ng-click='singleLightbox(candidature.considered_project_1, "Projet de première année")' >
@@ -234,7 +232,10 @@
             ng-click='singleLightbox(candidature.artistic_referencies_project_2, "Références artistiques du projet de deuxième année")' >
             Consulter les références artistiques pour ce projet</a>
             <span ng-if='!candidature.artistic_referencies_project_2' class="text-danger warning">Références absentes</span>
-
+          <div ng-if="candidature.doctorate_interest">
+            <h4>Doctorat</h4>
+            <p>Interêt pour le cursus doctorale</p>
+          </div>
         </div>
 
         <div role="tabpanel" class="tab-pane" id="message">
@@ -293,28 +294,6 @@
 
 
             <div ng-show="!candidature.unselected">
-                <!-- Courrier reçu -->
-                <div ng-show="candidature.physical_content && !candidature.physical_content_received" ng-init="click_cPhysicalContent=false" >
-                  <button type="button" ng-click='click_cPhysicalContent=!click_cPhysicalContent' class="btn btn-primary btn-md">
-                    <i class="glyphicon glyphicon-envelope" ></i> Courrier reçu</button>
-                  <div ng-show="click_cPhysicalContent" >
-                    <p class="alert alert-warning" role="alert">
-                      Cette action valide le fait qu'un courrier nous a été transmis.
-                      <br/>N'oubliez pas d'inscrire le numéro de la candidature sur l'enveloppe :
-                        <strong ng-bind="candidature.current_year_application_count" />
-                      <br/>Cette action n'envoie aucun email
-                    </p>
-                    <button type="button"
-                      ng-click="candidature.physical_content_received = true;
-                       candidature.patch({physical_content_received: candidature.physical_content_received});
-                       click_cPhysicalContent=false;"
-                      class="btn btn-primary btn-md btn-warning">Valider</button>
-                    <button type="button" ng-click='click_cPhysicalContent=false' class="btn btn-primary btn-md btn-danger">Annuler</button>
-                  </div>
-                </div>
-
-
-
 
                 <!-- STATE 1 = Candidature completed => Candidature complete  -->
                 <div ng-show="candidature.application_completed && !candidature.application_complete" ng-init="click_cComplete=false" >

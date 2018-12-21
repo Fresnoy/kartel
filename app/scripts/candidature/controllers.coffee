@@ -168,8 +168,9 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
       if(type == "curiculum")
         total = 2
         progress = 0
-        if($rootScope.candidature.master_degree ||
-          (!$rootScope.candidature.master_degree && $rootScope.candidature.experience_justification)
+        if(($rootScope.candidature.master_degree=="Y" && $rootScope.cursus_justifications.media.length) ||
+           $rootScope.candidature.master_degree=="P" ||
+          (!$rootScope.candidature.master_degree=='N' && $rootScope.candidature.experience_justification)
         )
           progress++
         if($rootScope.candidature.curriculum_vitae)
@@ -181,9 +182,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
          progress = 0
          if($rootScope.user.profile.cursus)
             progress++
-         if($rootScope.candidature.presentation_video ||
-            ($rootScope.candidature.physical_content)
-         )
+         if($rootScope.candidature.presentation_video)
             progress++
          if($rootScope.candidature.presentation_video_details)
            progress++
@@ -201,6 +200,10 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
           for item, i in ar
             if(item)
               progress++
+          if($rootScope.candidature.binomial_application)
+              total++
+              if($rootScope.candidature.binomial_application_with)
+                  progress++
 
           return $scope.progress_intentions = progress/total*100
 
@@ -215,22 +218,48 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
   # Media
 .controller('ParentCandidatureController', ($rootScope, $scope, $state, jwtHelper, $q,
             Restangular, RestangularV2, Vimeo, Logout, $http, cfpLoadingBar, authManager, ISO3166,
-            Users, Candidatures, ArtistsV2, Galleries, Media, Upload) ->
+            Users, Candidatures, ArtistsV2, Galleries, Media, Upload, ) ->
 
   # Media
-
   if(!$rootScope.current_display_screen)
     $rootScope.current_display_screen = candidature_config.screen.home
 
-  # Set candidatures open
-  $rootScope.candidatures_open = new Date(candidature_config.open_date) < new Date()
-  $rootScope.candidatures_close = new Date() > new Date(candidature_config.close_date)
+  # Get candidature Setup
+  $rootScope.campain = {}
+  $rootScope.timer_countdown = 0
+  getCandidatureSetup = (scope) ->
+    RestangularV2.all('school/student-application-setup').getList({'is_current_setup': 2})
+    .then((setup_response) ->
+        scope.campain = setup_response[0]
+        id_promo = setup_response[0].promotion.match(/\d+$/)[0]
+        Restangular.one("school/promotion/"+id_promo).get().then((promo_response) ->
+          scope.campain.promotion = promo_response
+        )
+        # candidature are not open
+        if (!scope.campain.candidature_open)
+          # pending?
+          if (new Date(scope.campain.candidature_date_start) > new Date())
+            $state.go('candidature.pending')
+          # expired ?
+          if (new Date(scope.campain.candidature_date_end) < new Date())
+            $state.go('candidature.expired')
+
+        scope.candidatures_open = new Date(scope.campain.candidature_date_start) < new Date()
+        scope.candidatures_close = new Date() > new Date(scope.campain.candidature_date_end)
+        scope.timer_countdown = Math.round((new Date(scope.campain.candidature_date_end).getTime() - new Date().getTime())/1000)
+    ,() ->
+          #error
+          console.log("server api problem")
+          $state.go('candidature.error')
+    )
+  getCandidatureSetup($rootScope)
+
 
 
   # init step in parent controller
   $rootScope.step = []
-  $rootScope.step.total = 24
-  $rootScope.step.title = "Procédure d'inscription"
+  $rootScope.step.total = 25
+  # $rootScope.step.title = "Procédure d'inscription"
   $rootScope.candidature_config = candidature_config
 
   # navigation
@@ -246,44 +275,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
   # Dates
   $rootScope.current_year = new Date().getFullYear()
   $rootScope.age_min = 18
-  $rootScope.age_max = 36
 
-  # browser detection
-  navigator.sayswho = do ->
-    ua = navigator.userAgent
-    tem = undefined
-    M = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) or []
-    if /trident/i.test(M[1])
-      tem = /\brv[ :]+(\d+)/g.exec(ua) or []
-      return 'IE ' + (tem[1] or '')
-    if M[1] == 'Chrome'
-      tem = ua.match(/\b(OPR|Edge)\/(\d+)/)
-      if tem != null
-        return tem.slice(1).join(' ').replace('OPR', 'Opera')
-    M = if M[2] then [
-      M[1]
-      M[2]
-    ] else [
-      navigator.appName
-      navigator.appVersion
-      '-?'
-    ]
-    if (tem = ua.match(/version\/(\d+)/i)) != null
-      M.splice 1, 1, tem[1]
-    M.join ' '
-
-  $scope.is_old_browser = false
-  browser =
-    name: navigator.sayswho.split(" ")[0]
-    version: parseInt(navigator.sayswho.split(" ")[1])
-
-  if((browser.name == "MSIE" && browser.version <= 9) ||
-      (browser.name == "IE" && browser.version <= 9) ||
-      (browser.name == "Chrome" && browser.version <= 50) ||
-      (browser.name == "Safari" && browser.version <= 5) ||
-      (browser.name == "Opera" && browser.version <= 36) ||
-      (browser.name == "Firefox" && browser.version <= 42) )
-          $scope.is_old_browser = true
   # phone
   $rootScope.phone_pattern = /^\+?[0-9-]{2,5}[-. ]?\d{5,12}$/
 
@@ -420,32 +412,32 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
     user_id = jwtHelper.decodeToken(localStorage.getItem('token')).user_id
     Users.one(user_id).get().then((user) ->
       scope.user = user
-      current_year = new Date().getFullYear()
-      # search for current year candidature for this user
-      search_current_application = {'search':user.username+","+current_year}
+      # search for a candidature for this user
+      search_current_application = {'search':user.username, 'campain__is_current_setup':2}
       Candidatures.getList(search_current_application).then((candidatures) ->
         if(!candidatures.length)
-          # no candidatures, we create it
+          # CREATE A CANDIDATURE
           Candidatures.post().then((candidature) ->
             # reload infos
-            loadInfos()
+            $rootScope.loadInfos(scope)
           ,(userInfos_error) ->
             console.log("creation de candidature echouée")
             $state.go("candidature.error")
           )
           return
         else
-          # candidature = candidatures[candidatures.length-1]
+          # candidature exist
           candidature = candidatures[0]
           scope.candidature = candidature
+          # candidature complete
           if(candidature.application_completed)
             $state.go("candidature.confirmation")
             return
-
+          # get galleries
           if(scope.candidature.cursus_justifications)
             getGalleryWithMedia(scope.candidature.cursus_justifications, scope.cursus_justifications)
           else
-            #
+            # CREATE GALLERIES
             createNewGallery(
               scope,
               scope.candidature,
@@ -468,14 +460,17 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
                         artist.websites[find_website] = response_website
                     )
             )
+
+
+      ,(candidatureInfos_error) ->
+        console.log("error Candidatures infos")
+        $state.go("candidature.error")
       )
     , (userInfos_error) ->
       console.log("error user infos")
       $state.go("candidature.error")
     )
 )
-
-
 .controller('AdministrativeInformationsController', ($rootScope, $scope, $state, $filter, ISO3166,
         Restangular, RestangularV2, Media, Upload) ->
 
@@ -483,13 +478,17 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
   $rootScope.step.current = "09"
   $rootScope.current_display_screen = candidature_config.screen.admin_infos
 
-  $scope.birthdateMin = $filter('date')(new Date($rootScope.current_year-$rootScope.age_min,1,31), 'yyyy-MM-dd')
-  $scope.birthdateMax = $filter('date')(new Date($rootScope.current_year-$rootScope.age_max+1,0,0), 'yyyy-MM-dd')
+  $scope.birthdateMin = $filter('date')(new Date($rootScope.campain.date_of_birth_max), 'yyyy-MM-dd')
+  $scope.birthdateMax = $filter('date')(new Date($rootScope.current_year-$rootScope.age_min+1,0,0), 'yyyy-MM-dd')
   $scope.birthdate = { value: new Date($rootScope.current_year-$rootScope.age_max+1,0,0) }
 
   $scope.$watch("user.profile.birthdate", (newValue, oldValue) ->
     if(newValue)
       $scope.birthdate.value = new Date(newValue)
+  )
+  $scope.$watch("campain", (newValue, oldValue) ->
+    if(newValue)
+      $scope.birthdateMin = $filter('date')(new Date($rootScope.campain.date_of_birth_max), 'yyyy-MM-dd')
   )
 
   # Gender
