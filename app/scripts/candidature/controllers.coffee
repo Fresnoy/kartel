@@ -259,7 +259,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
   # init step in parent controller
   $rootScope.step = []
   $rootScope.step.total = 25
-  $rootScope.step.title = "Procédure d'inscription"
+  # $rootScope.step.title = "Procédure d'inscription"
   $rootScope.candidature_config = candidature_config
 
   # navigation

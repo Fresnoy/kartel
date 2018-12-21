@@ -71,6 +71,8 @@ angular.module('candidature.application', ['candidature.controllers',
                 views:
                     'application_content_view':
                         templateUrl: 'views/candidature/pages/expired.html',
+                        controller: ($rootScope) ->
+                          $rootScope.step.current = "expired"
       )
       # PAGE - CANDIDATURE - en attente
       $stateProvider.state('candidature.pending',
@@ -78,6 +80,8 @@ angular.module('candidature.application', ['candidature.controllers',
                 views:
                     'application_content_view':
                         templateUrl: 'views/candidature/pages/pending.html',
+                        controller: ($rootScope) ->
+                          $rootScope.step.current = "pending"
       )
       # ACCOUNT
       $stateProvider.state('candidature.account',
