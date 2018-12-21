@@ -3,16 +3,25 @@
 
     <h1>
       <span class="fr">Concours {{campain.promotion.starting_year}}</span>
-      <span class="en">{{campain.promotion.starting_year}} Entrance exam</span>
+      <span class="en">Application procedure {{campain.promotion.starting_year}}</span>
     </h1>
-
-
     <div>
 
-        <h2>
+        <h2 class="hidden">
           <span class="fr">Procédure de sélection <br/>Inscription</span>
           <span class="en">Selection procedure <br/>Enrolment</span>
         </h2>
+        <small class="fr">
+        Du {{ campain.candidature_date_start | date : "d MMMM" | translate_en_to_fr | lowercase }}
+           au
+           {{ campain.candidature_date_end | date : "d MMMM yyyy à HH'h'mm" | translate_en_to_fr | lowercase }}
+           (heure de Paris)
+       </small>
+       <small class="en">
+       From {{ campain.candidature_date_start | date : "MMMM d" }}
+          to 
+          {{ campain.candidature_date_end | date : "MMMM d, yyyy '-' H'h'mm" }} (Paris time)
+      </small>
 
         <div class="navigation">
           <div class="btn block"><a class="btn" ui-sref="candidature.terms-of-access" ng-click="setLang('fr');">

@@ -119,7 +119,7 @@ angular.module('candidature.application', ['candidature.controllers',
       )
       # ACCOUNT - Ask for password change
       $stateProvider.state('candidature.account.password-forgot',
-                url: '/passworg-forgot'
+                url: '/password-forgot'
                 views:
                   'account_content_view':
                       templateUrl: 'views/candidature/account/06-forgot-password.html'
