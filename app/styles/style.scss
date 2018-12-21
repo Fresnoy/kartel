@@ -842,7 +842,7 @@ body.en {
       border-bottom: 3px solid black;
       margin:0px;
       padding-bottom: 5px;
-      text-indent: 4px;
+      // text-indent: 4px;
       font-size: 18px;
       color:#4a4a4a;
       &.no-border{
@@ -946,7 +946,7 @@ body.en {
     select{
       background: url(../images/candidature/icons/arrow_list.svg) no-repeat left;
       background-size: 20px;
-      text-indent: 15%;
+      text-indent: 15px; /* 15 %*/
       text-align: center;
       -webkit-appearance: none;
       appearance:none;
@@ -1000,6 +1000,7 @@ body.en {
       h2{
         margin: 0px;
         font-size: 1.1em;
+        margin:20px 0px 10px 0px;
       }
       h3{
         margin: 0px;
@@ -1024,10 +1025,13 @@ body.en {
         font-size: 0.9em;
         border: 0px;
         margin: 0px;
+        text-overflow: ellipsis;
         &.hidden{
           opacity: 0;
           width: 0px;
-          display: inline-block !important;
+          // display: inline-block !important;
+          display: block;
+          height: 0px;
         }
       }
       label{
@@ -1063,6 +1067,9 @@ body.en {
         content: "√";
         color: #B8E986;
       }
+      .field{
+        margin-top: 10px;
+      }
     }
     .confirmation{
       .text-danger{
@@ -1089,7 +1096,12 @@ body.en {
     .navigation{
       margin: 30px 0px;
       position: relative;
-
+      #timer-countdown{
+        position: absolute;
+        top:-50px;
+        width: 105%;
+        margin-left: 50px;
+      }
       .prev:before{
         content:"◄";
         margin-right: 5px;

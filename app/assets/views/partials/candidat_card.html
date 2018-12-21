@@ -1,5 +1,5 @@
 <div class="candidat-card col-md-6"  ng-class="{
-        'ghost': (!candidature.application_completed && !candidature.physical_content),
+        'ghost': !candidature.application_completed,
         'showing_details': $parent.$parent.candidat_id == candidature.id,
         'application_complete': candidature.application_complete,
         'remote_interview': candidature.remote_interview,
@@ -46,7 +46,6 @@
                 </div>
                 <div class="col-xs-4 col-md-4 .no-gutter">
                   <div class="candidature-infos-icon">
-                    <div ng-if="candidature.physical_content && !candidature.physical_content_received"><i class="glyphicon glyphicon-envelope red"></i></div>
                     <div ng-if="candidature.selected_for_interview && !candidature.wait_listed && !candidature.selected"><i class="btn-lg glyphicon glyphicon-user grey"></i></div>
                     <div ng-if="candidature.wait_listed && !candidature.selected"><i class="btn-lg glyphicon glyphicon-ok grey"></i></div>
                     <div ng-if="candidature.selected"><i class="btn-lg glyphicon glyphicon-ok green"></i></div>
@@ -60,18 +59,12 @@
           <div class="candidature-infos">
 
             <!-- NON VISé -->
-            <span ng-if="(!candidature.application_completed && candidature.physical_content && !candidature.physical_content_received) || (candidature.application_completed && !candidature.application_complete)">
+            <span ng-if="(candidature.application_completed && !candidature.application_complete)">
               <span ng-if="candidature.application_completed">Dossier validé en ligne</span>
-              <span ng-if="candidature.application_completed && candidature.physical_content && !candidature.physical_content_received">- En attente de courrier</span>
-              <span ng-if="!candidature.application_completed && candidature.physical_content">Inscription par courrier</span>
               <strong>- Non visé</strong>
             </span>
             <!-- VISé -->
             <span ng-if="candidature.application_complete">
-              <span ng-if="candidature.physical_content_description=='Envoi Postal'">
-                <i class="glyphicon glyphicon-envelope" title="Candidature intégralement envoyée par courrier"></i>
-              </span>
-              <span ng-if="candidature.physical_content && !candidature.physical_content_received">En attente de courrier</span>
               <span ng-if="candidature.selected_for_interview && !candidature.wait_listed && !candidature.selected">
                 Sélectionné<ng-pluralize count="candidature.artist.user.profile.gender.indexOf('F')" when="{'0': 'e', 'other': ''}"></ng-pluralize>
                 pour l'entretien</span>
@@ -81,7 +74,7 @@
 
               </span>
             </span>
-            <span ng-if='(!candidature.application_completed && !candidature.physical_content)' class="bar" ng-style='{"width" : ""+candidature.progress+"%"}'> {{candidature.progress}}%</span>
+            <span ng-if='!candidature.application_completed' class="bar" ng-style='{"width" : ""+candidature.progress+"%"}'> {{candidature.progress}}%</span>
           </div>
         </div></a>
       </div>
