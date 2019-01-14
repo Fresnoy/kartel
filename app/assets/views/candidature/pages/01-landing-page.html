@@ -3,13 +3,13 @@
 
     <h1>
       <span class="fr">Concours {{campain.promotion.starting_year}}</span>
-      <span class="en">Application procedure {{campain.promotion.starting_year}}</span>
+      <span class="en">{{campain.promotion.starting_year}}</span>
     </h1>
     <div>
 
-        <h2 class="hidden">
-          <span class="fr">Procédure de sélection <br/>Inscription</span>
-          <span class="en">Selection procedure <br/>Enrolment</span>
+        <h2 class="">
+          <span class="fr">Procédure d'inscription</span>
+          <span class="en">Application procedure</span>
         </h2>
         <small class="fr">
         Du {{ campain.candidature_date_start | date : "d MMMM" | translate_en_to_fr | lowercase }}
@@ -19,7 +19,7 @@
        </small>
        <small class="en">
        From {{ campain.candidature_date_start | date : "MMMM d" }}
-          to 
+          to
           {{ campain.candidature_date_end | date : "MMMM d, yyyy '-' H'h'mm" }} (Paris time)
       </small>
 

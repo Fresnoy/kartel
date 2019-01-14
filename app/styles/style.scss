@@ -1099,8 +1099,7 @@ body.en {
       #timer-countdown{
         position: absolute;
         top:-50px;
-        width: 105%;
-        margin-left: 50px;
+        width: 100%;
       }
       .prev:before{
         content:"◄";
@@ -1520,6 +1519,14 @@ label{
   display: none;
 }
 
+
+// large screen
+@media only screen and (min-width: 1200px) {
+  .student-app .content,
+  .student-app .navigation.breadcrumb{
+    max-width:470px;
+  }
+}
 
 
 // print

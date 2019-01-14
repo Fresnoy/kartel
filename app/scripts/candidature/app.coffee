@@ -43,6 +43,7 @@ angular.module('candidature.application', ['candidature.controllers',
                     'application_content_view':
                         templateUrl: 'views/candidature/pages/faq.html',
                         controller: ($rootScope) ->
+                          $rootScope.step.current = "faq"
       )
       # PAGE - Error
       $stateProvider.state('candidature.error',
@@ -50,6 +51,8 @@ angular.module('candidature.application', ['candidature.controllers',
                 views:
                     'application_content_view':
                         templateUrl: 'views/candidature/pages/error.html',
+                        controller: ($rootScope) ->
+                          $rootScope.step.current = "error"
       )
       # PAGE - User Guide
       $stateProvider.state('candidature.user-guide',
@@ -57,6 +60,8 @@ angular.module('candidature.application', ['candidature.controllers',
                 views:
                     'application_content_view':
                         templateUrl: 'views/candidature/pages/user-guide.html',
+                        controller: ($rootScope) ->
+                          $rootScope.step.current = "guide"
       )
       # PAGE - Error ADMIN can't create application
       $stateProvider.state('candidature.error_admin_user',
