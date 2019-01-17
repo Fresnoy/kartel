@@ -34,6 +34,19 @@
                           rows="10"
                           name=uCursus
                           required
+                          ng-if="language=='fr'"
+                      />
+                      <textarea
+                        id="cursus"
+                        class="small-font"
+                          ng-model="user.profile.cursus"
+                          ng-model-options='{ debounce: 1000 }'
+                          ng-change="user.patch({profile : {cursus: (user.profile.cursus||'')}})"
+                          placeholder="Year - Experience, diploma, ..."
+                          rows="10"
+                          name=uCursus
+                          required
+                          ng-if="language=='en'"
                       />
                       <div ng-show="form.uCursus.$touched && form.uCursus.$invalid" ng-messages="form.uCursus.$error" class="help-block error">
                         <div ng-message="required">
@@ -105,8 +118,9 @@
          <p  class="fr">Vous avez la possibilité de nous transmettre un portfolio au format PDF. <br/>
             Ce document demeure facultatif, il sera visionné lors du premier jury (présélection du dossier).
          </p>
-         <p  class="en">You can if you wish send us a portfolio in pdf format.<br/>
-            This document is optional and will be viewed by the first jury (shortlisting of applicants).
+         <p  class="en">You can optionally upload a portfolio in pdf. <br/>
+           It will be examined by the jury <u>only if</u>
+           your application gets preselected
          </p>
          <div class="field">
             <input name="cPortfolio" ng-model="candidature.free_document" hidden />
