@@ -52,12 +52,13 @@
          <label for="master-degree" class="checkbox one big pointer">
          <span class="fr">J'ai un master (bac + 5)</span>
          <span class="en">I have a master's degree (bac + 5, high school diploma + 5 years)</span>
-         </label>
          <div ng-if="candidature.master_degree=='Y'">
-           <p><span class='fr'>Un justificatif du diplôme sera nécessaire à la page suivante</span>
+           <p><small><span class='fr'>Un justificatif du diplôme sera nécessaire à la page suivante</span>
            <span class='en'>Proof of your diploma will be required on the next page</span>
-          </p>
+           </small></p>
          </div>
+         </label>
+
       </div>
       <div class="field">
          <input type="radio"
@@ -70,8 +71,20 @@
             />
          <label for="pending-master-degree" class="checkbox one big pointer">
          <span class="fr">Master (bac + 5) en cours</span>
-         <span class="en">Master (5 years higher education) underway (forthcoming) </span>
+         <span class="en">Currently studying for a 5 years higher education degree (Master or equivalent)</span>
+         <div ng-if="candidature.master_degree=='P'">
+           <p><small>
+             <span class="fr">
+               En cas de présélection, le candidat devra fournir un justificatif de diplôme officiel.</span>
+             <span class="en">
+               In case of preselection, the candidate <u>must</u> provide the official delivered degree when attending
+               the jury selection.
+             </span>
+             </small>
+          </p>
          </label>
+
+         </div>
 
       </div>
       <div class="field">
@@ -85,7 +98,7 @@
             />
          <label for="no-master-degree" class="checkbox one big pointer">
          <span class="fr">BAC + 7 années<br/><strong>d'expérience professionnelle attestée</strong></span>
-         <span class="en">BAC or high school diploma + 7 years<br/><strong>of proven professional experience</strong></span>
+         <span class="en">BAC or high school diploma + 7 years <strong>of proven professional experience</strong></span>
          </label>
       </div>
       <div ng-if="candidature.master_degree=='N'">

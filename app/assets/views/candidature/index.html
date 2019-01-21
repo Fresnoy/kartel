@@ -29,7 +29,7 @@
           </div>
           <div class="step-infos visible-md visible-lg">
                 <div class="current">{{candidature_config.screen[step.current].display_name||step.current}}</div>
-                <div class="total">/ {{step.total}}</div>
+                <div class="total" ng-if="candidature_config.screen[step.current].display_total" >/ {{step.total}}</div>
                 <div class="title"><span class='fr'>Procédure d'inscription</span>
                                    <span class='en'>Application Procedure</span>
                                   <span class='hidden>'{{step.title}}</span></div>

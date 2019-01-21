@@ -25,7 +25,7 @@
      </ul>
    </div>
    <div class="en">
-     <p>At the end of the pre-selection, up to 60 applicants will be invited to attend interviews at Le Fresnoy. The final selection takes place at Le Fresnoy. Shortlisted candidates will be invited for interview by the jury between Monday July 3, and Friday July 7, 2017.The applicants are mainly judged on:</p>
+     <p>At the end of the pre-selection, up to 60 applicants will be invited to attend interview at Le Fresnoy. The final selection takes place at Le Fresnoy. Shortlisted candidates will be invited for interview by the jury between Monday July 3, and Friday July 7, 2017.The applicants are mainly judged on:</p>
      <ul>
         <li>The originality, reach, and quality of their personal artistic work in one or more disciplines,
         </li>
@@ -111,9 +111,21 @@ incident).
                   ng-change="candidature.patch({remote_interview_info : candidature.remote_interview_info})"
                   ng-model-options='{ debounce: 1000 }'
                   name="cInterviewInfos"
-                  placeholder = "Identifiant/username Skype "
+                  placeholder = "Identifiant Skype "
+                  ng-if="language=='fr'"
                   required
                   />
+                  <input
+                     id="remote-interview-info"
+                     type="text"
+                     ng-model="candidature.remote_interview_info"
+                     ng-change="candidature.patch({remote_interview_info : candidature.remote_interview_info})"
+                     ng-model-options='{ debounce: 1000 }'
+                     name="cInterviewInfos"
+                     placeholder = "Skype user name "
+                     ng-if="language=='en'"
+                     required
+                     />
                <div ng-show="form.$submitted || form.cInterviewInfos.$touched">
                   <span ng-show="form.cInterviewInfos.$error.required">
                   <span class="fr">

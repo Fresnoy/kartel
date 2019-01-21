@@ -3,8 +3,9 @@
       <span class='fr'>Connexion</span>
       <span class='en'>Log in</span>
    </h1>
-   <p class="fr">Pour commencer ou poursuivre le processus d'inscription, veuillez compléter les champs <br/>ci-dessous :</p>
-   <p class="en">To begin or continue the inscription process, please fill in the form below:</p>
+   <p class="fr">Pour commencer ou poursuivre le processus d'inscription, veuillez compléter les champs ci-dessous :</p>
+   <p class="en">To start or resume your application procedure, please login.<br/>
+      If you do not have an account, go to <a ui-sref="candidature.account.create-user">the sign up page</a></p>
       <form name="form" ng-submit="login(form, vm)" novalidate>
          <div class="field">
             <input id="username" type="text" ng-model="vm.username" name="uUsername" required />
