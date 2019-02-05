@@ -278,15 +278,15 @@ angular.module('memoire.controllers', ['memoire.services'])
   # order
   # none = 1 | true = 2 | false = 3
   $scope.select_criteres = [
-    {title: 'Toutes', sortby: {'campain__is_current_setup':2, "unselected": 3}, count:0 },
-    {title: 'Refusées', sortby: {'campain__is_current_setup':2, "unselected": 2}, count:0 },
-    {title: 'Non finalisées', sortby: {'campain__is_current_setup':2, "unselected": 3, "application_completed": 3}, count:0},
-    {title: 'En attente de validation', sortby: {'campain__is_current_setup':2, "unselected": 3, "application_completed": 2, "application_complete": 3}, count:0},
-    {title: 'Visées', sortby: {'campain__is_current_setup':2, "unselected": 3, "application_complete": 2}, count:0},
-    {title: 'Entretien : liste d\'attente', sortby: {'campain__is_current_setup':2, "unselected": 3, "wait_listed_for_interview": 2}, count:0},
-    {title: 'Entretien : Selectionnés', sortby: {'campain__is_current_setup':2, "unselected": 3, "selected_for_interview": 2}, count:0},
-    {title: 'Admis : liste d\'attente', sortby: {'campain__is_current_setup':2, "unselected": 3, "wait_listed": 2}, count:0},
-    {title: 'Admis', sortby: {'campain__is_current_setup':2, "unselected": 3, "selected": 2}, count:0},
+    {title: 'Toutes', sortby: {'campaign__is_current_setup':2, "unselected": 3}, count:0 },
+    {title: 'Refusées', sortby: {'campaign__is_current_setup':2, "unselected": 2}, count:0 },
+    {title: 'Non finalisées', sortby: {'campaign__is_current_setup':2, "unselected": 3, "application_completed": 3}, count:0},
+    {title: 'En attente de validation', sortby: {'campaign__is_current_setup':2, "unselected": 3, "application_completed": 2, "application_complete": 3}, count:0},
+    {title: 'Visées', sortby: {'campaign__is_current_setup':2, "unselected": 3, "application_complete": 2}, count:0},
+    {title: 'Entretien : liste d\'attente', sortby: {'campaign__is_current_setup':2, "unselected": 3, "wait_listed_for_interview": 2}, count:0},
+    {title: 'Entretien : Selectionnés', sortby: {'campaign__is_current_setup':2, "unselected": 3, "selected_for_interview": 2}, count:0},
+    {title: 'Admis : liste d\'attente', sortby: {'campaign__is_current_setup':2, "unselected": 3, "wait_listed": 2}, count:0},
+    {title: 'Admis', sortby: {'campaign__is_current_setup':2, "unselected": 3, "selected": 2}, count:0},
 
   ]
   $scope.select_orders = [
@@ -462,6 +462,7 @@ angular.module('memoire.controllers', ['memoire.services'])
   loadCandidat = (id) ->
       Candidatures.one(id).get().then((candidature) ->
         $scope.candidature = candidature
+        $scope.itw_date = new Date(candidature.interview_date)
         artist_id = candidature.artist.match(/\d+$/)[0]
         ArtistsV2.one(artist_id).get().then((artist) ->
             $scope.artist = artist
@@ -491,4 +492,31 @@ angular.module('memoire.controllers', ['memoire.services'])
       )
 
   loadCandidat($stateParams.id)
+
+  $scope.date = (date) ->
+    return new Date(date)
+)
+
+.controller('CandidaturesConfigurationController', ($rootScope, $scope, RestangularV2, Campaigns, PromotionsV2) ->
+  $scope.configuration = []
+  $scope.promotion = []
+
+  $scope.now = () ->
+    return new Date(Date.now())
+  $scope.date = (date) ->
+    return new Date(date)
+
+  Campaigns.getList({is_current_setup: 2}).then((current_campaign) ->
+    $scope.configuration = current_campaign[0]
+    $scope.date_of_birth_max = new Date($scope.configuration.date_of_birth_max)
+    $scope.interviews_publish_date = new Date($scope.configuration.interviews_publish_date)
+    $scope.selected_publish_date = new Date($scope.configuration.selected_publish_date)
+    $scope.candidature_date_end = new Date($scope.configuration.candidature_date_end)
+    # get promo infos
+    promo_id = $scope.configuration.promotion.match(/\d+$/)[0]
+    RestangularV2.one("school/promotion/"+promo_id).get().then((promo) ->
+        $scope.promo_name = promo.name
+        $scope.promotion = promo
+    )
+  )
 )

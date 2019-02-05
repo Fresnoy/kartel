@@ -1,0 +1,162 @@
+
+
+<div>
+  <h1>Configuration de la campagne de Sélection {{ promotion.starting_year }}</h1>
+  <hr/>
+
+   <!--
+
+   Date
+   PRESELECTION
+
+   -->
+
+  <h2>Date d'annonce des résultats de la présélection des dossiers</h2>
+  <h4 ng-init='itw_modif=false' ng-show=!itw_modif>
+    {{ configuration.interviews_publish_date | date : "EEEE d MMMM yyyy à HH'h'mm" | translate_en_to_fr }}
+    <a ng-click="itw_modif=!itw_modif" ><i class="glyphicon glyphicon-edit"></i>  </a>
+  </h4>
+  <div ng-show="itw_modif">
+    <p>
+      <input class="big" type="date" size=50 name="cItwDate" ng-model="interviews_publish_date" />
+      à
+      <input class="big" type="time" size=50 name="cItwTime" ng-model="interviews_publish_date"/>
+      &nbsp;&nbsp;
+    <button class="btn " ng-click="interviews_publish_date=now();" >Maintenant ! </button>
+    <button class="btn btn-warning" ng-click="
+                      interviews_publish_date = date(configuration.interviews_publish_date);
+                      itw_modif=!itw_modif;
+                      " >Annuler</button>
+
+    <button class="btn btn-success" ng-click="
+                      configuration.interviews_publish_date = (interviews_publish_date | date:'yyyy-MM-ddTHH:mm:ss');
+                      configuration.patch({'interviews_publish_date': configuration.interviews_publish_date});
+                      itw_modif=!itw_modif;
+                      " >Valider</button>
+    </p>
+  </div>
+  <hr/>
+
+  <!--
+
+     Date
+     Résultats
+
+  -->
+
+  <h2>Date d'annonce des résultats</h2>
+  <h4 ng-init='selected_modif=false' ng-show=!selected_modif>
+    {{ configuration.selected_publish_date | date : "EEEE d MMMM yyyy à HH'h'mm" | translate_en_to_fr }}
+    <a ng-click="selected_modif=!selected_modif" ><i class="glyphicon glyphicon-edit"></i>  </a>
+  </h4>
+  <div ng-show="selected_modif">
+    <input class="big"  type="date" size=50 name="cItwDate" ng-model="selected_publish_date" />
+    à
+    <input class="big"  type="time" size=50 name="cItwTime" ng-model="selected_publish_date"/>
+
+    <button class="btn " ng-click="selected_publish_date=now();" >Maintenant ! </button>
+
+    <button class="btn btn-warning" ng-click="
+                      selected_publish_date = date(configuration.selected_publish_date);
+                      selected_modif=!selected_modif;
+                      " >Annuler</button>
+    <button class="btn btn-success" ng-click="
+                      configuration.selected_publish_date = (selected_publish_date | date:'yyyy-MM-ddTHH:mm:ss');
+                      configuration.patch({'selected_publish_date': configuration.selected_publish_date});
+                      selected_modif=!selected_modif;
+                      " >Valider</button>
+
+  </div>
+  <hr/>
+
+
+
+  <!--
+
+     Date
+     fin des candidatures
+
+  -->
+
+  <h2>Date de fin des candidatures</h2>
+  <h4 ng-init='candidatures_end_modif=false' ng-show=!candidatures_end_modif>
+    {{ configuration.candidature_date_end | date : "EEEE d MMMM yyyy à HH'h'mm" | translate_en_to_fr }}
+    <a ng-click="candidatures_end_modif=!candidatures_end_modif" ><i class="glyphicon glyphicon-edit"></i>  </a>
+  </h4>
+  <div ng-show=candidatures_end_modif>
+    <input class="big" type="date" size=50 name="cItwDate" ng-model="candidature_date_end" />
+    à
+    <input class="big" type="time" size=50 name="cItwTime" ng-model="candidature_date_end"/>
+
+    <button class="btn " ng-click="candidature_date_end=now();" >Maintenant ! </button>
+
+    <button class="btn btn-warning" ng-click="
+                      candidature_date_end = date(configuration.candidature_date_end);
+                      candidatures_end_modif=!candidatures_end_modif;
+                      " >Annuler</button>
+    <button class="btn btn-success" ng-click="
+                      configuration.candidature_date_end = (candidature_date_end | date:'yyyy-MM-ddTHH:mm:ss');
+                      configuration.patch({'candidature_date_end': configuration.candidature_date_end});
+                      candidatures_end_modif=!candidatures_end_modif;
+                      " >Valider</button>
+  </div>
+  <hr/>
+
+
+  <!--
+
+     Nom
+     PROMO
+
+  -->
+
+
+    <h2>Nom de la futur Promotion</h2>
+    <h4 ng-init='promo_name_modif=false' ng-show=!promo_name_modif>
+      {{ promotion.name }}
+      <a ng-click="promo_name_modif=!promo_name_modif" ><i class="glyphicon glyphicon-edit"></i>  </a>
+    </h4>
+    <div ng-show=promo_name_modif>
+      <input id="name" type="text"
+            ng-model="promo_name" name="pName" />
+            <button class="btn btn-warning" ng-click="
+                              promotion.name = date(configuration.candidature_date_end);
+                              promo_name_modif=!promo_name_modif;
+                              " >Annuler</button>
+            <button class="btn btn-success" ng-click="
+                              promotion.patch({'name': promo_name});
+                              promotion.name = promo_name;
+                              promo_name_modif=!promo_name_modif;
+                              " >Valider</button>
+    </div>
+    <hr/>
+
+
+     <!--
+
+     Date
+     Naissance limite
+
+     -->
+
+
+    <h2>Date de naissance limite</h2>
+    <h4 ng-init='birth_max_modif=false' ng-show=!birth_max_modif>
+      {{ date_of_birth_max  | date : "EEEE d MMMM yyyy" | translate_en_to_fr }}
+      <a ng-click="birth_max_modif=!birth_max_modif" ><i class="glyphicon glyphicon-edit"></i>  </a>
+    </h4>
+    <div ng-show=birth_max_modif>
+      <input type="date" name="cBirthDate" ng-model="date_of_birth_max"/>
+
+      <button class="btn btn-warning" ng-click="
+                        date_of_birth_max = date(configuration.date_of_birth_max);
+                        birth_max_modif=!birth_max_modif;
+                        " >Annuler</button>
+      <button class="btn btn-success" ng-click="
+                        configuration.patch({'date_of_birth_max': configuration.date_of_birth_max});
+                        birth_max_modif=!birth_max_modif;
+                        " >Valider</button>
+
+
+
+    </div>

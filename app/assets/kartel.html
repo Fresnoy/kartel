@@ -14,7 +14,24 @@
         <li ui-sref-active="active"><a ui-sref="school"><i class="glyphicon glyphicon-education"></i>&nbsp;&nbsp;Ecole</a></li>
         <li ui-sref-active="active"><a ui-sref="artist"><i class="glyphicon glyphicon-user"></i>&nbsp;&nbsp;Artistes</a></li>
         <li ui-sref-active="active"><a ui-sref="artwork"><i class="glyphicon glyphicon-picture"></i>&nbsp;&nbsp;Oeuvres</a></li>
-        <li ng-if="candidatures[0].created_on" ui-sref-active="active"><a ui-sref="candidatures"><i class="glyphicon glyphicon-dashboard"></i>&nbsp;&nbsp;Candidats</a></li>
+        <li ng-if="candidatures[0].created_on" ui-sref-active="active">
+
+          <a class="pointer dropdown-toggle" data-toggle="dropdown" role="button">
+            <i class="glyphicon glyphicon-dashboard"></i>&nbsp;&nbsp;Candidatures<span class="caret"></span>
+          </a>
+          <div class="dropdown-menu pull-right" id="menuCandidatures">
+            <div class="row">
+              <div class="container-fluid">
+                <a class="btn next" ui-sref="candidatures.list">
+                  <i class="glyphicon glyphicon-list"></i> <span>Liste des candiatures</span>
+                </a>
+                <a class="btn next" ui-sref="candidatures.configuration">
+                  <i class="glyphicon glyphicon-cog"></i> <span>Configuration</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </li>
       </ul>
       <div class="pull-right">
         <ul class="navbar-nav nav pull-right">
