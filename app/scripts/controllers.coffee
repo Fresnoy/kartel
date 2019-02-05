@@ -462,6 +462,7 @@ angular.module('memoire.controllers', ['memoire.services'])
   loadCandidat = (id) ->
       Candidatures.one(id).get().then((candidature) ->
         $scope.candidature = candidature
+        $scope.itw_date = new Date(candidature.interview_date)
         artist_id = candidature.artist.match(/\d+$/)[0]
         ArtistsV2.one(artist_id).get().then((artist) ->
             $scope.artist = artist
@@ -491,6 +492,9 @@ angular.module('memoire.controllers', ['memoire.services'])
       )
 
   loadCandidat($stateParams.id)
+
+  $scope.date = (date) ->
+    return new Date(date)
 )
 
 .controller('CandidaturesConfigurationController', ($rootScope, $scope, RestangularV2, Campaigns, PromotionsV2) ->
