@@ -45,35 +45,35 @@
   <div class="fr">
     <h2>Entretiens</h2>
     <p>Les candidats présélectionnés sont conviés à un entretien avec un jury entre le
-      {{ campain.interviews_start_date | date : "EEEE d" | translate_en_to_fr | lowercase }}
+      {{ campaign.interviews_start_date | date : "EEEE d" | translate_en_to_fr | lowercase }}
       au
-      {{ campain.interviews_end_date | date : "EEEE d MMMM yyyy" | translate_en_to_fr | lowercase }}.</p>
+      {{ campaign.interviews_end_date | date : "EEEE d MMMM yyyy" | translate_en_to_fr | lowercase }}.</p>
 
     <h2>Annonce des résultats</h2>
     <p>La liste des 24 candidats admis sera affichée au Fresnoy et mise en ligne sur son site internet
       <a href="https://www.lefresnoy.net/">www.lefresnoy.net</a>, <br/>
       le
-      {{ campain.selected_publish_date | date : "EEEE d MMMM yyyy à HH'h'" | translate_en_to_fr | lowercase }}. <br/>
+      {{ campaign.selected_publish_date | date : "EEEE d MMMM yyyy à HH'h'" | translate_en_to_fr | lowercase }}. <br/>
       Les résultats peuvent être communiqués par téléphone le jour même de
        14h00 à 18h00 au <a href="tel:+33320283800">+33 (0) 3 20 28 38 00</a>.<br>
        Les avis du jury ne sont pas motivés.
        <br>
-    Les admissions sont valables pour l’année scolaire {{campain.promotion.starting_year}}-{{campain.promotion.starting_year+1}}. <br/>
+    Les admissions sont valables pour l’année scolaire {{campaign.promotion.starting_year}}-{{campaign.promotion.starting_year+1}}. <br/>
     Aucun candidat admis ne peut prétendre différer son intégration, ni se prévaloir de son admission pour une autre année scolaire.</p>
   </div>
   <div class="en">
     <h2>Interviews</h2>
     <p>Shortlisted candidates will be invited for interview by the jury between
-      {{ campain.interviews_start_date | date : "EEEE MMMM d" }} to
-      {{ campain.interviews_end_date | date : "EEEE MMMM d, yyyy" }}.</p>
+      {{ campaign.interviews_start_date | date : "EEEE MMMM d" }} to
+      {{ campaign.interviews_end_date | date : "EEEE MMMM d, yyyy" }}.</p>
     <h2>Admitted applicants</h2>
     <p>The list of the 24 successful candidates will be posted up at Le Fresnoy and published on our website
       <a href="https://www.lefresnoy.net/">www.lefresnoy.net</a>
-      on <br/>{{ campain.selected_publish_date | date : "EEEE MMMM d, yyyy 'at' h a" }}. <br/>
+      on <br/>{{ campaign.selected_publish_date | date : "EEEE MMMM d, yyyy 'at' h a" }}. <br/>
       The results may also be given by telephone the same day by ringing from 2 pm to 6 pm at:
       <a href="tel:+33320283800">+33 (0) 3 20 28 38 00</a>.  <br/>
       These results are only valid
-      for the {{campain.promotion.starting_year}}-{{campain.promotion.starting_year+1}} term. The admitted applicants may not postpone their date of admittance, nor expect to be
+      for the {{campaign.promotion.starting_year}}-{{campaign.promotion.starting_year+1}} term. The admitted applicants may not postpone their date of admittance, nor expect to be
       admitted for a later school term.</p>
 
   </div>

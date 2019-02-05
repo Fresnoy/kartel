@@ -278,15 +278,15 @@ angular.module('memoire.controllers', ['memoire.services'])
   # order
   # none = 1 | true = 2 | false = 3
   $scope.select_criteres = [
-    {title: 'Toutes', sortby: {'campain__is_current_setup':2, "unselected": 3}, count:0 },
-    {title: 'Refusées', sortby: {'campain__is_current_setup':2, "unselected": 2}, count:0 },
-    {title: 'Non finalisées', sortby: {'campain__is_current_setup':2, "unselected": 3, "application_completed": 3}, count:0},
-    {title: 'En attente de validation', sortby: {'campain__is_current_setup':2, "unselected": 3, "application_completed": 2, "application_complete": 3}, count:0},
-    {title: 'Visées', sortby: {'campain__is_current_setup':2, "unselected": 3, "application_complete": 2}, count:0},
-    {title: 'Entretien : liste d\'attente', sortby: {'campain__is_current_setup':2, "unselected": 3, "wait_listed_for_interview": 2}, count:0},
-    {title: 'Entretien : Selectionnés', sortby: {'campain__is_current_setup':2, "unselected": 3, "selected_for_interview": 2}, count:0},
-    {title: 'Admis : liste d\'attente', sortby: {'campain__is_current_setup':2, "unselected": 3, "wait_listed": 2}, count:0},
-    {title: 'Admis', sortby: {'campain__is_current_setup':2, "unselected": 3, "selected": 2}, count:0},
+    {title: 'Toutes', sortby: {'campaign__is_current_setup':2, "unselected": 3}, count:0 },
+    {title: 'Refusées', sortby: {'campaign__is_current_setup':2, "unselected": 2}, count:0 },
+    {title: 'Non finalisées', sortby: {'campaign__is_current_setup':2, "unselected": 3, "application_completed": 3}, count:0},
+    {title: 'En attente de validation', sortby: {'campaign__is_current_setup':2, "unselected": 3, "application_completed": 2, "application_complete": 3}, count:0},
+    {title: 'Visées', sortby: {'campaign__is_current_setup':2, "unselected": 3, "application_complete": 2}, count:0},
+    {title: 'Entretien : liste d\'attente', sortby: {'campaign__is_current_setup':2, "unselected": 3, "wait_listed_for_interview": 2}, count:0},
+    {title: 'Entretien : Selectionnés', sortby: {'campaign__is_current_setup':2, "unselected": 3, "selected_for_interview": 2}, count:0},
+    {title: 'Admis : liste d\'attente', sortby: {'campaign__is_current_setup':2, "unselected": 3, "wait_listed": 2}, count:0},
+    {title: 'Admis', sortby: {'campaign__is_current_setup':2, "unselected": 3, "selected": 2}, count:0},
 
   ]
   $scope.select_orders = [

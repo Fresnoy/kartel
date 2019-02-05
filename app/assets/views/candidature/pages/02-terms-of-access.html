@@ -6,7 +6,7 @@
 
   <div class="fr">
     <p>La procédure de sélection est ouverte à tous les candidats, sans distinction de sexe ou de nationalité, âgés de 35 ans au plus
-       au 1<span class="exposant">er</span> janvier de l’année du concours (nés après le <span ng-bind="campain.date_of_birth_max | date : 'd MMMM yyyy'"/>).
+       au 1<span class="exposant">er</span> janvier de l’année du concours (nés après le <span ng-bind="campaign.date_of_birth_max | date : 'd MMMM yyyy'"/>).
        <br/><strong>Un justificatif vous sera demandé dans les prochaines pages.</strong>
     </p>
     <p>Les candidats doivent pouvoir justifier :</p>
@@ -18,7 +18,7 @@
   </div>
   <div class="en">
     <p>The selection procedure is open to all candidates, of any sex or nationality, aged 35 years maximum on
-      1st January of the current year (i.e. born after <span ng-bind="campain.date_of_birth_max | date : 'd MMMM yyyy'"/>).</p>
+      1st January of the current year (i.e. born after <span ng-bind="campaign.date_of_birth_max | date : 'd MMMM yyyy'"/>).</p>
     <p>The candidates must be able to provide proof of either:</p>
     </ul><li>A levels or Baccalauréat (or recognized equivalent) and 5 years of study validated by a diploma; (or)</li>
     <li>A levels or Baccalauréat (or recognized equivalent) and 7 years of artistic or professional experience; in this case,
@@ -39,9 +39,9 @@
       />
       <label for="accept" class="one check pointer">
         <span class="fr">J'ai pris connaissance des conditions d'accès, je suis né(e) après le
-          <span ng-bind="campain.date_of_birth_max | date : 'd MMMM yyyy'" />.</span>
+          <span ng-bind="campaign.date_of_birth_max | date : 'd MMMM yyyy'" />.</span>
         <span class="en">I hereby certify that I acknowledge the general access conditions, I was born after
-          <span ng-bind="campain.date_of_birth_max | date : 'd MMMM yyyy'"/>.</span>
+          <span ng-bind="campaign.date_of_birth_max | date : 'd MMMM yyyy'"/>.</span>
       </label>
     </div>
   </form>
