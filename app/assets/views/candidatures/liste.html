@@ -1,0 +1,161 @@
+
+<div class="candidatures" ng-if="user.is_superuser">
+
+    <div class="col-md-12">
+
+      <h1>Candidatures ({{ candidatures.length }})
+
+      </h1>
+
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+
+          <!-- Search text -->
+          <div class="col-md-3" ng-show="!show_order_param">
+
+            <label>Rechercher un(e) candidat(e)</label>
+
+             <div class="inner-addon right-addon">
+               <i class="glyphicon glyphicon-search"></i>
+               <input type="text" class="form-control"
+                  type="text"
+                  ng-model="search_candidat"
+                  ng-change="search(search_candidat)"
+                  placeholder="Rechercher un candidat" />
+             </div>
+
+          </div>
+          <!-- SEARCH PARAMS -->
+          <div class="col-md-3" ng-show="!show_order_param" ng-init='show_order_param = false'>
+            <label>Filter / classer les candidatures</label>
+             <div class="btn-group" ng-click="show_order_param=true">
+
+                 <span class="btn btn-default">{{select_criteres[critere].title}} ({{select_criteres[critere].count}})</span>
+
+                 <span type="button" class="btn btn-default">{{select_orders[order].title}}</span>
+
+                 <span type="button" class="btn btn-default " ng-class="{'dropup': asc!='true'}"><span class="caret"></span>
+            </div>
+            <a ng-click='download_data = make_data()' ng-href="{{download_data}}" target="_blank"
+          download="candidatures_{{sortby.title}}_{{today|date:'dd.MM.y_hh.mm.ss'}}.csv" type="button"
+          ng-style="{'opacity': (loading.status() != 0) ? '0.5':'1'  }"
+           class="btn btn-success btn-xs hidden-xs"  title="Téléchager les informations au format Excel">
+           <span ng-show="loading.status() == 0"><i class="glyphicon glyphicon-download-alt"></i></span>
+           <span ng-show="loading.status() != 0">{{(100*loading.status())| number:0}}%</span>
+          </a>
+          </div>
+
+          <!-- FICHE CANDIDAT -->
+
+          <div ng-show="candidat_id" class="col-xs-12 col-md-6">
+            <div class="candidat_view" ng-show="!show_order_param">
+                  <button title="Close" ng-sref='candidatures' ng-click="candidat_id = null" class="btn btn-default pull-right">
+                    <i class="glyphicon glyphicon-remove"></i></button>
+                  <div ui-view="candidat_view"></div>
+            </div>
+          </div>
+
+
+          <!-- PARAMS SEARCH -->
+          <div class="col-xs-12 col-md-12" ng-show="show_order_param">
+              <label>Afficher les candidatures : </label>
+              <select ng-model="critere">
+                <option ng-repeat="item in select_criteres track by $index"
+                value="{{$index}}">{{item.title}} ({{item.count}})</option>
+              </select>
+
+              <label>Trier les candidatures par : </label>
+              <select ng-model="order">
+                <option ng-repeat="item in select_orders track by $index"
+                value="{{$index}}">{{item.title}}</option>
+              </select>
+
+              <label>Ordre : </label>
+              <select ng-model="asc">
+                <option value="true" ng-selected="asc == 'true'">Ascendant</option>
+                <option value="false" ng-selected="asc == 'false'">Descendant</option>
+              </select>
+
+              <hr/>
+                <a class="btn block btn-success" ng-click="show_order_param=false" ui-sref="{sortby: critere, orderby: order, asc: asc}">
+                  Valider
+                </a>
+
+          </div>
+
+
+        </div><!-- 12 -->
+
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-md-6" ng-class="{'hidden-xs hidden-sm' : candidat_id}" ng-show="!show_order_param">
+          <ng-include src="'views/partials/candidat_card.html'" ng-repeat="candidature in candidatures track by $index"></ng-include>
+        </div>
+
+      </div>
+
+      <table style="width:100%" id="data_candidatures" class="hidden">
+        <tr><th>Version du {{ today | date :  "dd.MM.y - HH:mm" }} //// {{ today.getTime() }}</th></tr>
+        <tr><th></th></tr>
+        <tr>
+          <th>Index</th>
+          <th>Date de création</th>
+          <th>Dernière Modification</th>
+          <th>N° dossier</th>
+          <th>Nom</th>
+          <th>Prénom</th>
+          <th>Sexe</th>
+          <th>Date naiss</th>
+          <th>Nationalité</th>
+          <th>Email	</th>
+          <th>Adresse</th>
+          <th>Code postal</th>
+          <th>Ville</th>
+          <th>Pays</th>
+          <th>Matériel</th>
+          <th>Oral	</th>
+          <th>Note finale	</th>
+          <th>SKYPE	</th>
+          <th>Note sélection 2</th>
+          <th>Note sélection 3</th>
+          <th>Diplôme	</th>
+          <th>Observations/commission	</th>
+        </tr>
+        <tr ng-repeat="candidature in candidatures track by $index">
+            <th>{{$index+1}}</th>
+            <th>{{candidature.created_on.split("T")[0] | date:'dd/MM'}}</th>
+            <th>{{candidature.updated_on.split(".")[0] | date:'dd/MM'}}</th>
+            <th>{{candidature.current_year_application_count}}</th>
+            <th>{{candidature.artist.user.last_name}}</th>
+            <th>{{candidature.artist.user.first_name}}</th>
+            <th>{{candidature.artist.user.profile.gender}}</th>
+            <th>{{candidature.artist.user.profile.birthdate | date:'dd/MM/yyyy' }}</th>
+            <th>
+              <span
+                ng-repeat="nationality in candidature.artist.user.profile.nationality.split(', ') track by $index"
+                >{{country.codeToCountry[nationality]}}</span>
+            </th>
+            <th>{{candidature.artist.user.email}}</th>
+            <th>{{candidature.artist.user.profile.homeland_address}}</th>
+            <th>{{candidature.artist.user.profile.homeland_zipcode}}</th>
+            <th>{{candidature.artist.user.profile.homeland_town}}</th>
+            <th>{{country.codeToCountry[candidature.artist.user.profile.homeland_country]}}</th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th>{{candidature.remote_interview ? 'X' : ''}}	</th>
+            <th></th>
+            <th></th>
+            <th>
+              <span ng-if='candidature.master_degree="Y"'>Bac +5</span>
+              <span ng-if='candidature.master_degree="P"'>Bac +5 en cours</span>
+              <span class="justificatifs" ng-repeat="justif in candidature.cursus_justifications.media track by $index"
+                >{{justif.label}}</span>
+            </th>
+            <th></th>
+        </tr>
+      </table>
+
+
+  </div>

@@ -492,3 +492,27 @@ angular.module('memoire.controllers', ['memoire.services'])
 
   loadCandidat($stateParams.id)
 )
+
+.controller('CandidaturesConfigurationController', ($rootScope, $scope, RestangularV2, Campaigns, PromotionsV2) ->
+  $scope.configuration = []
+  $scope.promotion = []
+
+  $scope.now = () ->
+    return new Date(Date.now())
+  $scope.date = (date) ->
+    return new Date(date)
+
+  Campaigns.getList({is_current_setup: 2}).then((current_campaign) ->
+    $scope.configuration = current_campaign[0]
+    $scope.date_of_birth_max = new Date($scope.configuration.date_of_birth_max)
+    $scope.interviews_publish_date = new Date($scope.configuration.interviews_publish_date)
+    $scope.selected_publish_date = new Date($scope.configuration.selected_publish_date)
+    $scope.candidature_date_end = new Date($scope.configuration.candidature_date_end)
+    # get promo infos
+    promo_id = $scope.configuration.promotion.match(/\d+$/)[0]
+    RestangularV2.one("school/promotion/"+promo_id).get().then((promo) ->
+        $scope.promo_name = promo.name
+        $scope.promotion = promo
+    )
+  )
+)
