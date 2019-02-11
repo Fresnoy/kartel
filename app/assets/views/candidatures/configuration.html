@@ -112,7 +112,7 @@
 
 
     <h2>Nom de la futur Promotion</h2>
-    <h4 ng-init='promo_name_modif=false' ng-show=!promo_name_modif>
+    <h4 ng-init='promo_name_modif=false;' ng-show=!promo_name_modif>
       {{ promotion.name }}
       <a ng-click="promo_name_modif=!promo_name_modif" ><i class="glyphicon glyphicon-edit"></i>  </a>
     </h4>
@@ -120,7 +120,7 @@
       <input id="name" type="text"
             ng-model="promo_name" name="pName" />
             <button class="btn btn-warning" ng-click="
-                              promotion.name = date(configuration.candidature_date_end);
+                              promo_name = promotion.name;
                               promo_name_modif=!promo_name_modif;
                               " >Annuler</button>
             <button class="btn btn-success" ng-click="
