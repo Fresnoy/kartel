@@ -115,6 +115,7 @@
           <th>Pays</th>
           <th>Matériel</th>
           <th>Oral	</th>
+          <th>Date d'entretien</th>
           <th>Note finale	</th>
           <th>SKYPE	</th>
           <th>Note sélection 2</th>
@@ -143,6 +144,7 @@
             <th>{{country.codeToCountry[candidature.artist.user.profile.homeland_country]}}</th>
             <th></th>
             <th></th>
+            <th>{{candidature.interview_date |  date : "d MMMM yyyy à HH'h'mm"  | translate_en_to_fr | lowercase  }}</th>
             <th></th>
             <th>{{candidature.remote_interview ? 'X' : ''}}	</th>
             <th></th>
