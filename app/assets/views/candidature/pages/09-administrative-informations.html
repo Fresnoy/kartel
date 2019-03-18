@@ -73,30 +73,51 @@
             </label>
          </div>
          <div class="field">
-           <input type="date" ng-min="birthdateMin" name="uBirthDate" ng-max="birthdateMax" ng-model="birthdate.value"
-           ng-change="user.profile.birthdate = (birthdate.value | date:'yyyy-MM-dd');
-           user.patch({'profile':{'birthdate': user.profile.birthdate}}); " required />
+           <div ng-init="safari_continue=true">
+             <p ng-if="is_safari=false" class="alert alert-danger">
+               Attention, il semble que vous utilisiez le navigateur <strong>Safari</strong>, nous avons constaté un BUG
+               avec ce navigateur pour la saisie de la date de naissance.
+               Nous vous invitons à utiliser un autre navigateur web et utiliser la dernière version
+               de Firefox, Chrome ou Edge.
+             </p>
+             Si vous ne pouvez pas faire autrement,
+             <a ng-click="safari_continue=true" class="alert-link">cliquez ici</a>.
+             <input ng-if="safari_continue==true" placeholder="01/10/1997" type="text"
+             name="uBirthDate"
+             ng-init="safari_birthdate_value='01/10/1997'"
+             ng-model="safari_birthdate_value"
+             ng-change="birthdate.value = safari_birthdate_value = safari_birthdate_change(safari_birthdate_value)"
+             required />
+
+           </div>
+
+             <input ng-if="!is_safari" type="date" ng-min="birthdateMin" name="uBirthDate"
+             ng-max="birthdateMax" ng-model="birthdate.value"
+             ng-change="user.profile.birthdate = (birthdate.value | date:'yyyy-MM-dd');
+             user.patch({'profile':{'birthdate': user.profile.birthdate}}); " required />
 
 
-            <div ng-show="form1.uBirthDate.$touched && form1.uBirthDate.$invalid" ng-messages="form1.uBirthDate.$error" class="help-block error">
-               <div ng-message="required">
-                  <span class="fr">Obligatoire</span>
-                  <span class="en">Required</span>
-               </div>
-               <div ng-message="min">
-                  <span class="fr">Il faut avoir moins de 35 ans (être nés apres  le <span ng-bind="campaign.date_of_birth_max | date : 'd MMMM yyyy'" />) </span>
-                  <span class="en">to be completed</span>
-               </div>
-               <div ng-message="max">
-                  <span class="fr">Il faut être majeur pour s'inscrire</span>
-                  <span class="en">to be completed</span>
-               </div>
-            </div>
-            <label for="birthdate">
-            <span class="field-state required"></span>
-            <span class="fr">Date de naissance : jj/mm/aaaa </span>
-            <span class="en">Birthdate : dd/mm/yyyy</span>
-            </label>
+
+              <div ng-show="form1.uBirthDate.$touched && form1.uBirthDate.$invalid" ng-messages="form1.uBirthDate.$error" class="help-block error">
+                 <div ng-message="required">
+                    <span class="fr">Obligatoire</span>
+                    <span class="en">Required</span>
+                 </div>
+                 <div ng-message="min">
+                    <span class="fr">Il faut avoir moins de 35 ans (être nés apres  le <span ng-bind="campaign.date_of_birth_max | date : 'd MMMM yyyy'" />) </span>
+                    <span class="en">to be completed</span>
+                 </div>
+                 <div ng-message="max">
+                    <span class="fr">Il faut être majeur pour s'inscrire</span>
+                    <span class="en">to be completed</span>
+                 </div>
+              </div>
+              <label for="birthdate">
+              <span class="field-state required"></span>
+              <span class="fr">Date de naissance : jj/mm/aaaa </span>
+              <span class="en">Birthdate : dd/mm/yyyy</span>
+              </label>
+           </div>
          </div>
          <div class="field">
             <select id="birth-country"
