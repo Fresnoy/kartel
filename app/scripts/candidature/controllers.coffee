@@ -474,6 +474,10 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 .controller('AdministrativeInformationsController', ($rootScope, $scope, $state, $filter, ISO3166,
         Restangular, RestangularV2, Media, Upload) ->
 
+  # input date gros bug avec safari !
+  $scope.is_safari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
+  $scope.safari_birthdate_value = null
+
   $rootScope.loadInfos($rootScope)
   $rootScope.step.current = "09"
   $rootScope.current_display_screen = candidature_config.screen.admin_infos
@@ -485,6 +489,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
   $scope.$watch("user.profile.birthdate", (newValue, oldValue) ->
     if(newValue)
       $scope.birthdate.value = new Date(newValue)
+      $scope.safari_birthdate_value = newValue.split('-').reverse().join('/')
   )
   $scope.$watch("campaign", (newValue, oldValue) ->
     if(newValue)
