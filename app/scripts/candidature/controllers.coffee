@@ -476,20 +476,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 
   # input date gros bug avec safari !
   $scope.is_safari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
-  $scope.safari_birthdate_change = (value) =>
-    if(value)
-      value = value
-        # Remove all non-digits
-        .replace(/\D+/g, '')
-        # Stick to first 10, ignore later digits
-        .slice(0, 8)
-        # Add a space after any 2-digit group followed by more digits
-        .replace(/^(\d{2})/g, '$1/')
-        .replace(/^(\d{2}).?(\d{2})/g, '$1/$2/')
-      date = value
-        .split("/")
-        .join('-')
-
+  $scope.safari_birthdate_value = null
 
   $rootScope.loadInfos($rootScope)
   $rootScope.step.current = "09"
@@ -501,8 +488,8 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 
   $scope.$watch("user.profile.birthdate", (newValue, oldValue) ->
     if(newValue)
-      console.log(newValue)
       $scope.birthdate.value = new Date(newValue)
+      $scope.safari_birthdate_value = newValue.split('-').reverse().join('/')
   )
   $scope.$watch("campaign", (newValue, oldValue) ->
     if(newValue)
