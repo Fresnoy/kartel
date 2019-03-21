@@ -45,6 +45,9 @@
       <i class="glyphicon glyphicon-facetime-video"></i>&nbsp;
       <a class="pointer" ng-click='singleLightbox(candidature.presentation_video, candidature.presentation_video_details)'>
         Voir la vidéo de 8 minutes</a>
+      <div ng-show="candidature.presentation_video_password!=''">
+          Mot de passe : {{ candidature.presentation_video_password }}
+      </div>
     </div>
     <div ng-if="!candidature.presentation_video">
       <span class="text-danger warning">Vidéo absente</span>
@@ -284,9 +287,10 @@
               Sélectionné<ng-pluralize count="artist.user.profile.gender.indexOf('F')" when="{'0': 'e'}"></ng-pluralize> pour l'entretien
               <span ng-class='{"alert-danger":!candidature.interview_date}'>le </span>
               <strong ng-init='itw_modif=false' ng-show=!itw_modif>
-                {{ candidature.interview_date | date : "EEEE d MMMM yyyy à HH'h'mm" | translate_en_to_fr }}</strong>
-                <a ng-class='{"alert-link":!candidature.interview_date}' ng-click="itw_modif=!itw_modif" ><i class="glyphicon glyphicon-edit"></i>  </a>
+                {{ candidature.interview_date | date : "EEEE d MMMM yyyy à HH'h'mm" | translate_en_to_fr }}
               </strong>
+                <a ng-class='{"alert-link":!candidature.interview_date}' ng-click="itw_modif=!itw_modif" ><i class="glyphicon glyphicon-edit"></i>  </a>
+              
             </span>
               <div ng-show=itw_modif>
                 <input type="date" size=50 name="cItwDate" ng-model="itw_date" />
