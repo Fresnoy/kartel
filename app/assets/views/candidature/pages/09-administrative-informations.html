@@ -73,34 +73,25 @@
             </label>
          </div>
          <div class="field">
-             <div ng-if="is_safari">
-               <p class="alert alert-danger">
-                 Attention, il semble que vous utilisiez le navigateur <strong>Safari</strong>,
-                 nous avons constaté un problème avec ce navigateur pour la saisie de la date de naissance.
-                 Nous vous invitons à utiliser un autre navigateur web et télécharger la dernière version
-                 de
-                 <a href='https://www.firefox.com' target="_blank">Firefox</a> ou
-                 <a href='https://www.chrome.com' target="_blank">Chrome</a>.
-               </p>
-               <p class="alert alert-danger">
-                 Si vous ne pouvez pas faire autrement,
-                 <a href='mailto:selection@lefresnoy.net?subject=Bug%20:%20Date%20de%20naissance&amp;body=
-Bonjour%2C%0A%0AJe%20rencontre%20un%20BUG%20avec%20la%20saisie%20de%20ma%20date%20de%20naissance%2C%20pouvez-vous%20la%20modifier%20%3F%0A
-Identifiant%20%3A%20{{user.username}}%0A
-Date%20de%20naissance%20%3A%20JJ%2FMM%2FAAAA%0A%0AMerci%0A{{user.first_name}}%20{{user.last_name}}' target="_blank">
-                          envoyez nous un email avec votre date de naissance</a>.
-               </p>
-             </div>
-             <input ng-if="is_safari" ng-model="safari_birthdate_value" disabled type="text">
 
-             <input ng-if="!is_safari" type="date" ng-min="birthdateMin" name="uBirthDate"
+             <input ng-if="is_safari" placeholder="01/10/1997" type="text"
+              name="uBirthDate"
+              ng-model="safari_birthdate_value"
+              ng-keyup="safari_keyup($event, this)"
+              ng-change="safari_birthdate_value = safari_birthdate_change(safari_birthdate_value);
+                user.profile.birthdate = safari_birthdate_value.split('/').reverse().join('-');
+                user.patch({'profile':{'birthdate': user.profile.birthdate}});
+                "
+              required />
+
+             <input ng-if="!is_safari"  type="date" ng-min="birthdateMin" name="uBirthDate"
              ng-max="birthdateMax" ng-model="birthdate.value"
              ng-change="user.profile.birthdate = (birthdate.value | date:'yyyy-MM-dd');
              user.patch({'profile':{'birthdate': user.profile.birthdate}}); " required />
 
 
 
-              <div ng-if="!is_safari && !birthdate.value" ng-show="form1.uBirthDate.$touched && form1.uBirthDate.$invalid" ng-messages="form1.uBirthDate.$error" class="help-block error">
+              <div ng-show="form1.uBirthDate.$touched && form1.uBirthDate.$invalid" ng-messages="form1.uBirthDate.$error" class="help-block error">
                  <div ng-message="required">
                     <span class="fr">Obligatoire</span>
                     <span class="en">Required</span>

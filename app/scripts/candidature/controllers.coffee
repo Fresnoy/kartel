@@ -478,6 +478,52 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
   $scope.is_safari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
   $scope.safari_birthdate_value = null
 
+  $scope.safari_keyup = (event, scope) =>
+    # move cursor to one more when auto insert '/'
+    target = event.currentTarget
+    char_num = target.selectionStart
+    char_str = scope.safari_birthdate_value.split('')[char_num]
+
+    if(char_str == "/")
+        char_num++
+        form1.uBirthDate.setSelectionRange(char_num, char_num)
+
+  $scope.safari_birthdate_change = (value) =>
+    if(value)
+      transform = value
+        # Remove all non-digits
+        .replace(/\D+/g, '')
+        # Stick to first 10, ignore later digits
+        .slice(0, 8)
+        # day 0 -> 31
+        .replace(/^([^0-3])/, '')
+        .replace(/^3([^01])(.*)/, '3$2')
+        # month 1 -> 12
+        .replace(/^(.{2})([^01]|1[^0-2])/, '$1')
+        # Add a space after any 2-digit group followed by more digits
+        .replace(/^(\d{2})/g, '$1/')
+        .replace(/^(\d{2}).?(\d{2})/g, '$1/$2/')
+        #
+      # angular error emulate
+      error = {}
+      # safari know date like yyyy/MM/dd
+      user_birthdate = new Date(transform.split('/').reverse().join('/'))
+
+      date_min = new Date($rootScope.campaign.date_of_birth_max.split('-').join('/'))
+      date_max = new Date($rootScope.current_year-$rootScope.age_min+1,0,0)
+
+      if(user_birthdate < date_min)
+        error.min = true
+
+      if(user_birthdate > date_max)
+        error.max = true
+
+      # emulate error to display as input date
+      $scope.form1.uBirthDate.$error = error
+      $scope.form1.uBirthDate.$validate()
+
+      return transform
+
   $rootScope.loadInfos($rootScope)
   $rootScope.step.current = "09"
   $rootScope.current_display_screen = candidature_config.screen.admin_infos
