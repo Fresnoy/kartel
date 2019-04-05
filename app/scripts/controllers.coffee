@@ -392,7 +392,7 @@ angular.module('memoire.controllers', ['memoire.services'])
 )
 
 .controller('CandidatController', ($rootScope, $scope, ISO3166, $stateParams, RestangularV2, Candidatures, ArtistsV2,
-        WebsiteV2, Users, Galleries, Media, Lightbox, $sce) ->
+        WebsiteV2, Users, Galleries, Media, Lightbox, clipboard, $sce) ->
   # init
   $scope.candidature = []
   $scope.artist = []
@@ -495,6 +495,18 @@ angular.module('memoire.controllers', ['memoire.services'])
 
   $scope.date = (date) ->
     return new Date(date)
+
+
+  # PASSWORD clipboard
+  $scope.password_to_clipboard = null
+  $scope.copySuccess = () ->
+    $scope.password_to_clipboard = true
+
+  $scope.copyFail = (err) ->
+    $scope.password_to_clipboard = false
+  $scope.resetCopy = () ->
+    $scope.password_to_clipboard = null
+
 )
 
 .controller('CandidaturesConfigurationController', ($rootScope, $scope, RestangularV2, Campaigns, PromotionsV2) ->
