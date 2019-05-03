@@ -380,8 +380,8 @@ angular.module('memoire.controllers', ['memoire.services'])
     for line in document.querySelectorAll("table#data_candidatures tr")
         row = []
         for col in line.querySelectorAll("td, th")
-            t = $(col).text().replace(/\s\s+/g,' ')
             t = $(col).text().replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n|&#10;&#13;|&#13;&#10;|&#10;|&#13;)/g, ' ')
+            t = $(col).text().replace(/\s+/g,' ')
             row.push(t)
         csv.push(row.join(";"))
 
