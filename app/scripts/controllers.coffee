@@ -496,7 +496,6 @@ angular.module('memoire.controllers', ['memoire.services'])
   $scope.date = (date) ->
     return new Date(date)
 
-
   # PASSWORD clipboard
   $scope.password_to_clipboard = null
   $scope.copySuccess = () ->
@@ -506,6 +505,26 @@ angular.module('memoire.controllers', ['memoire.services'])
     $scope.password_to_clipboard = false
   $scope.resetCopy = () ->
     $scope.password_to_clipboard = null
+
+
+  # Search binominal
+  $scope.binominal_link_id = ""
+  $scope.$watch("candidature", (newValue, oldValue) ->
+    if(newValue)
+      # console.log(newValue)
+      candidat = newValue
+      # cherche à faire un lien avec le binome
+      if(candidat.binomial_application)
+          binominal_split = candidat.binomial_application_with.split(" ")
+          # cherche avec ce qu'a remplis le candidat (avec un peu de chance, le nom / prénom) 
+          for name in binominal_split
+            critere = {search: name, campaign__is_current_setup:2}
+            Candidatures.getList(critere).then((candidatures) ->
+              if(candidatures.length && $scope.binominal_link_id=="")
+                $scope.binominal_link_id = candidatures[0].id
+            )
+  )
+
 
 )
 

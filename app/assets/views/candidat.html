@@ -227,7 +227,7 @@
           <br/>
           <div ng-if="candidature.binomial_application">
             <h4>Candidature en binôme</h4>
-            <p>Candidate en binôme avec : {{candidature.binomial_application_with}}</p>
+            <p>Candidate en binôme avec : <a ui-sref="candidatures.list.candidat({id: binominal_link_id})" ng-click="$parent.$parent.candidat_id = binominal_link_id;">{{candidature.binomial_application_with}}</a></p>
             <span ng-if='!candidature.binomial_application_with' class="text-danger warning">Nom du binome absent</span>
           </div>
           <h4>Projet 1ere année</h4>

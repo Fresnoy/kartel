@@ -101,7 +101,6 @@
         <tr>
           <th>Index</th>
           <th>Date de création</th>
-          <th>Dernière Modification</th>
           <th>N° dossier</th>
           <th>Nom</th>
           <th>Prénom</th>
@@ -113,11 +112,12 @@
           <th>Code postal</th>
           <th>Ville</th>
           <th>Pays</th>
+          <th>Duo avec</th>
           <th>Matériel</th>
           <th>Oral	</th>
           <th>Date d'entretien</th>
-          <th>Note finale	</th>
           <th>SKYPE	</th>
+          <th>Note finale	</th>
           <th>Note sélection 2</th>
           <th>Note sélection 3</th>
           <th>Observations/commission	</th>
@@ -127,7 +127,6 @@
         <tr ng-repeat="candidature in candidatures track by $index">
             <th>{{$index+1}}</th>
             <th>{{candidature.created_on.split("T")[0] | date:'dd/MM'}}</th>
-            <th>{{candidature.updated_on.split(".")[0] | date:'dd/MM'}}</th>
             <th>{{candidature.current_year_application_count}}</th>
             <th>{{candidature.artist.user.last_name}}</th>
             <th>{{candidature.artist.user.first_name}}</th>
@@ -143,11 +142,12 @@
             <th>{{candidature.artist.user.profile.homeland_zipcode}}</th>
             <th>{{candidature.artist.user.profile.homeland_town}}</th>
             <th>{{country.codeToCountry[candidature.artist.user.profile.homeland_country]}}</th>
-            <th></th>
-            <th></th>
+            <th>{{candidature.binomial_application ? candidature.binomial_application_with : ''}}</th>
+            <th></th> <!-- Materiel -->
+            <th></th> <!-- Oral -->
             <th>{{candidature.interview_date |  date : "d MMMM yyyy à HH'h'mm"  | translate_en_to_fr | lowercase  }}</th>
-            <th></th>
-            <th>{{candidature.remote_interview ? 'X' : ''}}	</th>
+            <th>{{candidature.remote_interview ? 'X' : ''}}	</th> <!-- Skype -->
+            <th></th> <!-- Note finale  -->
             <th></th>
             <th></th>
             <th>
