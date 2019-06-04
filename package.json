@@ -9,7 +9,7 @@
   },
   "main": "./lib/index",
   "dependencies": {
-    "sass-brunch": "2.6.0"
+    "sass-brunch": "2.6.3"
   },
   "devDependencies": {
     "bower": "1.7.7",

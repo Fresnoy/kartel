@@ -868,7 +868,6 @@ body.en {
           background: orange;
         }
       }
-
       &.date{
         background: transparent url(../images/candidature/icons/calendar.svg) no-repeat right;
         background-size: 20px;
@@ -1488,6 +1487,15 @@ body.en {
 
 label{
 
+}
+
+input{
+  &.small{
+    font-size: 0.5em;
+  }
+  &.big{
+    font-size: 1.5em;
+  }
 }
 
  label,

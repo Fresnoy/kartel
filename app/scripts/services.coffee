@@ -44,9 +44,17 @@ angular.module('memoire.services', ['restangular'])
 
         ).service('school/student-application')
 )
+.factory('Campaigns', (RestangularV2) ->
+        return RestangularV2.withConfig((RestangularConfigurer) ->
+        ).service('school/student-application-setup')
+)
 
 .factory('Students', (Restangular) ->
         return Restangular.service('school/student')
+)
+
+.factory('PromotionsV2', (RestangularV2) ->
+        return RestangularV2.service('school/promotion')
 )
 
 .factory('Promotions', (Restangular) ->

@@ -3,12 +3,12 @@
    <h1><class class="fr">Aide</class><class class="en">Help</class></h1>
    <div class="fr">
       <p>La procédure de sélection est ouverte à tous les candidats, sans distinction de sexe ou de nationalité,
-        âgés de 35 ans au plus au 1er janvier de l’année du concours (nés après le <span ng-bind="campain.date_of_birth_max | date : 'd MMMM yyyy' | translate_en_to_fr" />).</p>
+        âgés de 35 ans au plus au 1er janvier de l’année du concours (nés après le <span ng-bind="campaign.date_of_birth_max | date : 'd MMMM yyyy' | translate_en_to_fr" />).</p>
    </div>
    <div class="en">
       <p>The selection procedure is open to all candidates, of any sex or nationality, aged 35 years maximum on 1st January of the current year
         (i.e. born after
-        <span ng-bind="campain.date_of_birth_max | date : 'd MMMM yyyy'" />).</p>
+        <span ng-bind="campaign.date_of_birth_max | date : 'd MMMM yyyy'" />).</p>
    </div>
 </div>
 
@@ -73,30 +73,44 @@
             </label>
          </div>
          <div class="field">
-           <input type="date" ng-min="birthdateMin" name="uBirthDate" ng-max="birthdateMax" ng-model="birthdate.value"
-           ng-change="user.profile.birthdate = (birthdate.value | date:'yyyy-MM-dd');
-           user.patch({'profile':{'birthdate': user.profile.birthdate}}); " required />
+
+             <input ng-if="is_safari" placeholder="01/10/1997" type="text"
+              name="uBirthDate"
+              ng-model="safari_birthdate_value"
+              ng-keyup="safari_keyup($event, this)"
+              ng-change="safari_birthdate_value = safari_birthdate_change(safari_birthdate_value);
+                user.profile.birthdate = safari_birthdate_value.split('/').reverse().join('-');
+                user.patch({'profile':{'birthdate': user.profile.birthdate}});
+                "
+              required />
+
+             <input ng-if="!is_safari"  type="date" ng-min="birthdateMin" name="uBirthDate"
+             ng-max="birthdateMax" ng-model="birthdate.value"
+             ng-change="user.profile.birthdate = (birthdate.value | date:'yyyy-MM-dd');
+             user.patch({'profile':{'birthdate': user.profile.birthdate}}); " required />
 
 
-            <div ng-show="form1.uBirthDate.$touched && form1.uBirthDate.$invalid" ng-messages="form1.uBirthDate.$error" class="help-block error">
-               <div ng-message="required">
-                  <span class="fr">Obligatoire</span>
-                  <span class="en">Required</span>
-               </div>
-               <div ng-message="min">
-                  <span class="fr">Il faut avoir moins de 35 ans (être nés apres  le <span ng-bind="campain.date_of_birth_max | date : 'd MMMM yyyy'" />) </span>
-                  <span class="en">to be completed</span>
-               </div>
-               <div ng-message="max">
-                  <span class="fr">Il faut être majeur pour s'inscrire</span>
-                  <span class="en">to be completed</span>
-               </div>
-            </div>
-            <label for="birthdate">
-            <span class="field-state required"></span>
-            <span class="fr">Date de naissance : jj/mm/aaaa </span>
-            <span class="en">Birthdate : dd/mm/yyyy</span>
-            </label>
+
+              <div ng-show="form1.uBirthDate.$touched && form1.uBirthDate.$invalid" ng-messages="form1.uBirthDate.$error" class="help-block error">
+                 <div ng-message="required">
+                    <span class="fr">Obligatoire</span>
+                    <span class="en">Required</span>
+                 </div>
+                 <div ng-message="min">
+                    <span class="fr">Il faut avoir moins de 35 ans (être nés apres  le <span ng-bind="campaign.date_of_birth_max | date : 'd MMMM yyyy'" />) </span>
+                    <span class="en">to be completed</span>
+                 </div>
+                 <div ng-message="max">
+                    <span class="fr">Il faut être majeur pour s'inscrire</span>
+                    <span class="en">to be completed</span>
+                 </div>
+              </div>
+              <label for="birthdate">
+              <span class="field-state required"></span>
+              <span class="fr">Date de naissance : jj/mm/aaaa </span>
+              <span class="en">Birthdate : dd/mm/yyyy</span>
+              </label>
+           </div>
          </div>
          <div class="field">
             <select id="birth-country"

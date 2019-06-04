@@ -28,18 +28,18 @@
       </p>
       <ul>
          <li>Dossier de candidature (inscription administrative et dossier artistique), enregistrement en ligne, au plus tard le
-           <strong>{{ campain.candidature_date_end | date : "EEEE d MMMM yyyy à HH" | translate_en_to_fr | lowercase }}h, heure de Paris</strong>
+           <strong>{{ campaign.candidature_date_end | date : "EEEE d MMMM yyyy à HH" | translate_en_to_fr | lowercase }}h, heure de Paris</strong>
            (un mail de confirmation de votre inscription vous sera adressé à la fin
 de la procédure d’enregistrement de votre candidature, il est indispensable pour sa validation)</li>
          <li>Présélection sur dossier, annonce des résultats le<br/>
-           <strong>{{ campain.interviews_publish_date | date : "EEEE d MMMM yyyy à HH'h'" | translate_en_to_fr | lowercase }}</strong>
+           <strong>{{ campaign.interviews_publish_date | date : "EEEE d MMMM yyyy à HH'h'" | translate_en_to_fr | lowercase }}</strong>
          </li>
          <li>Entretiens oraux du<br/>
-            {{ campain.interviews_start_date | date : "EEEE d" | translate_en_to_fr | lowercase }}
+            {{ campaign.interviews_start_date | date : "EEEE d" | translate_en_to_fr | lowercase }}
             au
-            {{ campain.interviews_end_date | date : "EEEE d MMMM yyyy" | translate_en_to_fr | lowercase }}
+            {{ campaign.interviews_end_date | date : "EEEE d MMMM yyyy" | translate_en_to_fr | lowercase }}
             , annonce des résultats le<br/>
-            <strong>{{ campain.selected_publish_date | date : "EEEE d MMMM yyyy à HH'h'" | translate_en_to_fr | lowercase }}</strong>
+            <strong>{{ campaign.selected_publish_date | date : "EEEE d MMMM yyyy à HH'h'" | translate_en_to_fr | lowercase }}</strong>
           </li>
       </ul>
    </div>
@@ -47,15 +47,15 @@ de la procédure d’enregistrement de votre candidature, il est indispensable p
       <p>The selection process is annual; it will take place according to the following schedule:</p>
       <ul>
          <li>Administrative registration and dispatch of artistic dossier no later than midnight on<br/>
-          <strong>{{ campain.candidature_date_end | date : "EEEE MMMM d, yyyy  HH" }}h, (Paris time)</strong>
+          <strong>{{ campaign.candidature_date_end | date : "EEEE MMMM d, yyyy  HH" }}h, (Paris time)</strong>
          <li>1st selection of applications. List published online on<br/>
-           {{ campain.selected_publish_date | date : "EEEE MMMM d, yyyy" }}
+           {{ campaign.selected_publish_date | date : "EEEE MMMM d, yyyy" }}
          </li>
          <li>Interviews, from<br/>
-           {{ campain.interviews_start_date | date : "EEEE MMMM d" }} to
-           {{ campain.interviews_end_date | date : "EEEE MMMM d, yyyy" }}.
+           {{ campaign.interviews_start_date | date : "EEEE MMMM d" }} to
+           {{ campaign.interviews_end_date | date : "EEEE MMMM d, yyyy" }}.
            List made public and on line on<br/>
-           {{ campain.selected_publish_date | date : "EEEE MMMM d, yyyy 'at' h a" }}.</li>
+           {{ campaign.selected_publish_date | date : "EEEE MMMM d, yyyy 'at' h a" }}.</li>
       </ul>
    </div>
    <div class="navigation">

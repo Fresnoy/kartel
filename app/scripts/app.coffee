@@ -29,6 +29,7 @@ angular.module('kartel',
                   'ngAnimate', 'chieffancypants.loadingBar', 'ui.bootstrap', 'ngMessages',
                   'ngSanitize', 'markdown',
                   'iso-3166-country-codes', 'ngFileUpload', 'ngPlacesAutocomplete',
+                  'angular-clipboard',
                   'angular-google-analytics',
               ])
 
@@ -160,16 +161,19 @@ angular.module('kartel',
 )
 .filter('translate_en_to_fr', ->
     return (input, langue) ->
+
         if(input)
           translate_word_en = [
               "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December",
               'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday',
+              'months', 'month', 'days', 'day', 'hours', 'hour', 'seconds', 'second',
           ]
           translate_word_fr = [
               'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre',
-              'Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'
+              'Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi',
+              'mois', 'mois', 'jours', 'jour', 'heures', 'heure', 'secondes', 'seconde',
           ]
-          for word in input.split(" ")
+          for word in input.split(/[\s,]+/)
             index = _.indexOf(translate_word_en, word)
             if(index !=-1)
                 input = input.replace(word, translate_word_fr[index])
@@ -306,27 +310,44 @@ angular.module('kartel',
         # - Candidatures LISTS
 
         $stateProvider.state('candidatures',
-                url: '/candidatures?orderby&sortby&asc'
-                params:
-                  orderby: null
-                  sortby: null
-                  asc: null
+                url: '/candidatures'
                 views:
                   'main_view':
                     templateUrl: 'kartel.html'
                     controller: 'NavController'
                   'main_view.main_content_view':
                     templateUrl: 'views/candidatures.html'
+        )
+
+        $stateProvider.state('candidatures.list',
+                url: '/list?orderby&sortby&asc'
+                params:
+                  orderby: null
+                  sortby: null
+                  asc: null
+                views:
+                  'candidatures_main_view':
+                    templateUrl: 'views/candidatures/liste.html'
                     controller: 'CandidaturesController'
         )
 
-        $stateProvider.state('candidatures.candidat',
+        $stateProvider.state('candidatures.list.candidat',
                 url: '/:id'
                 views:
-                  'main_content_view.candidat_view':
+                  'candidat_view':
                     templateUrl: 'views/candidat.html'
                     controller: 'CandidatController'
         )
+
+        # - Candidatures Configuration
+        $stateProvider.state('candidatures.configuration',
+                url: '/configuration'
+                views:
+                  'candidatures_main_view':
+                    templateUrl: 'views/candidatures/configuration.html'
+                    controller: 'CandidaturesConfigurationController'
+        )
+
 
 
 

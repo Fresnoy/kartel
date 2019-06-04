@@ -225,28 +225,28 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
     $rootScope.current_display_screen = candidature_config.screen.home
 
   # Get candidature Setup
-  $rootScope.campain = {}
+  $rootScope.campaign = {}
   $rootScope.timer_countdown = 0
   getCandidatureSetup = (scope) ->
     RestangularV2.all('school/student-application-setup').getList({'is_current_setup': 2})
     .then((setup_response) ->
-        scope.campain = setup_response[0]
+        scope.campaign = setup_response[0]
         id_promo = setup_response[0].promotion.match(/\d+$/)[0]
         Restangular.one("school/promotion/"+id_promo).get().then((promo_response) ->
-          scope.campain.promotion = promo_response
+          scope.campaign.promotion = promo_response
         )
         # candidature are not open
-        if (!scope.campain.candidature_open)
+        if (!scope.campaign.candidature_open)
           # pending?
-          if (new Date(scope.campain.candidature_date_start) > new Date())
+          if (new Date(scope.campaign.candidature_date_start) > new Date())
             $state.go('candidature.pending')
           # expired ?
-          if (new Date(scope.campain.candidature_date_end) < new Date())
+          if (new Date(scope.campaign.candidature_date_end) < new Date())
             $state.go('candidature.expired')
 
-        scope.candidatures_open = new Date(scope.campain.candidature_date_start) < new Date()
-        scope.candidatures_close = new Date() > new Date(scope.campain.candidature_date_end)
-        scope.timer_countdown = Math.round((new Date(scope.campain.candidature_date_end).getTime() - new Date().getTime())/1000)
+        scope.candidatures_open = new Date(scope.campaign.candidature_date_start) < new Date()
+        scope.candidatures_close = new Date() > new Date(scope.campaign.candidature_date_end)
+        scope.timer_countdown = Math.round((new Date(scope.campaign.candidature_date_end).getTime() - new Date().getTime())/1000)
     ,() ->
           #error
           console.log("server api problem")
@@ -413,7 +413,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
     Users.one(user_id).get().then((user) ->
       scope.user = user
       # search for a candidature for this user
-      search_current_application = {'search':user.username, 'campain__is_current_setup':2}
+      search_current_application = {'search':user.username, 'campaign__is_current_setup':2}
       Candidatures.getList(search_current_application).then((candidatures) ->
         if(!candidatures.length)
           # CREATE A CANDIDATURE
@@ -474,21 +474,72 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 .controller('AdministrativeInformationsController', ($rootScope, $scope, $state, $filter, ISO3166,
         Restangular, RestangularV2, Media, Upload) ->
 
+  # input date gros bug avec safari !
+  $scope.is_safari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
+  $scope.safari_birthdate_value = null
+
+  $scope.safari_keyup = (event, scope) =>
+    # move cursor to one more when auto insert '/'
+    target = event.currentTarget
+    char_num = target.selectionStart
+    char_str = scope.safari_birthdate_value.split('')[char_num]
+
+    if(char_str == "/")
+        char_num++
+        form1.uBirthDate.setSelectionRange(char_num, char_num)
+
+  $scope.safari_birthdate_change = (value) =>
+    if(value)
+      transform = value
+        # Remove all non-digits
+        .replace(/\D+/g, '')
+        # Stick to first 10, ignore later digits
+        .slice(0, 8)
+        # day 0 -> 31
+        .replace(/^([^0-3])/, '')
+        .replace(/^3([^01])(.*)/, '3$2')
+        # month 1 -> 12
+        .replace(/^(.{2})([^01]|1[^0-2])/, '$1')
+        # Add a space after any 2-digit group followed by more digits
+        .replace(/^(\d{2})/g, '$1/')
+        .replace(/^(\d{2}).?(\d{2})/g, '$1/$2/')
+        #
+      # angular error emulate
+      error = {}
+      # safari know date like yyyy/MM/dd
+      user_birthdate = new Date(transform.split('/').reverse().join('/'))
+
+      date_min = new Date($rootScope.campaign.date_of_birth_max.split('-').join('/'))
+      date_max = new Date($rootScope.current_year-$rootScope.age_min+1,0,0)
+
+      if(user_birthdate < date_min)
+        error.min = true
+
+      if(user_birthdate > date_max)
+        error.max = true
+
+      # emulate error to display as input date
+      $scope.form1.uBirthDate.$error = error
+      $scope.form1.uBirthDate.$validate()
+
+      return transform
+
   $rootScope.loadInfos($rootScope)
   $rootScope.step.current = "09"
   $rootScope.current_display_screen = candidature_config.screen.admin_infos
 
-  $scope.birthdateMin = $filter('date')(new Date($rootScope.campain.date_of_birth_max), 'yyyy-MM-dd')
+  $scope.birthdateMin = $filter('date')(new Date($rootScope.campaign.date_of_birth_max), 'yyyy-MM-dd')
   $scope.birthdateMax = $filter('date')(new Date($rootScope.current_year-$rootScope.age_min+1,0,0), 'yyyy-MM-dd')
   $scope.birthdate = { value: new Date($rootScope.current_year-$rootScope.age_max+1,0,0) }
 
   $scope.$watch("user.profile.birthdate", (newValue, oldValue) ->
     if(newValue)
       $scope.birthdate.value = new Date(newValue)
+      $scope.safari_birthdate_value = newValue.split('-').reverse().join('/')
   )
-  $scope.$watch("campain", (newValue, oldValue) ->
+  $scope.$watch("campaign", (newValue, oldValue) ->
     if(newValue)
-      $scope.birthdateMin = $filter('date')(new Date($rootScope.campain.date_of_birth_max), 'yyyy-MM-dd')
+      $scope.birthdateMin = $filter('date')(new Date($rootScope.campaign.date_of_birth_max), 'yyyy-MM-dd')
   )
 
   # Gender

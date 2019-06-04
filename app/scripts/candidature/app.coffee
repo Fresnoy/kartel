@@ -10,7 +10,9 @@ angular.module('candidature.application', ['candidature.controllers',
     if( $rootScope.logout == Function)
       $rootScope.logout()
 
-    if($state.$urlRouter!=undefined && $state.$urlRouter.location.indexOf("candidature/")!=-1)
+    location = if $state.$urlRouter then $state.$urlRouter.location else if $state.router.urlRouter then $state.router.urlRouter.location else undefined
+
+    if(location.indexOf("candidature/")!=-1)
       setTimeout(() ->
         $state.go('candidature.account.login')
       , 200)
