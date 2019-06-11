@@ -278,15 +278,15 @@ angular.module('memoire.controllers', ['memoire.services'])
   # order
   # none = 1 | true = 2 | false = 3
   $scope.select_criteres = [
-    {title: 'Toutes', sortby: {'campaign__is_current_setup':2, "unselected": 3}, count:0 },
-    {title: 'Refusées', sortby: {'campaign__is_current_setup':2, "unselected": 2}, count:0 },
-    {title: 'Non finalisées', sortby: {'campaign__is_current_setup':2, "unselected": 3, "application_completed": 3}, count:0},
-    {title: 'En attente de validation', sortby: {'campaign__is_current_setup':2, "unselected": 3, "application_completed": 2, "application_complete": 3}, count:0},
-    {title: 'Visées', sortby: {'campaign__is_current_setup':2, "unselected": 3, "application_complete": 2}, count:0},
-    {title: 'Entretien : liste d\'attente', sortby: {'campaign__is_current_setup':2, "unselected": 3, "wait_listed_for_interview": 2}, count:0},
-    {title: 'Entretien : Selectionnés', sortby: {'campaign__is_current_setup':2, "unselected": 3, "selected_for_interview": 2}, count:0},
-    {title: 'Admis : liste d\'attente', sortby: {'campaign__is_current_setup':2, "unselected": 3, "wait_listed": 2}, count:0},
-    {title: 'Admis', sortby: {'campaign__is_current_setup':2, "unselected": 3, "selected": 2}, count:0},
+    {title: 'Toutes', sortby: {'campaign__is_current_setup':'true', "unselected": 'false'}, count:0 },
+    {title: 'Refusées', sortby: {'campaign__is_current_setup':'true', "unselected":'true'}, count:0 },
+    {title: 'Non finalisées', sortby: {'campaign__is_current_setup':'true', "unselected": 'false', "application_completed": 'false'}, count:0},
+    {title: 'En attente de validation', sortby: {'campaign__is_current_setup':'true', "unselected": 'false', "application_completed":'true', "application_complete": 'false'}, count:0},
+    {title: 'Visées', sortby: {'campaign__is_current_setup':'true', "unselected": 'false', "application_complete":'true'}, count:0},
+    {title: 'Entretien : liste d\'attente', sortby: {'campaign__is_current_setup':'true', "unselected": 'false', "wait_listed_for_interview":'true'}, count:0},
+    {title: 'Entretien : Selectionnés', sortby: {'campaign__is_current_setup':'true', "unselected": 'false', "selected_for_interview":'true'}, count:0},
+    {title: 'Admis : liste d\'attente', sortby: {'campaign__is_current_setup':'true', "unselected": 'false', "wait_listed":'true'}, count:0},
+    {title: 'Admis', sortby: {'campaign__is_current_setup':'true', "unselected": 'false', "selected":'true'}, count:0},
 
   ]
   $scope.select_orders = [
@@ -298,11 +298,11 @@ angular.module('memoire.controllers', ['memoire.services'])
   $scope.getCandidaturesLength = (sort) ->
     Candidatures.getList(sort.sortby).then((c) -> sort.count = c.length )
 
-  $scope.critere = if $stateParams.sortby then $stateParams.sortby else "3"
+  $scope.critere = if $stateParams.sortby then $stateParams.sortby else $scope.select_criteres.findIndex((crit) -> crit.title =='Entretien : Selectionnés')
   for item, value of $scope.select_criteres then $scope.getCandidaturesLength(value)
 
-  $scope.order = if $stateParams.orderby then $stateParams.orderby else "2"
-  $scope.asc = if $stateParams.asc then $stateParams.asc else "true"
+  $scope.order = if $stateParams.orderby then $stateParams.orderby else $scope.select_orders.findIndex((order) -> order.title =='Nom')
+  $scope.asc = if $stateParams.asc then $stateParams.asc else 'true'
   $scope.loading = cfpLoadingBar
   # language / country
   $scope.country = ISO3166
@@ -516,7 +516,7 @@ angular.module('memoire.controllers', ['memoire.services'])
       # cherche à faire un lien avec le binome
       if(candidat.binomial_application)
           binominal_split = candidat.binomial_application_with.split(" ")
-          # cherche avec ce qu'a remplis le candidat (avec un peu de chance, le nom / prénom) 
+          # cherche avec ce qu'a remplis le candidat (avec un peu de chance, le nom / prénom)
           for name in binominal_split
             critere = {search: name, campaign__is_current_setup:2}
             Candidatures.getList(critere).then((candidatures) ->
