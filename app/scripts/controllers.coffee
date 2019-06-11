@@ -281,7 +281,7 @@ angular.module('memoire.controllers', ['memoire.services'])
     {title: 'Toutes', sortby: {'campaign__is_current_setup':'true', "unselected": 'false'}, count:0 },
     {title: 'Refusées', sortby: {'campaign__is_current_setup':'true', "unselected":'true'}, count:0 },
     {title: 'Non finalisées', sortby: {'campaign__is_current_setup':'true', "unselected": 'false', "application_completed": 'false'}, count:0},
-    {title: 'En attente de validation', sortby: {'campaign__is_current_setup':'true', "unselected": 'false', "application_completed":'true', "application_complete": 'fasle'}, count:0},
+    {title: 'En attente de validation', sortby: {'campaign__is_current_setup':'true', "unselected": 'false', "application_completed":'true', "application_complete": 'false'}, count:0},
     {title: 'Visées', sortby: {'campaign__is_current_setup':'true', "unselected": 'false', "application_complete":'true'}, count:0},
     {title: 'Entretien : liste d\'attente', sortby: {'campaign__is_current_setup':'true', "unselected": 'false', "wait_listed_for_interview":'true'}, count:0},
     {title: 'Entretien : Selectionnés', sortby: {'campaign__is_current_setup':'true', "unselected": 'false', "selected_for_interview":'true'}, count:0},
