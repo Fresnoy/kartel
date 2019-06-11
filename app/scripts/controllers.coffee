@@ -298,11 +298,11 @@ angular.module('memoire.controllers', ['memoire.services'])
   $scope.getCandidaturesLength = (sort) ->
     Candidatures.getList(sort.sortby).then((c) -> sort.count = c.length )
 
-  $scope.critere = if $stateParams.sortby then $stateParams.sortby else "false"
+  $scope.critere = if $stateParams.sortby then $stateParams.sortby else $scope.select_criteres.findIndex((crit) -> crit.title =='Entretien : Selectionnés')
   for item, value of $scope.select_criteres then $scope.getCandidaturesLength(value)
 
-  $scope.order = if $stateParams.orderby then $stateParams.orderby else "true"
-  $scope.asc = if $stateParams.asc then $stateParams.asc else "true"
+  $scope.order = if $stateParams.orderby then $stateParams.orderby else $scope.select_orders.findIndex((order) -> order.title =='Nom')
+  $scope.asc = if $stateParams.asc then $stateParams.asc else 2
   $scope.loading = cfpLoadingBar
   # language / country
   $scope.country = ISO3166
