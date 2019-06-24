@@ -113,7 +113,7 @@ angular.module('memoire.controllers', ['memoire.services'])
 .controller('SchoolController', ($scope, $state, Promotions, Students) ->
   $scope.promotions = []
 
-  Promotions.getList({order_by: "-starting_year"}).then((promotions) ->
+  Promotions.getList({order_by: "-starting_year", limit: 200}).then((promotions) ->
     $scope.promotions = promotions
   )
 
