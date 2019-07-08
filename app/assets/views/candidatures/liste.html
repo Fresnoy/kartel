@@ -61,14 +61,14 @@
           <div class="col-xs-12 col-md-12" ng-show="show_order_param">
               <label>Afficher les candidatures : </label>
               <select ng-model="critere">
-                <option ng-repeat="item in select_criteres track by $index"
-                selected="{{$index == critere}}" value="{{$index}}">{{item.title}} ({{item.count}})</option>
+                <option ng-repeat="item in select_criteres track by item.key"
+                ng-selected="item.key == critere" value="{{$index}}">{{item.title}} ({{item.count}})</option>
               </select>
 
               <label>Trier les candidatures par : </label>
               <select ng-model="order">
                 <option ng-repeat="item in select_orders track by $index"
-                selected="{{$index == order}}" value="{{$index}}">{{item.title}}</option>
+                ng-selected="$index == order" value="{{$index}}">{{item.title}}</option>
               </select>
 
               <label>Ordre : </label>
