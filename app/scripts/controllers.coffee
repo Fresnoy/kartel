@@ -518,7 +518,7 @@ angular.module('memoire.controllers', ['memoire.services'])
           binominal_split = candidat.binomial_application_with.split(" ")
           # cherche avec ce qu'a remplis le candidat (avec un peu de chance, le nom / prénom)
           for name in binominal_split
-            critere = {search: name, campaign__is_current_setup:2}
+            critere = {search: name, campaign__is_current_setup:"true"}
             Candidatures.getList(critere).then((candidatures) ->
               if(candidatures.length && $scope.binominal_link_id=="")
                 $scope.binominal_link_id = candidatures[0].id
@@ -537,7 +537,7 @@ angular.module('memoire.controllers', ['memoire.services'])
   $scope.date = (date) ->
     return new Date(date)
 
-  Campaigns.getList({is_current_setup: 2}).then((current_campaign) ->
+  Campaigns.getList({is_current_setup: "true"}).then((current_campaign) ->
     $scope.configuration = current_campaign[0]
     $scope.date_of_birth_max = new Date($scope.configuration.date_of_birth_max)
     $scope.interviews_publish_date = new Date($scope.configuration.interviews_publish_date)
