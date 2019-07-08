@@ -278,16 +278,15 @@ angular.module('memoire.controllers', ['memoire.services'])
   # order
   # none = 1 | true = 2 | false = 3
   $scope.select_criteres = [
-    {title: 'Toutes', sortby: {'campaign__is_current_setup':'true', "unselected": 'false'}, count:0 },
-    {title: 'Refusées', sortby: {'campaign__is_current_setup':'true', "unselected":'true'}, count:0 },
-    {title: 'Non finalisées', sortby: {'campaign__is_current_setup':'true', "unselected": 'false', "application_completed": 'false'}, count:0},
-    {title: 'En attente de validation', sortby: {'campaign__is_current_setup':'true', "unselected": 'false', "application_completed":'true', "application_complete": 'false'}, count:0},
-    {title: 'Visées', sortby: {'campaign__is_current_setup':'true', "unselected": 'false', "application_complete":'true'}, count:0},
-    {title: 'Entretien : liste d\'attente', sortby: {'campaign__is_current_setup':'true', "unselected": 'false', "wait_listed_for_interview":'true'}, count:0},
-    {title: 'Entretien : Selectionnés', sortby: {'campaign__is_current_setup':'true', "unselected": 'false', "selected_for_interview":'true'}, count:0},
-    {title: 'Admis : liste d\'attente', sortby: {'campaign__is_current_setup':'true', "unselected": 'false', "wait_listed":'true'}, count:0},
-    {title: 'Admis', sortby: {'campaign__is_current_setup':'true', "unselected": 'false', "selected":'true'}, count:0},
-
+    {key:0, title: 'Toutes', sortby: {'campaign__is_current_setup':'true', "unselected": 'false'}, count:0 },
+    {key:1, title: 'Refusées', sortby: {'campaign__is_current_setup':'true', "unselected":'true'}, count:0 },
+    {key:2, title: 'Non finalisées', sortby: {'campaign__is_current_setup':'true', "unselected": 'false', "application_completed": 'false'}, count:0},
+    {key:3, title: 'En attente de validation', sortby: {'campaign__is_current_setup':'true', "unselected": 'false', "application_completed":'true', "application_complete": 'false'}, count:0},
+    {key:4, title: 'Visées', sortby: {'campaign__is_current_setup':'true', "unselected": 'false', "application_complete":'true'}, count:0},
+    {key:5, title: 'Entretien : liste d\'attente', sortby: {'campaign__is_current_setup':'true', "unselected": 'false', "wait_listed_for_interview":'true'}, count:0},
+    {key:6, title: 'Entretien : Selectionnés', sortby: {'campaign__is_current_setup':'true', "unselected": 'false', "selected_for_interview":'true'}, count:0},
+    {key:7, title: 'Admis : liste d\'attente', sortby: {'campaign__is_current_setup':'true', "unselected": 'false', "wait_listed":'true'}, count:0},
+    {key:8, title: 'Admis', sortby: {'campaign__is_current_setup':'true', "unselected": 'false', "selected":'true'}, count:0},
   ]
   $scope.select_orders = [
       {title: "Numéro d'inscription", value: {ordering: "id"}}
