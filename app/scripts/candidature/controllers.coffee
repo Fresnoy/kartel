@@ -228,7 +228,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
   $rootScope.campaign = {}
   $rootScope.timer_countdown = 0
   getCandidatureSetup = (scope) ->
-    RestangularV2.all('school/student-application-setup').getList({'is_current_setup': 2})
+    RestangularV2.all('school/student-application-setup').getList({'is_current_setup': "true"})
     .then((setup_response) ->
         scope.campaign = setup_response[0]
         id_promo = setup_response[0].promotion.match(/\d+$/)[0]
@@ -413,7 +413,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
     Users.one(user_id).get().then((user) ->
       scope.user = user
       # search for a candidature for this user
-      search_current_application = {'search':user.username, 'campaign__is_current_setup':2}
+      search_current_application = {'search':user.username, 'campaign__is_current_setup':"true"}
       Candidatures.getList(search_current_application).then((candidatures) ->
         if(!candidatures.length)
           # CREATE A CANDIDATURE
