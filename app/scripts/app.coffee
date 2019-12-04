@@ -182,19 +182,17 @@ angular.module('kartel',
 )
 .filter("artist_name", ->
   return (input) ->
-    console.log(input)
     name = ""
     # input = list ofartist model
     if (input.length)
       for author in input
         name+= if author.nickname then author.nickname else author.user.first_name + " " + author.user.last_name
-    # input = artist model
+    # input = parent from artist model
     else if (input.artist)
-      name+= if input.artist.nickname then input.artist.nickname else input.artist.user.first_name + " " + input.artist.user.last_name      
+      name+= if input.artist.nickname then input.artist.nickname else input.artist.user.first_name + " " + input.artist.user.last_name
     # input = artist model
     else if (input.nickname)
       name+= if author.nickname then author.nickname else author.user.first_name + " " + author.user.last_name
-
     # input = user model
     else if (input.first_name)
       name+= input.first_name + " " + input.last_name
