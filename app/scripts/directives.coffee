@@ -31,6 +31,29 @@ angular.module('memoire.directives', ['memoire.services', 'bootstrapLightbox'])
   }
 )
 
+.directive("fresnoyAuthors", ->
+  return {
+    restrict: 'E',
+    replace: false,
+    scope: {
+      authors: '=authors'
+    },
+    template: (x, scope) ->
+      # return "<span>\"#{name}\"</span>"
+      return "<span >{{name}}</span>"
+    controller: ($scope) ->
+      $scope.$watch("authors", (value) ->
+          $scope.name = ""
+          if(value)
+            name = ""
+            for author in value
+              name+= if author.nickname then author.nickname else author.user.first_name + " " + author.user.last_name
+          $scope.name = name
+      )
+
+  }
+)
+
 
 .config((LightboxProvider) ->
   LightboxProvider.templateUrl = 'directives/fresnoyGallery-lightbox-modal.html'
