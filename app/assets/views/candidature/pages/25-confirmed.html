@@ -36,7 +36,7 @@
   <div ng-if="!candidature.application_complete">
 
     <span class="fr">Un email de confirmation vous sera adressé prochainement.</span>
-    <span class="en">A confirmation e-mail will be sent to you shortly</span>
+    <span class="en">A confirmation e-mail will be sent to you shortly.</span>
   </div>
 
   <div ng-if="candidature.application_complete">
@@ -45,13 +45,13 @@
   <div class="fr">
     <h2>Entretiens</h2>
     <p>Les candidats présélectionnés sont conviés à un entretien avec un jury entre le
-      {{ campaign.interviews_start_date | date : "EEEE d" | translate_en_to_fr | lowercase }}
+      {{ campaign.interviews_start_date | date : "EEEE d MMMM" | translate_en_to_fr | lowercase }}
       au
       {{ campaign.interviews_end_date | date : "EEEE d MMMM yyyy" | translate_en_to_fr | lowercase }}.</p>
 
     <h2>Annonce des résultats</h2>
     <p>La liste des 24 candidats admis sera affichée au Fresnoy et mise en ligne sur son site internet
-      <a href="https://www.lefresnoy.net/">www.lefresnoy.net</a>, <br/>
+      <a href="https://www.lefresnoy.net/">lefresnoy.net</a>, <br/>
       le
       {{ campaign.selected_publish_date | date : "EEEE d MMMM yyyy à HH'h'" | translate_en_to_fr | lowercase }}. <br/>
       Les résultats peuvent être communiqués par téléphone le jour même de
@@ -68,8 +68,8 @@
       {{ campaign.interviews_end_date | date : "EEEE MMMM d, yyyy" }}.</p>
     <h2>Admitted applicants</h2>
     <p>The list of the 24 successful candidates will be posted up at Le Fresnoy and published on our website
-      <a href="https://www.lefresnoy.net/">www.lefresnoy.net</a>
-      on <br/>{{ campaign.selected_publish_date | date : "EEEE MMMM d, yyyy 'at' h a" }}. <br/>
+      <a href="https://www.lefresnoy.net/">lefresnoy.net</a>
+      on {{ campaign.selected_publish_date | date : "EEEE MMMM d, yyyy 'at' h aa" }}. <br/>
       The results may also be given by telephone the same day by ringing from 2 pm to 6 pm at:
       <a href="tel:+33320283800">+33 (0) 3 20 28 38 00</a>.  <br/>
       These results are only valid

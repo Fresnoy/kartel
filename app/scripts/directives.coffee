@@ -20,12 +20,35 @@ angular.module('memoire.directives', ['memoire.services', 'bootstrapLightbox'])
       $scope.$watch("url", (value) ->
           if(value)
             if(value.indexOf('http') == -1)
-              $scope.url_image = "https://media.lefresnoy.net/?url=https://api.lefresnoy.net/"+value+"&w="+$scope.width+"h="+$scope.height+"&fmt=jpg"
+              $scope.url_image = config.media_service+"?url="+config.api_url+value+"&w="+$scope.width+"h="+$scope.height+"&fmt=jpg"
             else
-              $scope.url_image = "https://media.lefresnoy.net/?url="+value+"&w="+$scope.width+"h="+$scope.height+"&fmt=jpg"
+              $scope.url_image = config.media_service+"?url="+value+"&w="+$scope.width+"h="+$scope.height+"&fmt=jpg"
 
             if $scope.op
               $scope.url_image += "&op=#{ scope.op }"
+      )
+
+  }
+)
+
+.directive("fresnoyAuthors", ->
+  return {
+    restrict: 'E',
+    replace: false,
+    scope: {
+      authors: '=authors'
+    },
+    template: (x, scope) ->
+      # return "<span>\"#{name}\"</span>"
+      return "<span >{{name}}</span>"
+    controller: ($scope) ->
+      $scope.$watch("authors", (value) ->
+          $scope.name = ""
+          if(value)
+            name = ""
+            for author in value
+              name+= if author.nickname then author.nickname else author.user.first_name + " " + author.user.last_name
+          $scope.name = name
       )
 
   }
