@@ -162,7 +162,6 @@ angular.module('kartel',
 )
 .filter('translate_en_to_fr', ->
     return (input, langue) ->
-
         if(input)
           translate_word_en = [
               "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December",
