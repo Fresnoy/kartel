@@ -33,13 +33,10 @@ exports.config =
                                         'bower_components/angular/angular.js'
                                         'bower_components/angularui/angular-ui.js'
                                         'bower_component/angularui/angular-ui-ieshiv.js'
-
                                         'bower_components/codemirror/lib/codemirror.js'
                                         'bower_components/codemirror/mode/css/css.js'
                                 ]
-                                after: [
-
-                                ]
+                                after: []
                 stylesheets:
                         joinTo:
                                 'css/vendor.css': [
@@ -48,6 +45,4 @@ exports.config =
                                 ]
                                 'css/app.css': /^app\/styles/
                         order:
-                                after: [
-
-                                ]
+                                after: []
