@@ -3,7 +3,7 @@
    <h1><class class="fr">Aide</class><class class="en">Help</class></h1>
    <div class="fr">
       <p>La procédure de sélection est ouverte à tous les candidats, sans distinction de sexe ou de nationalité,
-        âgés de 35 ans au plus au 1er janvier de l’année du concours (nés après le <span ng-bind="campaign.date_of_birth_max | date : 'd MMMM yyyy' | translate_en_to_fr" />).</p>
+        âgés de 35 ans au plus au 1er janvier de l’année du concours (nés après le <span ng-bind="campaign.date_of_birth_max | date : 'd MMMM yyyy'  | translate_en_to_fr" />).</p>
    </div>
    <div class="en">
       <p>The selection procedure is open to all candidates, of any sex or nationality, aged 35 years maximum on 1st January of the current year
@@ -97,7 +97,7 @@
                     <span class="en">Required</span>
                  </div>
                  <div ng-message="min">
-                    <span class="fr">Il faut avoir moins de 35 ans (être né après  le <span ng-bind="campaign.date_of_birth_max | date : 'd MMMM yyyy'" />) </span>
+                    <span class="fr">Il faut avoir moins de 35 ans (être né après  le <span ng-bind="campaign.date_of_birth_max | date : 'd MMMM yyyy'  | translate_en_to_fr" />) </span>
                     <span class="en">to be completed</span>
                  </div>
                  <div ng-message="max">

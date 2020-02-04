@@ -34,7 +34,7 @@ angular.module('memoire.controllers', ['memoire.services'])
 )
 
 .controller('NavController', ($scope, $rootScope, $http, Login, Logout, jwtHelper, Users, authManager, Candidatures, $state) ->
-  $rootScope.candidatures = Candidatures.getList().$object
+  # $rootScope.candidatures = Candidatures.getList().$object
 
   $scope.user_infos =
       username:""
@@ -221,7 +221,6 @@ angular.module('memoire.controllers', ['memoire.services'])
                 production_year = artwork.production_date.split("-")[0]
                 candidature = candidatures[0]
                 $scope.history = {candidature: candidature}
-                console.log(candidature)
                 # candidature + 1 an = premiere oeuvre
                 if(candidature.created_on.indexOf((production_year-1))>=0 )
                    $scope.history.candidature.projet_1 = candidature.considered_project_1
@@ -241,14 +240,13 @@ angular.module('memoire.controllers', ['memoire.services'])
     Lightbox.openModal([image], 0)
 )
 
-.controller('StudentController', ($scope, $stateParams, Students, Artworks, Promotions) ->
+.controller('StudentController', ($scope, $rootScope, $stateParams, Students, Artworks, Promotions, Candidatures, ArtistsV2, Users, ISO3166) ->
   $scope.student = null
   $scope.promotion = null
   $scope.artworks = []
 
   Students.one().one($stateParams.id).get().then((student) ->
     $scope.student = student
-
     # Fetch promotion
     matches = student.promotion.match(/\d+$/)
     if matches
@@ -265,7 +263,26 @@ angular.module('memoire.controllers', ['memoire.services'])
         Artworks.one(artwork_id).get().then((artwork) ->
           $scope.artworks.push(artwork)
         )
+
+    # Get more infos from candidature
+    $scope.more = null
+    $scope.country = ISO3166
+    critere = {search: student.user.username, ordering:'-id'}
+    Candidatures.getList(critere).then((candidatures) ->
+          if(candidatures.length)
+              $scope.more = candidatures[0]
+              $scope.more.artist = ArtistsV2.one($scope.more.artist.split("/").reverse()[0]).get().then((artist) ->
+                $scope.more.artist = artist
+                $scope.more.artist.user = Users.one(artist.user.split("/").reverse()[0]).get().then((user) ->
+                  $scope.more.artist.user = user
+                  console.log($scope.more)
+                )
+              )
+      )
+
   )
+
+
 )
 
 .controller('CandidaturesController', ($rootScope, $scope, $stateParams, $location, Candidatures, Galleries, Media, RestangularV2, ArtistsV2, Users,
