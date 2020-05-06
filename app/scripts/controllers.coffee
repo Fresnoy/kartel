@@ -416,12 +416,14 @@ angular.module('memoire.controllers', ['memoire.services'])
     # save values
     $scope.candidature.patch({observation: str_observation})
 
-    $scope.candidature.observation = str_observation
+    # pas que que ça serve - > $scope.candidature.observation = str_observation
 
     # petit crayon !
-    # trouve la candidature dans la liste et ajoute les observations s'il y en a
+    # trouve la candidature dans la liste des candidature en rootscope
+    # et indique s'il y a des observations
     root_cantidature_observation = _.find($rootScope.candidatures,  (obj) -> return obj.id == $scope.candidature.id )
     root_cantidature_observation.has_observation = (obj_observation.jury != '' || (obj_observation[$rootScope.user.username] && obj_observation[$rootScope.user.username] != ""));
+    $scope.candidature.has_observation = root_cantidature_observation.has_observation
 
   $scope.$watch("candidature.observation", (newValue, oldValue) ->
     # set default values
@@ -473,7 +475,11 @@ angular.module('memoire.controllers', ['memoire.services'])
       Candidatures.one(id).get().then((candidature) ->
         $scope.candidature = candidature
         $scope.itw_date = new Date(candidature.interview_date)
+        # has observations 
+        observation = if candidature.observation != null then JSON.parse(candidature.observation) else {jury:""}
+        $scope.candidature.has_observation = (observation.jury != '' || (observation[$rootScope.user.username] && observation[$rootScope.user.username] != ""))
         artist_id = candidature.artist.match(/\d+$/)[0]
+
         ArtistsV2.one(artist_id).get().then((artist) ->
             $scope.artist = artist
             for website in artist.websites
