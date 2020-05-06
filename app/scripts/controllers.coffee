@@ -221,7 +221,6 @@ angular.module('memoire.controllers', ['memoire.services'])
                 production_year = artwork.production_date.split("-")[0]
                 candidature = candidatures[0]
                 $scope.history = {candidature: candidature}
-                console.log(candidature)
                 # candidature + 1 an = premiere oeuvre
                 if(candidature.created_on.indexOf((production_year-1))>=0 )
                    $scope.history.candidature.projet_1 = candidature.considered_project_1
@@ -271,7 +270,8 @@ angular.module('memoire.controllers', ['memoire.services'])
 .controller('CandidaturesController', ($rootScope, $scope, $stateParams, $location, Candidatures, Galleries, Media, RestangularV2, ArtistsV2, Users,
   ISO3166, cfpLoadingBar) ->
   # init
-  $scope.candidatures = []
+  # rootscope to synch candidatreS (left side) => sandidature (right side) changement (like observations)
+  $rootScope.candidatures = []
   $scope.candidat_id = $stateParams.id
 
   current_year = new Date().getFullYear()
@@ -319,6 +319,7 @@ angular.module('memoire.controllers', ['memoire.services'])
           candidature.progress = $scope.get_candidature_progress(candidature)
           arr.push(candidature)
 
+
           if(candidature.application_completed)
               ArtistsV2.one(artist_id).withHttpConfig({ cache: true}).get().then((artist) ->
                   current_cantidature = _.filter(candidatures, (c) -> return c.artist == artist.url)
@@ -342,10 +343,13 @@ angular.module('memoire.controllers', ['memoire.services'])
                         gallery_infos.media[media_index] = media
                       )
                   )
+              # chek if there is observations
+              observation = if candidature.observation != null then JSON.parse(candidature.observation) else {jury:""}
+              candidature.has_observation = (observation.jury != '' || (observation[$rootScope.user.username] && observation[$rootScope.user.username] != ""))
     )
     return arr
 
-  $scope.candidatures = $scope.getCandidatures($scope.select_criteres[$scope.critere], $scope.select_orders[$scope.order])
+  $rootScope.candidatures = $scope.getCandidatures($scope.select_criteres[$scope.critere], $scope.select_orders[$scope.order])
 
   $scope.get_candidature_progress = (candidature) ->
     candidature_progress = candidature_total = user_progress = user_total = 0
@@ -411,6 +415,13 @@ angular.module('memoire.controllers', ['memoire.services'])
     str_observation = JSON.stringify(obj_observation)
     # save values
     $scope.candidature.patch({observation: str_observation})
+
+    $scope.candidature.observation = str_observation
+
+    # petit crayon !
+    # trouve la candidature dans la liste et ajoute les observations s'il y en a
+    root_cantidature_observation = _.find($rootScope.candidatures,  (obj) -> return obj.id == $scope.candidature.id )
+    root_cantidature_observation.has_observation = (obj_observation.jury != '' || (obj_observation[$rootScope.user.username] && obj_observation[$rootScope.user.username] != ""));
 
   $scope.$watch("candidature.observation", (newValue, oldValue) ->
     # set default values

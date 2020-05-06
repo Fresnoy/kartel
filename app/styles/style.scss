@@ -493,18 +493,13 @@ body.en {
     right: -5px;
     bottom: -5px;
   }
-
-
   &.ghost{
-
     pointer-events: none;
     .photo {
       a{
         cursor: not-allowed;
       }
-
     }
-
     .preserve-info{
       position: relative;
       visibility: hidden;
@@ -525,9 +520,7 @@ body.en {
       color:white;
     }
     .user-birthdate{display: none}
-
   }
-
   .thumbnail{
     padding: 10px 0px;
     height: 100%;
