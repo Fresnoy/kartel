@@ -335,9 +335,6 @@ angular.module('memoire.controllers', ['memoire.services'])
       for candidature in candidatures
           artist_id = candidature.artist.match(/\d+$/)[0]
           candidature.progress = $scope.get_candidature_progress(candidature)
-          arr.push(candidature)
-
-
           if(candidature.application_completed)
               ArtistsV2.one(artist_id).withHttpConfig({ cache: true}).get().then((artist) ->
                   current_cantidature = _.filter(candidatures, (c) -> return c.artist == artist.url)
@@ -348,6 +345,7 @@ angular.module('memoire.controllers', ['memoire.services'])
                     current_cantidature[0].artist.user = user_infos
                   )
               )
+              # get media  justifications 
               if(candidature.cursus_justifications != null)
                   gallery_id = candidature.cursus_justifications.match(/\d+$/)[0]
                   Galleries.one(gallery_id).get().then((gallery_infos) ->
@@ -364,6 +362,8 @@ angular.module('memoire.controllers', ['memoire.services'])
               # chek if there is observations
               observation = if candidature.observation != null then JSON.parse(candidature.observation) else {jury:""}
               candidature.has_observation = (observation.jury != '' || (observation[$rootScope.user.username] && observation[$rootScope.user.username] != ""))
+          # push candidature after all treatments
+          arr.push(candidature)
     )
     return arr
 
@@ -493,7 +493,7 @@ angular.module('memoire.controllers', ['memoire.services'])
       Candidatures.one(id).get().then((candidature) ->
         $scope.candidature = candidature
         $scope.itw_date = new Date(candidature.interview_date)
-        # has observations 
+        # has observations
         observation = if candidature.observation != null then JSON.parse(candidature.observation) else {jury:""}
         $scope.candidature.has_observation = (observation.jury != '' || (observation[$rootScope.user.username] && observation[$rootScope.user.username] != ""))
         artist_id = candidature.artist.match(/\d+$/)[0]
