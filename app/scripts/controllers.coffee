@@ -345,7 +345,7 @@ angular.module('memoire.controllers', ['memoire.services'])
                     current_cantidature[0].artist.user = user_infos
                   )
               )
-              # get media  justifications 
+              # get media  justifications
               if(candidature.cursus_justifications != null)
                   gallery_id = candidature.cursus_justifications.match(/\d+$/)[0]
                   Galleries.one(gallery_id).get().then((gallery_infos) ->
@@ -424,6 +424,11 @@ angular.module('memoire.controllers', ['memoire.services'])
   obj_observation = {}
 
   add_observation = () ->
+    # Be care of this feature
+    # if someone write something about the candidat in same time
+    # it'll make some stange things
+    # Have to load last version of observation and merge it (like git !)
+
     # set default values
     if(!obj_observation[$rootScope.user.username])
       obj_observation[$rootScope.user.username] = ""
@@ -433,8 +438,6 @@ angular.module('memoire.controllers', ['memoire.services'])
     str_observation = JSON.stringify(obj_observation)
     # save values
     $scope.candidature.patch({observation: str_observation})
-
-    # pas que que ça serve - > $scope.candidature.observation = str_observation
 
     # petit crayon !
     # trouve la candidature dans la liste des candidature en rootscope
