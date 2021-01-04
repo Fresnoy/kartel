@@ -114,12 +114,13 @@ angular.module('kartel',
 
 )
 
-.filter 'nl2br', ($sce) ->
+.filter('nl2br', ($sce) ->
   return (msg, is_xhtml) ->
     is_xhtml = is_xhtml or true
     breakTag = if is_xhtml then '<br />' else '<br>'
     msg = (msg + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n|&#10;&#13;|&#13;&#10;|&#10;|&#13;)/g, '$1' + breakTag + '$2')
     return $sce.trustAsHtml msg
+)
 
 .filter('time', ->
     return (value, unit, format, isPadded) ->
@@ -161,7 +162,6 @@ angular.module('kartel',
 )
 .filter('translate_en_to_fr', ->
     return (input, langue) ->
-
         if(input)
           translate_word_en = [
               "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December",
@@ -179,6 +179,26 @@ angular.module('kartel',
                 input = input.replace(word, translate_word_fr[index])
         return input
 )
+.filter("artist_name", ->
+  return (input) ->
+    name = ""
+    # input = list ofartist model
+    if (input.length)
+      for author in input
+        name+= if author.nickname then author.nickname else author.user.first_name + " " + author.user.last_name
+    # input = parent from artist model
+    else if (input.artist)
+      name+= if input.artist.nickname then input.artist.nickname else input.artist.user.first_name + " " + input.artist.user.last_name
+    # input = artist model
+    else if (input.nickname)
+      name+= if author.nickname then author.nickname else author.user.first_name + " " + author.user.last_name
+    # input = user model
+    else if (input.first_name)
+      name+= input.first_name + " " + input.last_name
+    return name
+
+)
+
 
 # catch write data
 .factory('httpInterceptor', ['$q', '$rootScope', '$state', ($q, $rootScope, $state) ->

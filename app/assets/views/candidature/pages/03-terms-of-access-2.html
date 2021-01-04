@@ -24,7 +24,7 @@
    </h2>
    <div class="fr">
       <p>
-         La sélection des étudiants est annuelle et se déroulera en une seule session selon les étapes et le calendrier suivants :
+         La sélection des étudiants est annuelle et se déroulera en une seule session selon les étapes et le calendrier suivants&nbsp;:
       </p>
       <ul>
          <li>Dossier de candidature (inscription administrative et dossier artistique), enregistrement en ligne, au plus tard le
@@ -37,8 +37,8 @@ de la procédure d’enregistrement de votre candidature, il est indispensable p
          <li>Entretiens oraux du<br/>
             {{ campaign.interviews_start_date | date : "EEEE d" | translate_en_to_fr | lowercase }}
             au
-            {{ campaign.interviews_end_date | date : "EEEE d MMMM yyyy" | translate_en_to_fr | lowercase }}
-            , annonce des résultats le<br/>
+            {{ campaign.interviews_end_date | date : "EEEE d MMMM yyyy" | translate_en_to_fr | lowercase }},
+            annonce des résultats le<br/>
             <strong>{{ campaign.selected_publish_date | date : "EEEE d MMMM yyyy à HH'h'" | translate_en_to_fr | lowercase }}</strong>
           </li>
       </ul>

@@ -84,16 +84,17 @@
               </div>
             </div>
             <div class="media-body">
-              <h4 class="media-heading" ng-if="!match.model.user" bind-html-unsafe="match.model.title | uibTypeaheadHighlight:query"></h4>
-              <h4 class="media-heading" ng-if="match.model.user"><span ng-bind-html="match.model.user.first_name | uibTypeaheadHighlight:query"></span> <span ng-bind-html="match.model.user.last_name | uibTypeaheadHighlight:query"></span> </h4>
-
-              <span ng-if="!match.model.user" class="author">{{ match.model.authors[0].user.first_name }} {{ match.model.authors[0].user.last_name }}</span>
-              <span ng-if="match.model.nickname" class="nickname">{{ match.model.nickname }}</span>
+              <h4 class="media-heading" ng-if="match.model.authors">
+                  <span ng-bind-html="match.model.title | uibTypeaheadHighlight:query"></span>
+                  <br/><small><fresnoy-authors authors="match.model.authors"/></small>
+              </h4>
+              <h4 class="media-heading" ng-if="match.model.user">
+                <span ng-bind-html="match.model | artist_name | uibTypeaheadHighlight:query"></span>
+              </h4>
             </div>
           </div>
         </a>
       </script>
-
       <form class="quicksearch navbar-form navbar-left" ng-controller="QuickSearch">
         <input ng-show="show_search()" uib-typeahead="object for objects in search($viewValue)" typeahead-wait-ms="200" typeahead-min-length="3" typeahead-template-url="customTemplate.html" ng-model="selected" typeahead-loading="loading" typeahead-editable="false" typeahead-on-select="goTo($item, $model, $label)" type="text" class="form-control" placeholder="Rechercher...">
         <i ng-show="loading" class="loading-glyph glyphicon glyphicon-refresh"></i>
