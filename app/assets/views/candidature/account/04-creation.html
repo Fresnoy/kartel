@@ -11,20 +11,7 @@
            If you already have an account, click on the ‘LOGIN’ button.</p>
       </div>
       <form name="form" class="css-form" ng-submit="form.$valid && login()" novalidate>
-         <div class="field">
-            <input id="name" type="text" ng-change="setUserName(form, user)" ng-model="user.last_name" name="uName" required />
-            <div ng-show="form.uName.$touched && form.uName.$invalid" ng-messages="form.uName.$error" class="help-block error">
-               <div ng-message="required">
-                  <span class="fr">Champs obligatoire</span>
-                  <span class="en">Required field</span>
-               </div>
-            </div>
-            <label for="name">
-            <span class="field-state required" ng-class="{ 'error': form.uName.$error, 'valid':form.uName.$valid, 'touched': form.uName.$touched }"></span>
-            <span class="fr">Nom</span>
-            <span class="en">Surname</span>
-            </label>
-         </div>
+
          <div class="field">
             <input id="firstname" type="text"  ng-change="setUserName(form, user)" ng-model="user.first_name" name="uFirstName" required />
             <div ng-show="form.uFirstName.$touched  && form.uFirstName.$invalid" ng-messages="form.uFirstName.$error" class="help-block error">
@@ -38,6 +25,20 @@
             <span class="fr">Prénom</span>
             <span class="en">Name</span>
             </label>
+         </div>
+         <div class="field">
+           <input id="name" type="text" ng-change="setUserName(form, user)" ng-model="user.last_name" name="uName" required />
+           <div ng-show="form.uName.$touched && form.uName.$invalid" ng-messages="form.uName.$error" class="help-block error">
+             <div ng-message="required">
+               <span class="fr">Champs obligatoire</span>
+               <span class="en">Required field</span>
+             </div>
+           </div>
+           <label for="name">
+             <span class="field-state required" ng-class="{ 'error': form.uName.$error, 'valid':form.uName.$valid, 'touched': form.uName.$touched }"></span>
+             <span class="fr">Nom</span>
+             <span class="en">Surname</span>
+           </label>
          </div>
          <div class="field">
             <input type="text" id="username" ng-model="user.username" ng-trim="false" ng-pattern="/^[a-zA-Z0-9._-]*$/" ng-minlength="4" name="uUserName" unique-user-field required />

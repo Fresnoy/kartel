@@ -18,6 +18,9 @@
       Par ailleurs, le jury visionnera les éléments visuels d'une durée de 8 minutes maximum figurant au dossier du candidat.
       L’attention du candidat est attirée sur l’importance de ces éléments, seuls documents le présentant qui seront examinés aux deux étapes de la sélection.
     </p>
+    <p>
+      Il est important de noter que ce document vidéo est le seul qui sera vu par les membres du jury de l'entretien qui ne participent pas au jury de pré-sélection.
+    </p>
    </div>
    <div class="en">
       <p>A work or several extracts of works made by the
@@ -39,6 +42,9 @@
       examined at all two stages of the selection
       process.
     </p>
+    <p>
+      Il est important de noter que ce document vidéo est le seul qui sera vu par les membres du jury de l'entretien qui ne participent pas au jury de pré-sélection.
+    </p>
     </div>
 </div>
 
@@ -53,20 +59,25 @@
          particulièrement représentatifs de votre démarche artistique.
       </p>
       <p>Cette vidéo d'une <strong>durée maximale de 8 minutes</strong> sera vue successivement par les deux jurys (de présélection et de l'entretien oral).</p>
+      <p><blockquote><small>
+        Il est important de noter que ce document vidéo est le seul qui sera vu par les membres du jury de l'entretien qui ne participent pas au jury de pré-sélection.
+        </small>
+      </blockquote>
+      </p>
       <p>Le lien doit pointer directement vers un fichier vidéo pérenne ou vers une plateforme de diffusion
         de vidéos (type Viméo, Youtube, ...).  <br/>
         Nous n'acceptons pas de lien vers une playlist de vidéos, ou une plateforme d'envoi de fichier
         (type Wetransfer, Send Anywhere, Google Drive, OneDrive, Dropbox)
       </p>
+
     </div>
     <div class="en">
       <p>Submit a link to a video that exposes the most representative part of your work.</p>
       <p>This video of a maximum length of 8 minutes will be seen by twice, once by the pre-selection jury and a second
-        time by the interviw jury.</p>
-      <p>The link must connect directly to a permanent video file or a video platform (such as Viméo, Youtube etc.).<br/>
+        time by the interview jury.</p>
+      <p>The link must connect directly to a permanent video file or a video platform (such as Vimeo, Youtube etc.).<br/>
         We do not accept any link to video playlists, or file transfert platforms (such as Wetransfer, Send Anywhere,
         Google Drive, OneDrive, Dropbox, etc.)</p>
-
     </div>
        <input
             type="url"
@@ -75,7 +86,7 @@
             ng-model="candidature.presentation_video"
             ng-model-options='{ debounce: 1000 }'
             ng-change="candidature.patch({presentation_video : candidature.presentation_video||''})"
-            placeholder="http://vimeo.com/280151180"
+            placeholder="https://vimeo.com/280151180"
             pattern="^(?!.*(google\.|wetransfer\.|send-anywhere\.|onedrive\.|dropbox\.|sharepoint\.)).*$"
             required
             />
@@ -142,6 +153,10 @@
             <span class="en">Vidéo password</span>
             </label>
          </div>
+
+         <p><span class="fr">Vous pouvez ajouter le domaine <u>lefresnoy.net</u> dans les paramètres d'intégration de la vidéo.</span>
+           <span class="en">You can add the <u>lefresnoy.net</u> domain in the video integration settings.</span>
+         </p>
       </div>
 
       <div>

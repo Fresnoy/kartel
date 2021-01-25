@@ -19,6 +19,21 @@
    </h1>
 
       <form name="form1" ng-submit="form1.$valid && submit()" class="css-form" novalidate enctype="multipart/form-data">
+        <div class="field">
+           <input id="first-name" type="text"  ng-model="user.first_name" ng-model-options='{ debounce: 1000 }'
+                  ng-change="user.patch({'first_name': user.first_name, 'profile':{'id': user.profile.id}})" name="uFirstName" required />
+           <div ng-show="form1.uName.$touched && form1.uFirstName.$invalid" ng-messages="form1.uFirstName.$error" class="help-block error">
+              <div ng-message="required">
+                 <span class="fr">Obligatoire</span>
+                 <span class="en">Required</span>
+              </div>
+           </div>
+           <label for="first-name">
+           <span class="field-state required"></span>
+           <span class="fr">Prénom</span>
+           <span class="en">First Name</span>
+           </label>
+        </div>
          <div class="field">
             <input id="name" type="text"  ng-model="user.last_name"
                   ng-model-options='{ debounce: 1000 }'
@@ -35,21 +50,7 @@
             <span class="en">Name</span>
             </label>
          </div>
-         <div class="field">
-            <input id="first-name" type="text"  ng-model="user.first_name" ng-model-options='{ debounce: 1000 }'
-                   ng-change="user.patch({'first_name': user.first_name, 'profile':{'id': user.profile.id}})" name="uFirstName" required />
-            <div ng-show="form1.uName.$touched && form1.uFirstName.$invalid" ng-messages="form1.uFirstName.$error" class="help-block error">
-               <div ng-message="required">
-                  <span class="fr">Obligatoire</span>
-                  <span class="en">Required</span>
-               </div>
-            </div>
-            <label for="first-name">
-            <span class="field-state required"></span>
-            <span class="fr">Prénom</span>
-            <span class="en">First Name</span>
-            </label>
-         </div>
+
          <div class="field">
             <select id="gender" ng-model="user.profile.gender"
                ng-change="user.patch({'profile':{'gender': user.profile.gender}})" name="uGender" required>
