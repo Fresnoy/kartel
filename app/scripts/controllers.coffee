@@ -342,7 +342,7 @@ angular.module('memoire.controllers', ['memoire.services'])
                       )
                   )
               # chek if there is observations
-              observation = if candidature.observation != null then JSON.parse(candidature.observation) else {jury:""}
+              observation = if candidature.observation then JSON.parse(candidature.observation) else {jury:""}
               candidature.has_observation = (observation.jury != '' || (observation[$rootScope.user.username] && observation[$rootScope.user.username] != ""))
           # push candidature after all treatments
           arr.push(candidature)
@@ -479,7 +479,7 @@ angular.module('memoire.controllers', ['memoire.services'])
         $scope.candidature = candidature
         $scope.itw_date = new Date(candidature.interview_date)
         # has observations
-        observation = if candidature.observation != null then JSON.parse(candidature.observation) else {jury:""}
+        observation = if candidature.observation then JSON.parse(candidature.observation) else {jury:""}
         $scope.candidature.has_observation = (observation.jury != '' || (observation[$rootScope.user.username] && observation[$rootScope.user.username] != ""))
         artist_id = candidature.artist.match(/\d+$/)[0]
 
