@@ -50,13 +50,13 @@
    </h1>
    <form name="form" ng-submit="form.$valid && submit()" class="css-form" novalidate enctype="multipart/form-data">
       <div class="fr">
-         <p>À l’issue de la présélection, 60 candidats au maximum sont invités à se présenter aux épreuves d’admission.
+         <p>À l’issue de la présélection, 51 candidats au maximum sont invités à se présenter aux épreuves d’admission.
            Les épreuves de la sélection finale se déroulent au Fresnoy - Studio national à Tourcoing.
             <br/>Les candidats présélectionnés sont conviés à un entretien avec un jury entre le
-            {{ campaign.interviews_start_date | date : "EEEE d" | translate_en_to_fr | lowercase }}
-            au
+            {{ campaign.interviews_start_date | date : "EEEE d MMMM" | translate_en_to_fr | lowercase }}
+            et le
             {{ campaign.interviews_end_date | date : "EEEE d MMMM yyyy" | translate_en_to_fr | lowercase }}.<br/>
-            Les candidats hors continent européen, ont la possibilité de passer l’entretien oral au Fresnoy ou par skype
+            Les candidats hors continent européen, ont la possibilité de passer l’entretien oral au Fresnoy ou par visioconférence
             (Le Fresnoy ne peut être tenu pour responsable en cas de problème technique). <br/>
          </p>
 
@@ -64,16 +64,16 @@
       </div>
       <div class="en">
         At the end of the pre-selection, up to 60
-applicants will be invited to attend interviews at
-Le Fresnoy, Tourcoing, France. The final selection takes place at Le
-Fresnoy. Shortlisted candidates will be invited for
-interview by the jury between
-{{ campaign.interviews_start_date | date : "EEEE MMMM d" }} and
-{{ campaign.interviews_end_date | date : "EEEE MMMM d, yyyy" }}.<br/>
-Applicants from outside Europe can take the oral
-interview on Skype (note that Le Fresnoy cannot
-be held responsible in the case of any technical
-incident).
+        applicants will be invited to attend interviews at
+        Le Fresnoy, Tourcoing, France. The final selection takes place at Le
+        Fresnoy. Shortlisted candidates will be invited for
+        interview by the jury between
+        {{ campaign.interviews_start_date | date : "EEEE MMMM d" }} and
+        {{ campaign.interviews_end_date | date : "EEEE MMMM d, yyyy" }}.<br/>
+        Applicants from outside Europe can take the oral
+        interview on videoconference (note that Le Fresnoy cannot
+        be held responsible in the case of any technical
+        incident).
 
       </div>
       <div class="field">
@@ -86,10 +86,10 @@ incident).
             />
          <label for="remote-interview" class="check one pointer">
          <span class="fr">
-         J'habite hors du continent Européen et souhaite passer l'entretien par Skype.
+         J'habite hors du continent Européen et souhaite passer l'entretien par visioconférence.
          </span>
          <span class="en">
-         I do not live in mainland Europe and wish to pass the interview by Skype
+         I do not live in mainland Europe and wish to pass the interview by videoconference
          </span>
          </label>
          <div class="" ng-if="!candidature.remote_interview">
@@ -97,50 +97,6 @@ incident).
            candidature.patch({remote_interview_type : candidature.remote_interview_type})' />
            <!-- data sent one by one due to restriction -->
            <div class="" ng-init='candidature.patch({remote_interview: candidature.remote_interview })' />
-         </div>
-         <div class="" ng-if="candidature.remote_interview">
-           <!-- data sent one by one due to restriction -->
-            <div ng-init='candidature.remote_interview_type = "skype";
-            candidature.patch({remote_interview_type : candidature.remote_interview_type})' />
-            <div class="" ng-init='candidature.patch({remote_interview: candidature.remote_interview })' />
-            <div class="">
-               <input
-                  id="remote-interview-info"
-                  type="text"
-                  ng-model="candidature.remote_interview_info"
-                  ng-change="candidature.patch({remote_interview_info : candidature.remote_interview_info})"
-                  ng-model-options='{ debounce: 1000 }'
-                  name="cInterviewInfos"
-                  placeholder = "Identifiant Skype "
-                  ng-if="language=='fr'"
-                  required
-                  />
-                  <input
-                     id="remote-interview-info"
-                     type="text"
-                     ng-model="candidature.remote_interview_info"
-                     ng-change="candidature.patch({remote_interview_info : candidature.remote_interview_info})"
-                     ng-model-options='{ debounce: 1000 }'
-                     name="cInterviewInfos"
-                     placeholder = "Skype user name "
-                     ng-if="language=='en'"
-                     required
-                     />
-               <div ng-show="form.$submitted || form.cInterviewInfos.$touched">
-                  <span ng-show="form.cInterviewInfos.$error.required">
-                  <span class="fr">
-                  Champs requis
-                  </span>
-                  <span class="en">
-                  required
-                  </span>
-               </div>
-               <label for="remote-interview-info">
-               <span class="field-state"></span>
-               <span class="fr">Nom utilisateur Skype</span>
-               <span class="en">Skype Username</span>
-               </label>
-            </div>
          </div>
       </div>
    </form>
