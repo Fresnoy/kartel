@@ -247,6 +247,14 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
         scope.candidatures_open = new Date(scope.campaign.candidature_date_start) < new Date()
         scope.candidatures_close = new Date() > new Date(scope.campaign.candidature_date_end)
         scope.timer_countdown = Math.round((new Date(scope.campaign.candidature_date_end).getTime() - new Date().getTime())/1000)
+
+        # have to adjust time 1 second = 1.001 second selon le navigateur (WTF?!)
+        setInterval( () ->
+          # console.log "countdown adjust"
+          scope.timer_countdown = Math.round((new Date(scope.campaign.candidature_date_end).getTime() - new Date().getTime())/1000)
+          scope.$broadcast('timer-set-countdown', scope.timer_countdown);
+        , 60*1000 )
+
     ,() ->
           #error
           console.log("server api problem")
