@@ -51,6 +51,8 @@
             </label>
          </div>
 
+         
+
          <div class="field">
             <select id="gender" ng-model="user.profile.gender"
                ng-change="user.patch({'profile':{'gender': user.profile.gender}})" name="uGender" required>
@@ -111,7 +113,6 @@
               <span class="fr">Date de naissance : jj/mm/aaaa </span>
               <span class="en">Birthdate : dd/mm/yyyy</span>
               </label>
-           </div>
          </div>
          <div class="field">
             <select id="birth-country"
@@ -220,6 +221,26 @@
                <span class="en">PROOF OF IDENTITY (VALID PASSEPORT OR IDENTITY CARD) </span>
             </label>
          </div>
+         <!--
+         INE
+            Identifiant National Etudiant Unique
+            10 chiffres + 1 lettre ou 9 chiffres + 2 lettres
+          -->
+         <div class="field">
+            <input
+               type="text"
+               name="cINE"
+               ng-model="candidature.INE"
+               ng-change="candidature.patch({'INE': candidature.INE});"
+               placeholder="10 chiffres + 1 lettre / 9 + 2"
+               />
+            <label for="cINE">
+            <span class="fr">Numéro Identifiant National Etudiant Unique (INE/BEA, pour les personnes ayant étudier en France)</span>
+            <span class="en">INE number (for people who have already studied in France )</span>
+            </label>
+         </div>
+
+
          <div class="field">
             <input
                type="text"
@@ -227,7 +248,7 @@
                ng-change="user.patch({'profile':{'family_status': user.profile.family_status}});"
                name="uFamilyStatus"
                />
-            <div ng-show="form3.uFamilyStatus.$invalid" ng-messages="form3.uFamilyStatus.$error" class="help-block error">
+            <div ng-show="form1.uFamilyStatus.$invalid" ng-messages="form1.uFamilyStatus.$error" class="help-block error">
                <div ng-message="required">
                   <span class="fr">Obligatoire</span>
                   <span class="en">Required</span>
