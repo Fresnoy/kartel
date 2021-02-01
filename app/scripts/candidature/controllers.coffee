@@ -750,6 +750,33 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 
 )
 
+
+.controller('FinalizationAppController', ($rootScope, $state, $scope, Media, Galleries, Upload) ->
+
+        $rootScope.loadInfos($rootScope)
+        $rootScope.step.current = "24"
+
+        $scope.status_class = ""
+
+        # make sure server set the app complete to true (if ok it send email to candidat and admin)
+        $scope.final_submission = (candidature) ->
+          # disabled click
+          $scope.status_class = "disabled"
+          # send the value
+          candidature.patch({application_completed: true}).then((response) ->
+            # send is ok
+            # last value checking
+            if (response.application_completed)
+              $state.go('candidature.confirmation')
+
+          , (error) ->
+            console.log("server api or connection problem")
+            $state.go('candidature.error')
+          )
+
+
+)
+
 # media
 .controller('MediaVideoController', (
         $rootScope, $scope, $q, $state, $filter, $sce, $http,

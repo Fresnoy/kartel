@@ -44,7 +44,7 @@
 
       </p>
       <p>
-        <a class="btn green" ui-sref="candidature.confirmation" ng-click="candidature.patch({application_completed: true})">
+        <a class="btn green {{status_class}}" ng-click="final_submission(candidature)">
 
           <span class='fr'>Je valide définitivement <br>
             <small>ma candidature au concours

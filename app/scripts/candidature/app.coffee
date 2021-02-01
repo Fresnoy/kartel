@@ -321,15 +321,13 @@ angular.module('candidature.application', ['candidature.controllers',
                           $rootScope.step.current = "23"
 
       )
-      # ONLINE CANDIDATURE - 23 - Confirmation
+      # ONLINE CANDIDATURE - 23 - Finalization
       $stateProvider.state('candidature.finalization',
                   url: '/finalization'
                   views:
                     'application_content_view':
                         templateUrl: 'views/candidature/pages/24-finalization.html',
-                        controller: ($rootScope) ->
-                          $rootScope.loadInfos($rootScope)
-                          $rootScope.step.current = "24"
+                        controller: "FinalizationAppController"                        
       )
         # ONLINE CANDIDATURE - 24 - Confirmation
       $stateProvider.state('candidature.confirmation',
