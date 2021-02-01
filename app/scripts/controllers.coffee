@@ -90,13 +90,15 @@ angular.module('memoire.controllers', ['memoire.services'])
 
 )
 
-.controller('ArtistListingController', ($scope, Students, $state) ->
+.controller('ArtistListingController', ($rootScope, $scope, Students, $state) ->
+  $rootScope.main_title = "Kartel - Liste des artistes"
   $scope.letter = $state.params.letter || "a"
   $scope.artists = Students.getList({user__last_name__istartswith: $scope.letter, limit: 200}).$object
   $scope.alphabet = "abcdefghijklmnopqrstuvwxyz".split("")
 )
 
-.controller('ArtworkListingController', ($scope, Artworks, $state) ->
+.controller('ArtworkListingController', ($rootScope, $scope, Artworks, $state) ->
+  $rootScope.main_title = "Kartel - Liste des œuvres"
   $scope.letter = $state.params.letter || "a"
   $scope.offset = parseInt($state.params.offset) || 0
   $scope.limit = 200
@@ -110,7 +112,8 @@ angular.module('memoire.controllers', ['memoire.services'])
 )
 
 
-.controller('SchoolController', ($scope, $state, Promotions, Students) ->
+.controller('SchoolController', ($rootScope, $scope, $state, Promotions, Students) ->
+  $rootScope.main_title = "Kartel - Liste des promotions"
   $scope.promotions = []
 
   Promotions.getList({order_by: "-starting_year", limit: 200}).then((promotions) ->
@@ -120,18 +123,25 @@ angular.module('memoire.controllers', ['memoire.services'])
 )
 
 
-.controller('PromotionController', ($scope, $stateParams, Students, Promotions) ->
+.controller('PromotionController', ($rootScope, $scope, $stateParams, Students, Promotions) ->
 
-
-  $scope.promotion = Promotions.one($stateParams.id).get().$object
+  # $scope.promotion = Promotions.one($stateParams.id).get().$object
+  $scope.promotion = Promotions.one($stateParams.id).get().then((promotion) ->
+    # main title
+    $rootScope.main_title="Kartel - Promotion : " +promotion.name
+  ).$object
   $scope.students = Students.getList({promotion: $stateParams.id, order_by:'user__last_name', limit: 500}).$object
 )
 
-.controller('ArtistController', ($scope, $stateParams, Students, Artists, Artworks) ->
+.controller('ArtistController', ($rootScope, $scope, $stateParams, Students, Artists, Artworks) ->
+  $rootScope.main_title = "Kartel - Artiste"
+
   $scope.artworks = []
 
   Artists.one().one($stateParams.id).get().then((artist) ->
     $scope.artist = artist
+    name = if artist.nickname then artist.nickname else (artist.user.first_name + " " + artist.user.last_name)
+    $rootScope.main_title = "Kartel - Artiste :" + name
 
     # Fetch artworks
     for artwork_uri in $scope.artist.artworks
@@ -144,7 +154,10 @@ angular.module('memoire.controllers', ['memoire.services'])
   )
 )
 
-.controller('ArtworkController', ($scope, $stateParams, $sce, $http, Lightbox, Artworks, AmeRestangular, Events, Collaborators, Partners, Candidatures) ->
+.controller('ArtworkController', ($rootScope, $scope, $stateParams, $sce, $http, Lightbox, Artworks, AmeRestangular, Events, Collaborators, Partners, Candidatures) ->
+  # main title
+  $rootScope.main_title="Kartel - Œuvre"
+
   $scope.artwork = null
   $scope.events = []
 
@@ -157,6 +170,9 @@ angular.module('memoire.controllers', ['memoire.services'])
 
   Artworks.one().one($stateParams.id).get().then((artwork) ->
     $scope.artwork = artwork
+
+    $rootScope.main_title="Kartel - Œuvre : " + artwork.title
+
     for event_uri in $scope.artwork.events
       matches = event_uri.match(/\d+$/)
       if matches
@@ -241,12 +257,18 @@ angular.module('memoire.controllers', ['memoire.services'])
 )
 
 .controller('StudentController', ($scope, $rootScope, $stateParams, Students, Artworks, Promotions, Candidatures, ArtistsV2, Users, ISO3166) ->
+  # main title
+  $rootScope.main_title="Kartel - Étudiant"
+
   $scope.student = null
   $scope.promotion = null
   $scope.artworks = []
 
   Students.one().one($stateParams.id).get().then((student) ->
     $scope.student = student
+    artist = student.artist
+    name = if artist.nickname then artist.nickname else (artist.user.first_name + " " + artist.user.last_name)
+    $rootScope.main_title = "Kartel - Étudiant : " + name
     # Fetch promotion
     matches = student.promotion.match(/\d+$/)
     if matches
@@ -287,6 +309,10 @@ angular.module('memoire.controllers', ['memoire.services'])
 
 .controller('CandidaturesController', ($rootScope, $scope, $stateParams, $location, Candidatures, Galleries, Media, RestangularV2, ArtistsV2, Users,
   ISO3166, cfpLoadingBar) ->
+  # main title
+  $rootScope.main_title="Candidatures administration"
+
+
   # init
   $scope.candidatures = []
   $scope.candidat_id = $stateParams.id

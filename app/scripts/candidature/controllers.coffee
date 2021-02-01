@@ -220,6 +220,8 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
             Restangular, RestangularV2, Vimeo, Logout, $http, cfpLoadingBar, authManager, ISO3166,
             Users, Candidatures, ArtistsV2, Galleries, Media, Upload, ) ->
 
+  $rootScope.main_title= "Le Fresnoy - Studio national - Selection"
+
   # Media
   if(!$rootScope.current_display_screen)
     $rootScope.current_display_screen = candidature_config.screen.home

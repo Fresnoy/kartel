@@ -18,20 +18,6 @@
 
   <form name="form" ng-submit="form.$valid && submit()" class="css-form" novalidate enctype="multipart/form-data">
 
-
-    <div class="field">
-       <input id="nickname" type="text"  ng-model="artist.nickname"
-             ng-model-options='{ debounce: 1000 }'
-             ng-change="artist.patch({'nickname': artist.nickname})" name="aNickname" />
-       <label for="name">
-
-       <span class="fr">Nom d'artiste</span>
-       <span class="en">Artist name</span>
-       </label>
-    </div>
-
-
-
     <p class="fr">Résumé du parcours artistique : </p>
     <p class="en">Summary of your artistic career: </p>
 
@@ -74,7 +60,20 @@
               </div>
 
 
+      <p class="fr">Nom d'artiste : </p>
+      <p class="en">Artist name: </p>
 
+
+              <div class="field">
+                 <input id="nickname" type="text"  ng-model="artist.nickname"
+                       ng-model-options='{ debounce: 1000 }'
+                       ng-change="artist.patch({'nickname': artist.nickname})" name="aNickname" />
+                 <label for="name">
+
+                 <span class="fr">Nom d'artiste</span>
+                 <span class="en">Artist name</span>
+                 </label>
+              </div>
 
 
 
