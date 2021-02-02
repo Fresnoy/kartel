@@ -504,7 +504,9 @@ angular.module('memoire.controllers', ['memoire.services'])
   loadCandidat = (id) ->
       Candidatures.one(id).get().then((candidature) ->
         $scope.candidature = candidature
-        $scope.itw_date = new Date(candidature.interview_date)
+        # set default itw_date if null
+        $scope.itw_date = if (candidature.interview_date) then new Date(candidature.interview_date) else new Date()
+        # load artist data
         artist_id = candidature.artist.match(/\d+$/)[0]
         ArtistsV2.one(artist_id).get().then((artist) ->
             $scope.artist = artist
