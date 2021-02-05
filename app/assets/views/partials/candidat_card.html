@@ -58,20 +58,28 @@
 
           <div class="candidature-infos">
 
+
+            <!-- non sleectionné -->
+            <span ng-if="candidature.unselected">Non sélectionné</span>
+
             <!-- NON VISé -->
-            <span ng-if="(candidature.application_completed && !candidature.application_complete)">
-              <span ng-if="candidature.application_completed">Dossier validé en ligne</span>
+            <span ng-if="candidature.application_completed && !candidature.application_complete">
+              Dossier validé en ligne
               <strong>- Non visé</strong>
             </span>
-            <!-- VISé -->
-            <span ng-if="candidature.application_complete">
-              <span ng-if="candidature.unselected">Non sélectionné</span>
+            <span ng-if="candidature.application_complete && !candidature.unselected">
+              <!-- VISé -->
+              <span ng-if="!candidature.selected_for_interview && !candidature.wait_listed_for_interview && !candidature.wait_listed && !candidature.selected && !candidature.selected">Dossier visé</span>
+              <!-- entretien -->
               <span ng-if="candidature.selected_for_interview && !candidature.wait_listed && !candidature.selected">
                 Sélectionné<ng-pluralize count="candidature.artist.user.profile.gender.indexOf('F')" when="{'0': 'e', 'other': ''}"></ng-pluralize>
                 pour l'entretien</span>
-              <span ng-if="!candidature.wait_listed && candidature.wait_listed_for_interview && candidature.position_in_interview_waitlist">En liste d'attente position : {{candidature.position_in_interview_waitlist}}</span>
-              <span ng-if="candidature.wait_listed && !candidature.selected">En liste d'attente</span>
-              <span ng-if="candidature.selected">Sélectioné<ng-pluralize count="candidature.artist.user.profile.gender.indexOf('F')" when="{'0': 'e', 'other': ''}"
+              <!-- entretien liste attente -->
+              <span ng-if="!candidature.wait_listed && candidature.wait_listed_for_interview && candidature.position_in_interview_waitlist">Liste d'attente pour l'entretien en position : {{candidature.position_in_interview_waitlist}}</span>
+              <!-- slectionné liste attente -->
+              <span ng-if="candidature.wait_listed && !candidature.selected">En liste d'attente  position : {{candidature.position_in_waitlist}}</span>
+              <!-- selectionné -->
+              <span ng-if="!candidature.unselected && candidature.selected">Sélectioné<ng-pluralize count="candidature.artist.user.profile.gender.indexOf('F')" when="{'0': 'e', 'other': ''}"
                 <ng-pluralize count="candidature.artist.user.profile.gender" when="{'F': 'e', 'other': ''}" />
               </span>
             </span>
