@@ -116,7 +116,7 @@
              </span> <br/>
              Tel : {{ more.artist.user.profile.homeland_phone}}<br/>
              E-mail : {{more.artist.user.email}}<br/>
-             <span ng-if="more.remote_interview_info!=''" >Skype : <a href="skype:{{more.remote_interview_info}}?call" class="">{{ more.remote_interview_info }}</a><br/></span>
+             
              Adresse  : <span ng-bind-html="more.artist.user.profile.homeland_address | nl2br" />
              {{more.artist.user.profile.homeland_zipcode}} {{more.artist.user.profile.homeland_town}} {{more.country.codeToCountry[artist.user.profile.homeland_country]}}<br/>
              Numéro de Sécurité sociale : {{ more.artist.user.profile.social_insurance_number}}<br/>

@@ -83,21 +83,16 @@
             ng-model="candidature.remote_interview"
             name="cInterviewType"
             class="one check"
+            ng-change="candidature.patch({remote_interview: candidature.remote_interview})"
             />
          <label for="remote-interview" class="check one pointer">
-         <span class="fr">
-         J'habite hors du continent Européen et souhaite passer l'entretien par visioconférence.
-         </span>
-         <span class="en">
-         I do not live in mainland Europe and wish to pass the interview by videoconference
-         </span>
+               <span class="fr">
+               J'habite hors du continent Européen et souhaite passer l'entretien par visioconférence.
+               </span>
+               <span class="en">
+               I do not live in mainland Europe and wish to pass the interview by videoconference
+               </span>
          </label>
-         <div class="" ng-if="!candidature.remote_interview">
-           <div class="" ng-init='candidature.remote_interview_type = "";
-           candidature.patch({remote_interview_type : candidature.remote_interview_type})' />
-           <!-- data sent one by one due to restriction -->
-           <div class="" ng-init='candidature.patch({remote_interview: candidature.remote_interview })' />
-         </div>
       </div>
    </form>
    <div class="navigation">

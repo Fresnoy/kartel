@@ -290,7 +290,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
   $rootScope.phone_pattern = /^\+?[0-9-]{2,5}[-. ]?\d{5,12}$/
 
   # ITW types
-  $scope.INTERVIEW_TYPES = ["Skype"]
+  # $scope.INTERVIEW_TYPES = [""]
 
   # write data var
   $rootScope.writingData = false

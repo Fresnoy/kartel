@@ -95,7 +95,7 @@ angular.module('kartel',
 
 )
 
-# whitelist href - for skype
+# whitelist href 
 .config(['$compileProvider', ($compileProvider) ->
     $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|tel|local|file|data|blob|webcal|skype):/);
 ])
