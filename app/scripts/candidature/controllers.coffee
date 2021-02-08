@@ -31,6 +31,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
         Registration.post(params).then((response) ->
           $state.go('candidature.account.user-created', {infos:params})
         , (response) ->
+          console.log response.data
           form.error = response.data
         )
 
@@ -96,11 +97,19 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
       )
 )
 
-.controller('AccountPasswordResetController', ($rootScope, $scope, RestAuth) ->
+.controller('AccountPasswordResetController', ($rootScope, $scope, RestAuth, Users) ->
 
   $rootScope.step.current = "06"
 
   $scope.emailSended = false;
+
+  $scope.checkMail = (form, email) ->
+    Users.getList({search: email}).then((data) ->
+        form.$setValidity('knowemail', data.length == 1)
+        form.$setTouched()
+    )
+
+
   $scope.submit = () ->
       RestAuth.one().customPOST({email: $scope.email}, "password/reset/").then((response) ->
         $scope.emailSended = true;
