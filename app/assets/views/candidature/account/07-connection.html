@@ -22,7 +22,7 @@
             </label>
          </div>
          <div class="field">
-            <input id="password" type="password" ng-model="vm.password" name="uPassword" required />
+            <input id="password" ng-minlength="8" type="password" ng-model="vm.password" name="uPassword" required />
             <div ng-show="form.uPassword.$touched && form.uPassword.$error.required" ng-messages="form.uPassword.$error" class="help-block error">
                <div ng-message="required">
                   <span class="fr">Mot de passe Requis</span>
@@ -35,7 +35,11 @@
             <span class="en">Password</span>
             </label>
          </div>
-         <div ng-if="vm.error" class="alert alert-danger">{{vm.error}}</div>
+         <div ng-if="vm.error" class="alert alert-danger">
+           <strong>{{vm.error}}</strong>
+           <span class='fr'>Rappel: le mot de passe contient 8 lettres minimum dont une majuscule, une minuscule et un chiffre</span>
+           <span class='en'>Reminder: the password contains at least 8 letters including one uppercase, lowercase and number </span>
+         </div>
 
          <button type="submit" ng-click="login(form, vm)" ng-class="{ 'has-error': form.$invalid }" class="btn grey block">Login</button>
       </form>

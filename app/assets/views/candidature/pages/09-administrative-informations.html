@@ -4,6 +4,11 @@
    <div class="fr">
       <p>La procédure de sélection est ouverte à tous les candidats, sans distinction de sexe ou de nationalité,
         âgés de 35 ans au plus au 1er janvier de l’année du concours (nés après le <span ng-bind="campaign.date_of_birth_max | date : 'd MMMM yyyy'  | translate_en_to_fr" />).</p>
+      <p>L'INE signifie "Identifiant National Elève". Ce numéro est composé de neuf chiffres et deux lettres depuis la rentrée 2018
+        (auparavant, il comportait dix chiffres et une lettre).
+        Il est indiqué en haut sur le relevé de notes du baccalauréat en tant qu'« identifiant national ».
+        Seuls les étudiants ayant passé leur baccalauréat à partir de 1995 possèdent un numéro BEA.
+        <a href="https://fr.wikipedia.org/wiki/Num%C3%A9ro_BEA">Source Wikipédia</a> </p>
    </div>
    <div class="en">
       <p>The selection procedure is open to all candidates, of any sex or nationality, aged 35 years maximum on 1st January of the current year
@@ -51,7 +56,7 @@
             </label>
          </div>
 
-         
+
 
          <div class="field">
             <select id="gender" ng-model="user.profile.gender"
@@ -232,11 +237,11 @@
                name="cINE"
                ng-model="candidature.INE"
                ng-change="candidature.patch({'INE': candidature.INE});"
-               placeholder="10 chiffres + 1 lettre / 9 + 2"
+               placeholder="10 chiffres + 1 lettre (ou 9 + 2)"
                />
             <label for="cINE">
             <span class="fr">Numéro Identifiant National Etudiant Unique (INE/BEA, pour les personnes ayant étudier en France)</span>
-            <span class="en">INE number (for people who have already studied in France )</span>
+            <span class="en">INE number (for people who have studied in France)</span>
             </label>
          </div>
 
