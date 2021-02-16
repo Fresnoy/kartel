@@ -39,7 +39,7 @@
 
   <div ng-if="!candidature.application_complete">
 
-    <span class="fr">Nous procédons à sa vérification et nous vous enverrons email de confirmation prochainement.</span>
+    <span class="fr">Nous procédons à sa vérification et nous vous enverrons un email de confirmation prochainement.</span>
     <span class="en">We check your submitted documents, a confirmation e-mail will be sent.</span>
 
   </div>
@@ -52,14 +52,14 @@
   </div>
   <div class="fr">
     <h2>Entretiens</h2>
-    <p>Les candidats présélectionnés sont conviés à un entretien avec un jury
+    <p>Les candidat.es présélectionné.es sont convié.es à un entretien avec un jury
       <strong>entre le
       {{ campaign.interviews_start_date | date : "EEEE d MMMM" | translate_en_to_fr | lowercase }}
       et le
       {{ campaign.interviews_end_date | date : "EEEE d MMMM yyyy" | translate_en_to_fr | lowercase }}</strong>.</p>
 
     <h2>Annonce des résultats</h2>
-    <p>La liste des 24 candidats admis sera affichée au Fresnoy et mise en ligne sur son site internet
+    <p>La liste des 24 candidat.es admi.es sera affichée au Fresnoy et mise en ligne sur son site internet
       <a href="https://www.lefresnoy.net/">lefresnoy.net</a>,
       le
       <strong>{{ campaign.selected_publish_date | date : "EEEE d MMMM yyyy à HH'h'" | translate_en_to_fr | lowercase }}</strong>. <br/>
@@ -71,7 +71,7 @@
     </p>
     <p>
     Les admissions sont valables pour l’année scolaire {{campaign.promotion.starting_year}}-{{campaign.promotion.starting_year+1}}. <br/>
-    Aucun candidat admis ne peut prétendre différer son intégration, ni se prévaloir de son admission pour une autre année scolaire.</p>
+    Aucun.e candidat.e admis.e ne peut prétendre différer son intégration, ni se prévaloir de son admission pour une autre année scolaire.</p>
   </div>
   <div class="en">
     <h2>Interviews</h2>
