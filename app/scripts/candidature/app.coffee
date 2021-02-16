@@ -168,19 +168,7 @@ angular.module('candidature.application', ['candidature.controllers',
                         templateUrl: 'views/candidature/pages/08-inscription-options.html',
                         controller: ($rootScope) ->
                           $rootScope.step.current = "08"
-                          $rootScope.step.total = 24
                           $rootScope.loadInfos($rootScope)
-      )
-      # ONLINE CANDIDATURE - 09 - MAIL
-      $stateProvider.state('candidature.mail',
-                  url: '/mail'
-                  views:
-                    'application_content_view':
-                        templateUrl: 'views/candidature/pages/09b-inscription-by-mail.html',
-                        controller: ($rootScope) ->
-                          $rootScope.loadInfos($rootScope)
-                          $rootScope.step.current = "09"
-                          $rootScope.step.total = 9
       )
       # ONLINE CANDIDATURE - 09 - ADMINSISTRATIVE INFOS
       $stateProvider.state('candidature.administrative-informations',
@@ -327,7 +315,7 @@ angular.module('candidature.application', ['candidature.controllers',
                   views:
                     'application_content_view':
                         templateUrl: 'views/candidature/pages/24-finalization.html',
-                        controller: "FinalizationAppController"                        
+                        controller: "FinalizationAppController"
       )
         # ONLINE CANDIDATURE - 24 - Confirmation
       $stateProvider.state('candidature.confirmation',
