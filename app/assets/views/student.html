@@ -13,7 +13,7 @@
     <h2><i class="glyphicon glyphicon-question-sign"></i>&nbsp;A propos</h2>
 
     <div ng-if="student.user.birthdate || student.user.birthplace">
-      Né(e) <span ng-if="student.user.birthdate">le {{ student.user.birthdate }}</span> <span ng-if="student.user.birthplace">à {{ student.user.birthplace }}</span>.
+      Né(e) <span ng-if="student.user.birthdate">le {{ student.user.birthdate | date : "d MMMM"  | translate_en_to_fr }}</span> <span ng-if="student.user.birthplace">à {{ student.user.birthplace }}</span>.
     </div>
 
     <div class="links">
@@ -116,7 +116,7 @@
              </span> <br/>
              Tel : {{ more.artist.user.profile.homeland_phone}}<br/>
              E-mail : {{more.artist.user.email}}<br/>
-             
+
              Adresse  : <span ng-bind-html="more.artist.user.profile.homeland_address | nl2br" />
              {{more.artist.user.profile.homeland_zipcode}} {{more.artist.user.profile.homeland_town}} {{more.country.codeToCountry[artist.user.profile.homeland_country]}}<br/>
              Numéro de Sécurité sociale : {{ more.artist.user.profile.social_insurance_number}}<br/>
