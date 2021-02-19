@@ -6,10 +6,10 @@
    </h1>
    <p class="fr">
       Pour toutes précisions, ou remarques vous pouvez nous laisser un message ci-dessous et nous dire comment avez
-      vous connu le Fresnoy
+      vous connu le Fresnoy :
    </p>
    <p class="en">
-     For any further information, you can leave us a message below and tell us how you knew the Fresnoy
+     For any further information, you can leave us a message below and tell us how you knew Le Fresnoy:
    </p>
    <textarea
       id="remark"
@@ -44,7 +44,7 @@
 
       </p>
       <p>
-        <a class="btn green" ui-sref="candidature.confirmation" ng-click="candidature.patch({application_completed: true})">
+        <a class="btn green {{status_class}}" ng-click="final_submission(candidature)">
 
           <span class='fr'>Je valide définitivement <br>
             <small>ma candidature au concours

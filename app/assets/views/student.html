@@ -13,7 +13,7 @@
     <h2><i class="glyphicon glyphicon-question-sign"></i>&nbsp;A propos</h2>
 
     <div ng-if="student.user.birthdate || student.user.birthplace">
-      Né(e) <span ng-if="student.user.birthdate">le {{ student.user.birthdate }}</span> <span ng-if="student.user.birthplace">à {{ student.user.birthplace }}</span>.
+      Né(e) <span ng-if="student.user.birthdate">le {{ student.user.birthdate | date : "d MMMM"  | translate_en_to_fr }}</span> <span ng-if="student.user.birthplace">à {{ student.user.birthplace }}</span>.
     </div>
 
     <div class="links">
@@ -80,8 +80,86 @@
           <div role="tabpanel" class="tab-pane" id="bio-short-en">
             <div ng-bind-html="student.artist.bio_short_en|markdown"></div>
           </div>
+
         </div>
-      </tabset>
+      <ul class="nav nav-tabs" role="tablist" ng-if="user.is_superuser" >
+        <li role="presentation" class="text">
+            <h3>Autres informations</h3>
+        </li>
+
+        <li role="presentation">
+          <a data-target ="#more-infos" aria-controls="more-infos" role="tab" data-toggle="tab">
+             <i class="glyphicon glyphicon-user text-muted"></i>
+          </a>
+        </li>
+
+        <li role="presentation">
+          <a data-target ="#more-cursus" aria-controls="more-cursus" role="tab" data-toggle="tab">
+             <i class="glyphicon glyphicon-road text-muted"></i>
+          </a>
+        </li>
+        <li role="presentation">
+          <a data-target ="#more-artistic" aria-controls="more-artistic" role="tab" data-toggle="tab">
+             <i class="glyphicon glyphicon-eye-open text-muted"></i>
+          </a>
+        </li>
+
+      </ul>
+      <div class="tab-content">
+        <div role="tabpanel" class="tab-pane" id="more-infos">
+          <h4>Contact</h4>
+          <p>
+             Nom : {{more.artist.user.last_name}} - Prénom : {{more.artist.user.first_name}} <br/>
+             Nationalité :
+             <span class="nationality" ng-repeat="nationality in more.artist.user.profile.nationality.split(', ') track by $index">
+                <small title={{country.codeToCountry[nationality]}}>{{nationality}}</small>
+             </span> <br/>
+             Tel : {{ more.artist.user.profile.homeland_phone}}<br/>
+             E-mail : {{more.artist.user.email}}<br/>
+
+             Adresse  : <span ng-bind-html="more.artist.user.profile.homeland_address | nl2br" />
+             {{more.artist.user.profile.homeland_zipcode}} {{more.artist.user.profile.homeland_town}} {{more.country.codeToCountry[artist.user.profile.homeland_country]}}<br/>
+             Numéro de Sécurité sociale : {{ more.artist.user.profile.social_insurance_number}}<br/>
+        </p>
+        </div>
+
+
+        <div role="tabpanel" class="tab-pane" id="more-cursus">
+          <h4>Cursus</h4>
+          <p ng-bind-html="student.user.cursus|markdown"></p>
+          <p>Curiculum Vitae : <a ng-show="more.curriculum_vitae" ng-href='{{more.curriculum_vitae}}' target="_blank">{{more.curriculum_vitae}}</a></p>
+        </div>
+
+        <div role="tabpanel" class="tab-pane" id="more-artistic">
+
+          <p>
+            <span ng-if="more.binomial_application">En binome avec {{more.binomial_application_with}}<br/></span>
+          </p>
+          <h4>Dans le cadre de sa candidature au Fresnoy</h4>
+          <p>
+            <span ng-if="more.free_document">Document libre : <a ng-if="more.free_document" class="pointer" ng-href="{{more.free_document}}" target="_blank">{{more.free_document}}</a><br/></span>
+              <!-- Propositions -->
+            Propositions initiale : <a ng-href="{{more.considered_project_1}}" target="_blank">1ere année</a> / <a ng-href="{{more.considered_project_2}}" target="_blank">2nd année</a>
+            <br/>
+            <!-- VIDEO -->
+            Vidéo de présentation de son travail : <a class="pointer" ng-href="{{more.presentation_video}}" target="_blank" title="{{more.presentation_video_details}}">{{more.presentation_video}}</a>
+            <span ng-show="more.presentation_video_password!=''"> (mdp: {{more.presentation_video_password}})</span>
+          </p>
+          <p>
+            <!-- WEB -->
+            <!-- <span class="website" ng-repeat="website in more.artist.websites track by $index">
+              <a href="{{ website.link }}" title="{{ website.link }}" target="_blank">{{ website.link }}</a>
+            </span> -->
+          </p>
+
+
+
+        </div>
+
+      </div>
+
+
+
 
 
   </div>
