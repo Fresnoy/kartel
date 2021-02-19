@@ -14,7 +14,7 @@
         <li ui-sref-active="active"><a ui-sref="school"><i class="glyphicon glyphicon-education"></i>&nbsp;&nbsp;Ecole</a></li>
         <li ui-sref-active="active"><a ui-sref="artist"><i class="glyphicon glyphicon-user"></i>&nbsp;&nbsp;Artistes</a></li>
         <li ui-sref-active="active"><a ui-sref="artwork"><i class="glyphicon glyphicon-picture"></i>&nbsp;&nbsp;Oeuvres</a></li>
-        <li ng-if="candidatures[0].created_on" ui-sref-active="active">
+        <li ng-if="user.is_superuser" ui-sref-active="active">
 
           <a class="pointer dropdown-toggle" data-toggle="dropdown" role="button">
             <i class="glyphicon glyphicon-dashboard"></i>&nbsp;&nbsp;Candidatures<span class="caret"></span>

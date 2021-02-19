@@ -10,7 +10,7 @@
     <h2><i class="glyphicon glyphicon-question-sign"></i>&nbsp;A propos</h2>
 
     <div ng-if="artist.user.birthdate || artist.user.birthplace">
-      Né(e) <span ng-if="artist.user.birthdate">le {{ artist.user.birthdate }}</span> <span ng-if="artist.user.birthplace">à {{ artist.user.birthplace }}</span>.
+      Né(e) <span ng-if="artist.user.birthdate">le {{ artist.user.birthdate | date : "d MMMM"  | translate_en_to_fr }}</span><span ng-if="artist.user.birthplace">à {{ artist.user.birthplace }}</span>.
     </div>
 
     <div class="links">
