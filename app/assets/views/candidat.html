@@ -123,9 +123,11 @@
               Intentions
             </a>
           </li>
-          <li role="message" class="">
+          <li role="message" class="" >
             <a data-target ="#message" role="tab" data-toggle="tab">
-              Message
+              <span  ng-if='candidature.remark.length!="" && candidature.remark!=null '>
+                Message
+              </span>
             </a>
           </li>
           <li role="observations" class="admin">
@@ -270,7 +272,7 @@
 
         <div role="tabpanel" class="tab-pane" id="message">
           <h3>Message</h3>
-          <p ng-bind-html="candidature.remark | linky:'_blank' | nl2br" />
+          <p ng-if='candidature.remark!=null' ng-bind-html="candidature.remark | linky:'_blank' | nl2br" />
         </div>
 
         <div role="tabpanel" class="tab-pane admin" id="observations">
