@@ -441,12 +441,12 @@ body.en {
   .candidature-number{
     text-align: right;
     text-align-last: right;
-    font-size: 0.9em;
+    font-size: 0.8em;
 
   }
 
   .candidature-infos-icon{
-    height: 70px;
+    height: 60px;
     line-height: 90px;
     .glyphicon{
       font-size:28px;
@@ -469,7 +469,7 @@ body.en {
 
   &.showing_details{
     .thumbnail{
-      box-shadow: 0px 0px 5px 1px #5bc0de;
+      box-shadow: 0px 0px 10px 1px #5bc0de;
     }
   }
 
