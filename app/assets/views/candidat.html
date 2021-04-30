@@ -29,8 +29,11 @@
   </div>
   <div class="info col-md-9 col-lg-9">
     <h1>
-        <span ng-if="artist.nickname">"{{ artist.nickname }}" ({{ artist.user.first_name }}  {{ artist.user.last_name }})</span>
-        <span ng-if="!artist.nickname">"{{ artist.user.first_name }}  {{ artist.user.last_name }}</span>
+        <span>{{ artist.user.first_name }}  {{ artist.user.last_name }}</span>
+        <span ng-if="artist.nickname && artist.nickname!=(artist.user.first_name+' '+artist.user.last_name)"
+              title="Nom d'artiste">
+              <small> / <i>{{ artist.nickname }}</i></small>
+        </sapn>
       </h1>
 
     <p><i class="glyphicon glyphicon-dashboard"></i>
