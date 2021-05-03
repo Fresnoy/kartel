@@ -325,7 +325,7 @@ angular.module('memoire.controllers', ['memoire.services'])
     {key:0, title: 'Toutes', sortby: {'campaign__is_current_setup':'true'}, count:0 },
     {key:1, title: 'Refusées', sortby: {'campaign__is_current_setup':'true', "unselected":'true'}, count:0 },
     {key:2, title: 'Non finalisées', sortby: {'campaign__is_current_setup':'true', "application_completed": 'false'}, count:0},
-    {key:3, title: 'En attente de validation', sortby: {'campaign__is_current_setup':'true', "application_completed":'true', "application_complete": 'false'}, count:0},
+    {key:3, title: 'En attente de validation', sortby: {'campaign__is_current_setup':'true', 'application_completed':'true', "application_complete":'false', "unselected": 'false' }, count:0},
     {key:4, title: 'Visées', sortby: {'campaign__is_current_setup':'true', "application_complete":'true'}, count:0},
     {key:5, title: 'Entretien : liste d\'attente', sortby: {'campaign__is_current_setup':'true', "wait_listed_for_interview":'true'}, count:0},
     {key:6, title: 'Entretien : Selectionnés', sortby: {'campaign__is_current_setup':'true', "selected_for_interview":'true'}, count:0},
