@@ -1,3 +1,11 @@
+html {
+    font-size: 100%;
+}
+
+body {
+    font-size: 1rem;
+}
+
 .modal-dialog{
     min-width: 90%;
 
@@ -392,10 +400,26 @@ body.en {
 
 
 .candidat-card{
-  font-size: 0.9em;
-  height: 110px;
+  font-size: 1rem;
+  height: 150px;
   margin: 20px 0px;
 
+    .user-infos {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        height: 100%;
+        & > div { 
+            flex: 1 0 100%;
+            padding-bottom: 5px; 
+        }
+        & div:first-child { padding: 0px; }
+        .langues {
+            margin-top: 5px;
+        }
+    }
+    
+        
   .corner{
     position: absolute;
     right: 15px;
@@ -424,12 +448,12 @@ body.en {
     text-transform:uppercase;
   }
   .user-first_name, .user-last_name, .user-birthdate{
-    font-size: 10pt;
+    font-size: 1rem;
     line-height: 10pt;
   }
   .langues{
-    font-size: 8pt;
-    line-height: 12pt;
+    font-size: .8rem;
+    line-height: .8rem;
     color: #4a4a4a;
     .language:after{
       content:",";
@@ -441,13 +465,14 @@ body.en {
   .candidature-number{
     text-align: right;
     text-align-last: right;
-    font-size: 0.8em;
-
+    font-size: 0.8rem;
+    display: inline-block;
+    min-width: 100%;
   }
 
   .candidature-infos-icon{
-    height: 60px;
-    line-height: 90px;
+    // height: 60px;
+    // line-height: 90px;
     .glyphicon{
       font-size:28px;
       padding: 0px;
@@ -504,7 +529,7 @@ body.en {
       visibility: hidden;
     }
     .preserve-info:before{
-      content: "XXXXX";
+      content: "";
       position: absolute;
       visibility: visible;
     }
@@ -515,7 +540,7 @@ body.en {
       background: #4a4a4a;
       text-align: right;
       position: absolute;
-      left: -5px;
+      left: 0;
       color:white;
     }
     .user-birthdate{display: none}
@@ -545,8 +570,8 @@ body.en {
     white-space:nowrap;
   }
   .flag-icon{
-    height: 10px;
-    width: 20px;
+    height: 15px;
+    width: 30px;
   }
   .row > div{
     overflow: hidden;
@@ -645,6 +670,7 @@ body.en {
   height: 80%;
   display: block;
   .candidat{
+    
 
     .flag-icon{
       width: 100px;
