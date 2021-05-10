@@ -90,13 +90,15 @@ angular.module('memoire.controllers', ['memoire.services'])
 
 )
 
-.controller('ArtistListingController', ($scope, Students, $state) ->
+.controller('ArtistListingController', ($rootScope, $scope, Students, $state) ->
+  $rootScope.main_title = "Kartel - Liste des artistes"
   $scope.letter = $state.params.letter || "a"
   $scope.artists = Students.getList({user__last_name__istartswith: $scope.letter, limit: 200}).$object
   $scope.alphabet = "abcdefghijklmnopqrstuvwxyz".split("")
 )
 
-.controller('ArtworkListingController', ($scope, Artworks, $state) ->
+.controller('ArtworkListingController', ($rootScope, $scope, Artworks, $state) ->
+  $rootScope.main_title = "Kartel - Liste des œuvres"
   $scope.letter = $state.params.letter || "a"
   $scope.offset = parseInt($state.params.offset) || 0
   $scope.limit = 200
@@ -110,7 +112,8 @@ angular.module('memoire.controllers', ['memoire.services'])
 )
 
 
-.controller('SchoolController', ($scope, $state, Promotions, Students) ->
+.controller('SchoolController', ($rootScope, $scope, $state, Promotions, Students) ->
+  $rootScope.main_title = "Kartel - Liste des promotions"
   $scope.promotions = []
 
   Promotions.getList({order_by: "-starting_year", limit: 200}).then((promotions) ->
@@ -120,18 +123,25 @@ angular.module('memoire.controllers', ['memoire.services'])
 )
 
 
-.controller('PromotionController', ($scope, $stateParams, Students, Promotions) ->
+.controller('PromotionController', ($rootScope, $scope, $stateParams, Students, Promotions) ->
 
-
-  $scope.promotion = Promotions.one($stateParams.id).get().$object
+  # $scope.promotion = Promotions.one($stateParams.id).get().$object
+  $scope.promotion = Promotions.one($stateParams.id).get().then((promotion) ->
+    # main title
+    $rootScope.main_title="Kartel - Promotion : " +promotion.name
+  ).$object
   $scope.students = Students.getList({promotion: $stateParams.id, order_by:'user__last_name', limit: 500}).$object
 )
 
-.controller('ArtistController', ($scope, $stateParams, Students, Artists, Artworks) ->
+.controller('ArtistController', ($rootScope, $scope, $stateParams, Students, Artists, Artworks) ->
+  $rootScope.main_title = "Kartel - Artiste"
+
   $scope.artworks = []
 
   Artists.one().one($stateParams.id).get().then((artist) ->
     $scope.artist = artist
+    name = if artist.nickname then artist.nickname else (artist.user.first_name + " " + artist.user.last_name)
+    $rootScope.main_title = "Kartel - Artiste :" + name
 
     # Fetch artworks
     for artwork_uri in $scope.artist.artworks
@@ -144,7 +154,10 @@ angular.module('memoire.controllers', ['memoire.services'])
   )
 )
 
-.controller('ArtworkController', ($scope, $stateParams, $sce, $http, Lightbox, Artworks, AmeRestangular, Events, Collaborators, Partners, Candidatures) ->
+.controller('ArtworkController', ($rootScope, $scope, $stateParams, $sce, $http, Lightbox, Artworks, AmeRestangular, Events, Collaborators, Partners, Candidatures) ->
+  # main title
+  $rootScope.main_title="Kartel - Œuvre"
+
   $scope.artwork = null
   $scope.events = []
 
@@ -157,6 +170,9 @@ angular.module('memoire.controllers', ['memoire.services'])
 
   Artworks.one().one($stateParams.id).get().then((artwork) ->
     $scope.artwork = artwork
+
+    $rootScope.main_title="Kartel - Œuvre : " + artwork.title
+
     for event_uri in $scope.artwork.events
       matches = event_uri.match(/\d+$/)
       if matches
@@ -241,12 +257,18 @@ angular.module('memoire.controllers', ['memoire.services'])
 )
 
 .controller('StudentController', ($scope, $rootScope, $stateParams, Students, Artworks, Promotions, Candidatures, ArtistsV2, Users, ISO3166) ->
+  # main title
+  $rootScope.main_title="Kartel - Étudiant"
+
   $scope.student = null
   $scope.promotion = null
   $scope.artworks = []
 
   Students.one().one($stateParams.id).get().then((student) ->
     $scope.student = student
+    artist = student.artist
+    name = if artist.nickname then artist.nickname else (artist.user.first_name + " " + artist.user.last_name)
+    $rootScope.main_title = "Kartel - Étudiant : " + name
     # Fetch promotion
     matches = student.promotion.match(/\d+$/)
     if matches
@@ -287,6 +309,10 @@ angular.module('memoire.controllers', ['memoire.services'])
 
 .controller('CandidaturesController', ($rootScope, $scope, $stateParams, $location, Candidatures, Galleries, Media, RestangularV2, ArtistsV2, Users,
   ISO3166, cfpLoadingBar) ->
+  # main title
+  $rootScope.main_title="Candidatures administration"
+
+
   # init
   # rootscope to synch candidatreS (left side) => sandidature (right side) changement (like observations)
   $rootScope.candidatures = []
@@ -296,14 +322,14 @@ angular.module('memoire.controllers', ['memoire.services'])
   # order
   # none = 1 | true = 2 | false = 3
   $scope.select_criteres = [
-    {key:0, title: 'Toutes', sortby: {'campaign__is_current_setup':'true', "unselected": 'false'}, count:0 },
+    {key:0, title: 'Toutes', sortby: {'campaign__is_current_setup':'true'}, count:0 },
     {key:1, title: 'Refusées', sortby: {'campaign__is_current_setup':'true', "unselected":'true'}, count:0 },
-    {key:2, title: 'Non finalisées', sortby: {'campaign__is_current_setup':'true', "unselected": 'false', "application_completed": 'false'}, count:0},
-    {key:3, title: 'En attente de validation', sortby: {'campaign__is_current_setup':'true', "unselected": 'false', "application_completed":'true', "application_complete": 'false'}, count:0},
-    {key:4, title: 'Visées', sortby: {'campaign__is_current_setup':'true', "unselected": 'false', "application_complete":'true'}, count:0},
-    {key:5, title: 'Entretien : liste d\'attente', sortby: {'campaign__is_current_setup':'true', "unselected": 'false', "wait_listed_for_interview":'true'}, count:0},
-    {key:6, title: 'Entretien : Selectionnés', sortby: {'campaign__is_current_setup':'true', "unselected": 'false', "selected_for_interview":'true'}, count:0},
-    {key:7, title: 'Admis : liste d\'attente', sortby: {'campaign__is_current_setup':'true', "unselected": 'false', "wait_listed":'true'}, count:0},
+    {key:2, title: 'Non finalisées', sortby: {'campaign__is_current_setup':'true', "application_completed": 'false'}, count:0},
+    {key:3, title: 'En attente de validation', sortby: {'campaign__is_current_setup':'true', 'application_completed':'true', "application_complete":'false', "unselected": 'false' }, count:0},
+    {key:4, title: 'Visées', sortby: {'campaign__is_current_setup':'true', "application_complete":'true'}, count:0},
+    {key:5, title: 'Entretien : liste d\'attente', sortby: {'campaign__is_current_setup':'true', "wait_listed_for_interview":'true'}, count:0},
+    {key:6, title: 'Entretien : Selectionnés', sortby: {'campaign__is_current_setup':'true', "selected_for_interview":'true'}, count:0},
+    {key:7, title: 'Admis : liste d\'attente', sortby: {'campaign__is_current_setup':'true', "wait_listed":'true'}, count:0},
     {key:8, title: 'Admis', sortby: {'campaign__is_current_setup':'true', "unselected": 'false', "selected":'true'}, count:0},
   ]
   $scope.select_orders = [
@@ -360,7 +386,7 @@ angular.module('memoire.controllers', ['memoire.services'])
                       )
                   )
               # chek if there is observations
-              observation = if candidature.observation != null then JSON.parse(candidature.observation) else {jury:""}
+              observation = if candidature.observation then JSON.parse(candidature.observation) else {jury:""}
               candidature.has_observation = (observation.jury != '' || (observation[$rootScope.user.username] && observation[$rootScope.user.username] != ""))
           # push candidature after all treatments
           arr.push(candidature)
@@ -495,9 +521,9 @@ angular.module('memoire.controllers', ['memoire.services'])
   loadCandidat = (id) ->
       Candidatures.one(id).get().then((candidature) ->
         $scope.candidature = candidature
-        $scope.itw_date = new Date(candidature.interview_date)
+        $scope.itw_date = if (candidature.interview_date) then new Date(candidature.interview_date) else new Date()
         # has observations
-        observation = if candidature.observation != null then JSON.parse(candidature.observation) else {jury:""}
+        observation = if candidature.observation then JSON.parse(candidature.observation) else {jury:""}
         $scope.candidature.has_observation = (observation.jury != '' || (observation[$rootScope.user.username] && observation[$rootScope.user.username] != ""))
         artist_id = candidature.artist.match(/\d+$/)[0]
 

@@ -31,6 +31,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
         Registration.post(params).then((response) ->
           $state.go('candidature.account.user-created', {infos:params})
         , (response) ->
+          console.log response.data
           form.error = response.data
         )
 
@@ -96,11 +97,19 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
       )
 )
 
-.controller('AccountPasswordResetController', ($rootScope, $scope, RestAuth) ->
+.controller('AccountPasswordResetController', ($rootScope, $scope, RestAuth, Users) ->
 
   $rootScope.step.current = "06"
 
   $scope.emailSended = false;
+
+  $scope.checkMail = (form, email) ->
+    Users.getList({search: email}).then((data) ->
+        form.$setValidity('knowemail', data.length == 1)
+        form.$setTouched()
+    )
+
+
   $scope.submit = () ->
       RestAuth.one().customPOST({email: $scope.email}, "password/reset/").then((response) ->
         $scope.emailSended = true;
@@ -220,6 +229,8 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
             Restangular, RestangularV2, Vimeo, Logout, $http, cfpLoadingBar, authManager, ISO3166,
             Users, Candidatures, ArtistsV2, Galleries, Media, Upload, ) ->
 
+  $rootScope.main_title= "Le Fresnoy - Studio national - Selection"
+
   # Media
   if(!$rootScope.current_display_screen)
     $rootScope.current_display_screen = candidature_config.screen.home
@@ -246,7 +257,15 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 
         scope.candidatures_open = new Date(scope.campaign.candidature_date_start) < new Date()
         scope.candidatures_close = new Date() > new Date(scope.campaign.candidature_date_end)
+        # setup countdown
         scope.timer_countdown = Math.round((new Date(scope.campaign.candidature_date_end).getTime() - new Date().getTime())/1000)
+        # have to adjust countdown because 1 second = 1.001 second depending on the browser (WTF?!)
+        setInterval( ->
+          # console.log "countdown adjust"
+          scope.timer_countdown = Math.round((new Date(scope.campaign.candidature_date_end).getTime() - new Date().getTime())/1000)
+          scope.$broadcast('timer-set-countdown', scope.timer_countdown);
+        , 60*1000)
+
     ,() ->
           #error
           console.log("server api problem")
@@ -280,7 +299,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
   $rootScope.phone_pattern = /^\+?[0-9-]{2,5}[-. ]?\d{5,12}$/
 
   # ITW types
-  $scope.INTERVIEW_TYPES = ["Skype"]
+  # $scope.INTERVIEW_TYPES = [""]
 
   # write data var
   $rootScope.writingData = false
@@ -737,6 +756,33 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
           if(newValue)
             $scope.last_applications_years = newValue.split($scope.splitChar)
         )
+
+)
+
+
+.controller('FinalizationAppController', ($rootScope, $state, $scope, Media, Galleries, Upload) ->
+
+        $rootScope.loadInfos($rootScope)
+        $rootScope.step.current = "24"
+
+        $scope.status_class = ""
+
+        # make sure server set the app complete to true (if ok it send email to candidat and admin)
+        $scope.final_submission = (candidature) ->
+          # disabled click
+          $scope.status_class = "disabled"
+          # send the value
+          candidature.patch({application_completed: true}).then((response) ->
+            # send is ok
+            # last value checking
+            if (response.application_completed)
+              $state.go('candidature.confirmation')
+
+          , (error) ->
+            console.log("server api or connection problem")
+            $state.go('candidature.error')
+          )
+
 
 )
 
