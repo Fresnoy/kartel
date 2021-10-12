@@ -128,8 +128,9 @@ angular.module('memoire.controllers', ['memoire.services'])
   # $scope.promotion = Promotions.one($stateParams.id).get().$object
   $scope.promotion = Promotions.one($stateParams.id).get().then((promotion) ->
     # main title
-    $rootScope.main_title="Kartel - Promotion : " +promotion.name
-  ).$object
+    $rootScope.main_title= "Kartel - Promotion : " +promotion.name
+    $scope.promotion = promotion
+  )
   $scope.students = Students.getList({promotion: $stateParams.id, order_by:'user__last_name', limit: 500}).$object
 )
 
