@@ -166,9 +166,17 @@ angular.module('candidature.application', ['candidature.controllers',
                   views:
                     'application_content_view':
                         templateUrl: 'views/candidature/pages/08-inscription-options.html',
-                        controller: ($rootScope) ->
+                        controller: ($rootScope, Users, jwtHelper, $state) ->
                           $rootScope.step.current = "08"
-                          $rootScope.loadInfos($rootScope)
+                          # if this is his first connection -> option 
+                          # otherwise -> resume 
+                          user_id = jwtHelper.decodeToken(localStorage.getItem('token')).user_id
+                          Users.one(user_id).get().then((user) ->
+                            if(user.profile.is_artist)
+                              $state.go("candidature.summary")
+                            else
+                              $rootScope.loadInfos($rootScope)
+                          )
       )
       # ONLINE CANDIDATURE - 09 - ADMINSISTRATIVE INFOS
       $stateProvider.state('candidature.administrative-informations',

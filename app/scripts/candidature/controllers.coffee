@@ -120,7 +120,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 
 .controller('AccountLoginController', (
   $rootScope, $scope, RestangularV2, $state, $http, Login,
-  Logout, authManager, jwtHelper
+  Logout, Users, authManager, jwtHelper
                                 ) ->
 
     $rootScope.step.current = "07"
@@ -128,12 +128,23 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 
     $scope.vm =
       username:""
-      email:""
+      user_or_email:""
       password:""
 
     if($scope.isAuthenticated)
       console.log("logged : resume candidature")
       $state.go("candidature.options")
+
+    $scope.searchUserName = (form, str) ->
+      $scope.vm.username = "";
+      form.uNameOrEmail.$setValidity('unknown', false)
+      Users.getList({search: str}).then((data) ->
+          if(data.length == 1)
+            $scope.vm.username = data[0].username
+            form.uNameOrEmail.$setValidity('unknown', true)
+          if(data.length > 1)
+            form.uNameOrEmail.$setValidity('toomany', true)
+      )
 
     $scope.login = (form, params) ->
       delete $http.defaults.headers.common.Authorization
@@ -142,7 +153,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
             localStorage.setItem('token', auth.token)
             # set header
             $http.defaults.headers.common.Authorization = "JWT "+ localStorage.getItem('token')
-            authManager.authenticate()
+            authManager.authenticate() 
             $state.go("candidature.options")
           , () ->
             console.log("error")
