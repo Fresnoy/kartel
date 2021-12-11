@@ -166,12 +166,14 @@ angular.module('kartel',
           translate_word_en = [
               "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December",
               'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday',
-              'months', 'month', 'days', 'day', 'hours', 'hour', 'seconds', 'second', '1',
+              'months', 'month', 'days', 'day', 'hours', 'hour', 'seconds', 'second', 
+              '01', '02', '03', '04', '05', '06', '07', '08', '09'
           ]
           translate_word_fr = [
               'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre',
               'Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi',
-              'mois', 'mois', 'jours', 'jour', 'heures', 'heure', 'secondes', 'seconde', '1er'
+              'mois', 'mois', 'jours', 'jour', 'heures', 'heure', 'secondes', 'seconde', 
+              '1er', '02', '03', '04', '05', '06', '07', '08', '09'
           ]
           for word in input.split(/[\s,]+/)
             index = _.indexOf(translate_word_en, word)

@@ -35,11 +35,11 @@ de la procédure d’enregistrement de votre candidature, il est indispensable p
            <strong>{{ campaign.interviews_publish_date | date : "EEEE d MMMM yyyy" | translate_en_to_fr | lowercase }}</strong>
          </li>
          <li>Entretiens oraux du 
-            {{ campaign.interviews_start_date | date : "EEEE d MMMM" | translate_en_to_fr | lowercase }}
+            {{ campaign.interviews_start_date | date : "EEEE dd MMMM" | translate_en_to_fr | lowercase }}
             au
-            {{ campaign.interviews_end_date | date : "EEEE d MMMM yyyy" | translate_en_to_fr | lowercase }},
+            {{ campaign.interviews_end_date | date : "EEEE dd MMMM yyyy" | translate_en_to_fr | lowercase }},
             annonce des résultats le
-            <strong>{{ campaign.selected_publish_date | date : "EEEE d MMMM yyyy" | translate_en_to_fr | lowercase }}</strong>
+            <strong>{{ campaign.selected_publish_date | date : "EEEE dd MMMM yyyy" | translate_en_to_fr | lowercase }}</strong>
           </li>
       </ul>
    </div>
