@@ -397,6 +397,40 @@ body.en {
     color: #333;
     font-size: 9pt;
   }
+  
+
+
+$dark-bg-color: #333;
+$dark-item-bg-color: #666;
+
+body{
+  *{
+    transition: all 0.5s ease-in-out;  
+  }
+  transition: all 0.5s ease-in-out;
+}
+
+body.darktheme {
+  background-color: $dark-bg-color;
+  color:#BBB;
+  .thumbnail{
+    background-color: $dark-item-bg-color
+  }
+  .btn-group .btn.btn-default {
+    background-color: $dark-item-bg-color
+  }
+  select{
+    background-color: $dark-item-bg-color
+  }
+  textarea{
+    background-color: $dark-item-bg-color
+  }
+  input{
+    background-color: $dark-item-bg-color
+  }
+  
+
+}
 
 
 .candidat-card{
@@ -591,9 +625,7 @@ body.en {
   }
   .btn-group{
     text-transform: uppercase;
-    .btn{
-
-    }
+    
   }
 
   select{
@@ -1409,7 +1441,7 @@ body.en {
         cursor: pointer;
         padding: 10px 10px;
       }
-      .item-infos{}
+      
       .remove{
         margin: 10px 0px;
       }
@@ -1506,10 +1538,6 @@ body.en {
     text-transform: none;
     font-size:90%;
   }
-}
-
-label{
-
 }
 
 input{
@@ -1651,19 +1679,9 @@ input{
   and (orientation: landscape) {
 
     .student-app {
-      .navigation .next {
-
-      }
+      
       .content {
         max-width: none;
-
-
-        .mobile .breadcrumb {
-
-          }
       }
-    }
-    .col-xs-12 {
-
     }
 }
