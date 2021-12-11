@@ -399,6 +399,60 @@ body.en {
   }
 
 
+
+/*
+
+  DARK THEME
+
+*/
+$dark-bg-color: #333;
+$dark-item-bg-color: #666;
+
+
+* {
+  transition: all 0.5s ease-in-out;
+  .thumbnail{
+    transition: all 0.5s ease-in-out;
+  }
+}
+
+body.darktheme {
+  background-color: $dark-bg-color;
+  color:#BBB;
+  div[class*="dropdown"]{
+    @extend body.darktheme;
+  }
+  .thumbnail{
+    background-color: $dark-item-bg-color
+  }
+  .btn-group .btn.btn-default {
+    @extend .thumbnail;
+  }
+  .modal-content{
+    @extend .thumbnail;
+  }
+  select{
+    @extend .thumbnail;
+  }
+  textarea{
+    @extend .thumbnail;
+  }
+  input{
+    @extend .thumbnail;
+  }
+  button{
+    @extend .thumbnail;
+  }
+
+
+}
+
+/*
+
+ CANDIDAT - CARD
+
+*/
+
 .candidat-card{
   font-size: 1rem;
   height: 150px;
@@ -409,17 +463,17 @@ body.en {
         flex-wrap: wrap;
         justify-content: space-between;
         height: 100%;
-        & > div { 
+        & > div {
             flex: 1 0 100%;
-            padding-bottom: 5px; 
+            padding-bottom: 5px;
         }
         & div:first-child { padding: 0px; }
         .langues {
             margin-top: 5px;
         }
     }
-    
-        
+
+
   .corner{
     position: absolute;
     right: 15px;
@@ -476,7 +530,7 @@ body.en {
     position: relative;
     margin-top: 50px;
     right: 10px;
-    
+
     .glyphicon{
       font-size:28px;
       padding: 0px;
@@ -591,9 +645,7 @@ body.en {
   }
   .btn-group{
     text-transform: uppercase;
-    .btn{
 
-    }
   }
 
   select{
@@ -674,7 +726,7 @@ body.en {
   height: 80%;
   display: block;
   .candidat{
-    
+
 
     .flag-icon{
       width: 100px;
@@ -1409,7 +1461,7 @@ body.en {
         cursor: pointer;
         padding: 10px 10px;
       }
-      .item-infos{}
+
       .remove{
         margin: 10px 0px;
       }
@@ -1506,10 +1558,6 @@ body.en {
     text-transform: none;
     font-size:90%;
   }
-}
-
-label{
-
 }
 
 input{
@@ -1651,19 +1699,9 @@ input{
   and (orientation: landscape) {
 
     .student-app {
-      .navigation .next {
 
-      }
       .content {
         max-width: none;
-
-
-        .mobile .breadcrumb {
-
-          }
       }
-    }
-    .col-xs-12 {
-
     }
 }

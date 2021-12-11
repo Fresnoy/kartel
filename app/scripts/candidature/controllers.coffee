@@ -153,7 +153,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
             localStorage.setItem('token', auth.token)
             # set header
             $http.defaults.headers.common.Authorization = "JWT "+ localStorage.getItem('token')
-            authManager.authenticate() 
+            authManager.authenticate()
             $state.go("candidature.options")
           , () ->
             console.log("error")
@@ -251,7 +251,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
   $rootScope.timer_countdown = 0
 
   $scope.countdownFinish = () ->
-    # wait 2 seconds before get new setup 
+    # wait 2 seconds before get new setup
     setTimeout( ->
           $scope.getCandidatureSetup()
         , 2000)
@@ -263,7 +263,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
     .then((setup_response) ->
         # console.log("Candidature setup")
         $rootScope.campaign = setup_response[0]
-        
+
         current_date = new Date()
         # set by server api
         # scope.campaign.candidature_open = new Date(scope.campaign.candidature_date_start) < current_date && current_date < new Date(scope.campaign.candidature_date_end)
@@ -277,17 +277,17 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 
         # candidature are not open
         if ($rootScope.redirectCandidatureIfClosedOrCompleted())
-          # break 
+          # break
           return
 
-        
+
 
         # setup countdown
         $rootScope.timer_countdown = Math.round((new Date($rootScope.campaign.candidature_date_end).getTime() - new Date().getTime())/1000)
         # have to adjust countdown because 1 second = 1.001 second depending on the browser (WTF?!)
         setInterval( ->
           # console.log "countdown adjust"
-          $rootScope.timer_countdown = Math.round((new Date($rootScope.campaign.candidature_date_end).getTime() - new Date().getTime())/1000) 
+          $rootScope.timer_countdown = Math.round((new Date($rootScope.campaign.candidature_date_end).getTime() - new Date().getTime())/1000)
           $rootScope.$broadcast('timer-set-countdown', $rootScope.timer_countdown);
         , 60*1000)
 
@@ -301,35 +301,35 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 
   # root function redirection
   $rootScope.redirectCandidatureIfClosedOrCompleted = () ->
-    
+
     # console.log('redirect candidature')
-    
+
     if ($rootScope.candidature && $rootScope.candidature.application_completed)
          $state.go("candidature.confirmation")
          return true
-    
+
 
     if ($rootScope.campaign && !$rootScope.campaign.candidature_open)
         current_date = new Date()
-        candidature_start = new Date($rootScope.campaign.candidature_date_start) 
-        candidature_end = new Date($rootScope.campaign.candidature_date_end) 
+        candidature_start = new Date($rootScope.campaign.candidature_date_start)
+        candidature_end = new Date($rootScope.campaign.candidature_date_end)
         # pending?
         if (current_date < candidature_start)
           # console.log("pending")
           $state.go('candidature.pending')
           # redirected
           return true
-          
+
         # expired ?
         if (current_date > candidature_end)
           # console.log("expired")
           $state.go('candidature.expired')
           # redirected
           return true
-           
+
     # no redirection
     return false
-  
+
 
   # init step in parent controller
   $rootScope.step = []
@@ -495,9 +495,9 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
         if(!candidatures.length)
 
           # redirect if candidature is expired (can't create candidature)
-          if($rootScope.redirectCandidatureIfClosedOrCompleted()) 
+          if($rootScope.redirectCandidatureIfClosedOrCompleted())
               return
-          
+
           # CREATE A CANDIDATURE
           Candidatures.post().then((candidature) ->
             # reload infos
@@ -511,9 +511,9 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
           # candidature exist
           candidature = candidatures[0]
           scope.candidature = candidature
-          # redirect candidature complete or 
+          # redirect candidature complete or
           # redirect if candidature is expired
-          if($rootScope.redirectCandidatureIfClosedOrCompleted()) 
+          if($rootScope.redirectCandidatureIfClosedOrCompleted())
               return
           # get galleries
           if(scope.candidature.cursus_justifications)
@@ -558,11 +558,11 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 .controller('OptionsController', ($rootScope, Users, jwtHelper, $state) ->
       $rootScope.step.current = "08"
 
-      if($rootScope.redirectCandidatureIfClosedOrCompleted()) 
+      if($rootScope.redirectCandidatureIfClosedOrCompleted())
           return
-      
-      # if this is his first connection -> option 
-      # otherwise -> resume 
+
+      # if this is his first connection -> option
+      # otherwise -> resume
       user_id = jwtHelper.decodeToken(localStorage.getItem('token')).user_id
       Users.one(user_id).get().then((user) ->
         if(user.profile.is_artist)

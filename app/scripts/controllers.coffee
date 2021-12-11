@@ -87,6 +87,8 @@ angular.module('memoire.controllers', ['memoire.services'])
            delete $http.defaults.headers.common.Authorization
            authManager.unauthenticate()
      )
+   $scope.toggleDarkTheme = () -> 
+      $rootScope.theme = if $rootScope.theme == "darktheme" then "" else "darktheme" 
 
 )
 
