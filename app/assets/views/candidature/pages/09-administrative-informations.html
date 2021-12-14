@@ -240,32 +240,12 @@
                placeholder="10 chiffres + 1 lettre (ou 9 + 2)"
                />
             <label for="cINE">
-            <span class="fr">Numéro Identifiant National Etudiant Unique (INE/BEA, pour les personnes ayant étudier en France)</span>
+            <span class="fr">Numéro Identifiant National Etudiant Unique (INE/BEA, pour les personnes ayant étudié en France)</span>
             <span class="en">INE number (for people who have studied in France)</span>
             </label>
          </div>
 
 
-         <div class="field">
-            <input
-               type="text"
-               ng-model="user.profile.family_status"
-               ng-change="user.patch({'profile':{'family_status': user.profile.family_status}});"
-               name="uFamilyStatus"
-               />
-            <div ng-show="form1.uFamilyStatus.$invalid" ng-messages="form1.uFamilyStatus.$error" class="help-block error">
-               <div ng-message="required">
-                  <span class="fr">Obligatoire</span>
-                  <span class="en">Required</span>
-               </div>
-            </div>
-            <label for="family-status">
-                  <span class="fr">Situation familiale</span>
-                  <span class="en">
-                        Family Status
-                  </span>
-            </label>
-         </div>
          <div class="field">
             <input
                type="text"
