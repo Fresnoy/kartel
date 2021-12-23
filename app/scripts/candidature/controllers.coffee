@@ -5,7 +5,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 
 
 #
-.controller('AccountCreationController',($rootScope, $http, $scope, $state, Registration, RestangularV2, Users) ->
+.controller('AccountCreationController',($rootScope, $http, $scope, $state, CandidatRegistration, RestangularV2, Users) ->
       # inscription
       $rootScope.step.current = "04"
       $rootScope.current_display_screen = candidature_config.screen.account_create_user
@@ -28,7 +28,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 
       # create user
       $scope.create = (form, params) ->
-        Registration.post(params).then((response) ->
+        CandidatRegistration.post(params).then((response) ->
           $state.go('candidature.account.user-created', {infos:params})
         , (response) ->
           console.log response.data
@@ -37,7 +37,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 
 
 )
-.controller('AccountConfirmCreationController',($rootScope, $http, $scope, $state, Registration, RestangularV2, Users, $stateParams) ->
+.controller('AccountConfirmCreationController',($rootScope, $http, $scope, $state, CandidatRegistration, RestangularV2, Users, $stateParams) ->
     $rootScope.step.current = "05"
     $rootScope.current_display_screen = candidature_config.screen.account_confirm_creation
     $scope.edit_email = false
@@ -49,7 +49,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
     $scope.update_infos = (form, params) ->
       delete $http.defaults.headers.common.Authorization
       form.$setSubmitted()
-      RestangularV2.all('people/user/resend_activation_email').post(params).then((response) ->
+      RestangularV2.all('school/student-application/user_resend_activation_email').post(params).then((response) ->
         $scope.send_email--
       , (response) ->
         form.$error = response.data
@@ -97,7 +97,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
       )
 )
 
-.controller('AccountPasswordResetController', ($rootScope, $scope, RestAuth, Users) ->
+.controller('AccountPasswordResetController', ($rootScope, Candidatures, $scope, Users) ->
 
   $rootScope.step.current = "06"
 
@@ -111,7 +111,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 
 
   $scope.submit = () ->
-      RestAuth.one().customPOST({email: $scope.email}, "password/reset/").then((response) ->
+      Candidatures.one().customPOST({email: $scope.email}, "account/password/reset/").then((response) ->
         $scope.emailSended = true;
       , (response) ->
         $scope.form.error = "Erreur d'envoie de l'email"
