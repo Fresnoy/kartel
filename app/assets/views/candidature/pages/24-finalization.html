@@ -23,6 +23,25 @@
    <span class="fr">Informations complémentaires</span>
    <span class="en">Additionnal information</span>
    </label>
+
+   <div ng-if="candidature_config.communication">
+      <p></p>
+      <p><small><u>{{ candidature_config.communication.poll[language].title }}</u><br/>
+      {{ candidature_config.communication.poll[language].question }}</small></p>
+      <div ng-repeat="item in candidature_config.communication.poll[language].items track by $index">
+         <input type="radio"
+               id="poll-{{language}}-{{$index}}"
+               ng-click="pollChange(this, candidature)"
+               ng-model="rPoll"
+               ng-value="'{{item}}'"
+               name="poll"
+               class="one check"
+               />
+         <label for="poll-{{language}}-{{$index}}" class="checkbox one pointer">{{item}}</label>   
+      </div>
+   </div>
+   
+
    <br/>
    <br/>
    <p class="fr">

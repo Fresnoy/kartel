@@ -867,6 +867,38 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
           )
 
 
+        # POLL
+        $scope.rPoll = ""
+        pollRegexp = /(\[POLL\])(.*)(\[\/POLL\])/gi
+        $scope.pollChange = (obj, candidature) ->
+            remark = candidature.remark
+            new_remark = ""
+            exist = pollRegexp.test(remark)
+            # if esist
+            # change de content
+            if(exist)
+              new_remark = remark.replace(pollRegexp, "$1"+obj.item+"$3")
+            # else create it
+            else 
+              # make some lines
+              new_remark +="\n\n"
+              new_remark +="[POLL]"+obj.item+"[/POLL]"
+            # set remark
+            candidature.remark = new_remark
+            candidature.patch({remark: candidature.remark})
+            
+        # auto check on load infos
+        $scope.$watch("candidature.remark", (newValue, oldValue) ->
+          ## setup
+          if(newValue)
+            match = newValue.match(pollRegexp)
+            if(match)
+              # split [POLL]value[/POLL] to ke
+              split = match[0].split(/(\[|\])/)
+              $scope.rPoll = split[4] 
+              
+        )
+            
 )
 
 # media
