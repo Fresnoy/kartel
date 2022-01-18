@@ -178,11 +178,16 @@
 
             <!-- visioconférence --><!-- <p> <i class="glyphicon glyphicon-facetime-video"></i>&nbsp;V : <a href="visioconference:{{candidature.remote_interview_info}}?call" class="">{{ candidature.remote_interview_info }}</a> -->
 
-            <p><i class="glyphicon glyphicon-bullhorn" title="Langues parlées"></i>&nbsp; Langues parlées :
+            <p><i class="glyphicon glyphicon-bullhorn" title="Langues parlées"></i>&nbsp; Langue maternelle :
             <span class="name" ng-bind="LANGUAGES_NAME_short[artist.user.profile.mother_tongue].englishName.split('(')[0]" />
-            <span ng-if="artist.user.profile.other_language">
-              <span class="language" ng-repeat="language in artist.user.profile.other_language.split(', ')  track by $index">,
-                <span class="name" ng-bind="LANGUAGES_NAME_short[language].englishName.split('(')[0]" /></span>
+             <span ng-if="artist.user.profile.other_language">
+                <br/>Autres langues parlées : 
+              <span class="language" ng-repeat="language in artist.user.profile.other_language.split(', ')  track by $index">
+                <span class="name" ng-bind="LANGUAGES_NAME[language].englishName.split('(')[0]" /><!-- 
+                    Just for the ","
+                --><span 
+                 ng_if="$index < (artist.user.profile.other_language.split(', ').length -1)">, </span>
+              </span>
             </span>
             </p>
 

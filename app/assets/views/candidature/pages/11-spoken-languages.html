@@ -51,11 +51,12 @@ that the course is carried out in French.</p>
          </label>
       </div>
       <div class="field">
-         <input hidden type="text" id="other-languages" ng-model="user.profile.other_language" ng-init = "initLanguages()" />
+         <input hidden type="text" id="other-languages" ng-model="user.profile.other_language"
+                 ng-init = "initLanguages()" />
          <div ng-repeat="item in other_language track by $index" >
             <div class="item" ng-init='RC_lang[$index]=false'>
                <span class="language" />
-               <span class="name" ng-bind="LANGUAGES_NAME[item].nativeName" />
+               <span class="name" ng-bind="LANGUAGES_NAME[item].englishName" />
                <span class="trash" ng-click="RC_lang[$index]=true" />
                <div class="delete-pane" ng-show="RC_lang[$index]">
                   <span class="trash" ng-click="other_language.splice($index,1);
@@ -72,7 +73,7 @@ that the course is carried out in French.</p>
             user.patch({'profile':{'other_language': user.profile.other_language}}); langue='';"
             >
             <option value="">{{languageSelectOption[language]}}</option>
-            <option ng-repeat="lang in LANGUAGES" value="{{lang[0].split('-')[0]}}">
+            <option ng-repeat="lang in LANGUAGES" value="{{lang[0]}}">
                {{lang[1].englishName}}
             </option>
          </select>

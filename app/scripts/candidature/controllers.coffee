@@ -258,7 +258,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 
   $scope.getCandidatureSetup = () ->
 
-    console.log("getCandidature setup")
+    # console.log("getCandidature setup")
     RestangularV2.all('school/student-application-setup').getList({'is_current_setup': "true"})
     .then((setup_response) ->
         # console.log("Candidature setup")
@@ -403,7 +403,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
   $rootScope.$on('data:read', (event, data) ->
     setTimeout ( ->
       $rootScope.writingData = false
-    ), 100
+    ), 1000
   )
 
 
@@ -728,7 +728,14 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
     $rootScope.step.current = "12"
     $rootScope.current_display_screen = candidature_config.screen.photo_info
 
+    $scope.$watch('user.profile.photo', (newValue, oldValue) ->
+        console.log($scope.user)
+        
+    );
+    
+
     $scope.uploadPhoto = (data, model, form) ->
+      console.log model
       infos =
         url: model.url,
         data: {
