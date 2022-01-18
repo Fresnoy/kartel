@@ -2,8 +2,8 @@
    <span class="close" ng-click="show_help(false)">x</span>
    <h1><class class="fr">Aide</class><class class="en">Help</class></h1>
    <div class="fr">
-      <p>La procédure de sélection est ouverte à tous les candidats, sans distinction de sexe ou de nationalité,
-        âgés de 35 ans au plus au 1er janvier de l’année du concours (nés après le <span ng-bind="campaign.date_of_birth_max | date : 'd MMMM yyyy'  | translate_en_to_fr" />).</p>
+      <p>La Procédure de sélection est ouverte à toutes les personnes, sans distinction de genre ou de nationalité, âgées de 35 ans au plus 
+         au 1er janvier de l’année du concours (nées après le <span ng-bind="campaign.date_of_birth_max | date : 'd MMMM yyyy'  | translate_en_to_fr" />).</p>
       <p>L'INE signifie "Identifiant National Elève". Ce numéro est composé de neuf chiffres et deux lettres depuis la rentrée 2018
         (auparavant, il comportait dix chiffres et une lettre).
         Il est indiqué en haut sur le relevé de notes du baccalauréat en tant qu'« identifiant national ».
@@ -14,6 +14,7 @@
       <p>The selection procedure is open to all candidates, of any sex or nationality, aged 35 years maximum on 1st January of the current year
         (i.e. born after
         <span ng-bind="campaign.date_of_birth_max | date : 'd MMMM yyyy'" />).</p>
+      <p>INE number is for people who have studied in France.</p>
    </div>
 </div>
 
@@ -22,8 +23,15 @@
       <span class="fr">Informations administratives</span>
       <span class="en">Administrative information</span>
    </h1>
-
+      
       <form name="form1" ng-submit="form1.$valid && submit()" class="css-form" novalidate enctype="multipart/form-data">
+
+          <!--
+            
+         FIRST NAME
+
+          -->
+
         <div class="field">
            <input id="first-name" type="text"  ng-model="user.first_name" ng-model-options='{ debounce: 1000 }'
                   ng-change="user.patch({'first_name': user.first_name, 'profile':{'id': user.profile.id}})" name="uFirstName" required />
@@ -35,10 +43,16 @@
            </div>
            <label for="first-name">
            <span class="field-state required"></span>
-           <span class="fr">Prénom</span>
-           <span class="en">First Name</span>
+           <span class="fr">Prénom (état civil tel qu’indiqué sur la carte d’identité)</span>
+           <span class="en">Given name (as indicated on your passport/ID card)</span>
            </label>
         </div>
+         <!--
+            
+         LAST NAME
+
+          -->
+
          <div class="field">
             <input id="name" type="text"  ng-model="user.last_name"
                   ng-model-options='{ debounce: 1000 }'
@@ -51,12 +65,37 @@
             </div>
             <label for="name">
             <span class="field-state required"></span>
-            <span class="fr">Nom</span>
-            <span class="en">Name</span>
+            <span class="fr">Nom (état civil tel qu’indiqué sur la carte d’identité)</span>
+            <span class="en">Surname (as indicated on your passport/ID card)</span>
             </label>
          </div>
 
+          <!--
+            
+         ARTIST NAME
 
+          -->
+
+
+         <div class="field">
+            <input id="nickname" type="text"  ng-model="artist.nickname"
+                  ng-model-options='{ debounce: 1000 }'
+                  ng-change="artist.patch({'nickname': artist.nickname})" name="aNickname" />
+            <label for="name">
+
+            <span class="fr">Nom d’usage, nom d’artiste ou pseudonyme (si différent de l’état civil)</span>
+            <span class="en">Everyday name, artist’s name or pseudonym (if different from your ID)</span>
+            </label>
+         </div>
+
+         <p class="fr">Si vous complétez le champ ci-dessus, c’est ce deuxième nom qui sera utilisé dans la communication et les documents pédagogiques tout au long de votre scolarité au Fresnoy.</p>
+         <p class="en">If you fill in the box above, it is this second name which will be used in communications and on teaching documents throughout your time at Le Fresnoy.</p>
+
+          <!--
+            
+         GENDER
+
+          -->
 
          <div class="field">
             <select id="gender" ng-model="user.profile.gender"
@@ -80,6 +119,12 @@
             <span class="en">Gender</span>
             </label>
          </div>
+          <!--
+            
+         BIRTH DATE
+
+          -->
+
          <div class="field">
 
              <input ng-if="is_safari" placeholder="01/10/1997" type="text"
@@ -119,6 +164,13 @@
               <span class="en">Birthdate : dd/mm/yyyy</span>
               </label>
          </div>
+
+         <!--
+            
+         BIRTH COUNTRY
+
+          -->
+
          <div class="field">
             <select id="birth-country"
                ng-change="user.patch({'profile':{'birthplace_country': user.profile.birthplace_country}})"
@@ -143,6 +195,30 @@
             <span class="en">Birth Country</span>
             </label>
          </div>
+
+         <!--
+
+         BIRTH PLACE
+
+          -->
+
+         <div class="field">
+            <input id="birthplace" type="text"  ng-model="user.profile.birthplace"
+                  ng-model-options='{ debounce: 1000 }'
+                  ng-change="user.patch({'profile':{'birthplace': user.profile.birthplace}})" name="uBirthplace" />
+            <label for="name">
+
+            <span class="fr">Ville de naissance</span>
+            <span class="en">Place of birth</span>
+            </label>
+         </div>
+
+         <!--
+
+         NATIONALITY
+
+          -->
+
          <div class="field">
             <div ng-repeat="item in nationality track by $index" >
                <div class="item" ng-init='removeConfirmation[$index]=false'>
@@ -226,6 +302,7 @@
                <span class="en">PROOF OF IDENTITY (VALID PASSEPORT OR IDENTITY CARD) </span>
             </label>
          </div>
+
          <!--
          INE
             Identifiant National Etudiant Unique
