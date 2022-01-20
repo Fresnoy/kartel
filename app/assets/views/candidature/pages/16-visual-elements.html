@@ -50,7 +50,7 @@
 
 <div class="">
    <h1>
-      <span class="fr">Éléments Visuels</span>
+      <span class="fr">Éléments visuels</span>
       <span class="en">Visual elements</span>
    </h1>
    <form name="form1" ng-submit="form.$valid && submit()" class="css-form" novalidate>
@@ -161,7 +161,9 @@
 
       <div>
          <div ng-if="candidature.presentation_video">
-            <iframe ng-if="_isAvailableVideo" height="100px" width="200px"  ng-src="{{trustSrc(candidature.presentation_video)}}" />
+            <div class="embed-responsive embed-responsive-16by9">
+               <iframe class="embed-responsive-item" ng-if="_isAvailableVideo"  ng-src="{{trustSrc(candidature.presentation_video)}}" />
+            </div>
             <div ng-if="candidature.presentation_video && candidature.presentation_video.indexOf('player.vimeo.com/video')>0 && !_isAvailableVideo">
               <strong>
               <span class="fr">
@@ -181,8 +183,8 @@
            </a>
          </div>
       </div>
-      <hr/>
       <div class='bg-grey' ng-show="!candidature.presentation_video">
+        <hr/>
         <div >
             <h4>
 
@@ -231,9 +233,9 @@
             <br/>
 
       </div>
+      <hr/>
     </div>
-
-    <hr/>
+    
     <div class="field">
          <input
             type="checkbox"

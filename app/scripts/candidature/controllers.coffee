@@ -249,10 +249,12 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
   # Get candidature Setup
   $rootScope.campaign = {}
   $rootScope.timer_countdown = 0
+  $rootScope.timer_interval = 0
 
   $scope.countdownFinish = () ->
     # wait 2 seconds before get new setup
     setTimeout( ->
+          # reload setup (admin can add time)
           $scope.getCandidatureSetup()
         , 2000)
 
@@ -280,12 +282,12 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
           # break
           return
 
-
-
         # setup countdown
         $rootScope.timer_countdown = Math.round((new Date($rootScope.campaign.candidature_date_end).getTime() - new Date().getTime())/1000)
+        
         # have to adjust countdown because 1 second = 1.001 second depending on the browser (WTF?!)
-        setInterval( ->
+        clearInterval($rootScope.timer_interval) 
+        $rootScope.timer_interval = setInterval( ->
           # console.log "countdown adjust"
           $rootScope.timer_countdown = Math.round((new Date($rootScope.campaign.candidature_date_end).getTime() - new Date().getTime())/1000)
           $rootScope.$broadcast('timer-set-countdown', $rootScope.timer_countdown);

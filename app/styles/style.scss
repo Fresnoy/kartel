@@ -699,7 +699,6 @@ body {
     box-sizing: content-box;
     text-transform: uppercase;
 
-
     &.no-border{
       border-bottom: 0px solid black;
     }
@@ -1077,7 +1076,7 @@ body {
       text-align: center;
       -webkit-appearance: none;
       appearance:none;
-      -moz-appearance:none; /* Firefox */
+      -moz-appearance:none !important; /* Firefox */
       -webkit-appearance:none;
       margin: 0;
     }
@@ -1182,7 +1181,7 @@ body {
         margin-top: 0px;
         font-weight: bold;
         position: absolute;
-        left:-10px;
+        left:-15px;
         top:0px;
       }
 
@@ -1191,8 +1190,8 @@ body {
         color: #dc4154;
       }
       input.ng-valid + .isvalid:before {
-        content: "√";
-        color: #B8E986;
+        content: "✔";
+        color: #84bb4d;
       }
       .field{
         margin-top: 10px;

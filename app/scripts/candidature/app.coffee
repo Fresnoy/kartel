@@ -334,6 +334,10 @@ angular.module('candidature.application', ['candidature.controllers',
                           controller: ($rootScope) ->
                             $rootScope.loadInfos($rootScope)
                             $rootScope.step.current = "25"
+                      'application_breadcrumb_view':
+                          # hide breadcrumb
+                          template: '',
+
         )
 
 
