@@ -50,12 +50,13 @@
    </h1>
    <form name="form" ng-submit="form.$valid && submit()" class="css-form" novalidate enctype="multipart/form-data">
       <div class="fr">
-         <p>À l’issue de la présélection, 51 candidat.es au maximum sont invité.es à se présenter aux épreuves d’admission.
-           Les épreuves de la sélection finale se déroulent au Fresnoy - Studio national à Tourcoing.
+         <p>À l’issue de la présélection, 51 candidat.es au maximum sont invité.es à se présenter aux épreuves d’admission.<br/>
+           Les épreuves de la sélection finale se déroulent au Fresnoy - Studio national à Tourcoing.<br/>
             <br/>Les candidat.es présélectionné.es sont convié.es à un entretien avec un jury entre le
-            {{ campaign.interviews_start_date | date : "EEEE d MMMM" | translate_en_to_fr | lowercase }}
+            <strong>{{ campaign.interviews_start_date | date : "EEEE dd MMMM" | translate_en_to_fr | lowercase }}</strong>
             et le
-            {{ campaign.interviews_end_date | date : "EEEE d MMMM yyyy" | translate_en_to_fr | lowercase }}.<br/>
+            <strong>{{ campaign.interviews_end_date | date : "EEEE dd MMMM yyyy" | translate_en_to_fr | lowercase }}</strong>.<br/>
+            <br/>
             Les candidat.es hors continent européen, ont la possibilité de passer l’entretien oral au Fresnoy ou par visioconférence
             (Le Fresnoy ne peut être tenu pour responsable en cas de problème technique). <br/>
          </p>
@@ -63,13 +64,14 @@
 
       </div>
       <div class="en">
-        At the end of the pre-selection, up to 60
+        At the end of the pre-selection, up to 51
         applicants will be invited to attend interviews at
-        Le Fresnoy, Tourcoing, France. The final selection takes place at Le
+        Le Fresnoy, Tourcoing, France. <br/><br/>
+        The final selection takes place at Le
         Fresnoy. Shortlisted candidates will be invited for
         interview by the jury between
-        {{ campaign.interviews_start_date | date : "EEEE MMMM d" }} and
-        {{ campaign.interviews_end_date | date : "EEEE MMMM d, yyyy" }}.<br/>
+        <strong>{{ campaign.interviews_start_date | date : "EEEE MMMM d" }}</strong> and
+       <strong>{{ campaign.interviews_end_date | date : "EEEE MMMM d, yyyy" }}</strong>.<br/><br/>
         Applicants from outside Europe can take the oral
         interview on videoconference (note that Le Fresnoy cannot
         be held responsible in the case of any technical

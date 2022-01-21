@@ -6,7 +6,7 @@
    </h1>
    <p class="fr">
       Pour toutes précisions, ou remarques vous pouvez nous laisser un message ci-dessous et nous dire comment avez
-      vous connu le Fresnoy :
+      vous connu Le Fresnoy :
    </p>
    <p class="en">
      For any further information, you can leave us a message below and tell us how you knew Le Fresnoy:
@@ -23,6 +23,25 @@
    <span class="fr">Informations complémentaires</span>
    <span class="en">Additionnal information</span>
    </label>
+
+   <div ng-if="candidature_config.communication">
+      <p></p>
+      <p><small><u>{{ candidature_config.communication.poll[language].title }}</u><br/>
+      {{ candidature_config.communication.poll[language].question }}</small></p>
+      <div ng-repeat="item in candidature_config.communication.poll[language].items track by $index">
+         <input type="radio"
+               id="poll-{{language}}-{{$index}}"
+               ng-click="pollChange(this, candidature)"
+               ng-model="rPoll"
+               ng-value="'{{item}}'"
+               name="poll"
+               class="one check"
+               />
+         <label for="poll-{{language}}-{{$index}}" class="checkbox one pointer">{{item}}</label>   
+      </div>
+   </div>
+   
+
    <br/>
    <br/>
    <p class="fr">
@@ -31,7 +50,8 @@
       bouton ci-dessous.
    </p>
    <p class="en">
-      Your application is now complete<br/>To confirm definitively, please click on the button below:
+      Your application is now complete.<br/>
+      To confirm definitively, please click on the button below:
    </p>
    <a class="block btn green" ng-init="validation=false" ng-show="!validation" ng-click="validation = !validation">
       <span class='fr'>Valider</span>

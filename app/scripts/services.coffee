@@ -12,13 +12,6 @@ angular.module('memoire.services', ['restangular'])
         ).service('people/user')
 )
 
-.factory('Registration', (Restangular) ->
-        # pas besoin d'un token - on le laisse en V1
-        return Restangular.withConfig((RestangularConfigurer) ->
-              RestangularConfigurer.setBaseUrl(config.rest_uri_v2)
-        ).service('people/user/register')
-)
-
 .factory('RestAuth', (RestangularV2) ->
         return RestangularV2.withConfig((RestangularConfigurer) ->
         ).service('rest-auth')
@@ -44,6 +37,14 @@ angular.module('memoire.services', ['restangular'])
 
         ).service('school/student-application')
 )
+
+.factory('CandidatRegistration', (Restangular) ->
+        # pas besoin d'un token - on le laisse en V1
+        return Restangular.withConfig((RestangularConfigurer) ->
+              RestangularConfigurer.setBaseUrl(config.rest_uri_v2)
+        ).service('school/student-application/user_register')
+)
+
 .factory('Campaigns', (RestangularV2) ->
         return RestangularV2.withConfig((RestangularConfigurer) ->
         ).service('school/student-application-setup')
