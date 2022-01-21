@@ -26,13 +26,20 @@ angular.module('candidature.application', ['candidature.controllers',
               url: '/candidature'
               views:
                 'main_view':
-                  templateUrl: 'views/candidature/index.html'
+                  templateUrl: 'views/candidature/index.html',
                   controller: 'ParentCandidatureController'
 
                 'main_view.application_content_view':
                     templateUrl: 'views/candidature/pages/01-landing-page.html',
                     controller: ($rootScope) ->
                       $rootScope.step.current = "01"
+                      # this is first page !
+                      # load infos if candidat has token on the first page
+                      if($rootScope.isAuthenticated)
+                        $rootScope.loadInfos($rootScope)
+                      # try to redirect if end of candidature or candidat have complete his application, else do nothin
+                      else
+                        $rootScope.redirectCandidatureIfClosedOrCompleted()
 
                 'main_view.application_breadcrumb_view':
                     templateUrl: 'views/candidature/partials/navigation-breadcrumb.html',
@@ -150,6 +157,8 @@ angular.module('candidature.application', ['candidature.controllers',
                         templateUrl: 'views/candidature/pages/02-terms-of-access.html',
                         controller: ($rootScope) ->
                           $rootScope.step.current = "02"
+                          $rootScope.redirectCandidatureIfClosedOrCompleted() 
+                          
       )
       # ONLINE CANDIDATURE - 03 - Terms of access
       $stateProvider.state('candidature.terms-of-access-2',
@@ -159,6 +168,7 @@ angular.module('candidature.application', ['candidature.controllers',
                         templateUrl: 'views/candidature/pages/03-terms-of-access-2.html',
                         controller: ($rootScope) ->
                           $rootScope.step.current = "03"
+                          $rootScope.redirectCandidatureIfClosedOrCompleted()
       )
       # ONLINE CANDIDATURE - 08 - Options
       $stateProvider.state('candidature.options',
@@ -166,9 +176,7 @@ angular.module('candidature.application', ['candidature.controllers',
                   views:
                     'application_content_view':
                         templateUrl: 'views/candidature/pages/08-inscription-options.html',
-                        controller: ($rootScope) ->
-                          $rootScope.step.current = "08"
-                          $rootScope.loadInfos($rootScope)
+                        controller:"OptionsController"
       )
       # ONLINE CANDIDATURE - 09 - ADMINSISTRATIVE INFOS
       $stateProvider.state('candidature.administrative-informations',
@@ -326,6 +334,10 @@ angular.module('candidature.application', ['candidature.controllers',
                           controller: ($rootScope) ->
                             $rootScope.loadInfos($rootScope)
                             $rootScope.step.current = "25"
+                      'application_breadcrumb_view':
+                          # hide breadcrumb
+                          template: '',
+
         )
 
 

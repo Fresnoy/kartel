@@ -87,6 +87,8 @@ angular.module('memoire.controllers', ['memoire.services'])
            delete $http.defaults.headers.common.Authorization
            authManager.unauthenticate()
      )
+   $scope.toggleDarkTheme = () -> 
+      $rootScope.theme = if $rootScope.theme == "darktheme" then "" else "darktheme" 
 
 )
 
@@ -128,8 +130,9 @@ angular.module('memoire.controllers', ['memoire.services'])
   # $scope.promotion = Promotions.one($stateParams.id).get().$object
   $scope.promotion = Promotions.one($stateParams.id).get().then((promotion) ->
     # main title
-    $rootScope.main_title="Kartel - Promotion : " +promotion.name
-  ).$object
+    $rootScope.main_title= "Kartel - Promotion : " +promotion.name
+    $scope.promotion = promotion
+  )
   $scope.students = Students.getList({promotion: $stateParams.id, order_by:'user__last_name', limit: 500}).$object
 )
 
@@ -510,8 +513,11 @@ angular.module('memoire.controllers', ['memoire.services'])
       original: url
       description: description
     # embed video youtube
-    url = url.replace(/^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?/gm, 'https://www.youtube.com/embed/$5');
-    url = url.replace(/^https?:\/\/(?:www\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|album\/(\d+)\/video\/|)(\d+)(?:$|\/|\?)(.*)/g, "https://player.vimeo.com/video/$3")
+    url = url.replace(/^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?/gm, 
+                     'https://www.youtube.com/embed/$5?rel=0');
+    # embed video vimeo
+    url = url.replace(/^https?:\/\/(?:www\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|album\/(\d+)\/video\/|)(\d+)(?:$|\/|\?)(.*)/g, 
+                      "https://player.vimeo.com/video/$3?quality=1080p")
     # when url is image set picture var, otherwise set medium_url
     if(/\.(jpe?g|png|gif|bmp|tif)/i.test(url)) then image.picture = url
     else  image.medium_url= $sce.trustAsResourceUrl(url)

@@ -39,7 +39,8 @@
             <span class="name">{{user.profile.photo.split('.').pop()}}</span>
             <span class="trash" ng-click="RC_photo=true" />
             <div class="delete-pane" ng-show="RC_photo">
-               <span class="trash" ng-click="user.profile.photo=''; RC_photo=false" />
+               <span class="trash" ng-click="user.profile.photo=null; RC_photo=false; 
+                                             user.patch({'profile':{'photo': user.profile.photo}});" />
                <span class="name"><span class="fr">Supprimer</span><span class="en">Delete</span></span>
                <span class="cancel" ng-click="RC_photo=false"></span>
             </div>
@@ -57,8 +58,8 @@
                </div>
             </div>
             <span class="field-state"></span>
-            <span class="fr">Photo d'identité (format : jpg / png / gif)</span>
-            <span class="en">Passport photograph (format : jpg / png / gif) </span>
+            <span class="fr">Photo du visage (format photo d’identité)</span>
+            <span class="en">Photograph of face (ID photo format) </span>
          </label>
       </div>
    </form>

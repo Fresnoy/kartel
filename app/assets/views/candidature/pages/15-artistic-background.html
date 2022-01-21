@@ -20,7 +20,12 @@
 
     <p class="fr">Résumé du parcours artistique : </p>
     <p class="en">Summary of your artistic career: </p>
-
+    <p ng-if="user.profile.cursus"> 
+      <small><em>
+         <span class="fr">Année - Expérience, diplôme, ...</span>
+         <span class="en">Year - Experience, diploma, ...</span>
+      </em></small>
+   </p>
           <div class="field">
                       <textarea
                         id="cursus"
@@ -58,25 +63,6 @@
                         <span class="en">Cursus</span>
                       </label>
               </div>
-
-
-      <p class="fr">Nom d'artiste : </p>
-      <p class="en">Artist name: </p>
-
-
-              <div class="field">
-                 <input id="nickname" type="text"  ng-model="artist.nickname"
-                       ng-model-options='{ debounce: 1000 }'
-                       ng-change="artist.patch({'nickname': artist.nickname})" name="aNickname" />
-                 <label for="name">
-
-                 <span class="fr">Nom d'artiste</span>
-                 <span class="en">Artist name</span>
-                 </label>
-              </div>
-
-
-
 
 
       <p class="fr">Site(s) web : </p>
