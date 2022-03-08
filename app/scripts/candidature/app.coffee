@@ -4,15 +4,21 @@ angular.module('candidature.application', ['candidature.controllers',
             'ui.router', 'timer'
 ])
 
-.run(['$rootScope', '$state', ($rootScope, $state) ->
+.run(['$rootScope', '$state', 'jwtHelper', ($rootScope, $state, jwtHelper) ->
+  # TOKEN IS EXPIRED
   $rootScope.$on('tokenHasExpired', () ->
-    console.log('Your session has expired!')
-    if( $rootScope.logout == Function)
+    # get date to debug
+    date = jwtHelper.getTokenExpirationDate(localStorage.getItem('token'));
+    console.log('Your session has expired on ', date)
+    # test if system know how to logout
+    if(typeof $rootScope.logout is 'function') # 'is' equal to '===' in CoffeeScript
+      # do logout
       $rootScope.logout()
-
+    # try to know where we are, many ways !
     location = if $state.$urlRouter then $state.$urlRouter.location else if $state.router.urlRouter then $state.router.urlRouter.location else undefined
-
+    # if candidature context go to login
     if(location.indexOf("candidature/")!=-1)
+      # timed redirection ... for debug ? 
       setTimeout(() ->
         $state.go('candidature.account.login')
       , 200)
