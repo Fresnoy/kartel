@@ -3,7 +3,7 @@
       Confirmation
    </h1>
    <p class="fr"> Pour valider la création de votre compte, merci de cliquer sur le lien de confirmation qui vous a été envoyé à l'adresse e-mail suivante : </p>
-   <p class="en"> To confirm the creation of your account click on the confirmation link we just send you
+   <p class="en"> To confirm the creation of your account, click on the confirmation link we just send you
      in the following email: </p>
    <br/>
    <form name="formConfirmation">
@@ -47,16 +47,16 @@
   <ul>
     <li>
         <span class="fr">vérifier votre courier indésirable</span>
-        <span class="en">check your spam folder.</span>
+        <span class="en">check your spam folder</span>
     </li>
     <li>
       <span class="fr">vérifier que l'email ci-dessus est correct</span>
-      <span class="en">double check the email above, </span>
+      <span class="en">double check the email address above </span>
 
     </li>
     <li><a class="pointer" ng-click="edit_email = true">
-      <span class="fr">corriger l'email</span>
-      <span class="en">click here to correct it</span>
+      <span class="fr">corriger l'email {{user.email}}</span>
+      <span class="en">click here to modify the email address: {{user.email}}</span>
       </a></li>
   </ul>
 

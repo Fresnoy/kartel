@@ -23,9 +23,9 @@
           <span class="en">Selection procedure</span>
         </h1>
         <p>
-          <span class="fr">VOTRE CANDIDATURE A BIEN ÉTÉ TRANSMISE.<br/>
-          Référence de votre dossier est :</span>
-          <span class="en">Your application has been sent. <br/>
+          <span class="fr">VOTRE CANDIDATURE A BIEN ÉTÉ TRANSMISE à l'équipe pédagogique du Fresnoy - Studio national.<br/>
+          La référence de votre dossier est :</span>
+          <span class="en">Your application has been sent to the teaching staff. <br/>
           Referenced by the number :</span>
         </p>
         <div style="text-align:center">
@@ -39,36 +39,39 @@
 
   <div ng-if="!candidature.application_complete">
 
-    <span class="fr">Nous procédons à sa vérification et nous vous enverrons un email de confirmation prochainement.</span>
-    <span class="en">We check your submitted documents, a confirmation e-mail will be sent.</span>
+    <span class="fr">Nous procédons à sa vérification et nous vous enverrons un email de prise en compte de votre candidature sous 15 jours.</span>
+    <span class="en">We check your submitted documents, a candidature's confirmation e-mail will be sent within 15 days.</span>
 
   </div>
 
   <div ng-if="candidature.application_complete">
     <p></p>
-    <span class="fr">Votre candidature est vérifiée</span>
-    <span class="en">Your application is checked </span>
+    <span class="fr">Votre dossier de candidature a été vérifié et est transmise au jury</span>
+    <span class="en">Your application material has benn validated and will be transferred to the jury </span>
 
   </div>
+  <br/>
+  <br/>
+  
   <div class="fr">
     <h2>Entretiens</h2>
     <p>Les candidat.es présélectionné.es sont convié.es à un entretien avec un jury
       <strong>entre le
-      {{ campaign.interviews_start_date | date : "EEEE d MMMM" | translate_en_to_fr | lowercase }}
-      et le
-      {{ campaign.interviews_end_date | date : "EEEE d MMMM yyyy" | translate_en_to_fr | lowercase }}</strong>.</p>
+        {{ campaign.interviews_start_date | date : "EEEE dd MMMM" | translate_en_to_fr | lowercase }}
+        et le
+        {{ campaign.interviews_end_date | date : "EEEE dd MMMM yyyy" | translate_en_to_fr | lowercase }}</strong>.</p>
 
-    <h2>Annonce des résultats</h2>
-    <p>La liste des 24 candidat.es admi.es sera affichée au Fresnoy et mise en ligne sur son site internet
+        <h2>Annonce des résultats</h2>
+        <p>La liste des 24 candidat.es admi.es sera affichée au Fresnoy et mise en ligne sur son site internet
       <a href="https://www.lefresnoy.net/">lefresnoy.net</a>,
       le
       <strong>{{ campaign.selected_publish_date | date : "EEEE d MMMM yyyy à HH'h'" | translate_en_to_fr | lowercase }}</strong>. <br/>
       Les résultats peuvent être communiqués par téléphone le jour même de
        14h00 à 18h00 au <a href="tel:+33320283800">+33 (0) 3 20 28 38 00</a>.
-    </p>
-    <p>
-       <u>Les avis du jury ne sont pas motivés</u>.
-    </p>
+      </p>
+      <p>
+        <u>Les avis du jury ne sont pas motivés</u>.
+      </p>
     <p>
     Les admissions sont valables pour l’année scolaire {{campaign.promotion.starting_year}}-{{campaign.promotion.starting_year+1}}. <br/>
     Aucun.e candidat.e admis.e ne peut prétendre différer son intégration, ni se prévaloir de son admission pour une autre année scolaire.</p>
@@ -77,22 +80,23 @@
     <h2>Interviews</h2>
     <p>Shortlisted candidates will be invited for interview by the jury
       <strong>between
-      {{ campaign.interviews_start_date | date : "EEEE MMMM d" }} to
-      {{ campaign.interviews_end_date | date : "EEEE MMMM d, yyyy" }}</strong>.</p>
+        {{ campaign.interviews_start_date | date : "EEEE MMMM d" }} to
+        {{ campaign.interviews_end_date | date : "EEEE MMMM d, yyyy" }}</strong>.</p>
     <h2>Admitted applicants</h2>
     <p>The list of the 24 successful candidates will be posted up at Le Fresnoy and published on our website
       <a href="https://www.lefresnoy.net/">lefresnoy.net</a>
       on <strong>{{ campaign.selected_publish_date | date : "EEEE MMMM d, yyyy 'at' h a" }}</strong>. <br/>
       The results may also be given by telephone the same day by ringing from 2 pm to 6 pm at:
       <a href="tel:+33320283800">+33 (0) 3 20 28 38 00</a>.  <br/>
-      </p>
-      <p>
-        <u>Its decisions are final and without appeal</u>
-      </p>
-      <p>
+    </p>
+    <p>
+      <u>Its decisions are final and without appeal</u>
+    </p>
+    <p>
       These results are only valid for the {{campaign.promotion.starting_year}}-{{campaign.promotion.starting_year+1}} term. The admitted applicants may not postpone their date of admittance, nor expect to be
       admitted for a later school term.</p>
-
+      
+    </div>
+    
+    <span class="" ng-bind-html='candidature_config.communication.poll[language].free_text' />
   </div>
-
-</div>

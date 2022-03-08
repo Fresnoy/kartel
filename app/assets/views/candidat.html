@@ -153,12 +153,14 @@
             <h3>Infos</h3>
             <div class="person">
               <p>
-                Né(e) en {{country.codeToCountry[artist.user.profile.birthplace_country]}} le {{ artist.user.profile.birthdate }}
+                Né(e) en {{country.codeToCountry[artist.user.profile.birthplace_country]}}<!--
+                --><span ng-if='artist.user.profile.birthplace'>({{artist.user.profile.birthplace}})</span>
+                le {{ artist.user.profile.birthdate }}
                 ({{artist.user.profile.birthdate | ageFilter}} ans) -
                   <a ng-show='candidature.identity_card' ng-click='singleLightbox(candidature.identity_card,"Justificatif d’identité")'>Justificatif</a>
                   <span ng-if='!candidature.identity_card' class="text-danger warning">Justificatif d'identité absent</span>
                 <br/>Genre :  {{ gender[artist.user.profile.gender].fr }}
-                <br/>Statut familial : {{ artist.user.profile.family_status }}
+                
               </p>
               <br/>
 
@@ -178,11 +180,16 @@
 
             <!-- visioconférence --><!-- <p> <i class="glyphicon glyphicon-facetime-video"></i>&nbsp;V : <a href="visioconference:{{candidature.remote_interview_info}}?call" class="">{{ candidature.remote_interview_info }}</a> -->
 
-            <p><i class="glyphicon glyphicon-bullhorn" title="Langues parlées"></i>&nbsp; Langues parlées :
+            <p><i class="glyphicon glyphicon-bullhorn" title="Langues parlées"></i>&nbsp; Langue maternelle :
             <span class="name" ng-bind="LANGUAGES_NAME_short[artist.user.profile.mother_tongue].englishName.split('(')[0]" />
-            <span ng-if="artist.user.profile.other_language">
-              <span class="language" ng-repeat="language in artist.user.profile.other_language.split(', ')  track by $index">,
-                <span class="name" ng-bind="LANGUAGES_NAME_short[language].englishName.split('(')[0]" /></span>
+             <span ng-if="artist.user.profile.other_language">
+                <br/>Autres langues parlées : 
+              <span class="language" ng-repeat="language in artist.user.profile.other_language.split(', ')  track by $index">
+                <span class="name" ng-bind="LANGUAGES_NAME[language].englishName.split('(')[0]" /><!-- 
+                    Just for the ","
+                --><span 
+                 ng_if="$index < (artist.user.profile.other_language.split(', ').length -1)">, </span>
+              </span>
             </span>
             </p>
 
@@ -536,7 +543,7 @@
                          class="alert alert-warning" role="alert">
                         Attention cette action selectionne le candidat sur la liste d'attente
                         en position : {{ candidature.position_in_waitlist}}
-                        <br/><strong>Cette action n'envoie pas d'email au candidat !</strong>
+                        <br/><strong>Cette action ENVOIE un email au candidat !</strong>
                       </p>
 
                       <button type="button"
@@ -573,7 +580,7 @@
                     <div ng-show="click_cSelected" >
                       <p class="alert alert-warning" role="alert">
                         Attention cette action selectionne le candidat pour la rentrée prochaine
-                        <br/><strong>Cette action n'envoie pas d'email au candidat !</strong>
+                        <br/><strong>Cette action ENVOIE un email au candidat !</strong>
                       </p>
 
                       <button type="button"
