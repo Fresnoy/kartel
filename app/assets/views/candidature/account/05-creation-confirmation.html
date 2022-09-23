@@ -13,12 +13,19 @@
         </p>
       </div>
       <div ng-show="edit_email">
-         <input id="email" type="email" ng-model="user.email" name="uEmail" unique-user-field required />
+         <input id="email" type="email" ng-model="user.email" name="uEmail" unique-user-field
+          ng-pattern="/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/"
+          required />
          <div ng-show="formConfirmation.uEmail.$touched  && formConfirmation.uEmail.$invalid" ng-messages="formConfirmation.uEmail.$error" class="help-block error">
             <div ng-message="required">
               <span class="fr">Champs obligatoire</span>
               <span class="en">Required field</span>
             </div>
+            <div ng-message="pattern">
+               <span class="fr">E-mail non valide</span>
+               <span class="en">Invalid email</span>
+            </div>
+
             <div ng-message="email">
                <span class="fr">E-mail non valide</span>
                <span class="en">This is not a valid email</span>
@@ -29,16 +36,16 @@
             </div>
          </div>
          <label for="email">
-         <span class="field-state required" ng-class="{ 'error': form.uEmail.$error, 'valid':form.uEmail.$valid, 'touched': form.uEmail.$touched }"></span>
-         <span class="fr">E-mail</span>
-         <span class="en">Email</span>
+            <span class="field-state required" ng-class="{ 'error': form.uEmail.$error, 'valid':form.uEmail.$valid, 'touched': form.uEmail.$touched }"></span>
+            <span class="fr">E-mail</span>
+            <span class="en">Email</span>
          </label>
-         <a class="btn" ng-click="edit_email = false" ng-class="{ 'has-error': formConfirmation.$invalid }" >
-
-           <span class="fr">Valider l'email</span>
-           <span class="en">Valid email</span>
+         <a class="btn" ng-click="edit_email = false; update_infos(formConfirmation, user)" ng-class="{ 'has-error': formConfirmation.$invalid }" >
+           <span class="fr">Valider l'adresse et renvoyer l'e-mail</span>
+           <span class="en">Valid address and resend e-mail</span>
          </a>
       </div>
+
    </form>
    <p>
      <span class="fr">Si vous ne recevez pas d'e-mail :</span>
@@ -54,7 +61,7 @@
       <span class="en">double check the email address above </span>
 
     </li>
-    <li><a class="pointer" ng-click="edit_email = true">
+    <li><a class="pointer" ng-click="edit_email = true; send_email=2">
       <span class="fr">corriger l'email {{user.email}}</span>
       <span class="en">click here to modify the email address: {{user.email}}</span>
       </a></li>
@@ -66,5 +73,10 @@
       <span class="fr">Réenvoyer l'email</span>
       <span class="en">re-send email</span>
       </a>
+      
+      <div ng-show="resendemail_error!='' " class="help-block error">
+         <p ng-repeat="(key, value) in resendemail_error">{{key}}: {{value[0]}}</p>
+      </div>
    </div>
+   
 </div>

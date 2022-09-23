@@ -42,17 +42,23 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
     $rootScope.current_display_screen = candidature_config.screen.account_confirm_creation
     $scope.edit_email = false
     $scope.send_email = 2
+    $scope.resendemail_error = ""
 
     if($stateParams.infos)
       $scope.user = $stateParams.infos
 
     $scope.update_infos = (form, params) ->
       delete $http.defaults.headers.common.Authorization
+      $scope.resendemail_error = ''
       form.$setSubmitted()
       RestangularV2.all('school/student-application/user_resend_activation_email').post(params).then((response) ->
         $scope.send_email--
       , (response) ->
-        form.$error = response.data
+        # show errors from server
+        # on normal step nobody see this error 
+        # if showing, user have refresh this page
+        # or user (non active) try to do something strange 
+        $scope.resendemail_error = response.data
 
       )
 )
