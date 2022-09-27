@@ -573,7 +573,8 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
       # otherwise -> resume
       user_id = jwtHelper.decodeToken(localStorage.getItem('token')).user_id
       Users.one(user_id).get().then((user) ->
-        if(user.profile.is_artist)
+        candidature_is_not_begin = user.profile.birthdate != null or user.profile.gender != null or user.profile.nationality != null
+        if user.profile.is_artist and candidature_is_not_begin
           $state.go("candidature.summary")
         else
           $rootScope.loadInfos($rootScope)
