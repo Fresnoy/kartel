@@ -738,8 +738,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
     $rootScope.current_display_screen = candidature_config.screen.photo_info
 
     $scope.$watch('user.profile.photo', (newValue, oldValue) ->
-        console.log($scope.user)
-        
+        # console.log($scope.user)        
     );
     
 

@@ -257,6 +257,14 @@
                 <span class="en"><span ng-show="nationality.length>0">Other </span>Nationality</span>
             </label>
          </div>
+
+          <!--
+
+            ID CARD
+
+          -->
+
+
          <div class="field">
             <input  ng-model="candidature.identity_card" hidden required />
             <div
@@ -279,7 +287,7 @@
                <span class="name">{{candidature.identity_card.split('.').pop()}}</span>
                <span class="trash" ng-click="RC_id=true" />
                <div class="delete-pane" ng-show="RC_id">
-                  <span class="trash" ng-click="candidature.identity_card=''; RC_id=false" />
+                  <span class="trash" ng-click="candidature.identity_card=null; RC_id=false; candidature.patch({'identity_card':candidature.identity_card});" />
                   <span class="name"><span class="fr">Supprimer</span><span class="en">Delete</span></span>
                   <span class="cancel" ng-click="RC_id=false"></span>
                </div>
