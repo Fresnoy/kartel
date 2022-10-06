@@ -829,22 +829,23 @@ body {
       .unit{
         font-size: 2em;
         display: block;
-        position: absolute;
+        position: sticky;
         width:100%;
         text-align: center;
         top: 45%;
-        .total{
-
-          &:before{
-            content:"/";
-            font-size: 2em;
-            vertical-align:middle;
-
-          }
+        .progress-bar{
+          background-color: #333;
         }
       }
+      .status{
+        position: sticky;
+        display: block;
+        text-align: center;
+        top: 50%;
+        clear: both;
+      }
       img{
-        position: absolute;
+        position: sticky;
         display: block;
         // height: 20%;
         width:50%;
@@ -1650,8 +1651,9 @@ input{
     margin: 10px;
 }
 .dragover {
-    border: 5px dashed blue;
+    border: 5px dashed #4a4a4a;
 }
+
 .print{
   display: none;
 }

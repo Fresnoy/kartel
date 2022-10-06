@@ -454,6 +454,9 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
         method: 'PATCH',
         headers: { 'Authorization': 'JWT ' + localStorage.token },
         #withCredentials: true
+      
+      $rootScope.upload_status="Media creation"
+      $rootScope.upload_percentage=0
 
       infos.data[field] = data
       Upload.upload(infos)
@@ -461,7 +464,9 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
           model[field] = resp.data[field]
         ,(resp) ->
           console.log('Error status: ' + resp.status);
+          $rootScope.upload_status="Erreur"
         ,(evt) ->
+          $rootScope.upload_status="Media upload"
           $rootScope.upload_percentage = parseInt(100.0 * evt.loaded / evt.total);
       )
 
@@ -573,10 +578,11 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
       # otherwise -> resume
       user_id = jwtHelper.decodeToken(localStorage.getItem('token')).user_id
       Users.one(user_id).get().then((user) ->
-        candidature_is_not_begin = user.profile.birthdate != null or user.profile.gender != null or user.profile.nationality != null
-        if user.profile.is_artist and candidature_is_not_begin
+        candidature_is_started = user.profile.birthdate and user.profile.gender and user.profile.nationality
+        if user.profile.is_artist and candidature_is_started
           $state.go("candidature.summary")
         else
+          # loadinfo create user-> artist if not created
           $rootScope.loadInfos($rootScope)
       )
 )
@@ -679,9 +685,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 
   $scope.uploadFile = (data, model, field, type) ->
     $rootScope.upload(data, model, field)
-
-
-  # specific upload Photo
+  
 
 )
 
@@ -752,12 +756,17 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
         method: 'PATCH',
         headers: { 'Authorization': 'JWT ' + localStorage.token },
         #withCredentials: true
+
+      $rootScope.upload_status="Media creation"
+      $rootScope.upload_percentage=0
+
       Upload.upload(infos)
       .then((resp) ->
           model.profile.photo = resp.data.profile.photo
         ,(resp) ->
           model.profile.photo = ""
         ,(evt) ->
+          $rootScope.upload_status="Media upload"
           $rootScope.upload_percentage = parseInt(100.0 * evt.loaded / evt.total);
       )
 
@@ -775,7 +784,6 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 
       #patch Medium
       $scope.uploadFile = (data, model) ->
-
           field = "picture"
           if (data.type.match("image.*"))
             field = "picture"
@@ -784,8 +792,12 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 
           medium_infos =
             gallery: model.url
+
+          # console.log ("creation du média")
           Media.one().customPOST(medium_infos).then((response_media) ->
             model.media.push(response_media)
+            # console.log ("Upload du média")
+            # console.log (data)
             $rootScope.upload(data, response_media, field)
           )
 
@@ -799,6 +811,9 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 
         $rootScope.loadInfos($rootScope)
         $rootScope.step.current = "15"
+
+
+        $rootScope.upload_status = "Media creation"
 
         $scope.addWebsite = (artist, model, field) ->
           # console.log(field)
@@ -981,6 +996,9 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
       if (!data)
         return
 
+      $rootScope.upload_status="Media creation"
+      $rootScope.upload_percentage=0
+
       # get Vimeo token api
       VimeoToken.one().get().then((settings) ->
           # localStorage.setItem('vimeo_upload_token',settings.token)
@@ -992,6 +1010,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
               upload_settings =
                 type: "streaming"
               # get an upload ticket
+              $rootScope.upload_status="Request for upload permissions"
               account_infos.data.customPOST(upload_settings,"videos").then((ticket) ->
                     # http method because Vimeo crash when multipart upload
                     #  send no Authorization
@@ -1006,10 +1025,15 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
                       # transformRequest: (data, headers) ->
                       #   delete headers()['Authorization']
                       #   return data;
+                    $rootScope.upload_status="Video upload"
 
                     Upload.http(upload_config)
                     .then((resp) ->
+
                         # Complete the upload : complete_uri remove
+                        $rootScope.upload_status="Video sent, please wait a few more moments"
+                        $rootScope.upload_percentage=25
+
                         Vimeo.one(ticket.data.complete_uri).remove().then((remove) ->
                           # get video id
                           location = remove.headers('Location')
@@ -1024,20 +1048,33 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
                             name: data.name
                             description: "Inscription - " + $scope.candidature.current_year_application_count + " | " + $scope.user.last_name + " - " + $scope.user.first_name
 
+
+                          $rootScope.upload_status="Update application information"
+                          $rootScope.upload_percentage=50
+
                           Vimeo.one(location).patch(video_info).then((patch_response) ->
                             # console.log("Video set Title and description")
                             # put video in album 4943258 (candidature 2018)
                             album_id = 4943258
+
+                            $rootScope.upload_status="Moving the video"
+                            $rootScope.upload_percentage=75
+
+
                             Vimeo.one(account_infos.data.uri).customPUT({}, "albums/"+album_id+"/videos/"+video_id).then((response_album) ->
                                 # console.log("Video in specific album : " + album_id)
+                                $rootScope.upload_status="Video added ! "
+                                $rootScope.upload_percentage=100
+
                             )
                           )
                         )
                       , (error)->
                         console.log("ERROR  upload VIMEO")
                         console.log(error.headers('Authorization'))
+                        $rootScope.upload_status="Erreur d'upload de la vidéo"
                       , (evt) ->
-                        $rootScope.upload_percentage = parseInt(100.0 * evt.loaded / evt.total)
+                        $rootScope.upload_percentage = Math.floor(100.0 * evt.loaded / evt.total)
 
                     )
                   )
