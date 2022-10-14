@@ -459,16 +459,41 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
       $rootScope.upload_percentage=0
 
       infos.data[field] = data
-      Upload.upload(infos)
-      .then((resp) ->
+
+      # init upload (for abort upload)uploadup
+      $rootScope.upload_object = Upload.upload(infos)
+      
+      $rootScope.upload_object.then((resp) ->
+          # MEDIA UPLOADED
           model[field] = resp.data[field]
+          
+          # try oncomplete funcion
+          if($rootScope.upload_on_complete_func!=undefined)
+            $rootScope.upload_on_complete_func()
         ,(resp) ->
           console.log('Error status: ' + resp.status);
           $rootScope.upload_status="Erreur"
+          model[field] = ''
         ,(evt) ->
           $rootScope.upload_status="Media upload"
-          $rootScope.upload_percentage = parseInt(100.0 * evt.loaded / evt.total);
+          $rootScope.upload_percentage = parseInt(100.0 * evt.loaded / evt.total)
       )
+
+  $rootScope.uploadAbort = () ->
+    console.log("Upload abort ! ")
+    
+    $rootScope.upload_object.abort()
+    # console.log($rootScope.upload_object)
+
+    # close interface
+    $rootScope.upload_status=""
+    $rootScope.upload_percentage=100
+
+    # $rootScope.upload_object = null
+    # remove media gallery if needed
+    if($rootScope.upload_on_abort_func!=undefined)
+      $rootScope.upload_on_abort_func()
+
 
   $scope.saveUserModel = (model) ->
     model_copy =  RestangularV2.copy(model)
@@ -685,7 +710,6 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 
   $scope.uploadFile = (data, model, field, type) ->
     $rootScope.upload(data, model, field)
-  
 
 )
 
@@ -760,10 +784,12 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
       $rootScope.upload_status="Media creation"
       $rootScope.upload_percentage=0
 
-      Upload.upload(infos)
-      .then((resp) ->
+      # init upload (for abort upload)
+      $rootScope.upload_object = Upload.upload(infos)
+      $rootScope.upload_object.then((resp) ->
           model.profile.photo = resp.data.profile.photo
         ,(resp) ->
+          #error or aboart
           model.profile.photo = ""
         ,(evt) ->
           $rootScope.upload_status="Media upload"
@@ -784,7 +810,10 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 
       #patch Medium
       $scope.uploadFile = (data, model) ->
+
           field = "picture"
+          
+          # ADMIN visualisation need to know if pdf (iframe) or image file
           if (data.type.match("image.*"))
             field = "picture"
           if (data.type.match("pdf"))
@@ -795,9 +824,31 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 
           # console.log ("creation du média")
           Media.one().customPOST(medium_infos).then((response_media) ->
-            model.media.push(response_media)
-            # console.log ("Upload du média")
-            # console.log (data)
+
+            media_count = model.media.push(response_media)
+            media = model.media[(media_count-1)]
+            
+            # ABORT TANSFERT
+            # delete media on abort upload (function call when abord clicked)
+            $rootScope.upload_on_abort_func = () ->
+              # remove media
+              response_media.remove().then((response) ->
+                model.media.pop()
+                delete $rootScope.upload_on_abort_func
+              )
+            
+            # COMPELETE TRANSFERT
+            # update label on patch 
+            # DO NOT send two patches (upload AND label update) in same time : the last patch win the game
+            $rootScope.upload_on_complete_func = () ->
+
+              # remove media
+              response_media.patch({'label': media.label}).then((response) ->
+                console.log("update media")
+                delete $rootScope.upload_on_complete_func
+              )       
+              
+            # UPLAOD
             $rootScope.upload(data, response_media, field)
           )
 
@@ -811,9 +862,6 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 
         $rootScope.loadInfos($rootScope)
         $rootScope.step.current = "15"
-
-
-        $rootScope.upload_status = "Media creation"
 
         $scope.addWebsite = (artist, model, field) ->
           # console.log(field)
@@ -1027,8 +1075,9 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
                       #   return data;
                     $rootScope.upload_status="Video upload"
 
-                    Upload.http(upload_config)
-                    .then((resp) ->
+                    # init upload (for abort upload)
+                    $rootScope.upload_object = Upload.http(upload_config)
+                    $rootScope.upload_object.then((resp) ->
 
                         # Complete the upload : complete_uri remove
                         $rootScope.upload_status="Video sent, please wait a few more moments"

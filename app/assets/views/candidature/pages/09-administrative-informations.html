@@ -127,7 +127,7 @@
 
          <div class="field">
 
-             <input ng-if="is_safari" placeholder="01/10/1997" type="text"
+             <input ng-if="is_safari" placeholder="{{campaign.date_of_birth_max | date:'dd/MM/yyyy'}}" type="text"
               name="uBirthDate"
               ng-model="safari_birthdate_value"
               ng-keyup="safari_keyup($event, this)"
@@ -137,10 +137,12 @@
                 "
               required />
 
-             <input ng-if="!is_safari"  type="date" ng-min="birthdateMin" name="uBirthDate"
-             ng-max="birthdateMax" ng-model="birthdate.value"
-             ng-change="user.profile.birthdate = (birthdate.value | date:'yyyy-MM-dd');
-             user.patch({'profile':{'birthdate': user.profile.birthdate}}); " required />
+             <input ng-if="!is_safari"  placeholder="{{campaign.date_of_birth_max | date:'dd/MM/yyyy'}}"  
+              type="date" ng-min="birthdateMin" name="uBirthDate"
+              ng-max="birthdateMax" ng-model="birthdate.value"
+              ng-change="user.profile.birthdate = (birthdate.value | date:'yyyy-MM-dd');
+              user.patch({'profile':{'birthdate': user.profile.birthdate}}); " 
+              required />
 
 
 
@@ -273,6 +275,7 @@
                class="media-upload"
                ng-model="candidature.identity_card"
                ngf-select="uploadFile(candidature.identity_card, candidature, 'identity_card')"
+               ngf-drop="uploadFile(candidature.identity_card, candidature, 'identity_card')"
                ngf-capture="'camera'"
                ngf-accept="'image/*, application/pdf'"
                ngf-pattern="'image/*,application/pdf'"

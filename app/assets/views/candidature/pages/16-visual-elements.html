@@ -212,6 +212,7 @@
                 </p>
                 <div ng-model="video" name="uVideo"
                    ngf-select="uploadVimeo(video, candidature, 'presentation_video')"
+                   ngf-drop="uploadVimeo(video, candidature, 'presentation_video')"
                    ngf-capture="'camera'"
                    accept="video/*"
                    ngf-accept="'video/*'"
@@ -223,13 +224,14 @@
                    >
                    <span class="upload-file" />
                 </div>
-            </div>
-            <div ng-show="invalidVideo.$errorMessages" ng-messages="invalidVideo.$errorMessages" class="help-block error">
-               <div ng-message="pattern">
-                  <span class="fr">Fichier non reconnu comme étant une vidéo</span>
-                  <span class="en">this is not a vidéo file</span>
+                <div ng-show="invalidVideo.$errorMessages" ng-messages="invalidVideo.$errorMessages" class="help-block error">
+                  <div ng-message="pattern">
+                     <span class="fr">Fichier non reconnu comme étant une vidéo</span>
+                     <span class="en">this is not a vidéo file</span>
+                  </div>
                </div>
             </div>
+           
             <br/>
 
       </div>

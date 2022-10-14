@@ -139,7 +139,9 @@
       <div id="considered-project-1"
          ng-model="candidature.considered_project_1"
          name="cProject1"
-         ngf-select="upload(candidature.considered_project_1, candidature, 'considered_project_1') " ngf-capture="'camera'"
+         ngf-select="upload(candidature.considered_project_1, candidature, 'considered_project_1') " 
+         ngf-drop="upload(candidature.considered_project_1, candidature, 'considered_project_1') " 
+         ngf-capture="'camera'"
          accept="application/pdf"
          ngf-accept="'application/pdf'"
          ngf-pattern="'application/pdf'"
@@ -155,7 +157,9 @@
          <span class="name">{{candidature.considered_project_1.split('.').pop()}}</span>
          <span class="trash" ng-click="RC_prj1=true" />
          <div class="delete-pane" ng-show="RC_prj1">
-            <span class="trash" ng-click="candidature.considered_project_1=''; RC_prj1=false" />
+            <span class="trash"
+                  ng-click="candidature.considered_project_1=''; RC_prj1=false;
+                            candidature.patch({'considered_project_1': null});" />
             <span class="name"><span class="fr">Supprimer</span><span class="en">Delete</span></span>
             <span class="cancel" ng-click="RC_prj1=false"></span>
          </div>
@@ -190,7 +194,9 @@
      <div id="considered-referencies-project-1"
         ng-model="candidature.artistic_referencies_project_1"
         name="cARP1"
-        ngf-select="upload(candidature.artistic_referencies_project_1, candidature, 'artistic_referencies_project_1') " ngf-capture="'camera'"
+        ngf-select="upload(candidature.artistic_referencies_project_1, candidature, 'artistic_referencies_project_1') " 
+        ngf-drop="upload(candidature.artistic_referencies_project_1, candidature, 'artistic_referencies_project_1') " 
+        ngf-capture="'camera'"
         accept="application/pdf"
         ngf-accept="'application/pdf'"
         ngf-pattern="'application/pdf'"
@@ -207,7 +213,9 @@
         <span class="name">{{candidature.artistic_referencies_project_1.split('.').pop()}}</span>
         <span class="trash" ng-click="RC_ref_prj1=true" />
         <div class="delete-pane" ng-show="RC_ref_prj1">
-           <span class="trash" ng-click="candidature.artistic_referencies_project_1=''; RC_ref_prj1=false" />
+           <span class="trash" 
+                 ng-click="candidature.artistic_referencies_project_1=''; RC_ref_prj1=false;
+                 candidature.patch({'artistic_referencies_project_1': null});" />
            <span class="name"><span class="fr">Supprimer</span><span class="en">Delete</span></span>
            <span class="cancel" ng-click="RC_ref_prj1=false"></span>
         </div>

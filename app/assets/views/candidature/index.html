@@ -16,7 +16,11 @@
             <div class="status">
               <span class="en">{{upload_status}}</span>
               <span class="fr">{{upload_status | translate_sentence_en_to_fr}}</span>
-            </div>              
+            </div>
+            <button type="button" class="btn btn-light abort" ng-click="uploadAbort()">
+              <span class="en">Cancel</span>
+              <span class="fr">Annuler</span>
+            </button>
             <img src='images/load.gif' /></div>
           <div class="data-writing" ng-show="writingData"><span class="fr">Données enregistrées</span><span class="en">Saved data</span></div>
           <ng-include class="nav-header" src="'views/candidature/partials/navigation-header.html'"></ng-include>

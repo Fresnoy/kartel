@@ -24,6 +24,7 @@
             class="media-upload"
             ng-model="user.profile.photo"
             ngf-select="uploadPhoto(user.profile.photo, user, form4)"
+            ngf-drop="uploadPhoto(user.profile.photo, user, form4)"
             name="uPhoto"
             ngf-capture="'camera'"
             ngf-max-size="10MB"
