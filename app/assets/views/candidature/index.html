@@ -37,8 +37,10 @@
         <div class="">
           <div class="bg"
           style="background-image:url({{candidature_config.path}}{{candidature_config.screen[step.current].image.file}});
-            background-position-x:{{candidature_config.screen[step.current].image.position.x}};
-            ">
+                 background-position-x:{{ candidature_config.screen[step.current].image.position.x }};
+                 background-position-y:{{ (candidature_config.screen[step.current].image.position.y != 0) ? candidature_config.screen[step.current].image.position.y : 'inherit' }};
+                 "
+                 >
           </div>
           <div class="step-infos visible-md visible-lg">
                 <div class="current">{{candidature_config.screen[step.current].display_name||step.current}}</div>
