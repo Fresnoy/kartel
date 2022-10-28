@@ -27,6 +27,10 @@ exports.config =
                                         'app/scripts/common/**/*.coffee'
                                         'app/scripts/*.js'
                                 ]
+                                'js/config.js': [
+                                        'app/config.js'
+                                        'app/config-candidature.js'
+                                ]
                          order:
                                 before: [
                                         'bower_components/jquery/dist/jquery.js'
