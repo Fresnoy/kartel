@@ -192,15 +192,16 @@ angular.module('kartel',
         if(input)
           translate_word_en = [
               "Media creation", "Media upload", "Request for upload permissions", "Video upload", "Video sent, please wait a few more moments",
-              "Update application information", "Moving the video", "Video added !"
+              "Update application information", "Moving the video", "Video added !", 'Upload Error'
           ]
           translate_word_fr = [
               'Création du média', "Téléversement du média", "Demande d'autorisations", "Téléversement de la vidéo", "Vidéo envoyée, veuillez patienter encore quelques instant",
-              "Mise à jour des informations de candidature", "Déplacement de la vidéo", "Vidéo correctement ajoutée"
+              "Mise à jour des informations de candidature", "Déplacement de la vidéo", "Vidéo correctement ajoutée", 'Erreur de téléversement'
           ]
           index = _.indexOf(translate_word_en, input)
           if(index !=-1)
             input = input.replace(input, translate_word_fr[index])
+          # return input
         return input
 )
 .filter("artist_name", ->
