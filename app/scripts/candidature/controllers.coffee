@@ -482,8 +482,11 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
   $rootScope.uploadAbort = () ->
     console.log("Upload abort ! ")
     
-    $rootScope.upload_object.abort()
     # console.log($rootScope.upload_object)
+    # may be undefined (before vimeo uplaod)
+    if($rootScope.upload_object)
+      $rootScope.upload_object.abort()
+      
 
     # close interface
     $rootScope.upload_status=""
@@ -580,7 +583,10 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
                         artist.websites[find_website] = response_website
                     )
             )
-
+          # get candidature setup if empty (sometimes not loaded on refresh Candidature)
+          if !$rootScope.campaign.candidature_close
+              console.log("reload Setup")
+              $scope.getCandidatureSetup()
 
       ,(candidatureInfos_error) ->
         console.log("error Candidatures infos")
@@ -807,6 +813,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
       $rootScope.step.current = "14"
       $rootScope.current_display_screen = candidature_config.screen.cv
 
+      $scope.french_art_cursus = ""
 
       #patch Medium
       $scope.uploadFile = (data, model) ->
@@ -958,7 +965,8 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
               new_remark = remark.replace(pollRegexp, "$1"+obj.item+"$3")
             # else create it
             else 
-              # make some lines
+              new_remark = remark
+              # make some lines              
               new_remark +="\n\n"
               new_remark +="[POLL]"+obj.item+"[/POLL]"
             # set remark
@@ -1053,7 +1061,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
           Vimeo.setDefaultHeaders({Authorization: "Bearer "+ settings.token})
           # connect to vimeo api
           Vimeo.one("me").get().then((account_infos) ->
-              # console.log(account_infos)
+              console.log(account_infos)
               console.log((account_infos.data.upload_quota.space.free / 1073741824).toFixed(3) + " GB")
               upload_settings =
                 type: "streaming"
@@ -1103,37 +1111,41 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 
                           Vimeo.one(location).patch(video_info).then((patch_response) ->
                             # console.log("Video set Title and description")
-                            # put video in album 4943258 (candidature 2018)
-                            album_id = 4943258
+                            album_id = candidature_config.vimeo_album_id
 
                             $rootScope.upload_status="Moving the video"
                             $rootScope.upload_percentage=75
-
-
+														
                             Vimeo.one(account_infos.data.uri).customPUT({}, "albums/"+album_id+"/videos/"+video_id).then((response_album) ->
                                 # console.log("Video in specific album : " + album_id)
                                 $rootScope.upload_status="Video added ! "
                                 $rootScope.upload_percentage=100
-
-                            )
-                          )
-                        )
-                      , (error)->
+                            ) # end move video
+                          ) # end set title video
+                      ) # end close ticket
+                     , (error)->
                         console.log("ERROR  upload VIMEO")
-                        console.log(error.headers('Authorization'))
-                        $rootScope.upload_status="Erreur d'upload de la vidéo"
-                      , (evt) ->
+                        console.log(error)
+                        $rootScope.upload_status="Upload Error"
+                     ,(evt) ->
                         $rootScope.upload_percentage = Math.floor(100.0 * evt.loaded / evt.total)
-
-                    )
-                  )
-            )
-
-        , ->
-          # error
-          console.log("vimeoUploadError")
-      )
-
+                    ) # end send video
+              ,(error)->
+                console.log("ERROR get TICKET VIMEO")
+                console.log(error)
+                $rootScope.upload_status="Ticket Error"
+             ) # end upload permission
+          ,(error)->
+                console.log("ERROR get My Channel VIMEO")
+                console.log(error)
+                $rootScope.upload_status="Channel Error"
+         ) # end me vimeo
+      ,(error)->
+          console.log("ERROR internal server error")
+          console.log(error)
+          $rootScope.upload_status="Settings Error"
+    ) # end internal token request
+      
     $scope.uploadFile = (data, model, field) ->
       $rootScope.upload(data, model, field)
 
