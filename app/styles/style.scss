@@ -1381,7 +1381,7 @@ body {
       .modal-content{
         top:50%;
         padding: 10px;
-        height: 200px;
+        height: auto;//200px;
         width: 50%;
         margin: -100px auto auto auto;
         vertical-align: middle;
@@ -1711,6 +1711,12 @@ input{
         position: relative;
         float: right;
         width: 65%;
+      }
+
+      
+      .modal .modal-content{
+        width: 80%;
+        top:25%;
       }
 
       .navigation.breadcrumb li .icon {
