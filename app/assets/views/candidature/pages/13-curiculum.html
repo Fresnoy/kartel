@@ -102,9 +102,9 @@
          </label>
       </div>
       <div ng-if="candidature.master_degree=='N'">
-         <div class="alert-warning" ng-if="(( (campaign.promotion.starting_year)*1 - (user.profile.birthdate | date:'yyyy')*1 ) <= 25 ) || !user.profile.birthdate ">
-            <p class="fr" >Il faut être âgé d'au moins 25 ans</p>
-            <p class="en">Must be at least 25 years old</p>
+         <div class="alert-warning" ng-if="(( (campaign.promotion.starting_year)*1 - (user.profile.birthdate | date:'yyyy')*1 ) <= 24 ) || !user.profile.birthdate ">
+            <p class="fr" >Il faut être âgé d'au moins 24 ans</p>
+            <p class="en">Must be at least 24 years old</p>
          </div>
          <p class="fr">En quoi cette expérience vous a-t-elle préparé au Fresnoy ? <em>(1 page max)</em></p>
          <p class="en">In what way this experience has prepared you for Le Fresnoy ? <em>(1 page max)</em> </p>

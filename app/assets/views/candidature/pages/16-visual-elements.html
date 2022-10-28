@@ -21,6 +21,16 @@
     <p>
       Il est important de noter que ce document vidéo est le seul qui sera vu par les membres du jury de l'entretien qui ne participent pas au jury de pré-sélection.
     </p>
+    <h4>Lien Vidéo</h4>
+    <p>Le lien doit pointer directement vers un fichier vidéo pérenne ou vers une plateforme de diffusion
+      de vidéos (type Viméo, Youtube, ...).  <br/>
+      Nous n'acceptons pas de lien vers une playlist de vidéos, ou une plateforme d'envoi de fichier
+      (type Wetransfer, Send Anywhere, Google Drive, OneDrive, Dropbox)
+    </p>
+    <p><strong>Pour un confort de visionnage optimal du jury : téléverser votre vidéo.</strong> (mais pas au dernier moment).
+    <br>Si toutesfois vous utilisez votre propre compte Viméo / Youtube, merci de mettre votre vidéo en public (si besoin non référencée) et ne pas utiliser d’URL personnalisée. 
+    <br>Si vous le pouvez, vous autorisez le domaine lefresnoy.net à intégrer votre vidéo. »  </p>
+    
    </div>
    <div class="en">
       <p>A work or several extracts of works made by the
@@ -42,9 +52,13 @@
       examined at all two stages of the selection
       process.
     </p>
-    <p>
-      Il est important de noter que ce document vidéo est le seul qui sera vu par les membres du jury de l'entretien qui ne participent pas au jury de pré-sélection.
-    </p>
+    <h4>Vidéo link</h4>
+    <p>The link must connect directly to a permanent video file or a video platform (such as Vimeo, Youtube, etc.).<br/>
+      We do not accept any link to video playlists, or file transfert platforms (such as Wetransfer, Send Anywhere,
+      Google Drive, OneDrive, Dropbox, etc.)</p>
+      <p><strong>Pour un confort de visionnage optimal du jury : téléverser votre vidéo</strong>
+         <br>Si toutesfois vous utilisez votre propre compte Viméo / Youtube, merci de mettre votre vidéo en public (si besoin non référencée) et ne pas utiliser d’URL personnalisée. 
+         <br>Si vous le pouvez, vous autorisez le domaine lefresnoy.net à intégrer votre vidéo. »  </p>
     </div>
 </div>
 
@@ -55,8 +69,9 @@
    </h1>
    <form name="form1" ng-submit="form.$valid && submit()" class="css-form" novalidate>
      <div class="fr">
-      <p>Merci de saisir ci-dessous le lien vidéo vers une œuvre ou un ensemble d’extraits d’œuvres que vous avez réalisés et
-         particulièrement représentatifs de votre démarche artistique.
+      <p>Merci de saisir ci-dessous <a class="pointer" ng-click="show_help(true)">un lien vidéo</a> 
+         vers une œuvre ou un ensemble d’extraits d’œuvres que vous avez réalisés et
+         particulièrement représentatifs de votre démarche artistique. 
       </p>
       <p>Cette vidéo d'une <strong>durée maximale de 8 minutes</strong> sera vue successivement par les deux jurys (de présélection et de l'entretien oral).</p>
       <p><blockquote><small>
@@ -64,20 +79,22 @@
         </small>
       </blockquote>
       </p>
-      <p>Le lien doit pointer directement vers un fichier vidéo pérenne ou vers une plateforme de diffusion
-        de vidéos (type Viméo, Youtube, ...).  <br/>
-        Nous n'acceptons pas de lien vers une playlist de vidéos, ou une plateforme d'envoi de fichier
-        (type Wetransfer, Send Anywhere, Google Drive, OneDrive, Dropbox)
-      </p>
+      <p>Voir l'<a class="pointer" ng-click="show_help(true)">aide pour plus d'information sur le lien à fournir</a>.</p>
+      
 
     </div>
     <div class="en">
-      <p>Submit a link to a video that exposes the most representative part of your work.</p>
-      <p>This video of a maximum length of 8 minutes will be seen by twice, once by the pre-selection jury and a second
+      <p>Submit a <a class="pointer" ng-click="show_help(true)">link to a video</a> 
+         that exposes the most representative part of your work.</p>
+      <p>This video of a <strong>maximum length of 8 minutes</strong> will be seen by twice, once by the pre-selection jury and a second
         time by the interview jury.</p>
-      <p>The link must connect directly to a permanent video file or a video platform (such as Vimeo, Youtube, etc.).<br/>
-        We do not accept any link to video playlists, or file transfert platforms (such as Wetransfer, Send Anywhere,
-        Google Drive, OneDrive, Dropbox, etc.)</p>
+        <p><blockquote><small>
+         Il est important de noter que ce document vidéo est le seul qui sera vu par les membres du jury de l'entretien qui ne participent pas au jury de pré-sélection.
+         </small>
+       </blockquote>
+       </p>
+       <p>See <a class="pointer" ng-click="show_help(true)">More infos about link specification</a>.</p>
+      
     </div>
        <input
             type="url"
@@ -187,9 +204,12 @@
         <hr/>
         <div >
             <h4>
-
+            <!--                
               <span class="fr">Si vous ne pouvez pas fournir un lien vers une vidéo</span>
-              <span class="en">If you cannot provide a link towards a video</span>
+              <span class="en">If you cannot provide a link towards a video</span> 
+            -->
+              <span class="fr">Téléverser votre vidéo</span>
+              <span class="en">Upload your vidéo</span>
 
             </h4>
             <br/>

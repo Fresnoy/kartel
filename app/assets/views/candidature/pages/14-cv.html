@@ -75,7 +75,7 @@
    </p>
    <div class="field">
 
-         <div ng-repeat="item in cursus_justifications.media | orderBy:'1*position' track by $index"
+         <div ng-repeat="(keyitem, item) in cursus_justifications.media | orderBy:'1*position' track by $index"
                ng-model="cursus_justifications.media"
                name="uCursus"
                class="item-list">
@@ -90,6 +90,7 @@
                    <span class="cancel" ng-click="RC_CursusJustif[$index]=false"></span>
                </div>
              </div>
+             <!-- MODAL -->
              <div class="modal show" ng-if="!item.label">
                 <div class="modal-content">
                   <p class="fr">Veuillez entrer le titre du justificatif
@@ -99,7 +100,11 @@
                   <small>Format : Country/Town + Type (School/University) + degree title <br>
                   <small>Example : US Chicago - University - Bachelor of Fine Arts</small></small>
                 </p>
-                  <input class="name no-border inline" type="text" placeholder="" ng-model="label[$index]" ng-change="" class="no-border" required />
+
+               <!-- INPUT -->
+               <div class="field" >
+                  <input class="name no-border inline" type="text" placeholder="" 
+                         ng-model="label[$index]" ng-change="" class="no-border" required />
 
                   <label class="topborder" for="cursus">
                     <span class="field-state required"></span>
@@ -107,21 +112,59 @@
                     <span class="en">Title</span>
                   </label>
 
-                  <!--LABEL : Patch on validation AND on_complete_upload -->
-                  <div class="btn green" ng-show="label[$index]"
-                       ng-click='item.label = label[$index];
-                                 item.patch({label: item.label})'
-                      >
-                     <span class="fr">Valider</span>
-                     <span class="en">Confirm</span>
-                  </div>
                 </div>
+
+                <div>
+                  
+               </div>
+
+                <!-- FRENCH CUSRUS -->
+                <div class="field">
+
+                  <p>
+                     <span class="fr">S'il s'agit d'un diplôme d'école d'art Français, veuillez le sélectionner dans la liste :  </span>
+                     <span class="en">For French art school diploma, please select from the list</span>                  
+                  </p>
+
+                  <br/>
+
+                  <div  >
+                     <select ng-model="french_art_cursus"
+                             name="uFrenchArtCursus"
+                             ng-change="label[$index] = french_art_cursus"                     
+                     >
+                     <option value="" disabled selected>Selectionner un diplôme</option>
+                        <option
+                           ng-repeat="diploma in candidature_config.french_art_cursus"
+                           value="{{diploma}}">
+                           {{diploma}}
+                        </option>
+                     </select>
+                  </div>
+
+                 </div>
+
+                 <br/>
+                 <br/>
+
+
+                 <!--VALIDATION : Patch on validation AND on_complete_upload -->
+                 <div class="btn green" ng-show="label[$index]"
+                        ng-click='item.label = label[$index];
+                           item.patch({label: item.label, position: keyitem})'
+                   >
+                        <span class="fr">Valider</span>
+                        <span class="en">Confirm</span>
+                  </div>
+
              </div>
+            </div>
+            <!-- // MODAL -->
 
 
            </div>
 
-           <div>
+           <div class="field">
              <div
                ng-model="file"
                class="media-upload"
