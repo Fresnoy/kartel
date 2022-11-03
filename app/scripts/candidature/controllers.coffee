@@ -107,7 +107,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 
   $rootScope.step.current = "06"
 
-  $scope.emailSended = false;
+  $scope.email_status = null;
 
   $scope.checkMail = (form, email) ->
     Users.getList({search: email}).then((data) ->
@@ -117,10 +117,18 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 
 
   $scope.submit = () ->
+      # init send 
+      $scope.email_status = "sending";
+      $scope.form.error = false;
+
+
       Candidatures.one().customPOST({email: $scope.email}, "account/password/reset/").then((response) ->
-        $scope.emailSended = true;
+        # show ok
+        $scope.email_status = "sended"
+
       , (response) ->
-        $scope.form.error = "Erreur d'envoie de l'email"
+        $scope.form.error = true
+        $scope.email_status = null
   )
 )
 
