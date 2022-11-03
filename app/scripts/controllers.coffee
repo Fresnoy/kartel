@@ -508,7 +508,7 @@ angular.module('memoire.controllers', ['memoire.services'])
   $scope.singleLightbox = (url, description) ->
     # config image gallery
     image =
-      isvideo: new RegExp("aml|ame|youtu|player.vimeo|mp4","gi").test(url);
+      isvideo: new RegExp("aml|ame|youtu|vimeo|mp4","gi").test(url);
       iframe: /(\.pdf|vimeo\.com|youtube\.com|youtu\.be)/i.test(url)
       original: url
       description: description
@@ -517,7 +517,7 @@ angular.module('memoire.controllers', ['memoire.services'])
                      'https://www.youtube.com/embed/$5?rel=0');
     # embed video vimeo
     url = url.replace(/^https?:\/\/(?:www\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|album\/(\d+)\/video\/|)(\d+)(?:$|\/|\?)(.*)/g, 
-                      "https://player.vimeo.com/video/$3?quality=1080p")
+                      "https://player.vimeo.com/video/$3?h=$4&quality=1080p")
     # when url is image set picture var, otherwise set medium_url
     if(/\.(jpe?g|png|gif|bmp|tif)/i.test(url)) then image.picture = url
     else  image.medium_url= $sce.trustAsResourceUrl(url)
