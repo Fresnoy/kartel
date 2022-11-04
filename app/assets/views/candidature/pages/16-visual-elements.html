@@ -5,7 +5,7 @@
           <p>Une œuvre ou un ensemble d’extraits d’œuvres
     réalisés par le candidat et lui paraissant
     particulièrement représentatif de sa démarche
-    artistique ou de son travail. Un seul fichier d'une durée de 8 minutes au format numérique net peut être envoyé
+    artistique ou de son travail. Un seul fichier d'une durée de 8 minutes au format numérique ne peut être envoyé
     (exemple: 3 extraits vidéo, ou encore un
     diaporama de photographies, ou un ensemble
     d’extraits sonores, une ou plusieurs captations
@@ -186,7 +186,9 @@
       <div>
          <div ng-if="candidature.presentation_video">
             <div class="embed-responsive embed-responsive-16by9">
-               <iframe class="embed-responsive-item" ng-if="_isAvailableVideo"  ng-src="{{trustSrc(candidature.presentation_video)}}" />
+               <iframe class="embed-responsive-item" ng-if="_isAvailableVideo && candidature.presentation_video.indexOf('player.vimeo.com/video')>0" 
+                       ng-src="{{trustSrc(candidature.presentation_video)}}" ></iframe>
+                       
             </div>
             <div ng-if="candidature.presentation_video && candidature.presentation_video.indexOf('player.vimeo.com/video')>0 && !_isAvailableVideo">
               <strong>
