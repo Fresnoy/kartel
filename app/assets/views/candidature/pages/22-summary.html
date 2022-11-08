@@ -64,7 +64,7 @@
           <a class="pointer" ui-sref="candidature.curiculum">
             <div ng-if="(( (campaign.promotion.starting_year)*1 - (user.profile.birthdate | date:'yyyy')*1 ) <= 24 ) || !user.profile.birthdate" 
                 class="field">
-              <label><span class="fr">être agé d'au moins 24 ans</span><span class="en">24 ans</span></label>
+              <label><span class="fr">être agé d'au moins 24 ans</span><span class="en">at least 24 years old</span></label>
               <input class="hidden" type="text" ng-model="INVALIDMODEL" readonly required /><span class="isvalid" />
             </div>
           </a>
