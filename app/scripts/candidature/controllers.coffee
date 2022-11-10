@@ -254,8 +254,6 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
             Restangular, RestangularV2, Vimeo, Logout, $http, cfpLoadingBar, authManager, ISO3166,
             Users, Candidatures, ArtistsV2, Galleries, Media, Upload, ) ->
 
-  $rootScope.main_title= "Le Fresnoy - Studio national - Selection"
-
   # Media
   if(!$rootScope.current_display_screen)
     $rootScope.current_display_screen = candidature_config.screen.home
@@ -386,6 +384,10 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
   $scope.setLang = (lang) ->
     localStorage.setItem("language", lang)
     $rootScope.language = localStorage.language
+
+  # title
+  $rootScope.main_title= "Le Fresnoy - Studio national - "
+  if $rootScope.language=='fr' then $rootScope.main_title += "Sélection" else $rootScope.main_title += "Selection" 
 
   # countries
   $rootScope.getCountrie = (code) ->
@@ -619,7 +621,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
       Users.one(user_id).get().then((user) ->
         candidature_is_started = user.profile.birthdate and user.profile.gender and user.profile.nationality
         if user.profile.is_artist and candidature_is_started
-          $state.go("candidature.summary")
+          # $state.go("candidature.summary")
         else
           # loadinfo create user-> artist if not created
           $rootScope.loadInfos($rootScope)
