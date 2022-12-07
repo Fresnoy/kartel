@@ -1,4 +1,8 @@
 exports.config =
+        overrides:
+                production:
+                        sourceMaps: true
+                        optimize: false 
         npm:
           enabled: false
         plugins:
