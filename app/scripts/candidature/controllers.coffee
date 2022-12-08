@@ -923,16 +923,35 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
         $rootScope.step.current = "17"
 
         #cursus
-        year = new Date().getFullYear()
+        year = 0
+        max_year = 15 # numbers of years is possible to candidate (between 20 to 35)
         $scope.years = []
-        $scope.years.push (year-i) for i in [1..35]
+        # list of possible candidature years
+        $scope.all_years = []
 
         $scope.last_applications_years = []
         $scope.splitChar = ", "
 
         $scope.$watch("candidature.last_applications_years", (newValue, oldValue) ->
           if(newValue)
-            $scope.last_applications_years = newValue.split($scope.splitChar)
+            # last app years is a text field like 2022, 2020, 
+            array_last_app = newValue.split($scope.splitChar)
+            # set on html var
+            $scope.last_applications_years = array_last_app
+            # delete selected year on select html tag
+            $scope.years = $scope.all_years.filter( ( el ) => !array_last_app.includes( ''+el ));
+        )
+        $scope.$watch("campaign.promotion.starting_year", (newValue, oldValue) ->
+            # campain loaded ! 
+            console.log("campagn loaded start year : ", newValue)
+            console.log("campagn loaded allyearslength : ", !$scope.all_years.length)
+            if(newValue && !$scope.all_years.length)
+              # set years begin with promotion.starting_year - 1
+              $scope.all_years.push(newValue - i) for i in [1..max_year]
+              # set default years (if no applications years)
+              $scope.years = $scope.all_years
+              
+            
         )
 
 )
