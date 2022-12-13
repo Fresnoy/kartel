@@ -535,6 +535,7 @@ angular.module('memoire.controllers', ['memoire.services'])
 
         ArtistsV2.one(artist_id).get().then((artist) ->
             $scope.artist = artist
+            # load artist websites
             for website in artist.websites
                 website_id = website.match(/\d+$/)[0]
                 RestangularV2.one('common/website', website_id).get().then((response_website) ->
@@ -544,8 +545,14 @@ angular.module('memoire.controllers', ['memoire.services'])
             user_id = artist.user.match(/\d+$/)[0]
             $scope.artist.user = Users.one(user_id).get().then((user_infos) ->
               $scope.artist.user = user_infos
+              # add infos under videos
+              $scope.candidature.video_details_and_more = candidature.presentation_video_details
+              $scope.candidature.video_details_and_more += "\nNé.e le "+ user_infos.profile.birthdate + "\n Niveau : "
+              $scope.candidature.video_details_and_more += if candidature.master_degree == "Y" then "Master" else if candidature.master_degree =="P" then "Master en cours" else "Bac + 7 ans d'experiences"
             )
         )
+        
+        # get justifications files
         if(candidature.cursus_justifications != null)
             gallery_id = candidature.cursus_justifications.match(/\d+$/)[0]
             Galleries.one(gallery_id).get().then((gallery_infos) ->

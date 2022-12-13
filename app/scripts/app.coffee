@@ -167,18 +167,41 @@ angular.module('kartel',
               "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December",
               'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday',
               'months', 'month', 'days', 'day', 'hours', 'hour', 'seconds', 'second', 
-              '01', '02', '03', '04', '05', '06', '07', '08', '09'
+              '01', '02', '03', '04', '05', '06', '07', '08', '09',
+              # space by alt 160 
+              'Media creation', "Media upload", "Request for upload permissions", "Video upload", "Video sent, please wait a few more moments",
+              "Update application information", "Moving the video", "Video added !"
           ]
           translate_word_fr = [
               'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre',
               'Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi',
               'mois', 'mois', 'jours', 'jour', 'heures', 'heure', 'secondes', 'seconde', 
-              '1er', '02', '03', '04', '05', '06', '07', '08', '09'
+              '1er', '02', '03', '04', '05', '06', '07', '08', '09',
+              'Création du média', "Téléversement du média", "Demande d'autorisations", "Téléversement de la vidéo", "Vidéo envoyée, veuillez patienter encore quelques instant",
+              "Mise à jour des informations de candidature", "Déplacement de la vidéo", "Vidéo correctement ajoutée"
           ]
+
           for word in input.split(/[\s,]+/)
             index = _.indexOf(translate_word_en, word)
             if(index !=-1)
                 input = input.replace(word, translate_word_fr[index])
+        return input
+)
+.filter('translate_sentence_en_to_fr', ->
+    return (input) ->
+        if(input)
+          translate_word_en = [
+              "Media creation", "Media upload", "Request for upload permissions", "Video upload", "Video sent, please wait a few more moments",
+              "Update application information", "Moving the video", "Video added !", 'Upload Error'
+          ]
+          translate_word_fr = [
+              'Création du média', "Téléversement du média", "Demande d'autorisations", "Téléversement de la vidéo", "Vidéo envoyée, veuillez patienter encore quelques instant",
+              "Mise à jour des informations de candidature", "Déplacement de la vidéo", "Vidéo correctement ajoutée", 'Erreur de téléversement'
+          ]
+          index = _.indexOf(translate_word_en, input)
+          if(index !=-1)
+            input = input.replace(input, translate_word_fr[index])
+          # return input
         return input
 )
 .filter("artist_name", ->

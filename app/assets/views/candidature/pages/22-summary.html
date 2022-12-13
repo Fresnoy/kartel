@@ -49,14 +49,26 @@
     <div class="row">
       <div class="col-xs-12 col-md-6 col-lg-6">
         <a class="pointer" ui-sref="candidature.curiculum">
-          <div class="field"><label><span class="fr">Master / 7 ans exp.</span><span class="en">Master / 7 year exp.</span></label>   <input class="hidden" type="text" ng-model="candidature.master_degree" readonly required/><span class="isvalid" /></div>
+          <div class="field"><label><span class="fr">Master / 7 ans exp.</span><span class="en">Master / 7 year exp.</span></label>   
+            <input class="hidden" type="text" ng-model="candidature.master_degree" readonly required/><span class="isvalid" /></div>
         </a>
         <a class="pointer" ui-sref="candidature.cv">
-          <div class="field"><label><span class="fr">CV</span><span class="en">CV</span></label> <input class="hidden" type="text" ng-model="candidature.curriculum_vitae" readonly required/><span class="isvalid" /></div>
+          <div class="field"><label><span class="fr">CV</span><span class="en">CV</span></label> 
+              <input class="hidden" type="text" ng-model="candidature.curriculum_vitae" readonly required/><span class="isvalid" />
+          </div>
         </a>
       </div>
       <div class="col-xs-12 col-md-6 col-lg-6">
         <div ng-if='candidature.master_degree=="N"'>
+          <!-- No master and age > 24 -->
+          <a class="pointer" ui-sref="candidature.curiculum">
+            <div ng-if="(( (campaign.promotion.starting_year)*1 - (user.profile.birthdate | date:'yyyy')*1 ) <= 24 ) || !user.profile.birthdate" 
+                class="field">
+              <label><span class="fr">être agé d'au moins 24 ans</span><span class="en">at least 24 years old</span></label>
+              <input class="hidden" type="text" ng-model="INVALIDMODEL" readonly required /><span class="isvalid" />
+            </div>
+          </a>
+          <!-- No master and arguments -->
           <a class="pointer" ui-sref="candidature.curiculum">
             <div class="field"><label><span class="fr">Argumentaire</span><span class="en">Argument</span></label><input class="hidden" type="text" ng-model="candidature.experience_justification" readonly required /><span class="isvalid"/></div>
           </a>
@@ -73,7 +85,7 @@
                 <label><span class="fr">Documents</span><span class="en">Documents</span></label>
                 <div ng-repeat="item in cursus_justifications.media" ng-model="cursus_justifications.media">
                   <div>
-                    <input type="text" ng-if='(item.picture || item.file)' ng-model="(item.label)" title="{{item.label}}" readonly required /><span class="isvalid"/>
+                    <input type="text" ng-if='(item.picture || item.file)' ng-model="(item.label)" title="{{item.label}}" readonly/>
                   </div>
                 </div>
               </a>

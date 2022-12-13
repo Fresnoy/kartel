@@ -1,0 +1,44 @@
+var candidature_config;
+candidature_config = {
+  path: "",
+  vimeo_rest_url: "",
+  vimeo_album_id: ,
+  french_art_cursus:[],
+  screen: {
+    "01": {
+      display_total : ,
+      image: {
+        file: "",
+        copyright: "",
+        position: {
+          x: "0,
+          y: 0
+        }
+      },
+      page: {
+        file: "",
+        state: "",
+        group: ""
+      }
+    },
+  },
+  "communication": {
+    poll:{
+      fr: {
+        link: "",
+        free_text: "<",
+        title: "",
+        question : "",
+        items : []
+      },
+      en: {
+        link: "",
+        free_text: "",
+        title: "",
+        question : "",
+        items : []
+      }
+    }
+  }
+};
+

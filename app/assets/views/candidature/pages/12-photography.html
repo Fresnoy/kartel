@@ -12,8 +12,8 @@
 <div class="photo">
 
   <h1>
-     <span class="fr">Photo d'identité</span>
-     <span class="en">Passport photo</span>
+     <span class="fr">Photo portrait</span>
+     <span class="en">Portrait photograph</span>
   </h1>
 
 
@@ -24,6 +24,7 @@
             class="media-upload"
             ng-model="user.profile.photo"
             ngf-select="uploadPhoto(user.profile.photo, user, form4)"
+            ngf-drop="uploadPhoto(user.profile.photo, user, form4)"
             name="uPhoto"
             ngf-capture="'camera'"
             ngf-max-size="10MB"
@@ -59,7 +60,7 @@
             </div>
             <span class="field-state"></span>
             <span class="fr">Photo du visage (format photo d’identité)</span>
-            <span class="en">Photograph of face (ID photo format) </span>
+            <span class="en">Portrait photograph (ID photo format) </span>
          </label>
       </div>
    </form>
