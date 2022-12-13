@@ -23,7 +23,9 @@
          ng-show="!candidature.curriculum_vitae"
          ng-model="candidature.curriculum_vitae"
          name="cJustification"
-         ngf-select="upload(candidature.curriculum_vitae, candidature, 'curriculum_vitae') " ngf-capture="'camera'"
+         ngf-select="upload(candidature.curriculum_vitae, candidature, 'curriculum_vitae') " 
+         ngf-drop="upload(candidature.curriculum_vitae, candidature, 'curriculum_vitae') " 
+         ngf-capture="'camera'"
          accept="application/pdf"
          ngf-accept="'application/pdf'"
          ngf-pattern="'application/pdf'"
@@ -37,7 +39,7 @@
          <span class="name">{{candidature.curriculum_vitae.split('.').pop()}}</span>
          <span class="trash" ng-click="RC_CV=true" />
          <div class="delete-pane" ng-show="RC_CV">
-            <span class="trash" ng-click="candidature.curriculum_vitae=''; RC_CV=false" />
+            <span class="trash" ng-click="candidature.curriculum_vitae=null; RC_CV=false; candidature.patch({'curriculum_vitae':candidature.curriculum_vitae});"  />
             <span class="name"><span class="fr">Supprimer</span><span class="en">Delete</span></span>
             <span class="cancel" ng-click="RC_CV=false"></span>
          </div>
@@ -73,13 +75,13 @@
    </p>
    <div class="field">
 
-         <div ng-repeat="item in cursus_justifications.media | orderBy:'1*position' track by $index"
+         <div ng-repeat="(keyitem, item) in cursus_justifications.media | orderBy:'1*position' track by $index"
                ng-model="cursus_justifications.media"
                name="uCursus"
                class="item-list">
 
              <div class="item" ng-if="item.file || item.picture" ng-init='RC_CursusJustif[$index]=false'>
-               <a class="link" target='_blank' href="{{item.file || item.picture}}"><img  /></a>
+               <a class="link"  ng-show="item.file || item.picture" target='_blank' href="{{item.file || item.picture}}"><img  /></a>
                <input class="name small-font no-border" type="text" placeholder="" ng-model="item.label" ng-change="item.patch({label: item.label})" class="no-border" required />
                <span class="trash" ng-click="RC_CursusJustif[$index]=true" />
                <div class="delete-pane" ng-show="RC_CursusJustif[$index]">
@@ -88,6 +90,7 @@
                    <span class="cancel" ng-click="RC_CursusJustif[$index]=false"></span>
                </div>
              </div>
+             <!-- MODAL -->
              <div class="modal show" ng-if="!item.label">
                 <div class="modal-content">
                   <p class="fr">Veuillez entrer le titre du justificatif
@@ -97,28 +100,76 @@
                   <small>Format : Country/Town + Type (School/University) + degree title <br>
                   <small>Example : US Chicago - University - Bachelor of Fine Arts</small></small>
                 </p>
-                  <input class="name no-border inline" type="text" placeholder="" ng-model="label[$index]" ng-change="" class="no-border" required />
+
+               <!-- INPUT -->
+               <div class="field" >
+                  <input class="name no-border inline" type="text" placeholder="" 
+                         ng-model="label[$index]" ng-change="" class="no-border" required />
 
                   <label class="topborder" for="cursus">
                     <span class="field-state required"></span>
                     <span class="fr">Titre</span>
                     <span class="en">Title</span>
                   </label>
-                  <div class="btn green" ng-show="label[$index]" ng-click='item.label = label[$index]; item.patch({label: item.label})'>
-                     <span class="fr">Valider</span>
-                     <span class="en">Confirm</span>
-                  </div>
+
                 </div>
+
+                <div>
+                  
+               </div>
+
+                <!-- FRENCH CUSRUS -->
+                <div class="field">
+
+                  <p>
+                     <span class="fr">S'il s'agit d'un diplôme d'école d'art Français, veuillez le sélectionner dans la liste :  </span>
+                     <span class="en">If your degree is from a French art school, please select it from the list: </span>                  
+                  </p>
+
+                  <br/>
+
+                  <div  >
+                     <select ng-model="french_art_cursus"
+                             name="uFrenchArtCursus"
+                             ng-change="label[$index] = french_art_cursus"                     
+                     >
+                     <option value="" disabled selected>Selectionner un diplôme</option>
+                        <option
+                           ng-repeat="diploma in candidature_config.french_art_cursus"
+                           value="{{diploma}}">
+                           {{diploma}}
+                        </option>
+                     </select>
+                  </div>
+
+                 </div>
+
+                 <br/>
+                 <br/>
+
+
+                 <!--VALIDATION : Patch on validation AND on_complete_upload -->
+                 <div class="btn green" ng-show="label[$index]"
+                        ng-click='item.label = label[$index];
+                           item.patch({label: item.label, position: keyitem})'
+                   >
+                        <span class="fr">Valider</span>
+                        <span class="en">Confirm</span>
+                  </div>
+
              </div>
+            </div>
+            <!-- // MODAL -->
 
 
            </div>
 
-           <div>
+           <div class="field">
              <div
                ng-model="file"
                class="media-upload"
                ngf-select="uploadFile(file, cursus_justifications)"
+               ngf-drop="uploadFile(file, cursus_justifications)"
                ngf-capture="'camera'"
                accept="image/*, application/pdf"
                ngf-accept="'image/*, application/pdf'"

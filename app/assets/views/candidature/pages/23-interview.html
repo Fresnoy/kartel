@@ -2,7 +2,8 @@
    <span class="close" ng-click="show_help(false)">x</span>
    <h1><class class="fr">Aide</class><class class="en">Help</class></h1>
    <div class="fr">
-     <p>Le ou la candidat(e) présente et commente son travail personnel et s’entretient avec les membres du jury de ses projets et motivations. Le jury est composé de représentants de disciplines artistiques différentes et du directeur du Fresnoy. L’entretien dure 40 minutes.<br/>
+     <p>Le ou la candidat présente et commente son travail personnel et s’entretient avec les membres du jury de ses projets et motivations. 
+      Le jury est composé de représentants de disciplines artistiques différentes et du directeur du Fresnoy. L’entretien dure 30 minutes.<br/>
         Chaque candidat est principalement jugé sur :
         </p>
      <ul>
@@ -17,7 +18,8 @@
            Son niveau de culture générale (formation antérieure, qualités d’expression, de rédaction, etc.),
         </li>
         <li>
-           Son intérêt pour l’utilisation de tous les langages artistiques audiovisuels et multimédia (des supports traditionnels à ceux de la création numérique),
+           Son intérêt pour l’utilisation de tous les langages artistiques audiovisuels et multimédia 
+           (des supports traditionnels à ceux de la création numérique),
         </li>
         <li>
            La présentation du dossier.
@@ -25,7 +27,8 @@
      </ul>
    </div>
    <div class="en">
-     <p>At the end of the pre-selection, up to 60 applicants will be invited to attend interview at Le Fresnoy. The final selection takes place at Le Fresnoy. Shortlisted candidates will be invited for interview by the jury between Monday July 3, and Friday July 7, 2017.The applicants are mainly judged on:</p>
+     <p>At the end of the pre-selection, up to 60 applicants will be invited to attend interview at Le Fresnoy. 
+      The final selection takes place at Le Fresnoy. Shortlisted candidates will be invited for interview by the jury between Monday July 3, and Friday July 7, 2017.The applicants are mainly judged on:</p>
      <ul>
         <li>The originality, reach, and quality of their personal artistic work in one or more disciplines,
         </li>
@@ -45,26 +48,26 @@
 
 <div class="">
    <h1>
-      <span class="fr">Entretien</span>
-      <span class="en">Interview</span>
+      <span class="fr">Entretiens</span>
+      <span class="en">Interviews</span>
    </h1>
    <form name="form" ng-submit="form.$valid && submit()" class="css-form" novalidate enctype="multipart/form-data">
       <div class="fr">
-         <p>À l’issue de la présélection, 51 candidat.es au maximum sont invité.es à se présenter aux épreuves d’admission.<br/>
+         <p>À l’issue de la présélection, 60 candidats au maximum sont invités à se présenter aux épreuves d’admission.<br/>
            Les épreuves de la sélection finale se déroulent au Fresnoy - Studio national à Tourcoing.<br/>
-            <br/>Les candidat.es présélectionné.es sont convié.es à un entretien avec un jury entre le
+            <br/>Les candidats présélectionnés sont conviés à un entretien devant un jury entre le
             <strong>{{ campaign.interviews_start_date | date : "EEEE dd MMMM" | translate_en_to_fr | lowercase }}</strong>
             et le
             <strong>{{ campaign.interviews_end_date | date : "EEEE dd MMMM yyyy" | translate_en_to_fr | lowercase }}</strong>.<br/>
             <br/>
-            Les candidat.es hors continent européen, ont la possibilité de passer l’entretien oral au Fresnoy ou par visioconférence
-            (Le Fresnoy ne peut être tenu pour responsable en cas de problème technique). <br/>
+            Les candidats hors continent européen, ont la possibilité de passer l’entretien oral au Fresnoy ou par visioconférence sachant que
+            Le Fresnoy ne peut être tenu pour responsable en cas de problème technique. <br/>
          </p>
 
 
       </div>
       <div class="en">
-        At the end of the pre-selection, up to 51
+        At the end of the pre-selection, up to 60
         applicants will be invited to attend interviews at
         Le Fresnoy, Tourcoing, France. <br/><br/>
         The final selection takes place at Le
@@ -72,10 +75,11 @@
         interview by the jury between
         <strong>{{ campaign.interviews_start_date | date : "EEEE MMMM d" }}</strong> and
        <strong>{{ campaign.interviews_end_date | date : "EEEE MMMM d, yyyy" }}</strong>.<br/><br/>
-        Applicants from outside Europe can take the oral
-        interview on videoconference (note that Le Fresnoy cannot
-        be held responsible in the case of any technical
-        incident).
+       Non-European applicants may choose to have
+       their interview by video conference rather than at
+       Le Fresnoy but must bear in mind that Le Fresnoy
+       cannot be held responsible for any technical
+       problems and their consequences.
 
       </div>
       <div class="field">

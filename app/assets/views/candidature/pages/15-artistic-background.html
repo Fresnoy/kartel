@@ -2,10 +2,12 @@
    <span class="close" ng-click="show_help(false)">x</span>
    <h1><class class="fr">Aide</class><class class="en">Help</class></h1>
    <div class="fr">
-      <p>Résumé du parcours et/ou des études.</p>
+      <p>Résumé du parcours artistique : et/ou des études.</p>
+      <p><u>Site web</u> <br/> Cliquer sur <a class="btn"> + </a> enregistre la donnée </p>
    </div>
    <div class="en">
-      <p>Résumé of candidate’s career and/or studies.</p>
+      <p>Résumé of candidate’s career : and/or studies.</p>
+      <p><ul>Site web</u> <br/> Click <a class="btn"> + </a> to save data </p>
    </div>
 </div>
 
@@ -84,8 +86,8 @@
         </div>
 
         <a ng-if="website.length>0 && form.aWebsite.$valid" ng-click='addWebsite(artist, artist.websites, website);' class="btn right add">
-            +
-        </a>
+         +
+     </a>
 
           <input
              type="text"
@@ -126,7 +128,9 @@
                ng-show="!candidature.free_document"
                ng-model="candidature.free_document"
                name="cPortfolio"
-               ngf-select="upload(candidature.free_document, candidature, 'free_document') " ngf-capture="'camera'"
+               ngf-select="upload(candidature.free_document, candidature, 'free_document') " 
+               ngf-drop="upload(candidature.free_document, candidature, 'free_document') " 
+               ngf-capture="'camera'"
                accept="application/pdf"
                ngf-accept="'application/pdf'"
                ngf-pattern="'application/pdf'"
@@ -140,7 +144,7 @@
                <span class="name">{{candidature.free_document.split('.').pop()}}</span>
                <span class="trash" ng-click="RC_PORTFOLIO=true" />
                <div class="delete-pane" ng-show="RC_PORTFOLIO">
-                  <span class="trash" ng-click="candidature.free_document=''; RC_PORTFOLIO=false; candidature.patch({'free_document': null});" />
+                  <span class="trash" ng-click="candidature.free_document=null; RC_PORTFOLIO=false; candidature.patch({'free_document': null});" />
                   <span class="name"><span class="fr">Supprimer</span><span class="en">Delete</span></span>
                   <span class="cancel" ng-click="RC_PORTFOLIO=false"></span>
                </div>

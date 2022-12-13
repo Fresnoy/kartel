@@ -32,20 +32,22 @@ they remain within the age limit. </p>
                   class="one check"
                 />
                 <label for="firstime" class="big pointer">
-                  <span class="fr">Je me suis déjà présenté(e) à la sélection des candidatures du Fresnoy - Studio national</span>
-                  <span class="en">I have already applied to <br/>Le Fresnoy - Studio national in the past</span>
+                  <span class="fr">Je me suis déjà présenté·e à la sélection des candidatures du Fresnoy - Studio national.</span>
+                  <span class="en">I have already applied to <br/>Le Fresnoy - Studio national in the past.</span>
                 </label>
                 <div ng-if='!candidature.first_time'>
                   <span  class="fr">En quelle(s) année(s) ?</span>
                   <span  class="en">Year (s)?</span>
-                  <div ng-repeat="item in last_applications_years track by $index" >
+                  <div ng-repeat="(key, item) in last_applications_years track by $index" >
                      <div class="item" ng-init='RC_last[$index]=false'>
                         <span class="name" ng-bind="item" />
                         <span class="trash" ng-click="RC_last[$index]=true" />
                         <div class="delete-pane" ng-show="RC_last[$index]">
-                           <span class="trash" ng-click="last_applications_years.splice($index,1);
-                              candidature.last_applications_years = last_applications_years.join(splitChar); RC_last[$index]=false;
-                              candidature.patch({last_applications_years: last_applications_years.join(splitChar)})" />
+                           <span class="trash" ng-click="year_deleted = last_applications_years.splice($index,1);
+                             
+                              candidature.last_applications_years = last_applications_years.join(splitChar); 
+                              candidature.patch({last_applications_years: last_applications_years.join(splitChar)});
+                              RC_last[$index]=false;" />
                            <span class="name"><span class="fr">Supprimer</span><span class="en">Delete</span></span>
                            <span class="cancel" ng-click="RC_last[$index]=false"></span>
                         </div>
@@ -53,11 +55,11 @@ they remain within the age limit. </p>
                   </div>
                   <select
                      ng-model="last_app"
-                     ng-change="last_applications_years.push(last_app); candidature.last_applications_years = last_applications_years.join(splitChar);
+                     ng-change="last_applications_years.push(last_app*1);                      
+                     candidature.last_applications_years = last_applications_years.join(splitChar);
                      candidature.patch({last_applications_years: last_applications_years.join(splitChar)})" >
-                     <option value="">---</option>
-                     <option ng-repeat="year in years" value="{{year}}"> {{year}}
-                     </option>
+                     <option value="" disabled selected hidden>---</option>
+                     <option ng-repeat="(key, year) in years track by year" value="{{year}}">{{year}}</option>
                   </select>
                   <input hidden required type="text" id="last-application-years" ng-model="candidature.last_applications_years" ng-init = "" />
                   <label for="last-application-years">
