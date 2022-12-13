@@ -943,8 +943,6 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
         )
         $scope.$watch("campaign.promotion.starting_year", (newValue, oldValue) ->
             # campain loaded ! 
-            console.log("campagn loaded start year : ", newValue)
-            console.log("campagn loaded allyearslength : ", !$scope.all_years.length)
             if(newValue && !$scope.all_years.length)
               # set years begin with promotion.starting_year - 1
               $scope.all_years.push(newValue - i) for i in [1..max_year]

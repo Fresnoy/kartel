@@ -27,10 +27,13 @@
          La sélection des étudiants est annuelle et se déroulera en une seule session selon les étapes et le calendrier suivants&nbsp;:
       </p>
       <ul>
+         
          <li>Dossier de candidature (inscription administrative et dossier artistique), enregistrement en ligne, au plus tard le
            <strong>{{ campaign.candidature_date_end | date : "EEEE d MMMM yyyy à HH'h'" | translate_en_to_fr | lowercase }}, heure de Paris</strong>.
            Un mail de confirmation de votre inscription vous sera adressé à la fin de la procédure d’enregistrement de votre candidature, 
            il est indispensable pour sa validation.</li>
+         <li ng-if="candidature_config.communication.agenda.information_and_tour"
+             ng-bind-html=candidature_config.communication.agenda.information_and_tour.fr.htmltext></li>
          <li>Présélection sur dossier, annonce des résultats le
            <strong>{{ campaign.interviews_publish_date | date : "EEEE d MMMM yyyy" | translate_en_to_fr | lowercase }}</strong>
          </li>
@@ -53,6 +56,8 @@
           An email confirming your registration will be sent to you at the end of the registration procedure for your application,
           it is essential for its validation.
           </li>
+         <li ng-if="candidature_config.communication.agenda.information_and_tour"
+             ng-bind-html=candidature_config.communication.agenda.information_and_tour.en.htmltext></li>
          <li>1st selection of applications.
            List published online on
             <strong>{{ campaign.interviews_publish_date | date : "EEEE MMMM d, yyyy" }}</strong>
