@@ -533,14 +533,15 @@ body {
     text-transform: uppercase;
   }
   .user-first_name {
-    text-transform:lowercase;
+    text-transform:capitalize;
+
   }
   .user-first_name::first-letter {
     text-transform:uppercase;
   }
   .user-first_name, .user-last_name, .user-birthdate{
     font-size: 1rem;
-    line-height: 10pt;
+    line-height: 13pt;
   }
   .langues{
     font-size: .8rem;
