@@ -28,21 +28,28 @@
                   <div class="user-infos">
                     <div>
                         <span class="candidature-number">{{candidature.current_year_application_count}}</span>
-                      <span class="user-last_name preserve-info">{{ candidature.artist.user.last_name }}</span>
-                      <span class="oneline nationality hide-infos">
-                        <span ng-repeat="nationality in candidature.artist.user.profile.nationality.split(', ') track by $index">
-                          <span ng-if='nationality' class="flag-icon flag-icon-{{nationality | lowercase}}" title="{{country.codeToCountry[nationality]}}" />
+                        <span class="user-first_name preserve-info">{{ candidature.artist.user.first_name }}</span>
+                        <span class="oneline nationality hide-infos">
+                          <span ng-repeat="nationality in candidature.artist.user.profile.nationality.split(', ') track by $index">
+                            <span ng-if='nationality' class="flag-icon flag-icon-{{nationality | lowercase}}" title="{{country.codeToCountry[nationality]}}" />
+                          </span>
                         </span>
-                      </span>
                     </div>
-                    <div class="user-first_name preserve-info">{{ candidature.artist.user.first_name }}</div>
+                    <span class="user-last_name preserve-info">{{ candidature.artist.user.last_name }}</span>
+                    <small ng-if="candidature.artist.nickname" class="user-nickname preserve-info"> / {{ candidature.artist.nickname }}</small>
                     <div class="user-birthdate preserve-info">{{ candidature.artist.user.profile.birthdate | ageFilter}} ans</div>
                     <div ng-show="candidature.artist.user.profile.mother_tongue" class="langues hide-infos"> Parle
                       {{LANGUAGES_NAME_short[candidature.artist.user.profile.mother_tongue].englishName.split(' ')[0]}},
                       <span ng-if="candidature.artist.user.profile.other_language">
-                        <span class="language" ng-repeat="language in candidature.artist.user.profile.other_language.split(', ')  track by $index">
-                          <span class="name">{{LANGUAGES[language].englishName.split(' ')[0]}}</span></span></span>
-                          <span class="name hidden">{{LANGUAGES_NAME_short[language].englishName.split(' ')[0]}}</span></span></span>
+                        <span class="language" ng-repeat="language in candidature.artist.user.profile.other_language.split(', ')  track by $index">                          
+                          <span ng-if="language.length==2" class="name" 
+                                title="{{LANGUAGES_NAME_short[language].englishName.split(' ')[0]}}">
+                                  {{LANGUAGES_NAME_short[language].nativeName.split(' ')[0]}}</span>
+                          <span ng-if="language.length>2" class="name" 
+                                  title="{{LANGUAGES_NAME[language].englishName.split(' ')[0]}}">
+                                    {{LANGUAGES_NAME[language].nativeName.split(' ')[0]}}</span>
+                        </span>
+                      </span>
                     </div>
                   </div>
                 </div>
