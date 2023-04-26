@@ -539,6 +539,7 @@ angular.module('memoire.controllers', ['memoire.services'])
         ArtistsV2.one(artist_id).get().then((artist) ->
             $scope.artist = artist
             # load artist websites
+            # load artist websites
             for website in artist.websites
                 website_id = website.match(/\d+$/)[0]
                 RestangularV2.one('common/website', website_id).get().then((response_website) ->
