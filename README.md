@@ -15,7 +15,7 @@ This template should help get you started developing with Vue 3 in Vite.
 ## Clone the repository
 
 ```sh
-git clone https://github.com/Sioood/kartel-vue.git
+git clone https://github.com/Fresnoy/kartel.git
 ```
 
 ## install the project and the dependendies
