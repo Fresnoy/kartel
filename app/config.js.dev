@@ -1,8 +1,0 @@
-config = {
-    templateBaseUrl: '/views/',
-    useHtml5Mode: false,
-    media_service: "", 
-    ame_rest_uri: "",
-    reset_password_uri: "",
-}
-

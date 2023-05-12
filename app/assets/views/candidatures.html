@@ -1,9 +1,0 @@
-<div class="candidatures" ng-if="!user.is_superuser">
-        <div class="centered">
-          <h2 class="text-center">Veuillez vous connecter <span ng-show="isAuthenticated"><br/>avec un compte administrateur<br/></span> pour accéder à cette page</h2>
-        </div>
-</div>
-<div ng-if="user.is_superuser">
-  <div ui-view="candidatures_main_view">
-  </div>
-</div>
