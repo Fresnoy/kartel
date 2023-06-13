@@ -116,9 +116,8 @@ li.promotion {
       cursor: pointer;
     }
     h3 {
-        display: inline-block;
+        display: block;
         float: left;
-        vertical-align: middle;
         line-height: 20px;
         padding-top: 10px;
         padding-bottom: 10px;
@@ -598,7 +597,6 @@ body {
     text-transform: uppercase;
     font-size: 9px;
     line-height: 15px;
-    vertical-align: middle;
     text-indent: 5px;
     display: block;
     margin: 0;
