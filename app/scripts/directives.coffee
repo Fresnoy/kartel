@@ -80,8 +80,11 @@ angular.module('memoire.directives', ['memoire.services', 'bootstrapLightbox'])
           media.iframe = /(\.pdf|vimeo\.com|youtube\.com|youtu\.be)/i.test(url)
           media.original = url
           # embed video youtube
-          url = url.replace(/^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?/gm, 'https://www.youtube.com/embed/$5');
-          url = url.replace(/^https?:\/\/(?:www\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|album\/(\d+)\/video\/|)(\d+)(?:$|\/|\?)(.*)/g, "https://player.vimeo.com/video/$3")
+          url = url.replace(/^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?/gm, 
+                          'https://www.youtube.com/embed/$5?rel=0');
+          # embed video vimeo
+          url = url.replace(/^https?:\/\/(?:www\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|album\/(\d+)\/video\/|)(\d+)(?:$|\/|\?)(.*)/g, 
+                            "https://player.vimeo.com/video/$3?h=$4&quality=1080p")
           # when url is image set picture var, otherwise set medium_url
           if(/\.(jpe?g|png|gif|bmp|tif)/i.test(url))
               media.picture = url

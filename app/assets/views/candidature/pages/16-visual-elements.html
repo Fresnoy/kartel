@@ -2,10 +2,10 @@
    <span class="close" ng-click="show_help(false)">x</span>
    <h1><class class="fr">Aide</class><class class="en">Help</class></h1>
    <div class="fr">
-          <p>Une œuvre ou un ensemble d’extraits d’œuvres
+          <p>Le lien doit renvoyer vers un fichier vidéo présentant une œuvre ou un ensemble d’extraits d’œuvres
     réalisés par le candidat et lui paraissant
     particulièrement représentatif de sa démarche
-    artistique ou de son travail. Un seul fichier d'une durée de 8 minutes au format numérique net peut être envoyé
+    artistique ou de son travail. Un seul fichier d'une durée de 8 minutes au format numérique ne peut être envoyé
     (exemple: 3 extraits vidéo, ou encore un
     diaporama de photographies, ou un ensemble
     d’extraits sonores, une ou plusieurs captations
@@ -16,14 +16,26 @@
     par les deux jurys.</p>
     <p>
       Par ailleurs, le jury visionnera les éléments visuels d'une durée de 8 minutes maximum figurant au dossier du candidat.
-      L’attention du candidat est attirée sur l’importance de ces éléments, seuls documents le présentant qui seront examinés aux deux étapes de la sélection.
+      L’attention du candidat est attirée sur l’importance de ces éléments, seuls documents le présentant qui seront examinés 
+      aux deux étapes de la sélection.
     </p>
     <p>
-      Il est important de noter que ce document vidéo est le seul qui sera vu par les membres du jury de l'entretien qui ne participent pas au jury de pré-sélection.
+      Il est important de noter que ce document vidéo est le seul qui sera vu 
+      par les membres du jury de l'entretien qui ne participent pas au jury de pré-sélection.
     </p>
+    <h4>Lien Vidéo</h4>
+    <p>Le lien doit pointer directement vers un fichier vidéo pérenne ou vers une plateforme de diffusion
+      de vidéos (type Viméo, Youtube, ...).  <br/>
+      Nous n'acceptons pas de lien vers une playlist de vidéos, ou une plateforme d'envoi de fichier
+      (type Wetransfer, Send Anywhere, Google Drive, OneDrive, Dropbox)
+    </p>
+    <p><strong>Pour un confort de visionnage optimal du jury : téléverser votre vidéo.</strong> (n'attendez pas le dernier jour).
+    <br>Si toutesfois vous utilisez votre propre compte Viméo / Youtube, merci de mettre votre vidéo en public (si besoin non référencée) et ne pas utiliser d’URL personnalisée. 
+    <br>Si vous le pouvez, vous autorisez le domaine lefresnoy.net à intégrer votre vidéo. »  </p>
+    
    </div>
    <div class="en">
-      <p>A work or several extracts of works made by the
+      <p>The link must refer to a video file presenting a work or several extracts of works made by the
       candidate and which are representative of his/
       her specific practice. Only one file in digital format can be sent, 8 minutes maximum length, organised as the
       candidate wishes (for example: 3 video extracts,
@@ -42,9 +54,16 @@
       examined at all two stages of the selection
       process.
     </p>
-    <p>
-      Il est important de noter que ce document vidéo est le seul qui sera vu par les membres du jury de l'entretien qui ne participent pas au jury de pré-sélection.
-    </p>
+    <h4>Vidéo link</h4>
+    <p>The link must connect directly to a permanent video file or a video platform (such as Vimeo, Youtube, etc.).<br/>
+      We do not accept any link to video playlists, or file transfert platforms (such as Wetransfer, Send Anywhere,
+      Google Drive, OneDrive, Dropbox, etc.)</p>
+      <p><strong>To optimise viewing conditions for the jury, upload your video to our platform</strong> (don’t leave it until the last day).
+         <br>However, if you choose to use your own Vimeo or YouTube account, please put your video on public access (if necessary, “unlisted”) and do not use a personalised URL.
+         <br>If possible, authorise the lefresnoy.net domain to download your video. </p>
+
+         
+
     </div>
 </div>
 
@@ -55,8 +74,9 @@
    </h1>
    <form name="form1" ng-submit="form.$valid && submit()" class="css-form" novalidate>
      <div class="fr">
-      <p>Merci de saisir ci-dessous le lien vidéo vers une œuvre ou un ensemble d’extraits d’œuvres que vous avez réalisés et
-         particulièrement représentatifs de votre démarche artistique.
+      <p>Merci de saisir ci-dessous <a class="pointer" ng-click="show_help(true)">un lien vidéo</a> 
+         vers une œuvre ou un ensemble d’extraits d’œuvres que vous avez réalisés et
+         particulièrement représentatifs de votre démarche artistique. 
       </p>
       <p>Cette vidéo d'une <strong>durée maximale de 8 minutes</strong> sera vue successivement par les deux jurys (de présélection et de l'entretien oral).</p>
       <p><blockquote><small>
@@ -64,20 +84,22 @@
         </small>
       </blockquote>
       </p>
-      <p>Le lien doit pointer directement vers un fichier vidéo pérenne ou vers une plateforme de diffusion
-        de vidéos (type Viméo, Youtube, ...).  <br/>
-        Nous n'acceptons pas de lien vers une playlist de vidéos, ou une plateforme d'envoi de fichier
-        (type Wetransfer, Send Anywhere, Google Drive, OneDrive, Dropbox)
-      </p>
+      <p>Voir l'<a class="pointer" ng-click="show_help(true)">aide pour plus d'information sur le lien à fournir</a>.</p>
+      
 
     </div>
     <div class="en">
-      <p>Submit a link to a video that exposes the most representative part of your work.</p>
-      <p>This video of a maximum length of 8 minutes will be seen by twice, once by the pre-selection jury and a second
+      <p>Submit a <a class="pointer" ng-click="show_help(true)">link to a video</a> 
+         that exposes the most representative part of your work.</p>
+      <p>This video of a <strong>maximum length of 8 minutes</strong> will be seen by twice, once by the pre-selection jury and a second
         time by the interview jury.</p>
-      <p>The link must connect directly to a permanent video file or a video platform (such as Vimeo, Youtube, etc.).<br/>
-        We do not accept any link to video playlists, or file transfert platforms (such as Wetransfer, Send Anywhere,
-        Google Drive, OneDrive, Dropbox, etc.)</p>
+        <p><blockquote><small>
+         Il est important de noter que ce document vidéo est le seul qui sera vu par les membres du jury de l'entretien qui ne participent pas au jury de pré-sélection.
+         </small>
+       </blockquote>
+       </p>
+       <p>See <a class="pointer" ng-click="show_help(true)">“help” for more information about the link to be provided</a>.</p>
+      
     </div>
        <input
             type="url"
@@ -110,25 +132,6 @@
              <span class="en">VIDEO LINK (8 MINUTES MAXIMUM) url</span>
          </label>
 
-         <p class="fr">Préciser la nature et le contexte des éléments visuels <br/></p>
-         <p class="en">Please explain the nature and the context of the visual elements:<br/></p>
-         <textarea
-            ng-model="candidature.presentation_video_details"
-            ng-model-options='{ debounce: 1000 }'
-            ng-change="candidature.patch({presentation_video_details : candidature.presentation_video_details||''})"
-            placeholder=""
-            rows="4"
-            name="video-details"
-            required
-            >
-         </textarea>
-         <label for="video-details">
-             <span class="field-state required"></span>
-             <span class="fr">Contenus visuels</span>
-             <span class="en">Visuel content</span>
-         </label>
-
-
          <div class="field">
            <p class="fr">Si l'accès à la vidéo requiert un mot de passe, merci de l'indiquer ci dessous : </p>
            <p class="en">If a password is required to access the video :</p>
@@ -154,15 +157,41 @@
             </label>
          </div>
 
-         <p><span class="fr">Vous pouvez ajouter le domaine <u>lefresnoy.net</u> dans les paramètres d'intégration de votre vidéo.</span>
+         <p class="fr">Préciser la nature et le contexte des éléments visuels <br/></p>
+         <p class="en">Please explain the nature and the context of the visual elements:<br/></p>
+         <textarea
+            ng-model="candidature.presentation_video_details"
+            ng-model-options='{ debounce: 1000 }'
+            ng-change="candidature.patch({presentation_video_details : candidature.presentation_video_details||''})"
+            placeholder=""
+            rows="6"
+            name="video-details"
+            required
+            >
+         </textarea>
+         <label for="video-details">
+             <span class="field-state required"></span>
+             <span class="fr">Contenus visuels</span>
+             <span class="en">Visuel content</span>
+         </label>
+
+         <blockquote>
+         <p><strong>À noter : </strong><br>
+           Le jury de présélection disposera de cette vidéo ainsi que de l’ensemble des éléments de votre dossier de candidature (note d’intention, cv, etc …). <br>
+           Si vous êtes présélectionné.e, cette vidéo sera l’unique document diffusé lors de l’entretien oral. Le jury n’aura pas connaissance des autres éléments de votre dossier de candidature.
+           </p>          
+           </blockquote>
+         <!--<p><span class="fr">Vous pouvez ajouter le domaine <u>lefresnoy.net</u> dans les paramètres d'intégration de votre vidéo.</span>
            <span class="en">You can add the <u>lefresnoy.net</u> domain in the video integration settings.</span>
-         </p>
+         </p>-->
       </div>
 
       <div>
          <div ng-if="candidature.presentation_video">
             <div class="embed-responsive embed-responsive-16by9">
-               <iframe class="embed-responsive-item" ng-if="_isAvailableVideo"  ng-src="{{trustSrc(candidature.presentation_video)}}" />
+               <iframe class="embed-responsive-item" ng-if="_isAvailableVideo && candidature.presentation_video.indexOf('player.vimeo.com/video')>0" 
+                       ng-src="{{trustSrc(candidature.presentation_video)}}" ></iframe>
+                       
             </div>
             <div ng-if="candidature.presentation_video && candidature.presentation_video.indexOf('player.vimeo.com/video')>0 && !_isAvailableVideo">
               <strong>
@@ -179,7 +208,6 @@
              ng-click='deleteVimeoVideo(candidature.presentation_video.split("/").pop(), candidature, "presentation_video")'>
                 <span class="fr">Effacer la vidéo</span>
                 <span class="en">delete video</span>
-              </strong>
            </a>
          </div>
       </div>
@@ -187,9 +215,12 @@
         <hr/>
         <div >
             <h4>
-
+            <!--                
               <span class="fr">Si vous ne pouvez pas fournir un lien vers une vidéo</span>
-              <span class="en">If you cannot provide a link towards a video</span>
+              <span class="en">If you cannot provide a link towards a video</span> 
+            -->
+              <span class="fr">Téléverser votre vidéo</span>
+              <span class="en">Upload your vidéo</span>
 
             </h4>
             <br/>
@@ -212,6 +243,7 @@
                 </p>
                 <div ng-model="video" name="uVideo"
                    ngf-select="uploadVimeo(video, candidature, 'presentation_video')"
+                   ngf-drop="uploadVimeo(video, candidature, 'presentation_video')"
                    ngf-capture="'camera'"
                    accept="video/*"
                    ngf-accept="'video/*'"
@@ -223,19 +255,20 @@
                    >
                    <span class="upload-file" />
                 </div>
-            </div>
-            <div ng-show="invalidVideo.$errorMessages" ng-messages="invalidVideo.$errorMessages" class="help-block error">
-               <div ng-message="pattern">
-                  <span class="fr">Fichier non reconnu comme étant une vidéo</span>
-                  <span class="en">this is not a vidéo file</span>
+                <div ng-show="invalidVideo.$errorMessages" ng-messages="invalidVideo.$errorMessages" class="help-block error">
+                  <div ng-message="pattern">
+                     <span class="fr">Fichier non reconnu comme étant une vidéo</span>
+                     <span class="en">this is not a vidéo file</span>
+                  </div>
                </div>
             </div>
+           
             <br/>
 
       </div>
       <hr/>
     </div>
-    
+
     <div class="field">
          <input
             type="checkbox"

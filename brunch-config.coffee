@@ -1,4 +1,8 @@
 exports.config =
+        overrides:
+                production:
+                        sourceMaps: true
+                        optimize: false 
         npm:
           enabled: false
         plugins:
@@ -26,6 +30,10 @@ exports.config =
                                         'app/scripts/candidature/*.coffee'
                                         'app/scripts/common/**/*.coffee'
                                         'app/scripts/*.js'
+                                ]
+                                'js/config.js': [
+                                        'app/config.js'
+                                        'app/config-candidature.js'
                                 ]
                          order:
                                 before: [

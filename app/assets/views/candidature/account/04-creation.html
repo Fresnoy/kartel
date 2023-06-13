@@ -67,11 +67,15 @@
             </label>
          </div>
          <div class="field">
-            <input id="email" type="email" ng-model="user.email" name="uEmail" unique-user-field required />
+            <input id="email" type="email" ng-model="user.email" name="uEmail" unique-user-field ng-pattern="/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/" required />
             <div ng-show="form.uEmail.$touched && form.uEmail.$invalid" ng-messages="form.uEmail.$error" class="help-block error">
                <div ng-message="required">
                  <span class="fr">Champs obligatoire</span>
                  <span class="en">Required field</span>
+               </div>
+               <div ng-message="pattern">
+                  <span class="fr">E-mail non valide</span>
+                  <span class="en">Invalid email</span>
                </div>
                <div ng-message="email">
                   <span class="fr">E-mail non valide</span>
@@ -89,7 +93,8 @@
             </label>
          </div>
          <div class="field">
-            <input id="email-confirm" type="email" ng-model="emailconfirm" name="uEmailComfim" same-value-as="user.email" required />
+            <input id="email-confirm" type="email" ng-model="emailconfirm" name="uEmailComfim"
+                   same-value-as="user.email" onpaste="return false;" required />
             <div ng-show="form.uEmailComfim.$touched  && form.uEmailComfim.$invalid" ng-messages="form.uEmailComfim.$error" class="help-block error">
                <div ng-message="required">
                  <span class="fr">Champs obligatoire</span>

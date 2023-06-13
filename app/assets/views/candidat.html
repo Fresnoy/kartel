@@ -47,7 +47,7 @@
     <br/>
     <div ng-if="candidature.presentation_video">
       <i class="glyphicon glyphicon-facetime-video"></i>&nbsp;
-      <a class="pointer" ng-click='singleLightbox(candidature.presentation_video, candidature.presentation_video_details)'>
+      <a class="pointer" ng-click='singleLightbox(candidature.presentation_video, candidature.video_details_and_more)'>
         Voir la vidéo de 8 minutes</a>
       <span ng-show="candidature.presentation_video_password!=''">
           <br/>
@@ -153,7 +153,7 @@
             <h3>Infos</h3>
             <div class="person">
               <p>
-                Né(e) en {{country.codeToCountry[artist.user.profile.birthplace_country]}}<!--
+                Né<span ng-if="artist.user.profile.gender=='F'">e</span> en {{country.codeToCountry[artist.user.profile.birthplace_country]}}<!--
                 --><span ng-if='artist.user.profile.birthplace'>({{artist.user.profile.birthplace}})</span>
                 le {{ artist.user.profile.birthdate }}
                 ({{artist.user.profile.birthdate | ageFilter}} ans) -
