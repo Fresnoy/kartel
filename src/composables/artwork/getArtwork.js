@@ -2,6 +2,7 @@
  * Config
  */
 import axios from "axios";
+import config from "@/config";
 
 /**
  * Modules
@@ -25,6 +26,7 @@ let authorsStore = ref();
 let galleries = ref({});
 let genres = ref([]);
 let events = ref([]);
+let ame_gallery = ref([]);
 
 /**
  * Initializes the values of the artwork, authorsStore, galleries, genres, and
@@ -61,6 +63,8 @@ async function getArtwork(id) {
      */
     getGalleries(data);
 
+    getAmeGalleries(id);
+
     getGenres(data.genres);
 
     getDiffusions(data.diffusion);
@@ -95,6 +99,58 @@ function getGalleries(data) {
       getGallery(el, galleries.value[galleriesKeysCamel[index]]);
     });
   }
+
+}
+
+
+function getAmeGalleries(artwork_id) {
+
+  /* init data */
+  let artwork_ame_data = []
+  /* concat search string  */  
+  let search_str = "?key="+config.archive_rest_key+"&flvfile=true&search="+artwork_id;
+  /* field where to find idartwork  */
+  let search_field = "field201";
+  /* init url api */
+  let api_ame = axios.create({baseURL: config.archive_rest_uri}); 
+  
+  api_ame.get(search_str)
+         .then(response => {
+            
+            response.data.forEach((gallery) => {
+                /* make sur searching id is in good field */    
+                if(gallery[search_field] == artwork_id){
+                  /* MAP media as ArtworkGallery.vue absorbe data */
+                  let media = {picture:"https:"+gallery["flvthumb"], 
+                               medium_url:"https:"+gallery["flvpath"], 
+                               label:gallery['field8'].replaceAll("_"," ")}
+                  /* */
+                  artwork_ame_data.push(media)
+                  
+                }
+            }) /* end foreach */
+            
+            /* When we found some media from archive */
+            if(artwork_ame_data.length > 0 ){
+
+              /* Create gallery AME */
+              galleries.value["ame"] = []
+              /* init with ArtworkGallery minimal data   */
+              galleries.value["ame"].push({description:"", mediaData:[]});
+              /* push values */
+              galleries.value["ame"][0].mediaData = artwork_ame_data;
+
+            }
+          
+          
+         })
+
+    
+
+    
+
+
+
 }
 
 /**

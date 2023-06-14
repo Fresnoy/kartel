@@ -37,6 +37,24 @@ function type() {
 
   return null;
 }
+
+
+function isSameDomain(url){
+
+  let domain = new URL(config.api_url).hostname
+  return url.includes(domain); 
+
+}
+
+function resizeMedia(url, width){
+
+  let same_domain = isSameDomain(url);
+  if(same_domain){
+    return `${config.media_service}?url=${props.url}&mode=adapt&w=${width}&fmt=jpg`
+  }
+  return url;
+
+}
 </script>
 
 <!-- Change the name with MediaCard might be better for reuse -->
@@ -54,14 +72,14 @@ function type() {
         :href="
           props.medium
             ? props.medium
-            : `${config.media_service}?url=${props.url}&mode=adapt&w=1000&fmt=jpg`
+            : resizeMedia(props.url, 1000)
         "
       >
         <img
           class="w-full h-full object-cover aspect-video"
           :src="
             props.url
-              ? `${config.media_service}?url=${props.url}&mode=adapt&w=300&fmt=jpg`
+              ? resizeMedia(props.url, 300)
               : mediaPlaceholder
           "
           :alt="props.title"

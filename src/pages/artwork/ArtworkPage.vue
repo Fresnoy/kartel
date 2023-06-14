@@ -291,6 +291,13 @@ onBeforeUnmount(() => {
           </div>
         </div>
 
+
+        <ArtworkGallery
+          v-if="galleries.ame && galleries.ame[0]"
+          :galleries="galleries.ame"
+          title="Archive"
+        />
+
         <ArtworkGallery
           v-if="galleries.teaserGalleries && galleries.teaserGalleries[0]"
           :galleries="galleries.teaserGalleries"
