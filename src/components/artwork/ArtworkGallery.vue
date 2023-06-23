@@ -18,12 +18,6 @@ const props = defineProps({
   },
 });
 
-// Need to remove this and all element using this function for Prod
-function removePreprod(url) {
-  if (url) {
-    return url.replace("preprod.", "");
-  }
-}
 </script>
 
 <template>
@@ -44,7 +38,7 @@ function removePreprod(url) {
       <ul class="grid grid-cols-2 gap-3">
         <li v-for="media in gallery.mediaData" :key="media">
           <UiMedia
-            :url="removePreprod(media.picture)"
+            :url="media.picture"
             :medium="media.medium_url"
             :title="media.label"
           />

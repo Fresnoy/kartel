@@ -256,13 +256,6 @@ watch(
     setup();
   }
 );
-
-// Need to remove this and all element using this function for Prod
-function removePreprod(url) {
-  if (url) {
-    return url.replace("preprod.", "");
-  }
-}
 </script>
 
 <template>
@@ -361,14 +354,14 @@ function removePreprod(url) {
         <li class="" v-for="content in contents" :key="content">
           <!-- <ArtworkCard
             :url="content.url"
-            :picture="removePreprod(content.picture)"
+            :picture="content.picture"
             :title="content.title"
           /> -->
           <component
             :is="component"
             :artist="content"
             :url="content.url"
-            :picture="removePreprod(content.picture)"
+            :picture="content.picture"
             :title="content.title"
           ></component>
         </li>

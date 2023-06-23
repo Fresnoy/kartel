@@ -43,13 +43,6 @@ const router = useRouter();
  */
 let responsive = ref(false);
 
-// Need to remove this and all element using this function for Prod
-function removePreprod(url) {
-  if (url) {
-    return url.replace("preprod.", "");
-  }
-}
-
 let gallery = ref();
 let preview = ref();
 
@@ -125,15 +118,9 @@ onBeforeUnmount(() => {
           <img
             data-fancybox="preview"
             class="min-h-[30vh] bg-black-extralightest"
-            :src="`${config.media_service}?url=${removePreprod(
-              artwork.picture
-            )}&mode=adapt&w=1000&fmt=jpg`"
-            :srcset="`${config.media_service}?url=${removePreprod(
-              artwork.picture
-            )}&mode=adapt&w=500&fmt=jpg 500w,
-          ${config.media_service}?url=${removePreprod(
-              artwork.picture
-            )}&mode=adapt&w=1000&fmt=jpg 1000w`"
+            :src="`${config.media_service}?url=${artwork.picture}&mode=adapt&w=1000&fmt=jpg`"
+            :srcset="`${config.media_service}?url=${artwork.picture}&mode=adapt&w=500&fmt=jpg 500w,
+          ${config.media_service}?url=${artwork.picture}&mode=adapt&w=1000&fmt=jpg 1000w`"
             :alt="`preview picture of ${artwork.title}`"
             sizes="100vw"
           />
