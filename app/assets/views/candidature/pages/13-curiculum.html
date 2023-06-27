@@ -97,11 +97,19 @@
             class="one check"
             />
          <label for="no-master-degree" class="checkbox one big pointer">
-         <span class="fr">Baccalauréat + 7 années<br/><strong>d'expérience professionnelle attestée</strong></span>
+         <span class="fr">Baccalauréat + 7 années<br/><strong>d'expérience professionnelle attestées</strong></span>
          <span class="en">High school diploma + 7 years <strong>of proven professional experience</strong></span>
          </label>
       </div>
       <div ng-if="candidature.master_degree=='N'">
+         <div class="alert-warning" ng-if="(( (campaign.promotion.starting_year)*1 - (user.profile.birthdate | date:'yyyy')*1 ) <= 24 ) || !user.profile.birthdate ">
+            <p class="fr" >Votre âge ne permet pas de justifier un Bac + 7 années d’expériences, 
+               vous ne pourrez pas finaliser l’envoi de votre candidature.
+               Si toutefois vous avez eu votre diplôme très jeune, merci de nous contacter</p>
+            <p class="en">Your age is not compatible with Bac (or equivalent) + 7 years of experience; 
+               you cannot complete your application. However, if you did obtain your secondary education qualification/diploma at a very young age, 
+               please contact us. </p>
+         </div>
          <p class="fr">En quoi cette expérience vous a-t-elle préparé au Fresnoy ? <em>(1 page max)</em></p>
          <p class="en">In what way this experience has prepared you for Le Fresnoy ? <em>(1 page max)</em> </p>
          <input id="exp-justification" ng-model="candidature.experience_justification" required hidden />
@@ -109,6 +117,7 @@
             class="media-upload"
             ng-show="!candidature.experience_justification"
             ngf-select="upload(candidature.experience_justification, candidature, 'experience_justification')"
+            ngf-drop="upload(candidature.experience_justification, candidature, 'experience_justification')"
             ngf-capture="'camera'"
             accept="application/pdf"
             ngf-accept="'application/pdf'"
@@ -124,14 +133,14 @@
             <span class="name">{{candidature.experience_justification.split('.').pop()}}</span>
             <span class="trash" ng-click="RC_exp=true" />
             <div class="delete-pane" ng-show="RC_exp">
-               <span class="trash" ng-click="candidature.experience_justification=''; RC_exp=false" />
+               <span class="trash" ng-click="candidature.experience_justification=null; RC_exp=false; candidature.patch({'experience_justification':candidature.experience_justification});" />
                <span class="name"><span class="fr">Supprimer</span><span class="en">Delete</span></span>
                <span class="cancel" ng-click="RC_exp=false"></span>
             </div>
          </div>
          <div ng-show="invalidExperienceJustification.$errorMessages" ng-messages="invalidExperienceJustification.$errorMessages" class="help-block error">
             <div ng-message="pattern">
-               <span class="fr">Format accepté :pdf</span>
+               <span class="fr">Format accepté : pdf</span>
                <span class="en">Accepted format : pdf</span>
             </div>
          </div>

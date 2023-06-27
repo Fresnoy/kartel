@@ -356,6 +356,9 @@ angular.module('memoire.controllers', ['memoire.services'])
   $scope.LANGUAGES_NAME_short = {}
   $scope.LANGUAGES_NAME_short[obj.split("-")[0]] = val for obj, val of languageMappingList
 
+  # console.log($scope.LANGUAGES_NAME)
+  # console.log($scope.LANGUAGES_NAME_short)
+
   $scope.getCandidatures = (sort, order) ->
     criteres = _.extend(sort.sortby, order.value)
     if($scope.asc == 'false') then criteres.ordering = "-"+criteres.ordering
@@ -442,7 +445,7 @@ angular.module('memoire.controllers', ['memoire.services'])
 )
 
 .controller('CandidatController', ($rootScope, $scope, ISO3166, $stateParams, RestangularV2, Candidatures, ArtistsV2,
-        WebsiteV2, Users, Galleries, Media, Lightbox, clipboard, $sce) ->
+        WebsiteV2, Users, Galleries, Media, Lightbox, clipboard, $sce, $filter) ->
   # init
   $scope.candidature = []
   $scope.artist = []
@@ -535,6 +538,8 @@ angular.module('memoire.controllers', ['memoire.services'])
 
         ArtistsV2.one(artist_id).get().then((artist) ->
             $scope.artist = artist
+            # load artist websites
+            # load artist websites
             for website in artist.websites
                 website_id = website.match(/\d+$/)[0]
                 RestangularV2.one('common/website', website_id).get().then((response_website) ->
@@ -544,8 +549,14 @@ angular.module('memoire.controllers', ['memoire.services'])
             user_id = artist.user.match(/\d+$/)[0]
             $scope.artist.user = Users.one(user_id).get().then((user_infos) ->
               $scope.artist.user = user_infos
+              # add infos under videos
+              $scope.candidature.video_details_and_more = candidature.presentation_video_details
+              $scope.candidature.video_details_and_more += "\n_______\n"+ $filter('ageFilter')(user_infos.profile.birthdate) + " ans\n Niveau : "
+              $scope.candidature.video_details_and_more += if candidature.master_degree == "Y" then "Master" else if candidature.master_degree =="P" then "Master en cours" else "Bac + 7 ans d'experiences"
             )
         )
+        
+        # get justifications files
         if(candidature.cursus_justifications != null)
             gallery_id = candidature.cursus_justifications.match(/\d+$/)[0]
             Galleries.one(gallery_id).get().then((gallery_infos) ->

@@ -27,8 +27,8 @@ and the relevance of his/her arguments</p>
       <span class="fr">Motivations</span>
       <span class="en">Motivation</span>
    </h1>
-   <p class="fr">Lettre de motivation / note d’intention (3 pages) au format PDF.</p>
-   <p class="en">Cover letter / motivation and intentions (3 pages) in PDF format.</p>
+   <p class="fr">Lettre de motivation / note d’intention (3 pages) au format pdf.</p>
+   <p class="en">Cover letter / motivation and intentions (3 pages) in pdf format.</p>
    <form name="form1" ng-submit="form.$valid && submit()" class="css-form" novalidate enctype="multipart/form-data">
       <div class="field">
          <input name="cJustification" ng-model="candidature.justification_letter" hidden required />
@@ -37,7 +37,8 @@ and the relevance of his/her arguments</p>
             class="media-upload"
             ng-model="candidature.justification_letter"
             name="cJustification"
-            ngf-select="upload(candidature.justification_letter, candidature, 'justification_letter') "
+            ngf-select="upload(candidature.justification_letter, candidature, 'justification_letter')"
+            ngf-drop="upload(candidature.justification_letter, candidature, 'justification_letter')"
             ngf-capture="'camera'"
             accept="application/pdf"
             ngf-accept="'application/pdf'"
@@ -52,7 +53,9 @@ and the relevance of his/her arguments</p>
             <span class="name">{{candidature.justification_letter.split('.').pop()}}</span>
             <span class="trash" ng-click="RC_letter=true" />
             <div class="delete-pane" ng-show="RC_letter">
-               <span class="trash" ng-click="candidature.justification_letter=''; RC_letter=false" />
+               <span class="trash" 
+                     ng-click="candidature.justification_letter=null; RC_letter=false; 
+                               candidature.patch({'justification_letter':null});" />
                <span class="name"><span class="fr">Supprimer</span><span class="en">Delete</span></span>
                <span class="cancel" ng-click="RC_letter=false"></span>
             </div>

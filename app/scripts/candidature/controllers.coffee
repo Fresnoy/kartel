@@ -42,17 +42,23 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
     $rootScope.current_display_screen = candidature_config.screen.account_confirm_creation
     $scope.edit_email = false
     $scope.send_email = 2
+    $scope.resendemail_error = ""
 
     if($stateParams.infos)
       $scope.user = $stateParams.infos
 
     $scope.update_infos = (form, params) ->
       delete $http.defaults.headers.common.Authorization
+      $scope.resendemail_error = ''
       form.$setSubmitted()
       RestangularV2.all('school/student-application/user_resend_activation_email').post(params).then((response) ->
         $scope.send_email--
       , (response) ->
-        form.$error = response.data
+        # show errors from server
+        # on normal step nobody see this error 
+        # if showing, user have refresh this page
+        # or user (non active) try to do something strange 
+        $scope.resendemail_error = response.data
 
       )
 )
@@ -248,8 +254,6 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
             Restangular, RestangularV2, Vimeo, Logout, $http, cfpLoadingBar, authManager, ISO3166,
             Users, Candidatures, ArtistsV2, Galleries, Media, Upload, ) ->
 
-  $rootScope.main_title= "Le Fresnoy - Studio national - Selection"
-
   # Media
   if(!$rootScope.current_display_screen)
     $rootScope.current_display_screen = candidature_config.screen.home
@@ -381,6 +385,10 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
     localStorage.setItem("language", lang)
     $rootScope.language = localStorage.language
 
+  # title
+  $rootScope.main_title= "Le Fresnoy - Studio national - "
+  if $rootScope.language=='fr' then $rootScope.main_title += "Sélection" else $rootScope.main_title += "Selection" 
+
   # countries
   $rootScope.getCountrie = (code) ->
     return _.invert(ISO3166.countryToCode)[code]
@@ -456,16 +464,49 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
         method: 'PATCH',
         headers: { 'Authorization': 'JWT ' + localStorage.token },
         #withCredentials: true
+      
+      $rootScope.upload_status="Media creation"
+      $rootScope.upload_percentage=0
 
       infos.data[field] = data
-      Upload.upload(infos)
-      .then((resp) ->
+
+      # init upload (for abort upload)uploadup
+      $rootScope.upload_object = Upload.upload(infos)
+      
+      $rootScope.upload_object.then((resp) ->
+          # MEDIA UPLOADED
           model[field] = resp.data[field]
+          
+          # try oncomplete funcion
+          if($rootScope.upload_on_complete_func!=undefined)
+            $rootScope.upload_on_complete_func()
         ,(resp) ->
           console.log('Error status: ' + resp.status);
+          $rootScope.upload_status="Erreur"
+          model[field] = ''
         ,(evt) ->
-          $rootScope.upload_percentage = parseInt(100.0 * evt.loaded / evt.total);
+          $rootScope.upload_status="Media upload"
+          $rootScope.upload_percentage = parseInt(100.0 * evt.loaded / evt.total)
       )
+
+  $rootScope.uploadAbort = () ->
+    console.log("Upload abort ! ")
+    
+    # console.log($rootScope.upload_object)
+    # may be undefined (before vimeo uplaod)
+    if($rootScope.upload_object)
+      $rootScope.upload_object.abort()
+      
+
+    # close interface
+    $rootScope.upload_status=""
+    $rootScope.upload_percentage=100
+
+    # $rootScope.upload_object = null
+    # remove media gallery if needed
+    if($rootScope.upload_on_abort_func!=undefined)
+      $rootScope.upload_on_abort_func()
+
 
   $scope.saveUserModel = (model) ->
     model_copy =  RestangularV2.copy(model)
@@ -552,7 +593,10 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
                         artist.websites[find_website] = response_website
                     )
             )
-
+          # get candidature setup if empty (sometimes not loaded on refresh Candidature)
+          if !$rootScope.campaign.candidature_close
+              console.log("reload Setup")
+              $scope.getCandidatureSetup()
 
       ,(candidatureInfos_error) ->
         console.log("error Candidatures infos")
@@ -575,9 +619,11 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
       # otherwise -> resume
       user_id = jwtHelper.decodeToken(localStorage.getItem('token')).user_id
       Users.one(user_id).get().then((user) ->
-        if(user.profile.is_artist)
-          $state.go("candidature.summary")
+        candidature_is_started = user.profile.birthdate and user.profile.gender and user.profile.nationality
+        if user.profile.is_artist and candidature_is_started
+          # $state.go("candidature.summary")
         else
+          # loadinfo create user-> artist if not created
           $rootScope.loadInfos($rootScope)
       )
 )
@@ -681,9 +727,6 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
   $scope.uploadFile = (data, model, field, type) ->
     $rootScope.upload(data, model, field)
 
-
-  # specific upload Photo
-
 )
 
 .controller('ContactInformationsController', ($rootScope, $scope, $state, $filter, ISO3166,
@@ -739,8 +782,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
     $rootScope.current_display_screen = candidature_config.screen.photo_info
 
     $scope.$watch('user.profile.photo', (newValue, oldValue) ->
-        console.log($scope.user)
-        
+        # console.log($scope.user)        
     );
     
 
@@ -754,12 +796,19 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
         method: 'PATCH',
         headers: { 'Authorization': 'JWT ' + localStorage.token },
         #withCredentials: true
-      Upload.upload(infos)
-      .then((resp) ->
+
+      $rootScope.upload_status="Media creation"
+      $rootScope.upload_percentage=0
+
+      # init upload (for abort upload)
+      $rootScope.upload_object = Upload.upload(infos)
+      $rootScope.upload_object.then((resp) ->
           model.profile.photo = resp.data.profile.photo
         ,(resp) ->
+          #error or aboart
           model.profile.photo = ""
         ,(evt) ->
+          $rootScope.upload_status="Media upload"
           $rootScope.upload_percentage = parseInt(100.0 * evt.loaded / evt.total);
       )
 
@@ -774,11 +823,14 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
       $rootScope.step.current = "14"
       $rootScope.current_display_screen = candidature_config.screen.cv
 
+      $scope.french_art_cursus = ""
 
       #patch Medium
       $scope.uploadFile = (data, model) ->
 
           field = "picture"
+          
+          # ADMIN visualisation need to know if pdf (iframe) or image file
           if (data.type.match("image.*"))
             field = "picture"
           if (data.type.match("pdf"))
@@ -786,8 +838,34 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 
           medium_infos =
             gallery: model.url
+
+          # console.log ("creation du média")
           Media.one().customPOST(medium_infos).then((response_media) ->
-            model.media.push(response_media)
+
+            media_count = model.media.push(response_media)
+            media = model.media[(media_count-1)]
+            
+            # ABORT TANSFERT
+            # delete media on abort upload (function call when abord clicked)
+            $rootScope.upload_on_abort_func = () ->
+              # remove media
+              response_media.remove().then((response) ->
+                model.media.pop()
+                delete $rootScope.upload_on_abort_func
+              )
+            
+            # COMPELETE TRANSFERT
+            # update label on patch 
+            # DO NOT send two patches (upload AND label update) in same time : the last patch win the game
+            $rootScope.upload_on_complete_func = () ->
+
+              # remove media
+              response_media.patch({'label': media.label}).then((response) ->
+                console.log("update media")
+                delete $rootScope.upload_on_complete_func
+              )       
+              
+            # UPLAOD
             $rootScope.upload(data, response_media, field)
           )
 
@@ -845,16 +923,33 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
         $rootScope.step.current = "17"
 
         #cursus
-        year = new Date().getFullYear()
+        year = 0
+        max_year = 15 # numbers of years is possible to candidate (between 20 to 35)
         $scope.years = []
-        $scope.years.push (year-i) for i in [1..35]
+        # list of possible candidature years
+        $scope.all_years = []
 
         $scope.last_applications_years = []
         $scope.splitChar = ", "
 
         $scope.$watch("candidature.last_applications_years", (newValue, oldValue) ->
           if(newValue)
-            $scope.last_applications_years = newValue.split($scope.splitChar)
+            # last app years is a text field like 2022, 2020, 
+            array_last_app = newValue.split($scope.splitChar)
+            # set on html var
+            $scope.last_applications_years = array_last_app
+            # delete selected year on select html tag
+            $scope.years = $scope.all_years.filter( ( el ) => !array_last_app.includes( ''+el ));
+        )
+        $scope.$watch("campaign.promotion.starting_year", (newValue, oldValue) ->
+            # campain loaded ! 
+            if(newValue && !$scope.all_years.length)
+              # set years begin with promotion.starting_year - 1
+              $scope.all_years.push(newValue - i) for i in [1..max_year]
+              # set default years (if no applications years)
+              $scope.years = $scope.all_years
+              
+            
         )
 
 )
@@ -897,7 +992,8 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
               new_remark = remark.replace(pollRegexp, "$1"+obj.item+"$3")
             # else create it
             else 
-              # make some lines
+              new_remark = remark
+              # make some lines              
               new_remark +="\n\n"
               new_remark +="[POLL]"+obj.item+"[/POLL]"
             # set remark
@@ -983,17 +1079,21 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
       if (!data)
         return
 
+      $rootScope.upload_status="Media creation"
+      $rootScope.upload_percentage=0
+
       # get Vimeo token api
       VimeoToken.one().get().then((settings) ->
           # localStorage.setItem('vimeo_upload_token',settings.token)
           Vimeo.setDefaultHeaders({Authorization: "Bearer "+ settings.token})
           # connect to vimeo api
           Vimeo.one("me").get().then((account_infos) ->
-              # console.log(account_infos)
+              console.log(account_infos)
               console.log((account_infos.data.upload_quota.space.free / 1073741824).toFixed(3) + " GB")
               upload_settings =
                 type: "streaming"
               # get an upload ticket
+              $rootScope.upload_status="Request for upload permissions"
               account_infos.data.customPOST(upload_settings,"videos").then((ticket) ->
                     # http method because Vimeo crash when multipart upload
                     #  send no Authorization
@@ -1008,10 +1108,16 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
                       # transformRequest: (data, headers) ->
                       #   delete headers()['Authorization']
                       #   return data;
+                    $rootScope.upload_status="Video upload"
 
-                    Upload.http(upload_config)
-                    .then((resp) ->
+                    # init upload (for abort upload)
+                    $rootScope.upload_object = Upload.http(upload_config)
+                    $rootScope.upload_object.then((resp) ->
+
                         # Complete the upload : complete_uri remove
+                        $rootScope.upload_status="Video sent, please wait a few more moments"
+                        $rootScope.upload_percentage=25
+
                         Vimeo.one(ticket.data.complete_uri).remove().then((remove) ->
                           # get video id
                           location = remove.headers('Location')
@@ -1026,30 +1132,47 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
                             name: data.name
                             description: "Inscription - " + $scope.candidature.current_year_application_count + " | " + $scope.user.last_name + " - " + $scope.user.first_name
 
+
+                          $rootScope.upload_status="Update application information"
+                          $rootScope.upload_percentage=50
+
                           Vimeo.one(location).patch(video_info).then((patch_response) ->
                             # console.log("Video set Title and description")
-                            # put video in album 4943258 (candidature 2018)
-                            album_id = 4943258
+                            album_id = candidature_config.vimeo_album_id
+
+                            $rootScope.upload_status="Moving the video"
+                            $rootScope.upload_percentage=75
+														
                             Vimeo.one(account_infos.data.uri).customPUT({}, "albums/"+album_id+"/videos/"+video_id).then((response_album) ->
                                 # console.log("Video in specific album : " + album_id)
-                            )
-                          )
-                        )
-                      , (error)->
+                                $rootScope.upload_status="Video added ! "
+                                $rootScope.upload_percentage=100
+                            ) # end move video
+                          ) # end set title video
+                      ) # end close ticket
+                     , (error)->
                         console.log("ERROR  upload VIMEO")
-                        console.log(error.headers('Authorization'))
-                      , (evt) ->
-                        $rootScope.upload_percentage = parseInt(100.0 * evt.loaded / evt.total)
-
-                    )
-                  )
-            )
-
-        , ->
-          # error
-          console.log("vimeoUploadError")
-      )
-
+                        console.log(error)
+                        $rootScope.upload_status="Upload Error"
+                     ,(evt) ->
+                        $rootScope.upload_percentage = Math.floor(100.0 * evt.loaded / evt.total)
+                    ) # end send video
+              ,(error)->
+                console.log("ERROR get TICKET VIMEO")
+                console.log(error)
+                $rootScope.upload_status="Ticket Error"
+             ) # end upload permission
+          ,(error)->
+                console.log("ERROR get My Channel VIMEO")
+                console.log(error)
+                $rootScope.upload_status="Channel Error"
+         ) # end me vimeo
+      ,(error)->
+          console.log("ERROR internal server error")
+          console.log(error)
+          $rootScope.upload_status="Settings Error"
+    ) # end internal token request
+      
     $scope.uploadFile = (data, model, field) ->
       $rootScope.upload(data, model, field)
 

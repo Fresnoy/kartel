@@ -110,18 +110,23 @@
 
          <h3>Projets envisagés durant le cursus du Fresnoy</h3>
          <p>Merci de lire impérativement les <a class="pointer" ng-click="show_help(true)">informations</a> avant de compléter cette étape.</p>
-         <p><strong>Première année</strong><br/>Travail sur les supports traditionnels,
-            argentiques et électroniques, du cinéma, de la
-            photographie, de la vidéo et des arts visuels.<br>
+         <p>Le cursus pédagogique du Fresnoy accompagne une
+            exploration artistique inédite allant des techniques
+            traditionnelles vers l’expérimentation des écritures
+            de la création numérique.</p>
+         <p><strong>1<sup>re</sup> année</strong><br/>Travail sur les supports traditionnels,
+            argentiques et électroniques, du cinéma, de la photographie, de la vidéo et des arts visuels.<br>
         </p>
         <p>
-            <strong>Deuxième année</strong><br/> Travail sur les supports de la création
+            <strong>2<sup>e</sup> année</strong><br/> Travail sur les supports de la création
             numérique et les écritures digitales.
          </p>
     </div>
     <div class="en">
         <h3>Projects imagined during Le Fresnoy course</h3>
         <p>Please read  <a class="pointer" ng-click="show_help(true)">this information</a> before completing this stage.</p>
+        <p>The curriculum at Le Fresnoy opens up a unique artistic adventure spanning everything from traditional techniques to experiments with 
+         the forms of digital art.</p>
         <p><strong>First year</strong><br/>A project based on traditional or digital media, cinema, video or visual arts.<br>
         </p>
         <p>
@@ -139,7 +144,9 @@
       <div id="considered-project-1"
          ng-model="candidature.considered_project_1"
          name="cProject1"
-         ngf-select="upload(candidature.considered_project_1, candidature, 'considered_project_1') " ngf-capture="'camera'"
+         ngf-select="upload(candidature.considered_project_1, candidature, 'considered_project_1') " 
+         ngf-drop="upload(candidature.considered_project_1, candidature, 'considered_project_1') " 
+         ngf-capture="'camera'"
          accept="application/pdf"
          ngf-accept="'application/pdf'"
          ngf-pattern="'application/pdf'"
@@ -155,7 +162,9 @@
          <span class="name">{{candidature.considered_project_1.split('.').pop()}}</span>
          <span class="trash" ng-click="RC_prj1=true" />
          <div class="delete-pane" ng-show="RC_prj1">
-            <span class="trash" ng-click="candidature.considered_project_1=''; RC_prj1=false" />
+            <span class="trash"
+                  ng-click="candidature.considered_project_1=''; RC_prj1=false;
+                            candidature.patch({'considered_project_1': null});" />
             <span class="name"><span class="fr">Supprimer</span><span class="en">Delete</span></span>
             <span class="cancel" ng-click="RC_prj1=false"></span>
          </div>
@@ -190,7 +199,9 @@
      <div id="considered-referencies-project-1"
         ng-model="candidature.artistic_referencies_project_1"
         name="cARP1"
-        ngf-select="upload(candidature.artistic_referencies_project_1, candidature, 'artistic_referencies_project_1') " ngf-capture="'camera'"
+        ngf-select="upload(candidature.artistic_referencies_project_1, candidature, 'artistic_referencies_project_1') " 
+        ngf-drop="upload(candidature.artistic_referencies_project_1, candidature, 'artistic_referencies_project_1') " 
+        ngf-capture="'camera'"
         accept="application/pdf"
         ngf-accept="'application/pdf'"
         ngf-pattern="'application/pdf'"
@@ -207,7 +218,9 @@
         <span class="name">{{candidature.artistic_referencies_project_1.split('.').pop()}}</span>
         <span class="trash" ng-click="RC_ref_prj1=true" />
         <div class="delete-pane" ng-show="RC_ref_prj1">
-           <span class="trash" ng-click="candidature.artistic_referencies_project_1=''; RC_ref_prj1=false" />
+           <span class="trash" 
+                 ng-click="candidature.artistic_referencies_project_1=''; RC_ref_prj1=false;
+                 candidature.patch({'artistic_referencies_project_1': null});" />
            <span class="name"><span class="fr">Supprimer</span><span class="en">Delete</span></span>
            <span class="cancel" ng-click="RC_ref_prj1=false"></span>
         </div>

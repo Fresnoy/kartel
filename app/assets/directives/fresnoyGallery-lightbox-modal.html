@@ -10,11 +10,11 @@
         <!-- IMAGE FIELD (and is an ipicture) -->
         <!-- api v1 -->
         <a ng-if="!(Lightbox.image.isvideo) && (Lightbox.image.picture | isFresnoyUrl) && (Lightbox.image.picture.indexOf('api.lefresnoy')<0)" class="btn btn-xs btn-default" target="_blank"
-          href="http://media.lefresnoy.net/?url=http://api.lefresnoy.net/{{ Lightbox.image.picture }}&op=noop" download="Image">
+          href="{{ config.media_service }}?url={{ config.api_url }}{{ Lightbox.image.picture }}&op=noop" download="Image">
           <i class="glyphicon glyphicon-link"></i>&nbsp;Lien vers l'original</a>
         <!-- api v2 -->
         <a ng-if="!(Lightbox.image.isvideo) && (Lightbox.image.picture | isFresnoyUrl) && (Lightbox.image.picture.indexOf('api.lefresnoy')>0)" class="btn btn-xs btn-default" target="_blank"
-            href="http://media.lefresnoy.net/?url={{ Lightbox.image.picture }}&op=noop" download="Image">
+            href="{{ config.media_service }}?url={{ Lightbox.image.picture }}&op=noop" download="Image">
             <i class="glyphicon glyphicon-link"></i>&nbsp;Lien vers l'original</a>
 
         <!-- IMAGE Field but non image (???) -->
@@ -36,7 +36,7 @@
     <!-- // video -->
       <!-- Video api Fresnoy -->
       <video ng-if="(Lightbox.image.picture | isFresnoyUrl) && !Lightbox.image.iframe && Lightbox.image.medium_url"
-        poster="http://media.lefresnoy.net/?url=http://api.lefresnoy.net/{{ Lightbox.image.picture }}&op=noop"
+        poster="{{ config.media_service }}?url={{ config.api_service }}{{ Lightbox.image.picture }}&op=noop"
         controls ng-src="{{ Lightbox.image.medium_url }}">
       </video>
       <!-- Video anywhere  -->
@@ -54,10 +54,10 @@
       <!-- FRESNOY IMAGE -->
       <!-- api v1 -->
       <img ng-if="(Lightbox.image.picture | isFresnoyUrl) && !(Lightbox.image.medium_url) && (Lightbox.image.picture.indexOf('api.lefresnoy')<0)"
-         lightbox-src="http://media.lefresnoy.net/?url=https://api.lefresnoy.net/{{ Lightbox.image.picture }}&w=1500&fmt=jpg" />
+         lightbox-src="{{ config.media_service }}?url={{ config.api_service }}{{ Lightbox.image.picture }}&w=1500&fmt=jpg" />
       <!-- api v2 -->
        <img ng-if="(Lightbox.image.picture | isFresnoyUrl) && !(Lightbox.image.medium_url) && (Lightbox.image.picture.indexOf('api.lefresnoy')>0)"
-          lightbox-src="http://media.lefresnoy.net/?url={{ Lightbox.image.picture }}&w=1500&fmt=jpg" />
+          lightbox-src="{{ config.media_service }}?url={{ Lightbox.image.picture }}&w=1500&fmt=jpg" />
       <!-- Anywhere IMAGE -->
        <img ng-if="!(Lightbox.image.picture | isFresnoyUrl) && !Lightbox.image.medium_url" lightbox-src="{{ Lightbox.image.picture }}"/>
     <!-- //image -->
