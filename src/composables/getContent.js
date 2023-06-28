@@ -136,8 +136,8 @@ class Content {
 
       return (this.url = `production/artwork?page_size=${Content.pageSize}&page=${offset.value}${stringParams}`);
     } else if (type === "artists") {
-      const { q, nationality, guests } = parameters;
-
+      const { q, nationality, artist_type } = parameters;
+      
       /**
        * Artist parameters
        * @typedef {Object} params
@@ -147,10 +147,7 @@ class Content {
       params = {
         query: q ? `q=${q}` : null,
         nationality: nationality ? `nationality=${nationality}` : null,
-        guests:
-          guests === "true"
-            ? `artworks__isnull=false&student__isnull=true`
-            : `artworks__isnull=false`,
+        artist_type: artist_type ? artist_type : "artworks__isnull=false",
       };
 
       setParams(params);

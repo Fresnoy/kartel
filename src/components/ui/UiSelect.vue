@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 
-const props = defineProps(["options", "selectedValue", "desc", "defaultValue"]);
+const props = defineProps(["options", "selectedValue", "desc", "defaultValue", "optionKeyName", ]);
 
 let value = ref();
 
@@ -37,8 +37,10 @@ onMounted(() => {
         >
           <option :value="null">{{ props.defaultValue }}</option>
           <option :value="null" disabled>—————</option>
-          <option :value="option" v-for="option in props.options" :key="option">
-            {{ option }}
+          <option v-for="(option, index) in props.options"
+                        :value="option.id ? option.id : (option.value ? option.value : option)"
+                        :key="option.id ? option.id : index">
+                        {{ option.name ? option.name : option }}
           </option>
         </select>
       </div>

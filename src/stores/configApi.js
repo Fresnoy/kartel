@@ -116,10 +116,12 @@ export const useConfigApi = defineStore("configApi", () => {
      */
     async getUser(student) {
       try {
-        const response = await axios.get(student.user);
-        const userData = response.data;
+        return student.user_infos;
+          // const response = await axios.get(student.user);
+          // const userData = response.data;
 
-        return await userData;
+          // return await userData;
+        
       } catch (err) {
         console.error(err);
       }

@@ -55,6 +55,7 @@ let defProductionYear = ref([]);
 // let defQ = ref(null);
 let defShootingPlace = ref(null);
 let defType = ref(null);
+let defArtistsTypes = ref(null)
 
 /**
  *
@@ -68,13 +69,14 @@ let productionYear = ref(null);
 let q = ref(null);
 let shootingPlace = ref(null);
 let type = ref(null);
-let guests = ref(false);
+let artist_type = ref(null);
+
 
 // let typeOfContent define the params and display them inside the dom with a includes or something like a dictionnary
 let params = ref();
 
 // watcher execute once after moving to another page -> he watch the ref be reseted ?!
-watch([genres, keywords, productionYear, q, shootingPlace, type, guests], () => {
+watch([genres, keywords, productionYear, q, shootingPlace, type, artist_type], () => {
   // prevent the observer to fetch at the same time
   observer.unobserve(watcher.value);
 
@@ -133,6 +135,28 @@ async function getKeywords() {
   }
 }
 getKeywords();
+
+
+function getArtistsTypes() {
+  const types = [
+                 {name: "Tous",
+                  value:"artworks__isnull=false"},
+                 {name: "Étudiant",
+                  value:"student__isnull=false&artworks__isnull="},
+                 {name: "Artistes Professeurs invités",
+                  value:"teacher__isnull=false&artworks__isnull="},
+                 {name: "Scientifiques",
+                  value:"student__science_student__isnull=false&artworks__isnull="},
+                 {name: "Artistes invités",
+                  value:"visiting_student__isnull=false&artworks__isnull="},
+                 ];
+
+  // const sortedTypes = types.sort((a, b) => a.localeCompare(b));
+
+  defArtistsTypes.value = types; // sortedTypes;
+
+}
+getArtistsTypes();
 
 // each time the watcher intersecting fetch a new load of artworks
 const handleObserver = (entries) => {
@@ -200,6 +224,7 @@ const handleObserver = (entries) => {
 const observer = new IntersectionObserver(handleObserver);
 
 function setup() {
+
   // name or path to set default content
   typeOfContent.value = router.currentRoute.value.path.replace("/", "");
   contents.value = [];
@@ -223,7 +248,7 @@ function setup() {
     params.value = {
       nationality,
       q,
-      guests
+      artist_type,
     };
   }
 
@@ -256,13 +281,6 @@ watch(
     setup();
   }
 );
-
-// Need to remove this and all element using this function for Prod
-function removePreprod(url) {
-  if (url) {
-    return url.replace("preprod.", "");
-  }
-}
 </script>
 
 <template>
@@ -296,21 +314,15 @@ function removePreprod(url) {
         @update:option="(newValue) => (nationality = newValue)"
       ></UiSelect> -->
 
-      <label v-if="params && Object.keys(params).includes('guests')" for="checkbox" class="relative inline-flex items-center gap-2">
-        Artistes invités
-        <div class="relative h-4 flex items-center justify-center">
-          <input
-            v-model="guests"
-            name="guests"
-            type="checkbox"
-            class="peer appearance-none w-4 h-4 border border-black cursor-pointer rounded"
-          />
-          <span class="peer-checked:block hidden absolute origin-left -rotate-[55deg] top-[65%] left-1/2 w-full h-[2px] bg-black outline outline-white rounded-3xl pointer-events-none"></span>
-          <span class="peer-checked:block hidden absolute origin-left -rotate-[130deg] top-[65%] left-1/2 w-1/2 h-[2px] bg-black rounded-3xl pointer-events-none"></span>
-          <!-- <span class="peer-checked:block hidden absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-black pointer-events-none rounded-sm"></span> -->
-        </div>
-      </label>
-
+       <UiSelect
+        v-if="params && Object.keys(params).includes('artist_type')"
+        :options="defArtistsTypes"
+        optionKeyName="label"
+        :selectedValue="artist_type ? artist_type : defArtistsTypes[0].value"
+        desc="Artiste"
+        @update:option="(newValue) => (artist_type = newValue)"
+      ></UiSelect>
+        <!--  -->
       <!-- <UiSelect
         v-if="params && Object.keys(params).includes('genres')"
         :options="defGenres"
@@ -361,14 +373,14 @@ function removePreprod(url) {
         <li class="" v-for="content in contents" :key="content">
           <!-- <ArtworkCard
             :url="content.url"
-            :picture="removePreprod(content.picture)"
+            :picture="content.picture"
             :title="content.title"
           /> -->
           <component
             :is="component"
             :artist="content"
             :url="content.url"
-            :picture="removePreprod(content.picture)"
+            :picture="content.picture"
             :title="content.title"
           ></component>
         </li>
