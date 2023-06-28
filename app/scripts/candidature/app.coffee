@@ -8,7 +8,8 @@ angular.module('candidature.application', ['candidature.controllers',
   # TOKEN IS EXPIRED
   $rootScope.$on('tokenHasExpired', () ->
     # get date to debug
-    date = jwtHelper.getTokenExpirationDate(localStorage.getItem('token'));
+    try date = jwtHelper.getTokenExpirationDate(localStorage.getItem('token'));
+    catch e then date = false
     console.log('Your session has expired on ', date)
     # test if system know how to logout
     if(typeof $rootScope.logout is 'function') # 'is' equal to '===' in CoffeeScript

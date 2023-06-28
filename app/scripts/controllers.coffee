@@ -48,7 +48,10 @@ angular.module('memoire.controllers', ['memoire.services'])
     return true
 
   if(localStorage.getItem('token'))
-    user_id = jwtHelper.decodeToken(localStorage.getItem('token')).user_id
+    
+    try user_id = jwtHelper.decodeToken(localStorage.getItem('token')).user_id
+    catch e then user_id = false
+
     Users.one(user_id).get().then((user) ->
       $rootScope.user = user
     )
@@ -58,7 +61,7 @@ angular.module('memoire.controllers', ['memoire.services'])
     params.error=""
     Login.post(params)
     .then((auth) ->
-          localStorage.setItem('token', auth.token)
+          localStorage.setItem('token', auth.access)
           $http.defaults.headers.common.Authorization = "JWT "+ localStorage.getItem('token')
           authManager.authenticate()
           Users.one(auth.user.pk).get().then((user) ->
