@@ -75,13 +75,14 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 
   if($stateParams.token)
 
+
     tokenDecode = []
     try tokenDecode = jwtHelper.decodeToken($stateParams.token)
     catch e then tokenDecode.user_id = false
 
     route = $stateParams.route
     $scope.user_id = tokenDecode.user_id
-    $scope.username = tokenDecode.username
+    # $scope.username = tokenDecode.username
 
     $scope.submit = () ->
       # delete old headers
@@ -164,7 +165,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
       delete $http.defaults.headers.common.Authorization
       Login.post(params, [headers={}])
       .then((auth) ->
-            localStorage.setItem('token', auth.token)
+            localStorage.setItem('token', auth.access)
             # set header
             $http.defaults.headers.common.Authorization = "JWT "+ localStorage.getItem('token')
             authManager.authenticate()
