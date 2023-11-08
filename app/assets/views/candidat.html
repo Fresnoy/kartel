@@ -134,7 +134,7 @@
             <a data-target ="#observations" role="tab" data-toggle="tab">
 
               <!-- Annoté -->
-              <span ng-if="candidature.has_observation">
+              <span ng-if="candidature.admin.has_observation">
                 <span class="glyphicon glyphicon-pencil" aria-hidden="true" title="Des notes personnelles ou partagées sont disponibles"></span>
               </span>
                 Notes du Jury
@@ -249,7 +249,9 @@
           <br/>
           <div ng-if="candidature.binomial_application">
             <h4>Candidature en binôme</h4>
-            <p>Candidate en binôme avec : <a ui-sref="candidatures.list.candidat({id: binominal_link_id})" ng-click="$parent.$parent.candidat_id = binominal_link_id;">{{candidature.binomial_application_with}}</a></p>
+            <p>Candidate en binôme avec : 
+              <a ui-sref="candidatures.list.candidat({id: binominal_link_id})" 
+                 ng-click="$parent.$parent.admin_app_id = binominal_link_id;">{{candidature.binomial_application_with}}</a></p>
             <span ng-if='!candidature.binomial_application_with' class="text-danger warning">Nom du binome absent</span>
           </div>
           <h4>Projet 1ere année</h4>
@@ -313,28 +315,28 @@
         <div role="tabpanel" class="tab-pane admin" id="actions">
           <h3>Actions</h3>
           <p>Statut :
-            <span ng-show="candidature.unselected">Ce candidat n'a pas été selectionné par le jury</span>
-            <span ng-show="!candidature.unselected && candidature.application_completed && !candidature.application_complete">En attente de validation</span>
-            <span ng-show="!candidature.unselected && candidature.application_completed && candidature.application_complete && !candidature.wait_listed_for_interview && !candidature.selected_for_interview && !candidature.wait_listed && !candidature.selected">
+            <span ng-show="candidature.admin.unselected">Ce candidat n'a pas été selectionné par le jury</span>
+            <span ng-show="!candidature.admin.unselected && candidature.application_completed && !candidature.admin.application_complete">En attente de validation</span>
+            <span ng-show="!candidature.admin.unselected && candidature.application_completed && candidature.admin.application_complete && !candidature.admin.wait_listed_for_interview && !candidature.admin.selected_for_interview && !candidature.admin.wait_listed && !candidature.admin.selected">
               Candidature visée</span>
-            <span ng-show="!candidature.unselected && candidature.application_complete && candidature.wait_listed_for_interview && !candidature.selected_for_interview && !candidature.wait_listed && !candidature.selected">
-              En liste d'attente pour l'entretien - position : {{ candidature.position_in_interview_waitlist }}
+            <span ng-show="!candidature.admin.unselected && candidature.admin.application_complete && candidature.admin.wait_listed_for_interview && !candidature.admin.selected_for_interview && !candidature.admin.wait_listed && !candidature.admin.selected">
+              En liste d'attente pour l'entretien - position : {{ candidature.admin.position_in_interview_waitlist }}
             </span>
-            <span class="inline" ng-show="!candidature.unselected && candidature.application_complete && candidature.selected_for_interview && !candidature.wait_listed && !candidature.selected">
-              Sélectionné<ng-pluralize count="artist.user.profile.gender.indexOf('F')" when="{'0': 'e'}"></ng-pluralize> pour l'entretien
-              <span ng-class='{"alert-danger":!candidature.interview_date}'>le <em>{{ candidature.interview_date | date : "EEEE d MMMM yyyy à HH'h'mm" | translate_en_to_fr }}</em></span>
+            <span class="inline" ng-show="!candidature.admin.unselected && candidature.admin.application_complete && candidature.admin.selected_for_interview && !candidature.admin.wait_listed && !candidature.admin.selected">
+              Sélectionné<ng-pluralize count="artist.user.profile.gender.indexOf('F')" when="{'0': 'e', 'other': ''}"></ng-pluralize> pour l'entretien
+              <span ng-class='{"alert-danger":!candidature.admin.interview_date}'>le <em>{{ candidature.admin.interview_date | date : "EEEE d MMMM yyyy à HH'h'mm" | translate_en_to_fr }}</em></span>
             </span>
-            <span ng-show="!candidature.unselected && candidature.application_complete && candidature.selected_for_interview && candidature.wait_listed && !candidature.selected">
-              Admis<ng-pluralize count="artist.user.profile.gender.indexOf('F')" when="{'0': 'e'}"></ng-pluralize> sur liste d'attente (position : {{ candidature.position_in_waitlist }})
+            <span ng-show="!candidature.admin.unselected && candidature.admin.application_complete && candidature.admin.selected_for_interview && candidature.admin.wait_listed && !candidature.admin.selected">
+              Admis<ng-pluralize count="artist.user.profile.gender.indexOf('F')" when="{'0': 'e', 'other': ''}"></ng-pluralize> sur liste d'attente (position : {{ candidature.admin.position_in_waitlist }})
             </span>
-            <span ng-show="!candidature.unselected && candidature.application_complete && candidature.selected_for_interview && !candidature.wait_listed && candidature.selected">
-              Admis<ng-pluralize count="artist.user.profile.gender.indexOf('F')" when="{'0': 'e'}"></ng-pluralize>
+            <span ng-show="!candidature.admin.unselected && candidature.admin.application_complete && candidature.admin.selected_for_interview && !candidature.admin.wait_listed && candidature.admin.selected">
+              Admis<ng-pluralize count="artist.user.profile.gender.indexOf('F')" when="{'0': 'e', 'other': ''}"></ng-pluralize>
             </span>
           </p>
 
 
 
-            <div ng-show="!candidature.unselected">
+            <div ng-show="!candidature.admin.unselected">
 
                 <!-- STATE 1
 
@@ -344,7 +346,7 @@
 
                 -->
                 <div ng-show="candidature.application_completed &&
-                              !candidature.application_complete"
+                              !candidature.admin.application_complete"
                               ng-init="click_cComplete=false" >
 
 
@@ -360,8 +362,8 @@
                       <br/>Cette action <strong>envoie un email</strong> automatique au Candidat
                     </p>
                     <button type="button"
-                      ng-click="candidature.application_complete = true;
-                                candidature.patch({application_complete: candidature.application_complete});
+                      ng-click="candidature.admin.application_complete = true;
+                                candidature.admin.patch({application_complete: candidature.admin.application_complete});
                                 click_cComplete=false"
                       class="btn btn-primary btn-md btn-success">
                                 Valider
@@ -385,8 +387,8 @@
                       n'a pas revalidé son dossier
                     </p>
                     <button type="button"
-                            ng-click="candidature.application_completed = false;
-                                      candidature.patch({application_completed: candidature.application_completed})"
+                            ng-click="candidature.admin.application_completed = false;
+                                      candidature.admin.patch({application_completed: candidature.admin.application_completed})"
                             class="btn btn-primary btn-md btn-success">
                             Valider
                     </button>
@@ -408,9 +410,9 @@
 
 
                 <div ng-show="candidature.application_complete &&
-                              !candidature.selected_for_interview &&
-                              !candidature.wait_listed &&
-                              !candidature.selected"
+                              !candidature.admin.selected_for_interview &&
+                              !candidature.admin.wait_listed &&
+                              !candidature.admin.selected"
                      ng-init="click_cInterview=false" >
                   <button ng-show="!click_cInterview_wait" type="button"
                           ng-click='click_cInterview=!click_cInterview'
@@ -418,29 +420,29 @@
                       Sélectionner  pour l'entretien
                   </button>
                   <div ng-show="click_cInterview" ng-init="itw_modif=false" >
-                    <div ng-show="!candidature.interview_date || itw_modif==true">
+                    <div ng-show="!candidature.admin.interview_date || itw_modif==true">
                       Le
                       <input type="date" size=50 name="cItwDate" ng-model="itw_date" />
                       à
                       <input  type="time" size=50 name="cItwTime" ng-model="itw_date"/>
                       <button class="btn btn-success" ng-click="
-                                        candidature.interview_date = (itw_date | date:'yyyy-MM-ddTHH:mm:ss');
-                                        candidature.patch({'interview_date': candidature.interview_date});
+                                        candidature.admin.interview_date = (itw_date | date:'yyyy-MM-ddTHH:mm:ss');
+                                        candidature.admin.patch({'interview_date': candidature.admin.interview_date});
                                         itw_modif=false;
                                         " >Valider</button>
                       <button type="button" ng-click='click_cInterview=false; click_cInterview_wait=false' class="btn btn-primary btn-md btn-danger">Annuler</button>
 
                     </div>
-                    <div ng-show="candidature.interview_date && itw_modif==false">
-                       Le {{ candidature.interview_date | date : "EEEE d MMMM yyyy à HH'h'mm" | translate_en_to_fr }}
-                       <a ng-class='{"alert-link":!candidature.interview_date}' ng-click="itw_modif=true" ><i class="glyphicon glyphicon-edit"></i> </a>
+                    <div ng-show="candidature.admin.interview_date && itw_modif==false">
+                       Le {{ candidature.admin.interview_date | date : "EEEE d MMMM yyyy à HH'h'mm" | translate_en_to_fr }}
+                       <a ng-class='{"alert-link":!candidature.admin.interview_date}' ng-click="itw_modif=true" ><i class="glyphicon glyphicon-edit"></i> </a>
                         <p class="alert alert-warning" role="alert">
                           Attention cette action selectionne le candidat pour l'entretien
                           <br/><strong>Cette action ENVOIE un email avec le rendez-vous au candidat !</strong>
                         </p>
                         <button type="button"
-                          ng-click="candidature.selected_for_interview = true; candidature.wait_listed_for_interview = false;
-                          candidature.patch({selected_for_interview: candidature.selected_for_interview, wait_listed_for_interview: candidature.wait_listed_for_interview });
+                          ng-click="candidature.admin.selected_for_interview = true; candidature.admin.wait_listed_for_interview = false;
+                          candidature.admin.patch({selected_for_interview: candidature.admin.selected_for_interview, wait_listed_for_interview: candidature.admin.wait_listed_for_interview });
                           click_cInterview=false"
                           class="btn btn-primary btn-md btn-warning">Valider</button>
                         <button type="button" ng-click='click_cInterview=false; click_cInterview_wait=false' class="btn btn-primary btn-md btn-danger">Annuler</button>
@@ -455,11 +457,11 @@
                             =>
                                 Candidature waiting list interview
                  -->
-                <div ng-show="candidature.application_complete &&
-                              !candidature.selected_for_interview &&
-                              !candidature.wait_listed_for_interview &&
-                              !candidature.wait_listed &&
-                              !candidature.selected"
+                <div ng-show="candidature.admin.application_complete &&
+                              !candidature.admin.selected_for_interview &&
+                              !candidature.admin.wait_listed_for_interview &&
+                              !candidature.admin.wait_listed &&
+                              !candidature.admin.selected"
                       ng-init="click_cInterview=false" >
 
                   <button ng-show="!click_cInterview"
@@ -476,25 +478,25 @@
                              <p>Indiquer sa position dans la liste d'attente : </>
                              <input  id="itw_position" type="number" class=" form-control inline"
                                      name="cPosItwWl"
-                                     ng-model="candidature.position_in_interview_waitlist"
+                                     ng-model="candidature.admin.position_in_interview_waitlist"
                                      ng-model-options='{ debounce: 100 }'
-                                     ng-change="candidature.patch({'position_in_interview_waitlist': candidature.position_in_interview_waitlist})"
+                                     ng-change="candidature.admin.patch({'position_in_interview_waitlist': candidature.admin.position_in_interview_waitlist})"
                                      required
                              />
                           </div>
 
-                    <p ng-show="candidature.position_in_interview_waitlist>0 && click_cInterview_wait " class="alert alert-warning" role="alert">
+                    <p ng-show="candidature.admin.position_in_interview_waitlist>0 && click_cInterview_wait " class="alert alert-warning" role="alert">
                       Attention cette action selectionne le candidat sur la liste d'attente
-                      pour l'entretien en position {{ candidature.position_in_interview_waitlist}}
+                      pour l'entretien en position {{ candidature.admin.position_in_interview_waitlist}}
                       <br/><strong>Cette action ENVOIE un email au candidat !</strong>
                     </p>
 
                     <button type="button"
-                      ng-click="candidature.wait_listed_for_interview = true;
-                                candidature.patch({wait_listed_for_interview: candidature.wait_listed_for_interview});
+                      ng-click="candidature.admin.wait_listed_for_interview = true;
+                                candidature.admin.patch({wait_listed_for_interview: candidature.admin.wait_listed_for_interview});
                                 click_cInterview=false; click_cInterview_wait=false"
                       class="btn btn-primary btn-md btn-warning"
-                      ng-show="candidature.position_in_interview_waitlist>0"
+                      ng-show="candidature.admin.position_in_interview_waitlist>0"
                       >
                                     Valider
                     </button>
@@ -515,9 +517,9 @@
 
                 -->
 
-                <div ng-show="candidature.selected_for_interview &&
-                              !candidature.wait_listed &&
-                              !candidature.selected
+                <div ng-show="candidature.admin.selected_for_interview &&
+                              !candidature.admin.wait_listed &&
+                              !candidature.admin.selected
                               "
                      ng-init="click_cWaitListed=false" >
 
@@ -531,28 +533,28 @@
                          <p>Indiquer sa position dans la liste d'attente : </>
                          <input  id="waitlist_position" type="number" class=" form-control inline"
                                  name="cPosWl"
-                                 ng-model="candidature.position_in_waitlist"
+                                 ng-model="candidature.admin.position_in_waitlist"
                                  ng-model-options='{ debounce: 100 }'
-                                 ng-change="candidature.patch({'position_in_waitlist': candidature.position_in_waitlist})"
+                                 ng-change="candidature.admin.patch({'position_in_waitlist': candidature.admin.position_in_waitlist})"
                                  required
                          />
                       </div>
 
-                      <p ng-show="candidature.position_in_waitlist>0 &&
+                      <p ng-show="candidature.admin.position_in_waitlist>0 &&
                                   click_cWaitListed "
                          class="alert alert-warning" role="alert">
                         Attention cette action selectionne le candidat sur la liste d'attente
-                        en position : {{ candidature.position_in_waitlist}}
+                        en position : {{ candidature.admin.position_in_waitlist}}
                         <br/><strong>Cette action ENVOIE un email au candidat !</strong>
                       </p>
 
                       <button type="button"
-                              ng-click="candidature.wait_listed = true;
-                                        candidature.selected = false;
-                                        candidature.patch({wait_listed: candidature.wait_listed, selected: candidature.selected});
+                              ng-click="candidature.admin.wait_listed = true;
+                                        candidature.admin.selected = false;
+                                        candidature.admin.patch({wait_listed: candidature.admin.wait_listed, selected: candidature.admin.selected});
                                         click_cWaitListed=false;"
                               class="btn btn-primary btn-md btn-warning"
-                              ng-show="candidature.position_in_waitlist>0">
+                              ng-show="candidature.admin.position_in_waitlist>0">
                                       Valider
                       </button>
                       <button type="button" ng-click='click_cWaitListed=false' class="btn btn-primary btn-md btn-danger">Annuler</button>
@@ -567,8 +569,8 @@
                                           Candidature selectionnée
                 -->
                 <div ng-show="!click_cWaitListed &&
-                              candidature.selected_for_interview &&
-                              !candidature.selected"
+                              candidature.admin.selected_for_interview &&
+                              !candidature.admin.selected"
                      ng-init="click_cSelected=false" >
 
                     <button type="button"
@@ -584,9 +586,9 @@
                       </p>
 
                       <button type="button"
-                              ng-click="candidature.selected = true;
-                                        candidature.wait_listed = false;
-                                        candidature.patch({selected: candidature.selected, wait_listed: candidature.wait_listed});
+                              ng-click="candidature.admin.selected = true;
+                                        candidature.admin.wait_listed = false;
+                                        candidature.admin.patch({selected: candidature.admin.selected, wait_listed: candidature.admin.wait_listed});
                                         click_cSelected=false;"
                               class="btn btn-primary btn-md btn-warning">
                                         Valider
@@ -606,25 +608,25 @@
                 <!-- ANNULATIONS -->
 
                 <!-- liste d'attente entretiens -->
-                <button ng-show="candidature.wait_listed_for_interview &&
-                                 !candidature.wait_listed &&
-                                 !candidature.selected "
+                <button ng-show="candidature.admin.wait_listed_for_interview &&
+                                 !candidature.admin.wait_listed &&
+                                 !candidature.admin.selected "
                         type="button"
-                        ng-click="candidature.wait_listed_for_interview = false;
-                                  candidature.position_in_interview_waitlist = null;
-                                  candidature.patch({wait_listed_for_interview: candidature.wait_listed_for_interview, position_in_interview_waitlist:candidature.position_in_interview_waitlist});"
+                        ng-click="candidature.admin.wait_listed_for_interview = false;
+                                  candidature.admin.position_in_interview_waitlist = null;
+                                  candidature.admin.patch({wait_listed_for_interview: candidature.admin.wait_listed_for_interview, position_in_interview_waitlist: candidature.admin.position_in_interview_waitlist});"
                         class="btn btn-outline-secondary btn-md btn-block">
                                     Ne plus sélectionner en liste d'attente pour l'entretien (un email a été envoyé)
                   </button>
 
 
                   <!-- entretien -->
-                  <button ng-show="candidature.selected_for_interview &&
-                                  !candidature.wait_listed &&
-                                  !candidature.selected"
+                  <button ng-show="candidature.admin.selected_for_interview &&
+                                  !candidature.admin.wait_listed &&
+                                  !candidature.admin.selected"
                           type="button"
-                          ng-click="candidature.selected_for_interview = false;
-                          candidature.patch({selected_for_interview: candidature.selected_for_interview});"
+                          ng-click="candidature.admin.selected_for_interview = false;
+                          candidature.admin.patch({selected_for_interview: candidature.admin.selected_for_interview});"
                           class="btn btn-outline-secondary btn-md btn-block">
                               Ne plus sélectionner pour l'entretien (un email a été envoyé)
                   </button>
@@ -632,24 +634,24 @@
 
 
                   <!-- liste d'attente pour selection -->
-                  <button ng-show="candidature.selected_for_interview &&
-                                   candidature.wait_listed &&
-                                   !candidature.selected "
+                  <button ng-show="candidature.admin.selected_for_interview &&
+                                   candidature.admin.wait_listed &&
+                                   !candidature.admin.selected "
                           type="button"
-                          ng-click="candidature.wait_listed = false;
-                                    candidature.position_in_waitlist = null;
-                                    candidature.patch({wait_listed: candidature.wait_listed, position_in_waitlist: candidature.position_in_waitlist});"
+                          ng-click="candidature.admin.wait_listed = false;
+                                    candidature.admin.position_in_waitlist = null;
+                                    candidature.admin.patch({wait_listed: candidature.admin.wait_listed, position_in_waitlist: candidature.admin.position_in_waitlist});"
                           class="btn btn-outline-secondary btn-md btn-block">
                                           Retirer des admis en liste d'attente
                   </button>
 
                   <!-- RECU / ADMI  -->
-                  <button ng-show="candidature.selected_for_interview &&
-                                   !candidature.wait_listed &&
-                                   candidature.selected "
+                  <button ng-show="candidature.admin.selected_for_interview &&
+                                   !candidature.admin.wait_listed &&
+                                   candidature.admin.selected "
                           type="button"
-                          ng-click="candidature.selected = false;
-                                    candidature.patch({selected: candidature.selected});"
+                          ng-click="candidature.admin.selected = false;
+                                    candidature.admin.patch({selected: candidature.admin.selected});"
                           class="btn btn-outline-secondary btn-md btn-block">
                                           Retirer des admis
                   </button>
@@ -659,7 +661,7 @@
             <!-- UNSELECT  -->
             <hr />
             <br />
-            <div ng-show="!candidature.unselected">
+            <div ng-show="!candidature.admin.unselected">
               <button type="button"
                       ng-click='click_unselect=!click_unselect'
                       class="btn btn-danger btn-md btn-block">
@@ -673,8 +675,8 @@
                   <br/><strong>Cette action ENVOIE un e-mail au candidat !</strong>
                 </p>
                 <button type="button"
-                        ng-click="candidature.unselected = true;
-                                  candidature.patch({unselected: candidature.unselected});
+                        ng-click="candidature.admin.unselected = true;
+                                  candidature.admin.patch({unselected: candidature.admin.unselected});
                                   click_unselect=false"
                         class="btn btn-primary btn-md btn-danger">
                               Ne pas sélectionner ce candidat

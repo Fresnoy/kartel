@@ -295,9 +295,23 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
           # break
           return
 
+        dateDiff = (str1, str2) ->  
+            diff = Date.parse(str2) - Date.parse(str1)
+            if isNaN(diff) then NaN else
+              diff: diff
+              ms: Math.floor(diff % 1000)
+              s: Math.floor(diff / 1000 % 60)
+              m: Math.floor(diff / 60000 % 60)
+              h: Math.floor(diff / 3600000 % 24)
+              d: Math.floor(diff / 86400000)
+
+
         # setup countdown
         $rootScope.timer_countdown = Math.round((new Date($rootScope.campaign.candidature_date_end).getTime() - new Date().getTime())/1000)
+
+        # $rootScope.timer_countdown = Math.abs(Date.parse($rootScope.campaign.candidature_date_end) - new Date()) 
         
+
         # have to adjust countdown because 1 second = 1.001 second depending on the browser (WTF?!)
         clearInterval($rootScope.timer_interval) 
         $rootScope.timer_interval = setInterval( ->

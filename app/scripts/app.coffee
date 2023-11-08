@@ -145,6 +145,12 @@ angular.module('kartel',
       return Math.abs(ageDate.getUTCFullYear() - 1970)
 )
 #
+.filter('no_timezone', ->
+    return (input, langue) ->
+      if(input)
+        console.log(input)
+        return input.substring(0, 19) # AAAA-MM-JJTHH:MM:SS+HH:MM
+)
 .filter('translate_date', ->
     return (input, langue) ->
       if(input)

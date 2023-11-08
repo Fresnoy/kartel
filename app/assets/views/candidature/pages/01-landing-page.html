@@ -14,13 +14,13 @@
         <small class="fr">
         Du {{ campaign.candidature_date_start | date : "d MMMM" | translate_en_to_fr | lowercase }}
            au
-           {{ campaign.candidature_date_end | date : "d MMMM yyyy à HH'h'mm" | translate_en_to_fr | lowercase }}
+           {{ campaign.candidature_date_end | no_timezone | date : "d MMMM yyyy à HH'h'mm" | translate_en_to_fr | lowercase }}
            (heure de Paris)
        </small>
        <small class="en">
        From {{ campaign.candidature_date_start | date : "MMMM d" }}
           to
-          {{ campaign.candidature_date_end | date : "MMMM d, yyyy '-' H'h'mm" }} (Paris time)
+          {{ campaign.candidature_date_end | no_timezone | date : "MMMM d, yyyy '-' H'h'mm" }} (Paris time)
       </small>
 
         <div class="navigation">

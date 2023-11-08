@@ -37,6 +37,11 @@ angular.module('memoire.services', ['restangular'])
 
         ).service('school/student-application')
 )
+.factory('AdminCandidatures', (RestangularV2) ->
+        return RestangularV2.withConfig((RestangularConfigurer) ->
+
+        ).service('school/admin-student-application')
+)
 
 .factory('CandidatRegistration', (Restangular) ->
         # pas besoin d'un token - on le laisse en V1

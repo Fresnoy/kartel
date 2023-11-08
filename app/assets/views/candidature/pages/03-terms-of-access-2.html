@@ -29,11 +29,10 @@
       <ul>
          
          <li>Dossier de candidature (inscription administrative et dossier artistique), enregistrement en ligne, au plus tard le
-           <strong>{{ campaign.candidature_date_end | date : "EEEE d MMMM yyyy à HH'h'" | translate_en_to_fr | lowercase }}, heure de Paris</strong>.
+           <strong>{{ campaign.candidature_date_end | no_timezone | date : "EEEE d MMMM yyyy à HH'h'" | translate_en_to_fr | lowercase }}, heure de Paris</strong>.
            Un mail de confirmation de votre inscription vous sera adressé à la fin de la procédure d’enregistrement de votre candidature, 
            il est indispensable pour sa validation.</li>
-         <li ng-if="candidature_config.communication.agenda.information_and_tour"
-             ng-bind-html=candidature_config.communication.agenda.information_and_tour.fr.htmltext></li>
+         <li>Portes ouvertes : <strong>{{ campaign.information_and_tour_date | no_timezone | date : "EEEE d MMMM yyyy à HH'h'" | translate_en_to_fr | lowercase }} précises (heure de Paris)</strong>.</li>
          <li>Présélection sur dossier, annonce des résultats le
            <strong>{{ campaign.interviews_publish_date | date : "EEEE d MMMM yyyy" | translate_en_to_fr | lowercase }}</strong>
          </li>
@@ -52,12 +51,12 @@
       <p>The selection process is annual; it will take place according to the following schedule:</p>
       <ul>
          <li>Administrative registration and dispatch of artistic dossier no later than midnight on<br/>
-          <strong>{{ campaign.candidature_date_end | date : "EEEE MMMM d, yyyy  'at' h a" }}, Paris time</strong>.
+          <strong>{{ campaign.candidature_date_end | no_timezone  | date : "EEEE MMMM d, yyyy  'at' h a" }}, Paris time</strong>.
           An email confirming your registration will be sent to you at the end of the registration procedure for your application,
           it is essential for its validation.
           </li>
-         <li ng-if="candidature_config.communication.agenda.information_and_tour"
-             ng-bind-html=candidature_config.communication.agenda.information_and_tour.en.htmltext></li>
+          <li>Information and tour: <strong>{{ campaign.information_and_tour_date | no_timezone | date : "EEEE MMMM d, yyyy  'at' h a" }} 
+            ,Paris time</strong>.</li>
          <li>1st selection of applications.
            List published online on
             <strong>{{ campaign.interviews_publish_date | date : "EEEE MMMM d, yyyy" }}</strong>
