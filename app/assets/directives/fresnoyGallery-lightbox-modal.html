@@ -54,7 +54,7 @@
       <!-- FRESNOY IMAGE -->
       <!-- api v1 -->
       <img ng-if="(Lightbox.image.picture | isFresnoyUrl) && !(Lightbox.image.medium_url) && (Lightbox.image.picture.indexOf('api.lefresnoy')<0)"
-         lightbox-src="{{ config.media_service }}?url={{ config.api_service }}{{ Lightbox.image.picture }}&w=1500&fmt=jpg" />
+      lightbox-src="{{ config.media_service }}?url={{ config.api_url }}{{ Lightbox.image.picture }}&w=1500&fmt=jpg" />
       <!-- api v2 -->
        <img ng-if="(Lightbox.image.picture | isFresnoyUrl) && !(Lightbox.image.medium_url) && (Lightbox.image.picture.indexOf('api.lefresnoy')>0)"
           lightbox-src="{{ config.media_service }}?url={{ Lightbox.image.picture }}&w=1500&fmt=jpg" />
@@ -62,7 +62,7 @@
        <img ng-if="!(Lightbox.image.picture | isFresnoyUrl) && !Lightbox.image.medium_url" lightbox-src="{{ Lightbox.image.picture }}"/>
     <!-- //image -->
 
-    <p ng-bind-html="Lightbox.image.description | linky:'_blank' | nl2br" />
+    <p ng-if="Lightbox.image.description!=null" ng-bind-html="Lightbox.image.description | linky:'_blank' | nl2br" />
   </div>
 
 </div>
