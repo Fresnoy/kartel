@@ -84,8 +84,12 @@
                        ng-model-options='{ debounce: 1000 }'
                        name="cBinomeWith"
                        placeholder = ""
+                       list="app_users"
                        required
                        />
+                       <datalist id="app_users">
+                              <option ng-repeat="user in application_users" value="{{user.name}}"></option>
+                      </datalist>
                     <div ng-show="form.cBinomeWith.$error.required" class="help-block error">
 
                            <span class="fr">
