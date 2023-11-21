@@ -278,9 +278,22 @@ angular.module('candidature.application', ['candidature.controllers',
                   views:
                     'application_content_view':
                         templateUrl: 'views/candidature/pages/19-intentions-project-1.html',
-                        controller: ($rootScope) ->
+                        controller: ($rootScope, $scope, Users) ->
                           $rootScope.loadInfos($rootScope)
                           $rootScope.step.current = "19"
+                          # binome list
+                          Users.getList({artist__student_application__campaign__is_current_setup:"true"}).then((candidats) ->
+                            $scope.application_users = []
+                            for c in candidats                              
+                              $scope.application_users.push({name:c.first_name + " " + c.last_name})
+                          )
+
+                            
+
+
+
+
+
       )
       # ONLINE CANDIDATURE - 20 - Projet 1
       $stateProvider.state('candidature.intentions-project-2',
