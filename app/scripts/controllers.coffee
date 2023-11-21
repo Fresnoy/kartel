@@ -315,7 +315,7 @@ angular.module('memoire.controllers', ['memoire.services'])
 
 .controller('CandidaturesController', ($rootScope, $scope, $stateParams, $location, 
                                        Candidatures, AdminCandidatures, Galleries, Media, 
-                                       RestangularV2, ArtistsV2, Users,
+                                       RestangularV2, ArtistsV2, Users, Graphql,
                                        ISO3166, cfpLoadingBar) ->
   # main title
   $rootScope.main_title="Candidatures administration"
@@ -327,8 +327,8 @@ angular.module('memoire.controllers', ['memoire.services'])
   $scope.admin_app_id = $stateParams.id
 
   current_year = new Date().getFullYear()
-  # order
-  # none = 1 | true = 2 | false = 3
+  # plusieurs models sont utilisés : Canddatures et AdminCandidtures 
+  # selon l'avancée de l'inscription : si l'utilisateur n'a pas finalisé son dossier, on a pas acces à toutes ses infos
   $scope.select_criteres = [
     {key:0, title: 'Sélectionner une option', sortby: {'search':'XXX', }, model: Candidatures },
     {key:1, title: 'Toutes', sortby: {'campaign__is_current_setup':'true', }, model: Candidatures, count:0 },
@@ -378,24 +378,28 @@ angular.module('memoire.controllers', ['memoire.services'])
     if($scope.asc == 'false') then criteres.ordering = "-"+criteres.ordering
     # init arr candidatures
     arr = []
-    # 
+    
     sort.model.getList(criteres).then((candidatures) ->
-      for candidature, index in candidatures          
+      for candidature, index in candidatures
+          # indication de la progression de la candidature (graphic use)
           candidature.progress = $scope.get_candidature_progress(candidature)
+          # switch candidature load by model
           if(sort.model == AdminCandidatures)
             # need to make a function to keep 'candidature' scope when assign in asynch function
             switchAdminCandidature(candidature, arr, index)
           else if(sort.model == Candidatures)
             loadCandidatureChildInfos(candidature, false)
             arr.push(candidature)      
-          else 
+          else
             console.log("NO MODEL ???", sort.model)
     )
     return arr
 
+  # getcandidatures
   $rootScope.candidatures = $scope.getCandidatures($scope.select_criteres[$scope.critere], $scope.select_orders[$scope.order])
   
-
+  console.log($rootScope.candidatures)
+  # make function to keep admin cnadidature scope scope
   switchAdminCandidature = (admin_candidature_obj, arr, index) -> 
     # add observation
     observation = if admin_candidature_obj.observation then JSON.parse(admin_candidature_obj.observation) else {jury:""}      
@@ -403,7 +407,7 @@ angular.module('memoire.controllers', ['memoire.services'])
 
     application = loadAdminCandidatureObj(admin_candidature_obj).then((c) ->
         c.admin = admin_candidature_obj
-        # arr.push(c)
+        # arr.push(c) # random (async) push : bad order
         # not just a push to keep order
         arr[index] = c 
     )
@@ -421,7 +425,7 @@ angular.module('memoire.controllers', ['memoire.services'])
       candidature_id = admin_candidature_obj.application.match(/\d+$/)[0]
 
       candidature = loadCandidature(candidature_id, true)
-      # for the then ! 
+      # for the then function ! 
       return candidature
 
   loadCandidature = (candidature_id, all_infos=false) ->
@@ -429,7 +433,8 @@ angular.module('memoire.controllers', ['memoire.services'])
       candidature_obj = loadCandidatureChildInfos(candidature_obj, all_infos)
       return candidature_obj
     )
-    
+  
+  # load artist, galleries and media
   loadCandidatureChildInfos = (candidature_obj, all_infos=false) ->
         if(all_infos)
             artist_id = candidature_obj.artist.match(/\d+$/)[0]
