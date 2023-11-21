@@ -116,3 +116,9 @@ angular.module('memoire.services', ['restangular'])
             RestangularConfigurer.setDefaultHeaders({'Content-Type': 'charset=UTF-8'})
       )
 )
+
+.factory('Graphql', (Restangular) ->
+        return Restangular.withConfig((RestangularConfigurer) ->
+                RestangularConfigurer.setBaseUrl(config.api_url);
+        ).service('graphql')
+)
