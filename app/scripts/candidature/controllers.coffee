@@ -251,7 +251,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 
 )
   # Media
-.controller('ParentCandidatureController', ($rootScope, $scope, $state, jwtHelper, $q,
+.controller('ParentCandidatureController', ($rootScope, $scope, $state, $stateParams, $location, jwtHelper, $q,
             Restangular, RestangularV2, Vimeo, Logout, $http, cfpLoadingBar, authManager, ISO3166,
             Users, Candidatures, ArtistsV2, Galleries, Media, Upload, ) ->
 
@@ -389,16 +389,27 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
   # write data var
   $rootScope.writingData = false
 
-  # lang
-  if localStorage.getItem("language")
-    $rootScope.language = localStorage.getItem("language")
-  else
-    localStorage.language = "fr"
-    $rootScope.language = localStorage.getItem("language")
-
+  # language
+  lang_list = ['fr', 'en']
+  lang = 'fr'
+  # try to find language param
+  # on url
+  language_url = $location.search().language
+  # on cookie / localstorage
+  language_cookie = localStorage.getItem("language")
+  # prefer url
+  if language_url && lang_list.includes(language_url)
+    lang = language_url
+  else if language_cookie && lang_list.includes(language_cookie)      
+      lang = language_cookie
+  # set language function
   $scope.setLang = (lang) ->
     localStorage.setItem("language", lang)
     $rootScope.language = localStorage.language
+  # set language
+  $scope.setLang(lang)
+  
+
 
   # title
   $rootScope.main_title= "Le Fresnoy - Studio national - "
@@ -778,8 +789,13 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
       fr:"Sélectionner une langue"
       en:"Select a language"
 
-    $scope.LANGUAGES_NAME = languageMappingList
+    $scope.LANGUAGES_NAME = languageMappingList    
     $scope.LANGUAGES = _.sortBy(_.pairs(languageMappingList), (o) -> return o[1].englishName)
+    $scope.LANGUAGES = _.uniq($scope.LANGUAGES, (o) -> 
+      return o[0].match(/[a-z]{1,3}/)[0]
+    )
+    console.log languageMappingList
+    console.log $scope.LANGUAGES
     $scope.other_language = []
     $scope.splitChar = ", "
 
@@ -840,6 +856,8 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
       $rootScope.current_display_screen = candidature_config.screen.cv
 
       $scope.french_art_cursus = ""
+      $scope.justificatif_placeholders = {en:"Document title",fr:"Titre du justificatif"}
+
 
       #patch Medium
       $scope.uploadFile = (data, model) ->
