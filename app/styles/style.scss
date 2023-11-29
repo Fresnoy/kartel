@@ -816,6 +816,9 @@ body {
     h2{
       font-size: 20px;
     }
+    blockquote{
+      font-size: 1em;
+    }
     .upload{
       position: absolute;
       left:0;
@@ -926,7 +929,7 @@ body {
         &.add{
           position: absolute;
           &.right{
-            right: -30px;
+            right: 0px;
             margin-top: 0px; /* 17px */
           }
         }
