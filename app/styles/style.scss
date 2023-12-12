@@ -116,9 +116,8 @@ li.promotion {
       cursor: pointer;
     }
     h3 {
-        display: inline-block;
+        display: block;
         float: left;
-        vertical-align: middle;
         line-height: 20px;
         padding-top: 10px;
         padding-bottom: 10px;
@@ -598,7 +597,6 @@ body {
     text-transform: uppercase;
     font-size: 9px;
     line-height: 15px;
-    vertical-align: middle;
     text-indent: 5px;
     display: block;
     margin: 0;
@@ -818,6 +816,9 @@ body {
     h2{
       font-size: 20px;
     }
+    blockquote{
+      font-size: 1em;
+    }
     .upload{
       position: absolute;
       left:0;
@@ -928,7 +929,7 @@ body {
         &.add{
           position: absolute;
           &.right{
-            right: -30px;
+            right: 0px;
             margin-top: 0px; /* 17px */
           }
         }
@@ -1256,10 +1257,8 @@ body {
           }
       }
       &.footer {
-        margin: 0px 0px;
-        position: absolute;
-        bottom:-10px;
-        right: 5px;
+        text-align: right;
+        margin: 10px 0 0 0;
       }
       &.header{
         position: absolute;

@@ -68,7 +68,7 @@
 
 
       <p class="fr">Site(s) web : </p>
-      <p class="en">website(s): </p>
+      <p class="en">Website(s): </p>
 
       <div class="field">
 
@@ -85,9 +85,8 @@
            </div>
         </div>
 
-        <a ng-if="website.length>0 && form.aWebsite.$valid" ng-click='addWebsite(artist, artist.websites, website);' class="btn right add">
-         +
-     </a>
+        <a ng-if="website.length>0 && form.aWebsite.$valid" ng-click='addWebsite(artist, artist.websites, website);' 
+         class="btn right add">Ok</a>
 
           <input
              type="text"
@@ -102,13 +101,13 @@
           <div ng-show="form.aWebsite.$touched && form.aWebsite.$invalid" ng-messages="form.aWebsite.$error" class="help-block error">
              <div ng-message="url">
                 <span class="fr">Erreur dans l'URL</span>
-                <span class="en">Error url</span>
+                <span class="en">Url Error</span>
              </div>
           </div>
 
           <label for="website">
-              <span class="fr">Site Web <br/>(http://www.monsite.com)</span>
-              <span class="en">Website <br/>(http://www.mywebsite.com)</span>
+              <span class="fr">Site Web (https://www.monsite.com)</span>
+              <span class="en">Website (https://www.mywebsite.com)</span>
           </label>
       </div>
 

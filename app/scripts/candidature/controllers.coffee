@@ -181,7 +181,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 .controller('CandidatureBreadcrumbController', ($rootScope, $scope, $state) ->
 
     $scope.getProgression = (type) ->
-      if(!$scope.isAuthenticated || !$rootScope.candidature)
+      if(!$scope.isAuthenticated || !$rootScope.candidature || !$rootScope.user.profile)
         return false
 
       if(type == "administrative-informations")
@@ -251,7 +251,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 
 )
   # Media
-.controller('ParentCandidatureController', ($rootScope, $scope, $state, jwtHelper, $q,
+.controller('ParentCandidatureController', ($rootScope, $scope, $state, $stateParams, $location, jwtHelper, $q,
             Restangular, RestangularV2, Vimeo, Logout, $http, cfpLoadingBar, authManager, ISO3166,
             Users, Candidatures, ArtistsV2, Galleries, Media, Upload, ) ->
 
@@ -295,9 +295,23 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
           # break
           return
 
+        dateDiff = (str1, str2) ->  
+            diff = Date.parse(str2) - Date.parse(str1)
+            if isNaN(diff) then NaN else
+              diff: diff
+              ms: Math.floor(diff % 1000)
+              s: Math.floor(diff / 1000 % 60)
+              m: Math.floor(diff / 60000 % 60)
+              h: Math.floor(diff / 3600000 % 24)
+              d: Math.floor(diff / 86400000)
+
+
         # setup countdown
         $rootScope.timer_countdown = Math.round((new Date($rootScope.campaign.candidature_date_end).getTime() - new Date().getTime())/1000)
+
+        # $rootScope.timer_countdown = Math.abs(Date.parse($rootScope.campaign.candidature_date_end) - new Date()) 
         
+
         # have to adjust countdown because 1 second = 1.001 second depending on the browser (WTF?!)
         clearInterval($rootScope.timer_interval) 
         $rootScope.timer_interval = setInterval( ->
@@ -375,16 +389,27 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
   # write data var
   $rootScope.writingData = false
 
-  # lang
-  if localStorage.getItem("language")
-    $rootScope.language = localStorage.getItem("language")
-  else
-    localStorage.language = "fr"
-    $rootScope.language = localStorage.getItem("language")
-
+  # language
+  lang_list = ['fr', 'en']
+  lang = 'fr'
+  # try to find language param
+  # on url
+  language_url = $location.search().language
+  # on cookie / localstorage
+  language_cookie = localStorage.getItem("language")
+  # prefer url
+  if language_url && lang_list.includes(language_url)
+    lang = language_url
+  else if language_cookie && lang_list.includes(language_cookie)      
+      lang = language_cookie
+  # set language function
   $scope.setLang = (lang) ->
     localStorage.setItem("language", lang)
     $rootScope.language = localStorage.language
+  # set language
+  $scope.setLang(lang)
+  
+
 
   # title
   $rootScope.main_title= "Le Fresnoy - Studio national - "
@@ -486,6 +511,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
           $rootScope.upload_status="Erreur"
           model[field] = ''
         ,(evt) ->
+          # Upload progression
           $rootScope.upload_status="Media upload"
           $rootScope.upload_percentage = parseInt(100.0 * evt.loaded / evt.total)
       )
@@ -620,9 +646,10 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
       # otherwise -> resume
       user_id = jwtHelper.decodeToken(localStorage.getItem('token')).user_id
       Users.one(user_id).get().then((user) ->
+        $rootScope.user = user
         candidature_is_started = user.profile.birthdate and user.profile.gender and user.profile.nationality
         if user.profile.is_artist and candidature_is_started
-          # $state.go("candidature.summary")
+          $state.go("candidature.summary")
         else
           # loadinfo create user-> artist if not created
           $rootScope.loadInfos($rootScope)
@@ -720,13 +747,14 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
       $scope.nationality = newValue.split($scope.splitChar)
   )
 
-
-
   # justif photo
   $scope.photo_justification_file = null
 
   $scope.uploadFile = (data, model, field, type) ->
     $rootScope.upload(data, model, field)
+
+  # INE
+  $scope.ine_placeholders = {en:"10 digits + 1 letter (or 9 + 2)",fr:"10 chiffres + 1 lettre (ou 9 + 2)"}
 
 )
 
@@ -744,6 +772,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
       if(newValue)
         $scope.phone_number = newValue.split("-").pop()
         $scope.phone_country = newValue.split("-").shift().substr(1)
+        console.log($scope.form2.uHomelandPhone)
 
         if($scope.form2.uHomelandPhone.$valid)
           $scope.saveUserModel($scope.user)
@@ -763,8 +792,13 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
       fr:"Sélectionner une langue"
       en:"Select a language"
 
-    $scope.LANGUAGES_NAME = languageMappingList
+    $scope.LANGUAGES_NAME = languageMappingList    
     $scope.LANGUAGES = _.sortBy(_.pairs(languageMappingList), (o) -> return o[1].englishName)
+    $scope.LANGUAGES = _.uniq($scope.LANGUAGES, (o) -> 
+      return o[0].match(/[a-z]{1,3}/)[0]
+    )
+    console.log languageMappingList
+    console.log $scope.LANGUAGES
     $scope.other_language = []
     $scope.splitChar = ", "
 
@@ -825,6 +859,8 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
       $rootScope.current_display_screen = candidature_config.screen.cv
 
       $scope.french_art_cursus = ""
+      $scope.justificatif_placeholders = {en:"Document title",fr:"Titre du justificatif"}
+
 
       #patch Medium
       $scope.uploadFile = (data, model) ->
@@ -987,14 +1023,15 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
             remark = candidature.remark
             new_remark = ""
             exist = pollRegexp.test(remark)
-            # if esist
+            # if exist
             # change de content
             if(exist)
               new_remark = remark.replace(pollRegexp, "$1"+obj.item+"$3")
             # else create it
             else 
-              new_remark = remark
-              # make some lines              
+              new_remark = if candidature.remark then candidature.remark else ""              
+              # # make some lines              
+              # make some lin             
               new_remark +="\n\n"
               new_remark +="[POLL]"+obj.item+"[/POLL]"
             # set remark
@@ -1037,6 +1074,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
     )
 
     $scope._isAvailableVideo = false
+    # get the video status (url, readable or being encoded media)
     $scope.isAvailableVideo = (videoUri) ->
       if(!videoUri)
         $scope._isAvailableVideo = false
@@ -1074,7 +1112,6 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
           )
       )
 
-
     $scope.uploadVimeo = (data, model, field) ->
 
       if (!data)
@@ -1091,21 +1128,37 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
           Vimeo.one("me").get().then((account_infos) ->
               console.log(account_infos)
               console.log((account_infos.data.upload_quota.space.free / 1073741824).toFixed(3) + " GB")
+
+              # vimeo Ticket Setting
+              headers =
+                  Authorization: "Bearer "+ settings.token
+                  "Content-Type":"application/json"
+                  Accept:"application/vnd.vimeo.*+json;version=3.4"
               upload_settings =
-                type: "streaming"
-              # get an upload ticket
+                  upload: 
+                    "approach": "tus"
+                    "size": data.size
+                  name: data.name
+                  description: "Inscription - " + $scope.candidature.current_year_application_count + " | " + $scope.user.last_name + " - " + $scope.user.first_name
+                  privacy: 
+                    view: "disable"
+                    embed: "whitelist"
               $rootScope.upload_status="Request for upload permissions"
-              account_infos.data.customPOST(upload_settings,"videos").then((ticket) ->
+              # get an upload ticket
+              account_infos.data.customPOST(upload_settings,"videos", "", headers).then((ticket) ->
+                    console.log(ticket)
                     # http method because Vimeo crash when multipart upload
                     #  send no Authorization
                     upload_config =
-                      url: ticket.data.upload_link_secure
+                      url: ticket.data.upload.upload_link
                       headers:
-                        'Content-Type': data.type
-                        Authorization : undefined
+                        # TUS API VERSION
+                        Accept: "application/vnd.vimeo.*+json;version=3.4"
+                        'Tus-Resumable':'1.0.0'
+                        'Upload-Offset': 0
+                        'Content-Type': 'application/offset+octet-stream'
                       data: data
-                      method: 'PUT'
-                      skipAuthorization: true,
+                      method: 'PATCH'
                       # transformRequest: (data, headers) ->
                       #   delete headers()['Authorization']
                       #   return data;
@@ -1114,48 +1167,49 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
                     # init upload (for abort upload)
                     $rootScope.upload_object = Upload.http(upload_config)
                     $rootScope.upload_object.then((resp) ->
+                        # Video loaded ! 
+                        console.log("End upload", resp)
+                        
+                        # display infos
+                        $rootScope.upload_status = "Video sent, please wait a few more moments"
+                        $rootScope.upload_percentage = 25
 
-                        # Complete the upload : complete_uri remove
-                        $rootScope.upload_status="Video sent, please wait a few more moments"
-                        $rootScope.upload_percentage=25
+                  
+                        # get video id
+                        uri = ticket.data.uri
+                        video_id = uri.match(/\d+$/)[0]
+                        
+                        $rootScope.upload_status="Update application information"
+                        $rootScope.upload_percentage=50
+                        # save the media link
+                        patch_infos = {}
+                        model[field] = "https://player.vimeo.com/video/"+video_id
+                        patch_infos[field] = model[field]
+                        model.patch(patch_infos)
 
-                        Vimeo.one(ticket.data.complete_uri).remove().then((remove) ->
-                          # get video id
-                          location = remove.headers('Location')
-                          video_id = location.split('/')[2]
-                          # save the media link
-                          patch_infos = {}
-                          model[field] = "https://player.vimeo.com/video/"+video_id
-                          patch_infos[field] = model[field]
-                          model.patch(patch_infos)
-                          # rename the video
-                          video_info =
-                            name: data.name
-                            description: "Inscription - " + $scope.candidature.current_year_application_count + " | " + $scope.user.last_name + " - " + $scope.user.first_name
+                        # add lefresnoy embed domain
+                        Vimeo.setDefaultHeaders({Authorization: "Bearer "+ settings.token})
+                        video_uri = "videos/"+video_id
+                        Vimeo.one(video_uri).patch({embed_domains:candidature_config.vimeo_embed_domain})
 
+                        
+                        # console.log("Video set Title and description")
+                        album_id = candidature_config.vimeo_album_id
 
-                          $rootScope.upload_status="Update application information"
-                          $rootScope.upload_percentage=50
-
-                          Vimeo.one(location).patch(video_info).then((patch_response) ->
-                            # console.log("Video set Title and description")
-                            album_id = candidature_config.vimeo_album_id
-
-                            $rootScope.upload_status="Moving the video"
-                            $rootScope.upload_percentage=75
-														
-                            Vimeo.one(account_infos.data.uri).customPUT({}, "albums/"+album_id+"/videos/"+video_id).then((response_album) ->
-                                # console.log("Video in specific album : " + album_id)
-                                $rootScope.upload_status="Video added ! "
-                                $rootScope.upload_percentage=100
-                            ) # end move video
-                          ) # end set title video
-                      ) # end close ticket
-                     , (error)->
+                        $rootScope.upload_status = "Tid up Video"
+                        $rootScope.upload_percentage=75
+                            
+                        Vimeo.one(account_infos.data.uri).customPUT({}, "albums/"+album_id+"/videos/"+video_id).then((response_album) ->
+                              # console.log("Video in specific album : " + album_id)
+                              $rootScope.upload_status="Video added ! "
+                              $rootScope.upload_percentage=100
+                        ) # end move video
+                    , (error)->
                         console.log("ERROR  upload VIMEO")
                         console.log(error)
                         $rootScope.upload_status="Upload Error"
-                     ,(evt) ->
+                    ,(evt) ->
+                        # vimeo loading progress
                         $rootScope.upload_percentage = Math.floor(100.0 * evt.loaded / evt.total)
                     ) # end send video
               ,(error)->

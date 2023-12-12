@@ -3,6 +3,7 @@ candidature_config = {
   path: "",
   vimeo_rest_url: "",
   vimeo_album_id: ,
+  vimeo_embed_domain: [],
   french_art_cursus:[],
   screen: {
     "01": {

@@ -313,8 +313,10 @@ angular.module('memoire.controllers', ['memoire.services'])
 
 )
 
-.controller('CandidaturesController', ($rootScope, $scope, $stateParams, $location, Candidatures, Galleries, Media, RestangularV2, ArtistsV2, Users,
-  ISO3166, cfpLoadingBar) ->
+.controller('CandidaturesController', ($rootScope, $scope, $stateParams, $location, 
+                                       Candidatures, AdminCandidatures, Galleries, Media, 
+                                       RestangularV2, ArtistsV2, Users, Graphql,
+                                       ISO3166, cfpLoadingBar) ->
   # main title
   $rootScope.main_title="Candidatures administration"
 
@@ -322,33 +324,37 @@ angular.module('memoire.controllers', ['memoire.services'])
   # init
   # rootscope to synch candidatreS (left side) => sandidature (right side) changement (like observations)
   $rootScope.candidatures = []
-  $scope.candidat_id = $stateParams.id
+  $scope.admin_app_id = $stateParams.id
 
   current_year = new Date().getFullYear()
-  # order
-  # none = 1 | true = 2 | false = 3
+  # plusieurs models sont utilisés : Canddatures et AdminCandidtures 
+  # selon l'avancée de l'inscription : si l'utilisateur n'a pas finalisé son dossier, on a pas acces à toutes ses infos
   $scope.select_criteres = [
-    {key:0, title: 'Toutes', sortby: {'campaign__is_current_setup':'true'}, count:0 },
-    {key:1, title: 'Refusées', sortby: {'campaign__is_current_setup':'true', "unselected":'true'}, count:0 },
-    {key:2, title: 'Non finalisées', sortby: {'campaign__is_current_setup':'true', "application_completed": 'false'}, count:0},
-    {key:3, title: 'En attente de validation', sortby: {'campaign__is_current_setup':'true', 'application_completed':'true', "application_complete":'false', "unselected": 'false' }, count:0},
-    {key:4, title: 'Visées', sortby: {'campaign__is_current_setup':'true', "application_complete":'true'}, count:0},
-    {key:5, title: 'Entretien : liste d\'attente', sortby: {'campaign__is_current_setup':'true', "wait_listed_for_interview":'true'}, count:0},
-    {key:6, title: 'Entretien : Selectionnés', sortby: {'campaign__is_current_setup':'true', "selected_for_interview":'true'}, count:0},
-    {key:7, title: 'Admis : liste d\'attente', sortby: {'campaign__is_current_setup':'true', "wait_listed":'true'}, count:0},
-    {key:8, title: 'Admis', sortby: {'campaign__is_current_setup':'true', "unselected": 'false', "selected":'true'}, count:0},
+    {key:0, title: 'Sélectionner une option', sortby: {'search':'XXX', }, model: Candidatures },
+    {key:1, title: 'Toutes', sortby: {'campaign__is_current_setup':'true', }, model: Candidatures, count:0 },
+    {key:2, title: 'Non sélectionnées', sortby: {'application__campaign__is_current_setup':'true', "unselected":'true', }, model: AdminCandidatures, count:0 },
+    {key:3, title: 'Non finalisées', sortby: {'campaign__is_current_setup':'true', "application_completed": 'false', }, model: Candidatures, count:0},
+    {key:4, title: 'En attente de validation', sortby: {'application__campaign__is_current_setup':'true', 'application__application_completed':'true', "application_complete":'false', "unselected": 'false', }, model: AdminCandidatures, count:0},
+    {key:5, title: 'Visées', sortby: {'application__campaign__is_current_setup':'true', "application_complete":'true'}, model: AdminCandidatures, count:0},
+    {key:6, title: 'Entretien : liste d\'attente', sortby: {'application__campaign__is_current_setup':'true', "wait_listed_for_interview":'true'}, model: AdminCandidatures, count:0},
+    {key:7, title: 'Entretien : Selectionnés', sortby: {'application__campaign__is_current_setup':'true', "selected_for_interview":'true'}, model: AdminCandidatures, count:0},
+    {key:8, title: 'Admis : liste d\'attente', sortby: {'application__campaign__is_current_setup':'true', "wait_listed":'true'}, model: AdminCandidatures, count:0},
+    {key:9, title: 'Admis', sortby: {'application__campaign__is_current_setup':'true', "unselected": 'false', "selected":'true'}, model: AdminCandidatures, count:0},
   ]
   $scope.select_orders = [
-      {title: "Numéro d'inscription", value: {ordering: "id"}}
-      {title: "Nationalité", value: {ordering: "artist__user__profile__nationality"}},
-      {title: "Nom", value: {ordering: "artist__user__last_name"}},
+      {title: "Numéro d'inscription", value: {ordering: "application__id"}}
+      {title: "Nationalité", value: {ordering: "application__artist__user__profile__nationality"}},
+      {title: "Nom", value: {ordering: "application__artist__user__last_name"}},
   ]
 
   $scope.getCandidaturesLength = (sort) ->
-    Candidatures.getList(sort.sortby).then((c) -> sort.count = c.length )
+    sort.model.getList(sort.sortby).then((c) -> sort.count = c.length )
 
-  $scope.critere = if $stateParams.sortby then $stateParams.sortby else $scope.select_criteres.findIndex((crit) -> crit.title =='Entretien : Selectionnés')
-  for item, value of $scope.select_criteres then $scope.getCandidaturesLength(value)
+  # define critere by URL or default if empty
+  $scope.critere = if $stateParams.sortby then $stateParams.sortby else $scope.select_criteres.findIndex((crit) -> crit.title =='Sélectionner une option')
+  # set the number of candidatures
+  for item, value of $scope.select_criteres
+      $scope.getCandidaturesLength(value)
 
   $scope.order = if $stateParams.orderby then $stateParams.orderby else $scope.select_orders.findIndex((order) -> order.title =='Nom')
   $scope.asc = if $stateParams.asc then $stateParams.asc else 'true'
@@ -363,46 +369,101 @@ angular.module('memoire.controllers', ['memoire.services'])
   # console.log($scope.LANGUAGES_NAME_short)
 
   $scope.getCandidatures = (sort, order) ->
+    # do nothing when key is 0
+    if(sort.key == 0) 
+      return
+    # merge critere
     criteres = _.extend(sort.sortby, order.value)
+    # inverse order
     if($scope.asc == 'false') then criteres.ordering = "-"+criteres.ordering
+    # init arr candidatures
     arr = []
-    Candidatures.getList(criteres).then((candidatures) ->
-      for candidature in candidatures
-          artist_id = candidature.artist.match(/\d+$/)[0]
+    
+    sort.model.getList(criteres).then((candidatures) ->
+      for candidature, index in candidatures
+          # indication de la progression de la candidature (graphic use)
           candidature.progress = $scope.get_candidature_progress(candidature)
-          if(candidature.application_completed)
-              ArtistsV2.one(artist_id).withHttpConfig({ cache: true}).get().then((artist) ->
-                  current_cantidature = _.filter(candidatures, (c) -> return c.artist == artist.url)
-                  current_cantidature[0].artist = artist
-                  # user
-                  user_id = artist.user.match(/\d+$/)[0]
-                  current_cantidature[0].artist.user = Users.one(user_id).get().then((user_infos) ->
-                    current_cantidature[0].artist.user = user_infos
-                  )
-              )
-              # get media  justifications
-              if(candidature.cursus_justifications != null)
-                  gallery_id = candidature.cursus_justifications.match(/\d+$/)[0]
-                  Galleries.one(gallery_id).get().then((gallery_infos) ->
-                    current_cantidature = _.filter(candidatures, (c) -> return c.cursus_justifications == gallery_infos.url)
-                    current_cantidature[0].cursus_justifications = gallery_infos
-
-                    for medium in gallery_infos.media
-                      medium_id = medium.match(/\d+$/)[0]
-                      Media.one(medium_id).get().then((media) ->
-                        media_index = gallery_infos.media.indexOf(media.url)
-                        gallery_infos.media[media_index] = media
-                      )
-                  )
-              # chek if there is observations
-              observation = if candidature.observation then JSON.parse(candidature.observation) else {jury:""}
-              candidature.has_observation = (observation.jury != '' || (observation[$rootScope.user.username] && observation[$rootScope.user.username] != ""))
-          # push candidature after all treatments
-          arr.push(candidature)
+          # switch candidature load by model
+          if(sort.model == AdminCandidatures)
+            # need to make a function to keep 'candidature' scope when assign in asynch function
+            switchAdminCandidature(candidature, arr, index)
+          else if(sort.model == Candidatures)
+            loadCandidatureChildInfos(candidature, false)
+            arr.push(candidature)      
+          else
+            console.log("NO MODEL ???", sort.model)
     )
     return arr
 
+  # getcandidatures
   $rootScope.candidatures = $scope.getCandidatures($scope.select_criteres[$scope.critere], $scope.select_orders[$scope.order])
+  
+  console.log($rootScope.candidatures)
+  # make function to keep admin cnadidature scope scope
+  switchAdminCandidature = (admin_candidature_obj, arr, index) -> 
+    # add observation
+    observation = if admin_candidature_obj.observation then JSON.parse(admin_candidature_obj.observation) else {jury:""}      
+    admin_candidature_obj.has_observation = (observation.jury != '' || (observation[$rootScope.user.username] && observation[$rootScope.user.username] != ""))
+
+    application = loadAdminCandidatureObj(admin_candidature_obj).then((c) ->
+        c.admin = admin_candidature_obj
+        # arr.push(c) # random (async) push : bad order
+        # not just a push to keep order
+        arr[index] = c 
+    )
+
+  loadAdminCandidature = (admin_candidature_id) ->
+    # Load an adminCandidature with his ID
+    admin_candidature = AdminCandidatures.one(admin_candidature_id).get().then((admin_candidature_obj) ->
+      admin_candidature = loadAdminCandidatureObj(admin_candidature_obj)
+      return admin_candidature
+    )
+    return admin_candidature
+  
+  loadAdminCandidatureObj = (admin_candidature_obj) ->
+      # search for application id
+      candidature_id = admin_candidature_obj.application.match(/\d+$/)[0]
+
+      candidature = loadCandidature(candidature_id, true)
+      # for the then function ! 
+      return candidature
+
+  loadCandidature = (candidature_id, all_infos=false) ->
+    return Candidatures.one(candidature_id).get().then((candidature_obj) ->
+      candidature_obj = loadCandidatureChildInfos(candidature_obj, all_infos)
+      return candidature_obj
+    )
+  
+  # load artist, galleries and media
+  loadCandidatureChildInfos = (candidature_obj, all_infos=false) ->
+        if(all_infos)
+            artist_id = candidature_obj.artist.match(/\d+$/)[0]
+            promise = ArtistsV2.one(artist_id).withHttpConfig({ cache: true}).get().then((artist) ->
+                candidature_obj.artist = artist
+                # user
+                user_id = artist.user.match(/\d+$/)[0]
+                candidature_obj.artist.user = Users.one(user_id).get().then((user_infos) ->
+                   candidature_obj.artist.user = user_infos
+                )
+            )
+            # get media  justifications
+            if(candidature_obj.cursus_justifications != null)
+                gallery_id = candidature_obj.cursus_justifications.match(/\d+$/)[0]
+                Galleries.one(gallery_id).get().then((gallery_infos) ->
+                  candidature_obj.cursus_justifications = gallery_infos
+
+                  for medium in gallery_infos.media
+                    medium_id = medium.match(/\d+$/)[0]
+                    Media.one(medium_id).get().then((media) ->
+                      media_index = gallery_infos.media.indexOf(media.url)
+                      gallery_infos.media[media_index] = media
+                    )
+                )
+        # all infos end
+        return candidature_obj
+  # end loadCandidaturesInfos
+
+
 
   $scope.get_candidature_progress = (candidature) ->
     candidature_progress = candidature_total = user_progress = user_total = 0
@@ -447,7 +508,8 @@ angular.module('memoire.controllers', ['memoire.services'])
 
 )
 
-.controller('CandidatController', ($rootScope, $scope, ISO3166, $stateParams, RestangularV2, Candidatures, ArtistsV2,
+.controller('CandidatController', ($rootScope, $scope, ISO3166, $stateParams, RestangularV2, 
+        Candidatures, AdminCandidatures, ArtistsV2,
         WebsiteV2, Users, Galleries, Media, Lightbox, clipboard, $sce, $filter) ->
   # init
   $scope.candidature = []
@@ -463,7 +525,7 @@ angular.module('memoire.controllers', ['memoire.services'])
     # if someone write something about the candidat in same time
     # it'll make some stange things
     # Have to load last version of observation and merge it (like git !)
-
+    console.log("ADD observation")
     # set default values
     if(!obj_observation[$rootScope.user.username])
       obj_observation[$rootScope.user.username] = ""
@@ -472,16 +534,17 @@ angular.module('memoire.controllers', ['memoire.services'])
     # encode values
     str_observation = JSON.stringify(obj_observation)
     # save values
-    $scope.candidature.patch({observation: str_observation})
+    $scope.candidature.admin.patch({observation: str_observation})
 
     # petit crayon !
     # trouve la candidature dans la liste des candidature en rootscope
     # et indique s'il y a des observations
-    root_cantidature_observation = _.find($rootScope.candidatures,  (obj) -> return obj.id == $scope.candidature.id )
-    root_cantidature_observation.has_observation = (obj_observation.jury != '' || (obj_observation[$rootScope.user.username] && obj_observation[$rootScope.user.username] != ""));
-    $scope.candidature.has_observation = root_cantidature_observation.has_observation
+    root_cantidature_observation = _.find($rootScope.candidatures,  (obj) -> return obj.admin.id == $scope.candidature.admin.id )
+    console.log($rootScope.candidatures)
+    root_cantidature_observation.admin.has_observation = (obj_observation.jury != '' || (obj_observation[$rootScope.user.username] && obj_observation[$rootScope.user.username] != ""));
+    $scope.candidature.admin.has_observation = root_cantidature_observation.admin.has_observation
 
-  $scope.$watch("candidature.observation", (newValue, oldValue) ->
+  $scope.$watch("candidature.admin.observation", (newValue, oldValue) ->
     # set default values
     if(newValue == "")
       add_observation()
@@ -531,50 +594,62 @@ angular.module('memoire.controllers', ['memoire.services'])
     Lightbox.openModal([image], 0)
 
   loadCandidat = (id) ->
-      Candidatures.one(id).get().then((candidature) ->
-        $scope.candidature = candidature
-        $scope.itw_date = if (candidature.interview_date) then new Date(candidature.interview_date) else new Date()
-        # has observations
-        observation = if candidature.observation then JSON.parse(candidature.observation) else {jury:""}
-        $scope.candidature.has_observation = (observation.jury != '' || (observation[$rootScope.user.username] && observation[$rootScope.user.username] != ""))
-        artist_id = candidature.artist.match(/\d+$/)[0]
+      
+      AdminCandidatures.one(id).get().then((admin_candidature) ->
+          # get application id
+          # console.log("admin loaded", admin_candidature)
+          candidature_id = admin_candidature.application.match(/\d+$/)[0]
 
-        ArtistsV2.one(artist_id).get().then((artist) ->
-            $scope.artist = artist
-            # load artist websites
-            # load artist websites
-            for website in artist.websites
-                website_id = website.match(/\d+$/)[0]
-                RestangularV2.one('common/website', website_id).get().then((response_website) ->
-                    find_website = artist.websites.indexOf(response_website.url)
-                    artist.websites[find_website] = response_website
-                )
-            user_id = artist.user.match(/\d+$/)[0]
-            $scope.artist.user = Users.one(user_id).get().then((user_infos) ->
-              $scope.artist.user = user_infos
-              # add infos under videos
-              $scope.candidature.video_details_and_more = candidature.presentation_video_details
-              $scope.candidature.video_details_and_more += "\n_______\n"+ $filter('ageFilter')(user_infos.profile.birthdate) + " ans\n Niveau : "
-              $scope.candidature.video_details_and_more += if candidature.master_degree == "Y" then "Master" else if candidature.master_degree =="P" then "Master en cours" else "Bac + 7 ans d'experiences"
-            )
-        )
-        
-        # get justifications files
-        if(candidature.cursus_justifications != null)
-            gallery_id = candidature.cursus_justifications.match(/\d+$/)[0]
-            Galleries.one(gallery_id).get().then((gallery_infos) ->
-              candidature.cursus_justifications = gallery_infos
+          Candidatures.one(candidature_id).get().then((candidature) ->
 
-              for medium in gallery_infos.media
-                medium_id = medium.match(/\d+$/)[0]
-                Media.one(medium_id).get().then((media) ->
-                  media_index = gallery_infos.media.indexOf(media.url)
-                  gallery_infos.media[media_index] = media
+            # set root vars
+            $scope.candidature = candidature
+            $scope.candidature.admin = admin_candidature
+          
+            $scope.itw_date = if (candidature.interview_date) then new Date(candidature.interview_date) else new Date()
+            # has observations
+            observation = if admin_candidature.observation then JSON.parse(admin_candidature.observation) else {jury:""}
+            $scope.candidature.admin.has_observation = (observation.jury != '' || (observation[$rootScope.user.username] && observation[$rootScope.user.username] != ""))
+            artist_id = candidature.artist.match(/\d+$/)[0]
+
+            ArtistsV2.one(artist_id).get().then((artist) ->
+                $scope.artist = artist
+                # load artist websites
+                # load artist websites
+                for website in artist.websites
+                    website_id = website.match(/\d+$/)[0]
+                    RestangularV2.one('common/website', website_id).get().then((response_website) ->
+                        find_website = artist.websites.indexOf(response_website.url)
+                        artist.websites[find_website] = response_website
+                    )
+                user_id = artist.user.match(/\d+$/)[0]
+                $scope.artist.user = Users.one(user_id).get().then((user_infos) ->
+                  $scope.artist.user = user_infos
+                  # add infos under videos
+                  $scope.candidature.video_details_and_more = candidature.presentation_video_details
+                  $scope.candidature.video_details_and_more += "\n_______\n"+ $filter('ageFilter')(user_infos.profile.birthdate) + " ans\n Niveau : "
+                  $scope.candidature.video_details_and_more += if candidature.master_degree == "Y" then "Master" else if candidature.master_degree =="P" then "Master en cours" else "Bac + 7 ans d'experiences"
                 )
             )
+            
+            # get justifications files
+            if(candidature.cursus_justifications != null)
+                gallery_id = candidature.cursus_justifications.match(/\d+$/)[0]
+                Galleries.one(gallery_id).get().then((gallery_infos) ->
+                  candidature.cursus_justifications = gallery_infos
+
+                  for medium in gallery_infos.media
+                    medium_id = medium.match(/\d+$/)[0]
+                    Media.one(medium_id).get().then((media) ->
+                      media_index = gallery_infos.media.indexOf(media.url)
+                      gallery_infos.media[media_index] = media
+                    )
+                )
+          )
       )
 
-  loadCandidat($stateParams.id)
+  if $stateParams.id
+    loadCandidat($stateParams.id)
 
   $scope.date = (date) ->
     return new Date(date)

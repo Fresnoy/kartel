@@ -114,6 +114,7 @@
              <span class="nationality" ng-repeat="nationality in more.artist.user.profile.nationality.split(', ') track by $index">
                 <small title={{country.codeToCountry[nationality]}}>{{nationality}}</small>
              </span> <br/>
+             Date de naissance : {{ more.artist.user.profile.birthdate}}<br/>
              Tel : {{ more.artist.user.profile.homeland_phone}}<br/>
              E-mail : {{more.artist.user.email}}<br/>
              Adresse  : <span ng-bind-html="more.artist.user.profile.homeland_address | nl2br" />

@@ -3,7 +3,7 @@
 
     <div class="col-md-12">
 
-      <h1>Candidatures ({{ candidatures.length }})
+      <h1>Candidatures ({{ candidatures.length }})</h1>
 
       </h1>
 
@@ -31,7 +31,9 @@
             <label>Filter / classer les candidatures</label>
              <div class="btn-group" ng-click="show_order_param=true">
 
-                 <span class="btn btn-default">{{select_criteres[critere].title}} ({{select_criteres[critere].count}})</span>
+                 <span class="btn btn-default">{{select_criteres[critere].title}} 
+                  <small ng-show="select_criteres[critere].key>0">({{select_criteres[critere].count}})</small>
+                </span>
 
                  <span type="button" class="btn btn-default">{{select_orders[order].title}}</span>
 
@@ -48,9 +50,9 @@
 
           <!-- FICHE CANDIDAT -->
 
-          <div ng-show="candidat_id" class="col-xs-12 col-md-6">
+          <div ng-show="admin_app_id" class="col-xs-12 col-md-6">
             <div class="candidat_view" ng-show="!show_order_param">
-                  <button title="Close" ng-sref='candidatures' ng-click="candidat_id = null" class="btn btn-default pull-right">
+                  <button title="Close" ng-sref='candidatures' ng-click="admin_app_id = null" class="btn btn-default pull-right">
                     <i class="glyphicon glyphicon-remove"></i></button>
                   <div ui-view="candidat_view"></div>
             </div>
@@ -61,8 +63,12 @@
           <div class="col-xs-12 col-md-12" ng-show="show_order_param">
               <label>Afficher les candidatures : </label>
               <select ng-model="critere">
+
                 <option ng-repeat="item in select_criteres track by item.key"
-                ng-selected="item.key == critere" value="{{$index}}">{{item.title}} ({{item.count}})</option>
+                        ng-selected="item.key == critere" value="{{$index}}"
+                        ng-disabled="item.key == 0">
+                                                        {{item.title}}                 
+                  </option>
               </select>
 
               <label>Trier les candidatures par : </label>
@@ -101,6 +107,7 @@
         <tr>
           <th>Index</th>
           <th>Date de création</th>
+          <th>Derniere modification</th>
           <th>N° dossier</th>
           <th>Nom</th>
           <th>Prénom</th>
@@ -120,6 +127,8 @@
           <th>Oral	</th>
           <th>Date d'entretien</th>
           <th>Visioconférence	</th>
+          <th>Complet	</th>
+          <th>Selectionné	</th>
           <th>Note finale	</th>
           <th>Note sélection 2</th>
           <th>Note sélection 3</th>
@@ -132,6 +141,7 @@
         <tr ng-repeat="candidature in candidatures track by $index">
             <th>{{$index+1}}</th>
             <th>{{candidature.created_on.split("T")[0] | date:'dd/MM'}}</th>
+            <th>{{candidature.updated_on.split("T")[0] | date:'dd/MM'}}</th>
             <th>{{candidature.current_year_application_count}}</th>
             <th>{{candidature.artist.user.last_name}}</th>
             <th>{{candidature.artist.user.first_name}}</th>
@@ -154,8 +164,10 @@
             <th>{{candidature.binomial_application ? candidature.binomial_application_with : ''}}</th>
             <th></th> <!-- Materiel -->
             <th></th> <!-- Oral -->
-            <th>{{candidature.interview_date |  date : "d MMMM yyyy à HH'h'mm"  | translate_en_to_fr | lowercase  }}</th>
-            <th>{{candidature.remote_interview ? 'OUI' : ''}}	</th> <!-- Visioconference -->
+            <th>{{candidature.admin.interview_date |  date : "d MMMM yyyy à HH'h'mm"  | translate_en_to_fr | lowercase  }}</th>
+            <th>{{candidature.admin.remote_interview ? 'OUI' : ''}}	</th> <!-- Visioconference -->
+            <th>{{candidature.admin.application_complete ? 'OUI' : ''}}	</th> <!-- complete -->
+            <th>{{candidature.admin.selected ? 'OUI' : ''}}	</th> <!-- selected -->
             <th></th> <!-- Note finale  -->
             <th></th>
             <th></th>
@@ -167,7 +179,7 @@
               <span class="justificatifs" ng-repeat="justif in candidature.cursus_justifications.media track by $index"
                 > |[ {{justif.label}} ]| </span>
             </th>
-            <th>{{ candidature.observation }} </th>
+            <th>{{ candidature.admin.observation }} </th>
             <th>{{candidature.remark}} </th>
             <th> </th> <!--  empty -->
         </tr>

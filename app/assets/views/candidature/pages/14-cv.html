@@ -12,7 +12,7 @@
 <div class="cv">
    <h1>
       <span class="fr">CV / Justificatifs</span>
-      <span class="en">CV / Justification</span>
+      <span class="en">CV and Supporting Materials</span>
    </h1>
    <p  class="fr">CV complet : </p>
    <p  class="en">Full CV </p>
@@ -70,7 +70,7 @@
 
    <p class="fr">Justificatifs de diplômes<span ng-if="candidature.master_degree=='Y'"> (master)</span>, certifications, ... <br/>
      <em class="additionnalInfo">(formats image ou pdf)</em></p>
-   <p class="en">Copies of your diplomas<span ng-if="candidature.master_degree=='Y'"> (master)</span>, certificates, qualifications<br/>
+   <p class="en">Copies of your diplomas<span ng-if="candidature.master_degree=='Y'"> (master)</span>, certificates, and qualifications<br/>
      <em class="additionnalInfo">(image formats or pdf)</em></p>
    </p>
    <div class="field">
@@ -93,17 +93,20 @@
              <!-- MODAL -->
              <div class="modal show" ng-if="!item.label">
                 <div class="modal-content">
-                  <p class="fr">Veuillez entrer le titre du justificatif
-                    <br/><small> Format Pays/ville + Type (école/Universite) + Titre du diplome
+                  <h2 class="fr">Veuillez entrer le titre du justificatif</h2>
+                     
+                    <p class="fr block">
+                     <small> Format Pays/ville + Type (école/Universite) + Titre du diplome
                     <br/><small>Exemple : France Lyon - University - DNSEP Design d'espace</small></small> </p>
-                  <p class="en">Please enter the document title  <br/>
-                  <small>Format : Country/Town + Type (School/University) + degree title <br>
-                  <small>Example : US Chicago - University - Bachelor of Fine Arts</small></small>
-                </p>
+                  <h2 class="en">Please enter the document title </h2>                  
+                  <p class="en block">
+                     <small>Format : Country/Town + Type (School/University) + degree title <br>
+                     <small>Example : US Chicago - University - Bachelor of Fine Arts</small></small>
+                  </p>
 
                <!-- INPUT -->
                <div class="field" >
-                  <input class="name no-border inline" type="text" placeholder="" 
+                  <input class="name no-border inline" type="text" placeholder="{{justificatif_placeholders[language]}}" 
                          ng-model="label[$index]" ng-change="" class="no-border" required />
 
                   <label class="topborder" for="cursus">
@@ -134,12 +137,11 @@
                              ng-change="label[$index] = french_art_cursus"                     
                      >
                      <option value="" disabled selected>Selectionner un diplôme</option>
-                        <option
-                           ng-repeat="diploma in candidature_config.french_art_cursus"
-                           value="{{diploma}}">
-                           {{diploma}}
-                        </option>
-                     </select>
+                     <option
+                     ng-repeat="diploma in candidature_config.french_art_cursus"
+                     value="{{diploma}}">{{diploma}}</option>
+                     <option value="France ">Non présent dans cette liste</option>
+                  </select>
                   </div>
 
                  </div>
@@ -149,7 +151,7 @@
 
 
                  <!--VALIDATION : Patch on validation AND on_complete_upload -->
-                 <div class="btn green" ng-show="label[$index]"
+                 <div class="btn green" ng-show="label[$index].length > 7"
                         ng-click='item.label = label[$index];
                            item.patch({label: item.label, position: keyitem})'
                    >

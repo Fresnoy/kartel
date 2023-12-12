@@ -37,6 +37,11 @@ angular.module('memoire.services', ['restangular'])
 
         ).service('school/student-application')
 )
+.factory('AdminCandidatures', (RestangularV2) ->
+        return RestangularV2.withConfig((RestangularConfigurer) ->
+
+        ).service('school/admin-student-application')
+)
 
 .factory('CandidatRegistration', (Restangular) ->
         # pas besoin d'un token - on le laisse en V1
@@ -110,4 +115,10 @@ angular.module('memoire.services', ['restangular'])
             RestangularConfigurer.setDefaultRequestParams({key: config.ame_key});
             RestangularConfigurer.setDefaultHeaders({'Content-Type': 'charset=UTF-8'})
       )
+)
+
+.factory('Graphql', (Restangular) ->
+        return Restangular.withConfig((RestangularConfigurer) ->
+                RestangularConfigurer.setBaseUrl(config.api_url);
+        ).service('graphql')
 )
