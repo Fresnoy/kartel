@@ -325,7 +325,7 @@
                name="cINE"
                ng-model="candidature.INE"
                ng-change="candidature.patch({'INE': candidature.INE});"
-               placeholder="10 chiffres + 1 lettre (ou 9 + 2)"
+               placeholder="{{ine_placeholders[language]}}"
                />
             <label for="cINE">
             <span class="fr">Numéro Identifiant National Etudiant Unique (INE/BEA, pour les personnes ayant étudié en France)</span>

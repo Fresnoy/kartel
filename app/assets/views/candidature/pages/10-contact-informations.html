@@ -118,6 +118,9 @@ qui peut servir de base).</li><li>
          <span class="en">Homeland Country</span>
          </label>
       </div>
+      <!-- 
+      PHONE NUMBER 
+      -->
       <div class="field">
          <input
             id="phone"
@@ -127,7 +130,9 @@ qui peut servir de base).</li><li>
             ng-pattern="phone_pattern"
             ng-model="user.profile.homeland_phone"
             ng-change="user.patch({'profile':{'homeland_phone': user.profile.homeland_phone}});"
-            ng-minlength="9" ng-maxlength="20" required
+            ng-minlength="9"
+            ng-maxlength="20" 
+            required
             hidden
             />
 
@@ -139,6 +144,7 @@ qui peut servir de base).</li><li>
                placeholder=""
                ng-model="phone_country"
                ng-change="user.profile.homeland_phone = '+' + phone_country +'-'+ phone_number;"
+               onkeydown = "this.value = this.value.replace(/[^0-9]/g,'');"
                class="phone_code"
                />
              <label for="phone_code">
@@ -151,9 +157,13 @@ qui peut servir de base).</li><li>
              <input
                 type="text"
                 placeholder=""
-                ng-model="phone_number"
-                ng-change="user.profile.homeland_phone = '+' + phone_country + '-' + phone_number;"
+                inputmode="numeric"
+                name="uPhoneNumber"
+                ng-model="phone_number"                
+                ng-change="user.profile.homeland_phone = '+' + phone_country + '-' + phone_number"
+                onkeydown = "this.value = this.value.replace(/[^0-9]/g,'');"
                 />
+                
              <label for="phone">
                <span class="field-state"></span>
                <span class="fr">Numéro de téléphone <br/>[33 123456789]</span>
@@ -162,10 +172,15 @@ qui peut servir de base).</li><li>
           </div>
         </div>
 
-        <div ng-show="user.profile.homeland_phone && form2.uHomelandPhone.$invalid" ng-messages="form2.uHomelandPhone.$error" class="help-block error">
+        <div ng-show="user.profile.homeland_phone && form2.uHomelandPhone.$invalid && user.profile.homeland_phone.length>7"
+               ng-messages="form2.uHomelandPhone.$error" class="help-block error">
            <div ng-message="required">
               <span class="fr">Obligatoire</span>
               <span class="en">Required</span>
+           </div>
+           <div ng-message="minlength">
+            <span class="fr">Numéro incomplet</span>
+            <span class="en">Number incomplete</span>
            </div>
            <div ng-message="maxlength">
               <span class="fr">Pas plus de 20 signes</span>

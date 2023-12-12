@@ -20,8 +20,7 @@
       aux deux étapes de la sélection.
     </p>
     <p>
-      Il est important de noter que ce document vidéo est le seul qui sera vu 
-      par les membres du jury de l'entretien qui ne participent pas au jury de pré-sélection.
+      Il est important de noter que ce document vidéo est le seul qui sera vu par les membres du jury de l'entretien.
     </p>
     <h4>Lien Vidéo</h4>
     <p>Le lien doit pointer directement vers un fichier vidéo pérenne ou vers une plateforme de diffusion
@@ -55,6 +54,7 @@
       examined at all two stages of the selection
       process.
     </p>
+    <p>It's important to note that this video document is the only one that will be viewed by members of the interview jury, who are not part of the pre-selection jury.</p>
     <h4>Vidéo link</h4>
     <p>The link must connect directly to a permanent video file or a video platform (such as Vimeo, Youtube, etc.).<br/>
       We do not accept any link to video playlists, or file transfert platforms (such as Wetransfer, Send Anywhere,
@@ -81,9 +81,12 @@
          vers une œuvre ou un ensemble d’extraits d’œuvres que vous avez réalisés et
          particulièrement représentatifs de votre démarche artistique. 
       </p>
+      <p>
+         <strong>Ce lien devra rester actif jusqu’au {{ campaign.selected_publish_date | date : "EEEE d MMMM yyyy " | translate_en_to_fr | lowercase }}</strong>.
+      </p>
       <p>Cette vidéo d'une <strong>durée maximale de 8 minutes</strong> sera vue successivement par les deux jurys (de présélection et de l'entretien oral).</p>
       <p><blockquote>
-        Il est important de noter que ce document vidéo est le seul qui sera vu par les membres du jury de l'entretien qui ne participent pas au jury de pré-sélection.
+        Il est important de noter que ce document vidéo est le seul qui sera vu par les membres du jury de l'entretien.
         
       </blockquote>
       </p>
@@ -93,14 +96,16 @@
     </div>
     <div class="en">
       <p>Submit a <a class="pointer" ng-click="show_help(true)">link to a video</a> 
-         that exposes the most representative part of your work.</p>
-      <p>This video of a <strong>maximum length of 8 minutes</strong> will be seen by twice, once by the pre-selection jury and a second
-        time by the interview jury.</p>
-        <p><blockquote><small>
-         Il est important de noter que ce document vidéo est le seul qui sera vu par les membres du jury de l'entretien qui ne participent pas au jury de pré-sélection.
-         </small>
+         that showcases the most representative part of your work.</p>
+         <p><strong>This link must remain active until {{ campaign.selected_publish_date | date : "EEEE MMMM d, yyyy" }}</strong></p>
+      <p>This video, with a <strong>maximum length of 8 minutes</strong> will be viewed twice: once by the pre-selection 
+         jury and a second time by the interview jury.</p>
+        
+      <p>
+       <blockquote>
+         It's important to note that this video document is the only one that will be viewed by members of the interview jury.
        </blockquote>
-       </p>
+      </p>
        <p>See <a class="pointer" ng-click="show_help(true)">“help” for more information about the link to be provided</a>.</p>
       
     </div>
@@ -179,11 +184,17 @@
          </label>
 
          <blockquote>
-         <p><strong>À noter : </strong><br>
+         <p class="fr"><strong>À noter : </strong><br>
            Le jury de présélection disposera de cette vidéo ainsi que de l’ensemble des éléments de votre dossier de candidature (note d’intention, cv, etc …). <br>
            Si vous êtes présélectionné.e, cette vidéo sera l’unique document diffusé lors de l’entretien oral. Le jury n’aura pas connaissance des autres éléments de votre dossier de candidature.
            </p>          
            </blockquote>
+         <p class="en"><strong>Note: </strong><br>
+            The pre-selection jury will have access to this video along with all other elements of your application (statement of intent, CV, etc.).
+            If you are preselected, this video will be the sole document shown during the oral interview. The jury will not have knowledge of other elements in your application.
+           </p>          
+           </blockquote>
+
          <!--<p><span class="fr">Vous pouvez ajouter le domaine <u>lefresnoy.net</u> dans les paramètres d'intégration de votre vidéo.</span>
            <span class="en">You can add the <u>lefresnoy.net</u> domain in the video integration settings.</span>
          </p>-->

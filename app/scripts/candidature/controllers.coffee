@@ -181,7 +181,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
 .controller('CandidatureBreadcrumbController', ($rootScope, $scope, $state) ->
 
     $scope.getProgression = (type) ->
-      if(!$scope.isAuthenticated || !$rootScope.candidature)
+      if(!$scope.isAuthenticated || !$rootScope.candidature || !$rootScope.user.profile)
         return false
 
       if(type == "administrative-informations")
@@ -646,9 +646,10 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
       # otherwise -> resume
       user_id = jwtHelper.decodeToken(localStorage.getItem('token')).user_id
       Users.one(user_id).get().then((user) ->
+        $rootScope.user = user
         candidature_is_started = user.profile.birthdate and user.profile.gender and user.profile.nationality
         if user.profile.is_artist and candidature_is_started
-          # $state.go("candidature.summary")
+          $state.go("candidature.summary")
         else
           # loadinfo create user-> artist if not created
           $rootScope.loadInfos($rootScope)
@@ -746,13 +747,14 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
       $scope.nationality = newValue.split($scope.splitChar)
   )
 
-
-
   # justif photo
   $scope.photo_justification_file = null
 
   $scope.uploadFile = (data, model, field, type) ->
     $rootScope.upload(data, model, field)
+
+  # INE
+  $scope.ine_placeholders = {en:"10 digits + 1 letter (or 9 + 2)",fr:"10 chiffres + 1 lettre (ou 9 + 2)"}
 
 )
 
@@ -770,6 +772,7 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
       if(newValue)
         $scope.phone_number = newValue.split("-").pop()
         $scope.phone_country = newValue.split("-").shift().substr(1)
+        console.log($scope.form2.uHomelandPhone)
 
         if($scope.form2.uHomelandPhone.$valid)
           $scope.saveUserModel($scope.user)
@@ -1020,14 +1023,15 @@ angular.module('candidature.controllers', ['memoire.services', 'candidature.serv
             remark = candidature.remark
             new_remark = ""
             exist = pollRegexp.test(remark)
-            # if esist
+            # if exist
             # change de content
             if(exist)
               new_remark = remark.replace(pollRegexp, "$1"+obj.item+"$3")
             # else create it
             else 
-              new_remark = remark
-              # make some lines              
+              new_remark = if candidature.remark then candidature.remark else ""              
+              # # make some lines              
+              # make some lin             
               new_remark +="\n\n"
               new_remark +="[POLL]"+obj.item+"[/POLL]"
             # set remark
