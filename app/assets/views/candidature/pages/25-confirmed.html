@@ -23,7 +23,7 @@
           <span class="en">Selection procedure</span>
         </h1>
         <p>
-          <span class="fr">VOTRE CANDIDATURE A BIEN ÉTÉ TRANSMISE à l'équipe pédagogique du Fresnoy - Studio national.<br/>
+          <span class="fr">Votre candidature a bien été transmise à l'équipe pédagogique du Fresnoy - Studio national.<br/>
           La référence de votre dossier est :</span>
           <span class="en">Your application has been sent to the teaching staff. <br/>
           Referenced by the number :</span>
@@ -39,17 +39,13 @@
 
   <div ng-if="!candidature.application_complete">
 
-    <span class="fr">Nous procédons à sa vérification et nous vous enverrons un email de prise en compte de votre candidature sous 15 jours.</span>
-    <span class="en">We check your submitted documents, a candidature's confirmation e-mail will be sent within 15 days.</span>
+    <span class="fr">Nous vous remercions pour votre candidature, nous allons procéder à sa vérification 
+      et vous enverrons un email de confirmation sous 15 jours.</span>
+    <span class="en">Thank you for your application. We will check it and send you a confirmation email within 15 days.</span>
 
   </div>
 
   <br/>
-  <div style="text-align:center"><strong>
-      <p class="fr">Merci pour votre candidature !</p>
-      <p class="en">Thank you for your application!</p>
-    </strong>
-  </div>
 
   <div ng-if="candidature.application_complete">
     <p></p>
@@ -57,7 +53,7 @@
     <span class="en">Your application material has benn validated and will be transferred to the jury </span>
 
   </div>
-  <br/>
+
   <br/>
   
   <div class="fr">
@@ -73,8 +69,8 @@
       <a href="https://www.lefresnoy.net/">lefresnoy.net</a>,
       le
       <strong>{{ campaign.selected_publish_date | date : "EEEE d MMMM yyyy à HH'h'" | translate_en_to_fr | lowercase }}</strong>. <br/>
-      Les résultats peuvent être communiqués par téléphone le jour même de
-       14h00 à 18h00 au <a href="tel:+33320283800">+33 (0) 3 20 28 38 00</a>.
+      Les résultats peuvent être communiqués par téléphone le jour même de 14h à 18h au 
+      <a href="tel:+33320283800">+33 (0) 3 20 28 38 00</a>.
       </p>
       <p>
         <u>Le jury statue à la majorité de ses membres et en cas de partage égal des voix, celle du président ou de la présidente 
@@ -96,7 +92,7 @@
       <a href="https://www.lefresnoy.net/">lefresnoy.net</a>
       on <strong>{{ campaign.selected_publish_date | date : "EEEE MMMM d, yyyy 'at' h a" }}</strong>. <br/>
       The results may also be given by telephone the same day by ringing from 2 pm to 6 pm at:
-      <a href="tel:+33320283800">+33 (0) 3 20 28 38 00</a>.  <br/>
+      <a href="tel:+33320283800">+33 (0) 3 20 28 38 00</a>.  <br/>
     </p>
     <p>
       <u>The jury rules by majority vote and in the case of a tie the president has the casting vote.<br/>

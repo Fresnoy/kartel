@@ -5,7 +5,7 @@
           <p>Le lien doit renvoyer vers un fichier vidéo présentant une œuvre ou un ensemble d’extraits d’œuvres
     réalisés par le candidat et lui paraissant
     particulièrement représentatif de sa démarche
-    artistique ou de son travail. Un seul fichier d'une durée de 8 minutes au format numérique ne peut être envoyé
+    artistique ou de son travail. Un seul fichier d'une durée de 8 minutes au format numérique doit être envoyé
     (exemple: 3 extraits vidéo, ou encore un
     diaporama de photographies, ou un ensemble
     d’extraits sonores, une ou plusieurs captations
@@ -14,11 +14,6 @@
     spécifiant la nature et le contexte de l’œuvre. Ces
     éléments du dossier seront vus successivement
     par les deux jurys.</p>
-    <p>
-      Par ailleurs, le jury visionnera les éléments visuels d'une durée de 8 minutes maximum figurant au dossier du candidat.
-      L’attention du candidat est attirée sur l’importance de ces éléments, seuls documents le présentant qui seront examinés 
-      aux deux étapes de la sélection.
-    </p>
     <p>
       Il est important de noter que ce document vidéo est le seul qui sera vu par les membres du jury de l'entretien.
     </p>
@@ -54,7 +49,8 @@
       examined at all two stages of the selection
       process.
     </p>
-    <p>It's important to note that this video document is the only one that will be viewed by members of the interview jury, who are not part of the pre-selection jury.</p>
+    <p>It's important to note that this video document is the only one that will be viewed by members of the interview jury, 
+      who are not part of the pre-selection jury.</p>
     <h4>Vidéo link</h4>
     <p>The link must connect directly to a permanent video file or a video platform (such as Vimeo, Youtube, etc.).<br/>
       We do not accept any link to video playlists, or file transfert platforms (such as Wetransfer, Send Anywhere,
@@ -78,13 +74,14 @@
    <form name="form1" ng-submit="form.$valid && submit()" class="css-form" novalidate>
      <div class="fr">
       <p>Merci de saisir ci-dessous <a class="pointer" ng-click="show_help(true)">un lien vidéo</a> 
-         vers une œuvre ou un ensemble d’extraits d’œuvres que vous avez réalisés et
+         vers une œuvre ou un ensemble d’extraits d’œuvres que vous avez réalisées et
          particulièrement représentatifs de votre démarche artistique. 
       </p>
       <p>
          <strong>Ce lien devra rester actif jusqu’au {{ campaign.selected_publish_date | date : "EEEE d MMMM yyyy " | translate_en_to_fr | lowercase }}</strong>.
       </p>
-      <p>Cette vidéo d'une <strong>durée maximale de 8 minutes</strong> sera vue successivement par les deux jurys (de présélection et de l'entretien oral).</p>
+      <p>Cette vidéo d'une <strong>durée maximale de 8 minutes</strong> sera vue successivement par 
+         le jury de présélection et de l'entretien oral.</p>
       <p><blockquote>
         Il est important de noter que ce document vidéo est le seul qui sera vu par les membres du jury de l'entretien.
         
