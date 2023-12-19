@@ -677,7 +677,7 @@ angular.module('memoire.controllers', ['memoire.services'])
           # cherche avec ce qu'a remplis le candidat (avec un peu de chance, le nom / prénom)
           for name in binominal_split
             critere = {search: name, campaign__is_current_setup:"true"}
-            Candidatures.getList(critere).then((candidatures) ->
+            AdminCandidatures.getList(critere).then((candidatures) ->
               if(candidatures.length && $scope.binominal_link_id=="")
                 $scope.binominal_link_id = candidatures[0].id
             )
