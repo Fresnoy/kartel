@@ -284,7 +284,9 @@ angular.module('candidature.application', ['candidature.controllers',
                           # binome list
                           Users.getList({artist__student_application__campaign__is_current_setup:"true"}).then((candidats) ->
                             $scope.application_users = []
-                            for c in candidats                              
+                            # try to hide current user
+                            candidatsWithoutCurrentUser = _.reject(candidats, (c) -> return c.id == $rootScope.user.id)
+                            for c in candidatsWithoutCurrentUser                              
                               $scope.application_users.push({name:c.first_name + " " + c.last_name})
                           )
 
