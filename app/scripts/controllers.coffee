@@ -460,6 +460,19 @@ angular.module('memoire.controllers', ['memoire.services'])
                     )
                 )
         # all infos end
+        else
+          # get user info (email)
+          artist_id = candidature_obj.artist.match(/\d+$/)[0]
+          ArtistsV2.one(artist_id).withHttpConfig({ cache: true}).get().then((artist) ->
+                # user
+                candidature_obj.artist = {user:null}
+                user_id = artist.user.match(/\d+$/)[0]
+                candidature_obj.artist.user = Users.one(user_id).get().then((user_infos) ->
+                   candidature_obj.artist.user.email = user_infos.email
+                )
+          )
+
+        
         return candidature_obj
   # end loadCandidaturesInfos
 
