@@ -680,6 +680,12 @@ angular.module('memoire.controllers', ['memoire.services'])
 
   # Search binominal
   $scope.binominal_link_id = ""
+  setBinominalLinkCandidat = (admincandidature) ->
+    admincandidature_id = admincandidature.application.match(/\d+$/)[0]
+    Candidatures.one(admincandidature_id).get().then((application) ->
+      if($scope.binominal_link_id =="" && application.binomial_application == true)
+          $scope.binominal_link_id = admincandidature.id
+    )
   $scope.$watch("candidature", (newValue, oldValue) ->
     if(newValue)
       # console.log(newValue)
@@ -689,17 +695,13 @@ angular.module('memoire.controllers', ['memoire.services'])
           binominal_split = candidat.binomial_application_with.split(" ")
           # cherche avec ce qu'a remplis le candidat (avec un peu de chance, le nom / prénom)
           for name in binominal_split
-            critere = {search: name, application__campaign__is_current_setup:"true"}
+            critere = {search: name, application__campaign__is_current_setup:"true", application__application_completed:"true"}
             AdminCandidatures.getList(critere).then((candidatures) ->
               for candidature in candidatures
-                candidature_id = candidature.application.match(/\d+$/)[0]
-                Candidatures.one(candidature_id).get().then((application) ->
-
-                  if($scope.binominal_link_id =="" && application.binomial_application == true)
-                      $scope.binominal_link_id = candidature.id
-                )
+                setBinominalLinkCandidat(candidature)
             )
   )
+  
 
 
 )
