@@ -695,7 +695,7 @@ angular.module('memoire.controllers', ['memoire.services'])
                 candidature_id = candidature.application.match(/\d+$/)[0]
                 Candidatures.one(candidature_id).get().then((application) ->
 
-                  if($scope.binominal_link_id=="" && application.binomial_application)
+                  if($scope.binominal_link_id =="" && application.binomial_application == true)
                       $scope.binominal_link_id = candidature.id
                 )
             )
