@@ -14,7 +14,7 @@ angular.module('memoire.directives', ['memoire.services', 'bootstrapLightbox'])
       op: '='
     },
     template: (x, scope) ->
-      url = "{{ url_image }}&w={{ width }}&h={{ height }}&fmt=jpg"
+      url = "{{ url_image }}&w={{ width }}&h={{ height }}&exif=1&fmt=jpg"
       return "<img ng-src=\"#{url}\" />"
     controller: ($scope) ->
       $scope.$watch("url", (value) ->
@@ -23,7 +23,7 @@ angular.module('memoire.directives', ['memoire.services', 'bootstrapLightbox'])
               $scope.url_image = config.media_service+"?url="+config.api_url+value+"&w="+$scope.width+"h="+$scope.height+"&fmt=jpg"
             else
               $scope.url_image = config.media_service+"?url="+value+"&w="+$scope.width+"h="+$scope.height+"&fmt=jpg"
-
+            console.log($scope.url_image)
             if $scope.op
               $scope.url_image += "&op=#{ scope.op }"
       )
