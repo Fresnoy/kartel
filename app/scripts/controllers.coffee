@@ -510,9 +510,12 @@ angular.module('memoire.controllers', ['memoire.services'])
     for line in document.querySelectorAll("table#data_candidatures tr")
         row = []
         for col in line.querySelectorAll("td, th")
-            t = $(col).text().replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n|&#10;&#13;|&#13;&#10;|&#10;|&#13;)/g, ' ')
+            # t = $(col).text().replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n|&#10;&#13;|&#13;&#10;|&#10;|&#13;)/g, ' ')
             t = $(col).text().replace(/\s+/g,' ')
+            # replace explicit newline by line in cell
+            t = t.replace(/(\|newline\|)/g," - \u2029")
             row.push(t)
+  
         csv.push(row.join(";"))
 
     csvContent += "\ufeff"+csv.join('\n')

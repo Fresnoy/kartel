@@ -177,7 +177,9 @@
             </th>
             <th>
               <span class="justificatifs" ng-repeat="justif in candidature.cursus_justifications.media track by $index"
-                > |[ {{justif.label}} ]| </span>
+                >{{justif.label}}
+                |newline|
+              </span>
             </th>
             <th>{{ candidature.admin.observation }} </th>
             <th>{{candidature.remark}} </th>
