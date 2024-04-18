@@ -123,7 +123,6 @@
           <th>Ville</th>
           <th>Pays</th>
           <th>Duo avec</th>
-          <th>Matériel</th>
           <th>Oral	</th>
           <th>Date d'entretien</th>
           <th>Visioconférence	</th>
@@ -134,6 +133,7 @@
           <th>Note sélection 3</th>
           <th>Niveau de diplôme	</th>
           <th>Noms Diplôme	</th>
+          <th>Cursus doctoral</th>
           <th>Observations/commission	</th>
           <th>Remarques / comment avez vous connu le Fresnoy</th>
           <th> </th> <!-- empty -->
@@ -162,7 +162,6 @@
             <th>{{candidature.artist.user.profile.homeland_town}}</th>
             <th>{{country.codeToCountry[candidature.artist.user.profile.homeland_country]}}</th>
             <th>{{candidature.binomial_application ? candidature.binomial_application_with : ''}}</th>
-            <th></th> <!-- Materiel -->
             <th></th> <!-- Oral -->
             <th>{{candidature.admin.interview_date |  date : "d MMMM yyyy à HH'h'mm"  | translate_en_to_fr | lowercase  }}</th>
             <th>{{candidature.remote_interview ? 'OUI' : ''}}	</th> <!-- Visioconference -->
@@ -174,6 +173,7 @@
             <th>
               <span ng-if='candidature.master_degree=="Y"'>Bac +5 </span>
               <span ng-if='candidature.master_degree=="P"'>Bac +5 en cours</span>
+              <span ng-if='candidature.master_degree=="N"'>Bac + Expérience</span>
             </th>
             <th>
               <span class="justificatifs" ng-repeat="justif in candidature.cursus_justifications.media track by $index"
@@ -181,6 +181,7 @@
                 |newline|
               </span>
             </th>
+            <th>{{ candidature.doctorate_interest ? 'OUI' : '' }} </th>
             <th>{{ candidature.admin.observation }} </th>
             <th>{{candidature.remark}} </th>
             <th> </th> <!--  empty -->
