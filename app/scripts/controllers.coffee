@@ -33,7 +33,8 @@ angular.module('memoire.controllers', ['memoire.services'])
     )
 )
 
-.controller('NavController', ($scope, $rootScope, $http, Login, Logout, jwtHelper, Users, authManager, Candidatures, $state) ->
+.controller('NavController', ($scope, $rootScope, $http, Login, Logout, CandidaturesLogin, CandidaturesLogout,
+                              jwtHelper, Users, authManager, Candidatures, $state) ->
   # $rootScope.candidatures = Candidatures.getList().$object
 
   $scope.user_infos =
@@ -70,14 +71,21 @@ angular.module('memoire.controllers', ['memoire.services'])
           )
         , (error) ->
           params.error = error.data
-   )
-
+    )
+    CandidaturesLogin.post(params)
+    .then((auth) ->
+          localStorage.setItem('Candidaturestoken', auth.access)
+        ,(error) ->
+          console.log("Candidature success")
+          params.error = error.data
+    )
    # logout
    $rootScope.logout = (route) ->
      delete $http.defaults.headers.common.Authorization
      Logout.post({}, [headers={}])
      .then((auth) ->
            localStorage.removeItem("token")
+           localStorage.removeItem("Candidaturestoken")
            $rootScope.user = {}
            delete $http.defaults.headers.common.Authorization
            authManager.unauthenticate()
@@ -731,4 +739,66 @@ angular.module('memoire.controllers', ['memoire.services'])
         $scope.promotion = promo
     )
   )
+)
+
+
+.controller('CandidaturesStatistiquesController', ($rootScope, $scope, Campaigns, 
+  CandidaturesAnalytics, VimeoToken, Vimeo) ->
+  # int countdown
+  $scope.timer_countdown = -1
+  $scope.year=null
+
+  Campaigns.getList({is_current_setup: "true"}).then((current_campaign) ->
+
+      # set campaign
+      $scope.campaign = current_campaign[0]
+      # set end of campagn
+      dt = new Date($scope.campaign.candidature_date_end)
+      $scope.candidature_date_end = dt
+
+      $scope.year = dt.getFullYear()
+
+      console.log($scope.year)
+
+      # set timer
+      $scope.timer_countdown = Math.round(
+            (new Date(dt).getTime() - new Date().getTime())/1000)
+      $scope.$broadcast('timer-set-countdown', $scope.timer_countdown);
+      
+  )
+
+
+  $scope.refreshAnalytics = () ->
+
+      CandidaturesAnalytics.one().get().then((infos) ->
+
+        $scope.analytics = infos[0]
+        console.log(infos)
+      
+      , (error) ->
+        console.log(error)
+        $scope.analytics = {"visits":0,"actions":0,"visitors":0,"visitsConverted":0}
+
+      )    
+
+  $scope.refreshAnalytics()
+
+  # VIMEO
+
+  VimeoToken.one().get().then((settings) ->
+        Vimeo.setDefaultHeaders({Authorization: "Bearer "+ settings.token})
+        $scope.refreshVimeoAnalytics()        
+  )
+
+
+  $scope.refreshVimeoAnalytics = () ->
+
+  
+    Vimeo.one("users/27279451/videos?fields=name,+description,+link&per_page=100&query=Inscription+-+"+$scope.year+"&query_fields=description").get().then((videos_infos) ->
+        console.log(videos_infos)        
+        $scope.vimeoStatistics=videos_infos.data
+    )
+
+
+
 )

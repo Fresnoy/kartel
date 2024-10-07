@@ -32,32 +32,6 @@ angular.module('memoire.services', ['restangular'])
         ).service('common/website')
 )
 
-.factory('Candidatures', (RestangularV2) ->
-        return RestangularV2.withConfig((RestangularConfigurer) ->
-
-        ).service('school/student-application')
-)
-.factory('AdminCandidatures', (RestangularV2) ->
-        return RestangularV2.withConfig((RestangularConfigurer) ->
-
-        ).service('school/admin-student-application')
-)
-
-.factory('CandidatRegistration', (Restangular) ->
-        # pas besoin d'un token - on le laisse en V1
-        return Restangular.withConfig((RestangularConfigurer) ->
-              RestangularConfigurer.setBaseUrl(config.rest_uri_v2)
-        ).service('school/student-application/user_register')
-)
-
-.factory('Campaigns', (RestangularV2) ->
-        return RestangularV2.withConfig((RestangularConfigurer) ->
-        ).service('school/student-application-setup')
-)
-
-.factory('Students', (Restangular) ->
-        return Restangular.service('school/student')
-)
 
 .factory('PromotionsV2', (RestangularV2) ->
         return RestangularV2.service('school/promotion')
@@ -105,6 +79,61 @@ angular.module('memoire.services', ['restangular'])
 .factory('Logout', (RestangularV2) ->
         return RestangularV2.withConfig((RestangularConfigurer) ->
         ).service('rest-auth/logout/')
+)
+.factory('Students', (Restangular) ->
+        return Restangular.service('school/student')
+)
+
+
+
+# CANDIDATURES 
+.factory('APICandidatures', (RestangularV2) ->
+        return RestangularV2.withConfig((RestangularConfigurer) ->
+                RestangularConfigurer.setBaseUrl(config.kandidatur_api_url)
+                RestangularConfigurer.setDefaultHeaders({Authorization: "JWT "+ localStorage.getItem('Candidaturestoken')});
+        )
+)
+
+
+.factory('CandidaturesLogin', (APICandidatures) ->
+        return APICandidatures.withConfig((RestangularConfigurer) ->
+        ).service('v2/rest-auth/login/')
+)
+.factory('CandidaturesLogout', (APICandidatures) ->
+        return APICandidatures.withConfig((RestangularConfigurer) ->
+        ).service('v2/rest-auth/logout/')
+)
+
+
+.factory('Candidatures', (APICandidatures) ->
+        return APICandidatures.withConfig((RestangularConfigurer) ->
+        ).service('v2/school/student-application')
+)
+.factory('AdminCandidatures', (APICandidatures) ->
+        return APICandidatures.withConfig((RestangularConfigurer) ->
+        ).service('v2/school/admin-student-application')
+)
+.factory('Campaigns', (APICandidatures) ->
+        return APICandidatures.withConfig((RestangularConfigurer) ->
+        )
+        .service('v2/school/student-application-setup')
+)
+.factory('CandidaturesAnalytics', (Restangular) ->
+        return Restangular.withConfig((RestangularConfigurer) ->
+                RestangularConfigurer.setBaseUrl(config.analytics_live_api.url)
+        ).service(config.analytics_live_api.param)
+)
+.factory('VimeoToken', (APICandidatures) ->
+        return APICandidatures.withConfig((RestangularConfigurer) ->
+              # RestangularConfigurer.setBaseUrl(config.rest_uri_v2)
+        ).service('v2/assets/vimeo/upload/token')
+)
+.factory('Vimeo', (Restangular) ->
+        return Restangular.withConfig((RestangularConfigurer) ->
+              RestangularConfigurer.setBaseUrl(config.vimeo_rest_url)
+              RestangularConfigurer.setFullResponse(true)
+              # RestangularConfigurer.setDefaultHeaders({Authorization: "Bearer "+ localStorage.getItem('vimeo_upload_token')})
+        )
 )
 
 

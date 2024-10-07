@@ -1,0 +1,26 @@
+
+
+<div>
+  <h1>Statistiques campagne de Sélection {{ year }}</h1>
+  <hr/>
+
+  <div ng-if="timer_countdown > 0" >
+        Il reste 
+        <timer language="fr" countdown="timer_countdown" interval="1000"
+               finish-callback="countdownFinish()" >
+            <span class='fr'>{{monthUnit | translate_en_to_fr }}</span>
+        </timer>
+  </div>
+
+
+  <div >
+    <p><strong>{{ analytics.visitors }}</strong> Utilisateurs actifs (30 dernieres minutes) 
+        <button class="btn" ng-click="refreshAnalytics()" >⟳</button></p>
+    <p><strong>{{ vimeoStatistics.total }}</strong> vidéos déposés 
+      <button class="btn" ng-click="refreshVimeoAnalytics()" >⟳</button></p>
+  </div>
+
+
+
+
+</div>
