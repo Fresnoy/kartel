@@ -83,7 +83,7 @@ export const useConfigApi = defineStore("configApi", () => {
         );
         let data = response.data;
 
-        return await this.getUsers(data);
+        return await this.getStudentsInfos(data);
       } catch (err) {
         console.error(err);
       }
@@ -96,13 +96,12 @@ export const useConfigApi = defineStore("configApi", () => {
      * @param {Array} students - An array of student objects.
      * @returns {Promise<Array>} - A Promise that resolves to an array of student objects with retrieved user data.
      */
-    async getUsers(students) {
+    async getStudentsInfos(students) {
       const users = students.map(async (student) => {
         student.userData = await this.getUser(student);
-
+        student.artistData = await this.getArtist(student);
         return student;
       });
-
       return await Promise.all(users);
     }
 
@@ -116,12 +115,29 @@ export const useConfigApi = defineStore("configApi", () => {
      */
     async getUser(student) {
       try {
-        return student.user_infos;
-          // const response = await axios.get(student.user);
-          // const userData = response.data;
+        const response = await axios.get(student.user);
+        const userData = response.data;
 
-          // return await userData;
-        
+        return await userData;
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    /**
+     * Async function to retrieve user data from a given student object.
+     * @async
+     *
+     * @param {Object} parent - The parent object containing the artist data.
+     * @returns {Promise<Object>} - The artist data retrieved from the API.
+     * @throws {Error} - An error occurred while retrieving the artist data.
+     */
+    async getArtist(parent) {
+      try {
+        const response = await axios.get(parent.artist);
+        const artistData = response.data;
+
+        return await artistData;
       } catch (err) {
         console.error(err);
       }
@@ -166,21 +182,26 @@ export const useConfigApi = defineStore("configApi", () => {
    */
   function sortStudents(students, order) {
     // for Promotion Marguerite Duras sort invert V and Y for Yoo and Villafagne ?!
+    
     if (order === "descending") {
       const sort = students.sort((a, b) => {
         // Sort with lower or upper case for avoid bad sorting because not the same Unicode
-        console.log(a.userData.last_name.toLowerCase());
-        return a.userData.last_name < b.userData.last_name ? 1 : -1;
+        let aname = a.artistData.nickname ? a.artistData.nickname : a.user_infos.last_name;
+        let bname = b.artistData.nickname ? b.artistData.nickname : b.user_infos.last_name;
+        return aname < bname ? 1 : -1;
       });
-
+      console.log(sort)
       return (students = sort);
     } else {
-      const sort = students.sort((a, b) =>
-        a.userData.last_name > b.userData.last_name ? 1 : -1
-      );
-
+      const sort = students.sort((a, b) => {
+        let aname = a.artistData.nickname ? a.artistData.nickname : a.user_infos.last_name;
+        let bname = b.artistData.nickname ? b.artistData.nickname : b.user_infos.last_name;
+        return aname > bname ? 1 : -1
+      });
+      console.log(sort)
       return (students = sort);
     }
+    
   }
 
   return {

@@ -11,7 +11,10 @@ const props = defineProps({
 });
 
 const fullname = computed(() => {
-  return `${props.student.userData.first_name} ${props.student.userData.last_name}`;
+  console.log(props.student)
+  return props.student.artistData.nickname != "" ? 
+         `${props.student.artistData.nickname}`:
+         `${props.student.user_infos.first_name} ${props.student.user_infos.last_name}`;
 });
 </script>
 
@@ -30,13 +33,19 @@ const fullname = computed(() => {
             'p-4': !props.student?.userData?.profile?.photo,
           }"
           :src="
-            props.student.userData.profile.photo
+            props.student?.userData?.profile?.photo
               ? `${config.media_service}?url=${props.student.userData.profile.photo}&mode=adapt&w=300&fmt=jpg`
               : userPlaceholder
           "
           :alt="`Photo de ${fullname}`"
         />
-        <div class="p-2 w-full h-full capitalize">
+        <div v-if="props.student.artistData?.nickname" class="p-2 w-full capitalize">
+          <p class="last:font-bold">
+            {{ fullname }}
+          </p>
+        </div>
+        <div v-else class="p-2 w-full capitalize">
+          {{ fullname }}
           <p v-if="props.student.userData.first_name" class="last:font-bold">
             {{ props.student.userData.first_name }}
           </p>

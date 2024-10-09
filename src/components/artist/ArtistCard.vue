@@ -9,7 +9,7 @@ const props = defineProps({
   artist: Object,
 });
 
-const fullname = computed(() => {
+const fullname = computed(() => {  
   return `${props.artist.userData.first_name} ${props.artist.userData.last_name}`;
 });
 </script>

@@ -171,10 +171,11 @@ class Content {
 
       // check if it's the last request to set results
       if (Content.isLastRequest(this.getLastRequest(), { type, id: this.id })) {
+        let pnv = { details: "Page non valide." }
         if (
           data &&
           Array.isArray(data) &&
-          data !== { details: "Page non valide." }
+          data !== pnv
         ) {
           let contentData;
 
