@@ -98,7 +98,7 @@ export const useConfigApi = defineStore("configApi", () => {
      */
     async getStudentsInfos(students) {
       const users = students.map(async (student) => {
-        student.userData = await this.getUser(student);
+        student.userData = student.user_infos;
         student.artistData = await this.getArtist(student);
         return student;
       });

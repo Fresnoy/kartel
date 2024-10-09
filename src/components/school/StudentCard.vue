@@ -11,10 +11,9 @@ const props = defineProps({
 });
 
 const fullname = computed(() => {
-  console.log(props.student)
   return props.student.artistData.nickname != "" ? 
          `${props.student.artistData.nickname}`:
-         `${props.student.user_infos.first_name} ${props.student.user_infos.last_name}`;
+         `${props.student.userData.first_name} ${props.student.userData.last_name}`;
 });
 </script>
 
