@@ -743,40 +743,39 @@ angular.module('memoire.controllers', ['memoire.services'])
 
 
 .controller('CandidaturesStatistiquesController', ($rootScope, $scope, Campaigns, 
-  CandidaturesAnalytics, VimeoToken, Vimeo) ->
+  CandidaturesAnalytics, VimeoToken, Vimeo, Candidatures) ->
   # int countdown
-  $scope.timer_countdown = -1
+  $scope.timer_countdown 
   $scope.year=null
 
-  Campaigns.getList({is_current_setup: "true"}).then((current_campaign) ->
+   # CountDown
+  $scope.refreshCountDown = () ->
 
-      # set campaign
-      $scope.campaign = current_campaign[0]
-      # set end of campagn
-      dt = new Date($scope.campaign.candidature_date_end)
-      $scope.candidature_date_end = dt
+      Campaigns.getList({is_current_setup: "true"}).then((current_campaign) ->
+              # set campaign
+              $scope.campaign = current_campaign[0]
+              # set end of campagn
+              dt = new Date($scope.campaign.candidature_date_end)
+              $scope.candidature_date_end = dt
 
-      $scope.year = dt.getFullYear()
+              # we take the opportunity to catch the year
+              $scope.year = dt.getFullYear()
+              # set timer
+              $scope.timer_countdown = Math.round(
+                    (new Date(dt).getTime() - new Date().getTime())/1000)
+              $scope.$broadcast('timer-set-countdown', $scope.timer_countdown);      
+      )
 
-      console.log($scope.year)
-
-      # set timer
-      $scope.timer_countdown = Math.round(
-            (new Date(dt).getTime() - new Date().getTime())/1000)
-      $scope.$broadcast('timer-set-countdown', $scope.timer_countdown);
-      
-  )
-
-
+  $scope.refreshCountDown()
+  
+  # Analytics
   $scope.refreshAnalytics = () ->
 
       CandidaturesAnalytics.one().get().then((infos) ->
 
         $scope.analytics = infos[0]
-        console.log(infos)
       
       , (error) ->
-        console.log(error)
         $scope.analytics = {"visits":0,"actions":0,"visitors":0,"visitsConverted":0}
 
       )    
@@ -784,20 +783,29 @@ angular.module('memoire.controllers', ['memoire.services'])
   $scope.refreshAnalytics()
 
   # VIMEO
-
   VimeoToken.one().get().then((settings) ->
         Vimeo.setDefaultHeaders({Authorization: "Bearer "+ settings.token})
         $scope.refreshVimeoAnalytics()        
   )
 
 
-  $scope.refreshVimeoAnalytics = () ->
 
-  
+  $scope.refreshVimeoAnalytics = () ->
     Vimeo.one("users/27279451/videos?fields=name,+description,+link&per_page=100&query=Inscription+-+"+$scope.year+"&query_fields=description").get().then((videos_infos) ->
-        console.log(videos_infos)        
+  
         $scope.vimeoStatistics=videos_infos.data
     )
+
+  # dossiers ouverts
+  $scope.refreshCandidatures = () ->
+
+      $scope.candidatures = Candidatures.getList( {'campaign__is_current_setup':'true',}).$object
+      $scope.candidaturesComplete = Candidatures.getList( {'campaign__is_current_setup':'true', "application_completed": 'true', }).$object
+
+
+  $scope.refreshCandidatures();
+
+
 
 
 

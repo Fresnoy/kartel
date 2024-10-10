@@ -90,7 +90,8 @@ angular.module('memoire.services', ['restangular'])
 .factory('APICandidatures', (RestangularV2) ->
         return RestangularV2.withConfig((RestangularConfigurer) ->
                 RestangularConfigurer.setBaseUrl(config.kandidatur_api_url)
-                RestangularConfigurer.setDefaultHeaders({Authorization: "JWT "+ localStorage.getItem('Candidaturestoken')});
+                if localStorage.getItem('Candidaturestoken')
+                    RestangularConfigurer.setDefaultHeaders({Authorization: "JWT "+ localStorage.getItem('Candidaturestoken')});
         )
 )
 
@@ -135,6 +136,11 @@ angular.module('memoire.services', ['restangular'])
               # RestangularConfigurer.setDefaultHeaders({Authorization: "Bearer "+ localStorage.getItem('vimeo_upload_token')})
         )
 )
+.factory('CandidaturesGraphql', (APICandidatures) ->
+        return APICandidatures.withConfig((RestangularConfigurer) ->
+        ).service('graphql')
+)
+
 
 
 # AME Service
