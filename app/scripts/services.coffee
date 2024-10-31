@@ -83,11 +83,16 @@ angular.module('memoire.services', ['restangular'])
 .factory('Students', (Restangular) ->
         return Restangular.service('school/student')
 )
+# used !
+.factory('Candidatures', (RestangularV2) ->
+        return RestangularV2.withConfig((RestangularConfigurer) ->
+        ).service('school/student-application')
+)
 
 
 
 # CANDIDATURES 
-.factory('APICandidatures', (RestangularV2) ->
+.factory('APIK', (RestangularV2) ->
         return RestangularV2.withConfig((RestangularConfigurer) ->
                 RestangularConfigurer.setBaseUrl(config.kandidatur_api_url)
                 if localStorage.getItem('Candidaturestoken')
@@ -95,40 +100,67 @@ angular.module('memoire.services', ['restangular'])
         )
 )
 
-
-.factory('CandidaturesLogin', (APICandidatures) ->
-        return APICandidatures.withConfig((RestangularConfigurer) ->
-        ).service('v2/rest-auth/login/')
-)
-.factory('CandidaturesLogout', (APICandidatures) ->
-        return APICandidatures.withConfig((RestangularConfigurer) ->
-        ).service('v2/rest-auth/logout/')
-)
-
-
-.factory('Candidatures', (APICandidatures) ->
-        return APICandidatures.withConfig((RestangularConfigurer) ->
-        ).service('v2/school/student-application')
-)
-.factory('AdminCandidatures', (APICandidatures) ->
-        return APICandidatures.withConfig((RestangularConfigurer) ->
-        ).service('v2/school/admin-student-application')
-)
-.factory('Campaigns', (APICandidatures) ->
-        return APICandidatures.withConfig((RestangularConfigurer) ->
+.factory('APIV2K', (APIK) ->
+        return APIK.withConfig((RestangularConfigurer) ->
+                RestangularConfigurer.setBaseUrl(config.kandidatur_api_url+"v2/")
         )
-        .service('v2/school/student-application-setup')
 )
-.factory('CandidaturesAnalytics', (Restangular) ->
-        return Restangular.withConfig((RestangularConfigurer) ->
-                RestangularConfigurer.setBaseUrl(config.analytics_live_api.url)
-        ).service(config.analytics_live_api.param)
+
+.factory('LoginK', (APIV2K) ->
+        return APIV2K.withConfig((RestangularConfigurer) ->
+        ).service('rest-auth/login/')
 )
-.factory('VimeoToken', (APICandidatures) ->
-        return APICandidatures.withConfig((RestangularConfigurer) ->
+.factory('LogoutK', (APIV2K) ->
+        return APIV2K.withConfig((RestangularConfigurer) ->
+        ).service('rest-auth/logout/')
+)
+
+.factory('CandidaturesK', (APIV2K) ->
+        return APIV2K.withConfig((RestangularConfigurer) ->
+        ).service('school/student-application')
+)
+
+.factory('AdminCandidaturesK', (APIV2K) ->
+        return APIV2K.withConfig((RestangularConfigurer) ->
+        ).service('school/admin-student-application')
+)
+.factory('UsersK', (APIV2K) ->
+        return APIV2K.withConfig((RestangularConfigurer) ->
+        ).service('people/user')
+)
+.factory('ArtistsK', (APIV2K) ->
+        return APIV2K.withConfig((RestangularConfigurer) ->
+        ).service('people/artist')
+)
+.factory('GalleriesK', (APIV2K) ->
+        return APIV2K.withConfig((RestangularConfigurer) ->
+        ).service('asset/gallery')
+)
+.factory('MediaK', (APIV2K) ->
+        return APIV2K.withConfig((RestangularConfigurer) ->
+        ).service('asset/medium')
+)
+.factory('WebsiteK', (APIV2K) ->
+        return APIV2K.withConfig((RestangularConfigurer) ->
+        ).service('common/website')
+)
+.factory('CampaignsK', (APIV2K) ->
+        return APIV2K.withConfig((RestangularConfigurer) ->
+        )
+        .service('school/student-application-setup')
+)
+.factory('VimeoTokenK', (APIV2K) ->
+        return APIV2K.withConfig((RestangularConfigurer) ->
               # RestangularConfigurer.setBaseUrl(config.rest_uri_v2)
-        ).service('v2/assets/vimeo/upload/token')
+        ).service('assets/vimeo/upload/token')
 )
+.factory('GraphqlK', (APIK) ->
+        return APIK.withConfig((RestangularConfigurer) ->
+        ).service('graphql')
+)
+
+
+# Externals APIS 
 .factory('Vimeo', (Restangular) ->
         return Restangular.withConfig((RestangularConfigurer) ->
               RestangularConfigurer.setBaseUrl(config.vimeo_rest_url)
@@ -136,9 +168,11 @@ angular.module('memoire.services', ['restangular'])
               # RestangularConfigurer.setDefaultHeaders({Authorization: "Bearer "+ localStorage.getItem('vimeo_upload_token')})
         )
 )
-.factory('CandidaturesGraphql', (APICandidatures) ->
-        return APICandidatures.withConfig((RestangularConfigurer) ->
-        ).service('graphql')
+
+.factory('CandidaturesAnalytics', (Restangular) ->
+        return Restangular.withConfig((RestangularConfigurer) ->
+                RestangularConfigurer.setBaseUrl(config.analytics_live_api.url)
+        ).service(config.analytics_live_api.param)
 )
 
 
@@ -151,6 +185,8 @@ angular.module('memoire.services', ['restangular'])
             RestangularConfigurer.setDefaultHeaders({'Content-Type': 'charset=UTF-8'})
       )
 )
+
+# GraphQL Service
 
 .factory('Graphql', (Restangular) ->
         return Restangular.withConfig((RestangularConfigurer) ->
