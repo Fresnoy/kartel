@@ -145,10 +145,13 @@
             <h3>Infos</h3>
             <div class="person">
               <p>
+                <!-- class="text-danger warning" -->
                 Né<span ng-if="artist.user.profile.gender=='F'">e</span> en {{country.codeToCountry[artist.user.profile.birthplace_country]}}<!--
                 --><span ng-if='artist.user.profile.birthplace'>({{artist.user.profile.birthplace}})</span>
-                le {{ artist.user.profile.birthdate }}
-                ({{artist.user.profile.birthdate | ageFilter}} ans) -
+                le 
+                <span ng-class="{'text-danger warning': (campaign.date_of_birth_max > artist.user.profile.birthdate)}">
+                  {{ artist.user.profile.birthdate }}
+                ({{artist.user.profile.birthdate | ageFilter}} ans)</span> -
                   <a ng-show='candidature.identity_card' ng-click='singleLightbox(candidature.identity_card,"Justificatif d’identité")'>Justificatif</a>
                   <span ng-if='!candidature.identity_card' class="text-danger warning">Justificatif d'identité absent</span>
                 <br/>Genre :  {{ gender[artist.user.profile.gender].fr }}

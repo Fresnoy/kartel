@@ -330,11 +330,14 @@ angular.module('memoire.controllers', ['memoire.services'])
 
 .controller('CandidaturesController', ($rootScope, $scope, $stateParams, $location, 
                                        CandidaturesK, AdminCandidaturesK, GalleriesK, MediaK, 
-                                       APIV2K, ArtistsK, UsersK, GraphqlK,
+                                       APIV2K, ArtistsK, UsersK, GraphqlK, CampaignsK,
                                        ISO3166, cfpLoadingBar) ->
   # main title
   $rootScope.main_title="Candidatures administration"
 
+  # get setup
+  $rootScope.campaign = {}
+  CampaignsK.getList({is_current_setup: "true"}).then((campaigns) -> $rootScope.campaign =  campaigns[0] ).$objects
 
   # init
   # rootscope to synch candidatreS (left side) => sandidature (right side) changement (like observations)
@@ -409,11 +412,90 @@ angular.module('memoire.controllers', ['memoire.services'])
             console.log("NO MODEL ???", sort.model)
     )
     return arr
+    # GraphqlK.one().get({operationName:"Candidatures", query:"query Candidatures {  
+    #     studentApplicationSetup(isCurrentSetup: true) {    
+    #           applications {
+    #             id      
+    #             INE    
+    #             applicationCompleted  
+    #             artisticReferenciesProject1
+    #             artisticReferenciesProject2
+    #             binomialApplication
+    #             binomialApplicationWith
+    #             consideredProject1
+    #             consideredProject2
+    #             currentYearApplicationCount
+    #             curriculumVitae
+    #             doctorateInterest
+    #             experienceJustification
+    #             firstTime
+    #             freeDocument
+    #             identityCard
+    #             justificationLetter
+    #             lastApplicationsYears
+    #             masterDegree
+    #             presentationVideo
+    #             presentationVideoDetails
+    #             referenceLetter
+    #             remark
+    #             remoteInterview
+    #             remoteInterviewInfo
+    #             remoteInterviewType      
+    #             administration {
+    #                   applicationComplete
+    #                   id
+    #                   interviewDate
+    #                   observation
+    #                   positionInInterviewWaitlist
+    #                   positionInWaitlist
+    #                   selected
+    #                   selectedForInterview
+    #                   unselected
+    #                   waitListed
+    #                   waitListedForInterview
+    #             } 
+    #             artist {        
+    #               displayName        
+    #               user {
+    #                     birthdate
+    #                     birthplace
+    #                     birthplaceCountry
+    #                     cursus
+    #                     email
+    #                     familyStatus
+    #                     firstName
+    #                     gender
+    #                     homelandAddress
+    #                     homelandCountry
+    #                     homelandPhone
+    #                     id
+    #                     motherTongue
+    #                     nationality
+    #                     otherLanguage
+    #                     photo
+    #                     socialInsuranceNumber
+    #                     username        
+    #               }      
+    #             }      
+    #             cursusJustifications {
+    #                   description
+    #                   id
+    #                   label
+    #                   media {
+    #                         file
+    #                         id
+    #                         label
+    #                   }
+    #             }
+    #       }  
+    #   }}"}).then((candidatures) ->
+    #       console.log(candidatures)
+    #   )
 
   # getcandidatures
   $rootScope.candidatures = $scope.getCandidatures($scope.select_criteres[$scope.critere], $scope.select_orders[$scope.order])
   
-  console.log($rootScope.candidatures)
+  # console.log($rootScope.candidatures)
   # make function to keep admin cnadidature scope scope
   switchAdminCandidature = (admin_candidature_obj, arr, index) -> 
     
@@ -679,7 +761,7 @@ angular.module('memoire.controllers', ['memoire.services'])
 
 )
 
-.controller('CandidaturesConfigurationController', ($rootScope, $scope, RestangularV2, Campaigns, PromotionsV2) ->
+.controller('CandidaturesConfigurationController', ($rootScope, $scope, APIV2K, CampaignsK, PromotionsK) ->
   $scope.configuration = []
   $scope.promotion = []
 
@@ -688,15 +770,16 @@ angular.module('memoire.controllers', ['memoire.services'])
   $scope.date = (date) ->
     return new Date(date)
 
-  Campaigns.getList({is_current_setup: "true"}).then((current_campaign) ->
+  CampaignsK.getList({is_current_setup: "true"}).then((current_campaign) ->
     $scope.configuration = current_campaign[0]
     $scope.date_of_birth_max = new Date($scope.configuration.date_of_birth_max)
     $scope.interviews_publish_date = new Date($scope.configuration.interviews_publish_date)
     $scope.selected_publish_date = new Date($scope.configuration.selected_publish_date)
     $scope.candidature_date_end = new Date($scope.configuration.candidature_date_end)
+    $scope.application_reminder_email_date = new Date($scope.configuration.application_reminder_email_date)
     # get promo infos
     promo_id = $scope.configuration.promotion.match(/\d+$/)[0]
-    RestangularV2.one("school/promotion/"+promo_id).get().then((promo) ->
+    APIV2K.one("school/promotion/"+promo_id).get().then((promo) ->
         $scope.promo_name = promo.name
         $scope.promotion = promo
     )

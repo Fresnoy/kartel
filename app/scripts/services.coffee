@@ -149,6 +149,11 @@ angular.module('memoire.services', ['restangular'])
         )
         .service('school/student-application-setup')
 )
+.factory('PromotionsK', (APIV2K) ->
+        return APIV2K.withConfig((RestangularConfigurer) ->
+        )
+        .service('school/promotion')
+)
 .factory('VimeoTokenK', (APIV2K) ->
         return APIV2K.withConfig((RestangularConfigurer) ->
               # RestangularConfigurer.setBaseUrl(config.rest_uri_v2)
