@@ -33,7 +33,6 @@ exports.config =
                                 ]
                                 'js/config.js': [
                                         'app/config.js'
-                                        'app/config-candidature.js'
                                 ]
                          order:
                                 before: [

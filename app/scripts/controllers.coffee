@@ -33,7 +33,7 @@ angular.module('memoire.controllers', ['memoire.services'])
     )
 )
 
-.controller('NavController', ($scope, $rootScope, $http, Login, Logout, LoginK, LogoutK,
+.controller('NavController', ($scope, $rootScope, $http, Login, Logout, LoginK, LogoutK, APIK, APIV2K,
                               jwtHelper, Users, authManager, $state) ->
   # $rootScope.candidatures = Candidatures.getList().$object
 
@@ -73,9 +73,9 @@ angular.module('memoire.controllers', ['memoire.services'])
           params.error = error.data
     )
     LoginK.post(params)
-    .then((auth) ->
-          console.log("Login Kapi OK")
-          localStorage.setItem('Candidaturestoken', auth.access)
+    .then((authK) ->
+          localStorage.setItem('Candidaturestoken', authK.access)
+          APIV2K.setDefaultHeaders({Authorization: "JWT "+ authK.access});
         ,(error) ->
           console.log("Login Kapi error")
           params.error = error.data
