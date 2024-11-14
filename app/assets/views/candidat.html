@@ -132,17 +132,7 @@
               </span>
             </a>
           </li>
-          <li role="observations" class="admin">
-            <a data-target ="#observations" role="tab" data-toggle="tab">
-
-              <!-- Annoté -->
-              <span ng-if="candidature.admin.has_observation">
-                <span class="glyphicon glyphicon-pencil" aria-hidden="true" title="Des notes personnelles ou partagées sont disponibles"></span>
-              </span>
-                Notes du Jury
-            </a>
-
-          </li>
+          
           <li role="actions" class="admin">
             <a data-target ="#actions" role="tab" data-toggle="tab">
               Actions
@@ -155,10 +145,13 @@
             <h3>Infos</h3>
             <div class="person">
               <p>
+                <!-- class="text-danger warning" -->
                 Né<span ng-if="artist.user.profile.gender=='F'">e</span> en {{country.codeToCountry[artist.user.profile.birthplace_country]}}<!--
                 --><span ng-if='artist.user.profile.birthplace'>({{artist.user.profile.birthplace}})</span>
-                le {{ artist.user.profile.birthdate }}
-                ({{artist.user.profile.birthdate | ageFilter}} ans) -
+                le 
+                <span ng-class="{'text-danger warning': (campaign.date_of_birth_max > artist.user.profile.birthdate)}">
+                  {{ artist.user.profile.birthdate }}
+                ({{artist.user.profile.birthdate | ageFilter}} ans)</span> -
                   <a ng-show='candidature.identity_card' ng-click='singleLightbox(candidature.identity_card,"Justificatif d’identité")'>Justificatif</a>
                   <span ng-if='!candidature.identity_card' class="text-danger warning">Justificatif d'identité absent</span>
                 <br/>Genre :  {{ gender[artist.user.profile.gender].fr }}
@@ -285,32 +278,6 @@
         <div role="tabpanel" class="tab-pane" id="message">
           <h3>Message</h3>
           <p ng-if='candidature.remark!=null' ng-bind-html="candidature.remark | linky:'_blank' | nl2br" />
-        </div>
-
-        <div role="tabpanel" class="tab-pane admin" id="observations">
-            <h3>Notes du jury</h3>
-
-              <p>Ces notes sont partagées avec le jury</p>
-               <textarea
-                  ng-model="jury_observation"
-                  ng-model-options='{ debounce: 1000 }'
-                  ng-change="add_observation('jury', jury_observation )"
-                  placeholder="Message"
-                  rows="10"
-                  />
-
-              <h3>Mes notes</h3>
-              <p>Ces notes sont personnelles <br/>
-                <small>Utilisateur: <strong>{{user.username}}</strong></small></p>
-                  <textarea
-                     ng-model="personal_observation"
-                     ng-model-options='{ debounce: 1000 }'
-                     ng-change="add_observation(user.username, personal_observation)"
-                     placeholder="Message"
-                     rows="10"
-                     />
-
-
         </div>
 
 

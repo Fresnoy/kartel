@@ -153,8 +153,38 @@
                         birth_max_modif=!birth_max_modif;
                         " >Annuler</button>
       <button class="btn btn-success" ng-click="
+                        configuration.date_of_birth_max = (date_of_birth_max | date:'yyyy-MM-dd');
                         configuration.patch({'date_of_birth_max': configuration.date_of_birth_max});
                         birth_max_modif=!birth_max_modif;
+                        " >Valider</button>
+    </div>
+
+     <!--
+
+     Date
+     Envoie email
+
+     -->
+
+
+    <h2>Date d'envoie de l'email de rappel</h2>
+    <h4 ng-init='reminder_modif=false' ng-show=!reminder_modif>
+      {{ application_reminder_email_date  | date : "EEEE d MMMM yyyy" | translate_en_to_fr }}
+      <a ng-click="reminder_modif=!reminder_modif" ><i class="glyphicon glyphicon-edit"></i>  </a>
+    </h4>
+    <div ng-show=reminder_modif>
+      <input type="date" name="cRemiderDate" ng-model="application_reminder_email_date"/>
+
+      <button class="btn btn-warning" ng-click="
+                        application_reminder_email_date = date(configuration.application_reminder_email_date);
+                        reminder_modif=!reminder_modif;
+                        " >Annuler</button>
+      <button class="btn btn-success" ng-click="
+                        configuration.application_reminder_email_date = (application_reminder_email_date | date:'yyyy-MM-dd');
+                        configuration.patch(
+                          {'application_reminder_email_date': configuration.application_reminder_email_date}
+                        );
+                        reminder_modif=!reminder_modif;
                         " >Valider</button>
 
 

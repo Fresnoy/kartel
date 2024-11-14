@@ -4,5 +4,12 @@ config = {
     media_service: "", 
     ame_rest_uri: "",
     reset_password_uri: "",
+
+    kandidatur_api_url: "",
+    vimeo_rest_url:"",
+
+    analytics_live_api: {
+        url:"",
+        param:""}
 }
 

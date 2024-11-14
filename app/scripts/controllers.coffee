@@ -33,7 +33,8 @@ angular.module('memoire.controllers', ['memoire.services'])
     )
 )
 
-.controller('NavController', ($scope, $rootScope, $http, Login, Logout, jwtHelper, Users, authManager, Candidatures, $state) ->
+.controller('NavController', ($scope, $rootScope, $http, Login, Logout, LoginK, LogoutK, APIK, APIV2K,
+                              jwtHelper, Users, authManager, $state) ->
   # $rootScope.candidatures = Candidatures.getList().$object
 
   $scope.user_infos =
@@ -70,15 +71,28 @@ angular.module('memoire.controllers', ['memoire.services'])
           )
         , (error) ->
           params.error = error.data
-   )
-
+    )
+    LoginK.post(params)
+    .then((authK) ->
+          localStorage.setItem('Candidaturestoken', authK.access)
+          APIV2K.setDefaultHeaders({Authorization: "JWT "+ authK.access});
+        ,(error) ->
+          console.log("Login Kapi error")
+          params.error = error.data
+    )
    # logout
    $rootScope.logout = (route) ->
      delete $http.defaults.headers.common.Authorization
      Logout.post({}, [headers={}])
      .then((auth) ->
+           # K logout
+           LogoutK.post({}, [headers={}])
+           localStorage.removeItem("Candidaturestoken")
+
+           # clean token / user
            localStorage.removeItem("token")
            $rootScope.user = {}
+           
            delete $http.defaults.headers.common.Authorization
            authManager.unauthenticate()
            if(route)
@@ -160,7 +174,8 @@ angular.module('memoire.controllers', ['memoire.services'])
   )
 )
 
-.controller('ArtworkController', ($rootScope, $scope, $stateParams, $sce, $http, Lightbox, Artworks, AmeRestangular, Events, Collaborators, Partners, Candidatures) ->
+.controller('ArtworkController', ($rootScope, $scope, $stateParams, $sce, $http, Lightbox, Artworks, AmeRestangular, 
+                            Events, Collaborators, Partners, Candidatures) ->
   # main title
   $rootScope.main_title="Kartel - Œuvre"
 
@@ -314,12 +329,15 @@ angular.module('memoire.controllers', ['memoire.services'])
 )
 
 .controller('CandidaturesController', ($rootScope, $scope, $stateParams, $location, 
-                                       Candidatures, AdminCandidatures, Galleries, Media, 
-                                       RestangularV2, ArtistsV2, Users, Graphql,
+                                       CandidaturesK, AdminCandidaturesK, GalleriesK, MediaK, 
+                                       APIV2K, ArtistsK, UsersK, GraphqlK, CampaignsK,
                                        ISO3166, cfpLoadingBar) ->
   # main title
   $rootScope.main_title="Candidatures administration"
 
+  # get setup
+  $rootScope.campaign = {}
+  CampaignsK.getList({is_current_setup: "true"}).then((campaigns) -> $rootScope.campaign =  campaigns[0] ).$objects
 
   # init
   # rootscope to synch candidatreS (left side) => sandidature (right side) changement (like observations)
@@ -330,16 +348,16 @@ angular.module('memoire.controllers', ['memoire.services'])
   # plusieurs models sont utilisés : Canddatures et AdminCandidtures 
   # selon l'avancée de l'inscription : si l'utilisateur n'a pas finalisé son dossier, on a pas acces à toutes ses infos
   $scope.select_criteres = [
-    {key:0, title: 'Sélectionner une option', sortby: {'search':'XXX', }, model: Candidatures },
-    {key:1, title: 'Toutes', sortby: {'campaign__is_current_setup':'true', }, model: Candidatures, count:0 },
-    {key:2, title: 'Non sélectionnées', sortby: {'application__campaign__is_current_setup':'true', "unselected":'true', }, model: AdminCandidatures, count:0 },
-    {key:3, title: 'Non finalisées', sortby: {'campaign__is_current_setup':'true', "application_completed": 'false', }, model: Candidatures, count:0},
-    {key:4, title: 'En attente de validation', sortby: {'application__campaign__is_current_setup':'true', 'application__application_completed':'true', "application_complete":'false', "unselected": 'false', }, model: AdminCandidatures, count:0},
-    {key:5, title: 'Visées', sortby: {'application__campaign__is_current_setup':'true', "application_complete":'true'}, model: AdminCandidatures, count:0},
-    {key:6, title: 'Entretien : liste d\'attente', sortby: {'application__campaign__is_current_setup':'true', "wait_listed_for_interview":'true'}, model: AdminCandidatures, count:0},
-    {key:7, title: 'Entretien : Selectionnés', sortby: {'application__campaign__is_current_setup':'true', "selected_for_interview":'true'}, model: AdminCandidatures, count:0},
-    {key:8, title: 'Admis : liste d\'attente', sortby: {'application__campaign__is_current_setup':'true', "wait_listed":'true'}, model: AdminCandidatures, count:0},
-    {key:9, title: 'Admis', sortby: {'application__campaign__is_current_setup':'true', "unselected": 'false', "selected":'true'}, model: AdminCandidatures, count:0},
+    {key:0, title: 'Sélectionner une option', sortby: {'search':'XXX', }, model: CandidaturesK },
+    {key:1, title: 'Toutes', sortby: {'campaign__is_current_setup':'true', }, model: CandidaturesK, count:0 },
+    {key:2, title: 'Non sélectionnées', sortby: {'application__campaign__is_current_setup':'true', "unselected":'true', }, model: AdminCandidaturesK, count:0 },
+    {key:3, title: 'Non finalisées', sortby: {'campaign__is_current_setup':'true', "application_completed": 'false', }, model: CandidaturesK, count:0},
+    {key:4, title: 'En attente de validation', sortby: {'application__campaign__is_current_setup':'true', 'application__application_completed':'true', "application_complete":'false', "unselected": 'false', }, model: AdminCandidaturesK, count:0},
+    {key:5, title: 'Visées', sortby: {'application__campaign__is_current_setup':'true', "application_complete":'true'}, model: AdminCandidaturesK, count:0},
+    {key:6, title: 'Entretien : liste d\'attente', sortby: {'application__campaign__is_current_setup':'true', "wait_listed_for_interview":'true'}, model: AdminCandidaturesK, count:0},
+    {key:7, title: 'Entretien : Selectionnés', sortby: {'application__campaign__is_current_setup':'true', "selected_for_interview":'true'}, model: AdminCandidaturesK, count:0},
+    {key:8, title: 'Admis : liste d\'attente', sortby: {'application__campaign__is_current_setup':'true', "wait_listed":'true'}, model: AdminCandidaturesK, count:0},
+    {key:9, title: 'Admis', sortby: {'application__campaign__is_current_setup':'true', "unselected": 'false', "selected":'true'}, model: AdminCandidaturesK, count:0},
   ]
   $scope.select_orders = [
       {title: "Numéro d'inscription", value: {ordering: "application__id"}}
@@ -384,26 +402,103 @@ angular.module('memoire.controllers', ['memoire.services'])
           # indication de la progression de la candidature (graphic use)
           candidature.progress = $scope.get_candidature_progress(candidature)
           # switch candidature load by model
-          if(sort.model == AdminCandidatures)
+          if(sort.model == AdminCandidaturesK)
             # need to make a function to keep 'candidature' scope when assign in asynch function
             switchAdminCandidature(candidature, arr, index)
-          else if(sort.model == Candidatures)
+          else if(sort.model == CandidaturesK)
             loadCandidatureChildInfos(candidature, false)
             arr.push(candidature)      
           else
             console.log("NO MODEL ???", sort.model)
     )
     return arr
+    # GraphqlK.one().get({operationName:"Candidatures", query:"query Candidatures {  
+    #     studentApplicationSetup(isCurrentSetup: true) {    
+    #           applications {
+    #             id      
+    #             INE    
+    #             applicationCompleted  
+    #             artisticReferenciesProject1
+    #             artisticReferenciesProject2
+    #             binomialApplication
+    #             binomialApplicationWith
+    #             consideredProject1
+    #             consideredProject2
+    #             currentYearApplicationCount
+    #             curriculumVitae
+    #             doctorateInterest
+    #             experienceJustification
+    #             firstTime
+    #             freeDocument
+    #             identityCard
+    #             justificationLetter
+    #             lastApplicationsYears
+    #             masterDegree
+    #             presentationVideo
+    #             presentationVideoDetails
+    #             referenceLetter
+    #             remark
+    #             remoteInterview
+    #             remoteInterviewInfo
+    #             remoteInterviewType      
+    #             administration {
+    #                   applicationComplete
+    #                   id
+    #                   interviewDate
+    #                   observation
+    #                   positionInInterviewWaitlist
+    #                   positionInWaitlist
+    #                   selected
+    #                   selectedForInterview
+    #                   unselected
+    #                   waitListed
+    #                   waitListedForInterview
+    #             } 
+    #             artist {        
+    #               displayName        
+    #               user {
+    #                     birthdate
+    #                     birthplace
+    #                     birthplaceCountry
+    #                     cursus
+    #                     email
+    #                     familyStatus
+    #                     firstName
+    #                     gender
+    #                     homelandAddress
+    #                     homelandCountry
+    #                     homelandPhone
+    #                     id
+    #                     motherTongue
+    #                     nationality
+    #                     otherLanguage
+    #                     photo
+    #                     socialInsuranceNumber
+    #                     username        
+    #               }      
+    #             }      
+    #             cursusJustifications {
+    #                   description
+    #                   id
+    #                   label
+    #                   media {
+    #                         file
+    #                         id
+    #                         label
+    #                   }
+    #             }
+    #       }  
+    #   }}"}).then((candidatures) ->
+    #       console.log(candidatures)
+    #   )
 
   # getcandidatures
   $rootScope.candidatures = $scope.getCandidatures($scope.select_criteres[$scope.critere], $scope.select_orders[$scope.order])
   
-  console.log($rootScope.candidatures)
+  # console.log($rootScope.candidatures)
   # make function to keep admin cnadidature scope scope
   switchAdminCandidature = (admin_candidature_obj, arr, index) -> 
-    # add observation
-    observation = if admin_candidature_obj.observation then JSON.parse(admin_candidature_obj.observation) else {jury:""}      
-    admin_candidature_obj.has_observation = (observation.jury != '' || (observation[$rootScope.user.username] && observation[$rootScope.user.username] != ""))
+    
 
     application = loadAdminCandidatureObj(admin_candidature_obj).then((c) ->
         c.admin = admin_candidature_obj
@@ -414,7 +509,7 @@ angular.module('memoire.controllers', ['memoire.services'])
 
   loadAdminCandidature = (admin_candidature_id) ->
     # Load an adminCandidature with his ID
-    admin_candidature = AdminCandidatures.one(admin_candidature_id).get().then((admin_candidature_obj) ->
+    admin_candidature = AdminCandidaturesK.one(admin_candidature_id).get().then((admin_candidature_obj) ->
       admin_candidature = loadAdminCandidatureObj(admin_candidature_obj)
       return admin_candidature
     )
@@ -429,7 +524,7 @@ angular.module('memoire.controllers', ['memoire.services'])
       return candidature
 
   loadCandidature = (candidature_id, all_infos=false) ->
-    return Candidatures.one(candidature_id).get().then((candidature_obj) ->
+    return CandidaturesK.one(candidature_id).get().then((candidature_obj) ->
       candidature_obj = loadCandidatureChildInfos(candidature_obj, all_infos)
       return candidature_obj
     )
@@ -438,23 +533,23 @@ angular.module('memoire.controllers', ['memoire.services'])
   loadCandidatureChildInfos = (candidature_obj, all_infos=false) ->
         if(all_infos)
             artist_id = candidature_obj.artist.match(/\d+$/)[0]
-            promise = ArtistsV2.one(artist_id).withHttpConfig({ cache: true}).get().then((artist) ->
+            promise = ArtistsK.one(artist_id).withHttpConfig({ cache: true}).get().then((artist) ->
                 candidature_obj.artist = artist
                 # user
                 user_id = artist.user.match(/\d+$/)[0]
-                candidature_obj.artist.user = Users.one(user_id).get().then((user_infos) ->
+                candidature_obj.artist.user = UsersK.one(user_id).get().then((user_infos) ->
                    candidature_obj.artist.user = user_infos
                 )
             )
             # get media  justifications
             if(candidature_obj.cursus_justifications != null)
                 gallery_id = candidature_obj.cursus_justifications.match(/\d+$/)[0]
-                Galleries.one(gallery_id).get().then((gallery_infos) ->
+                GalleriesK.one(gallery_id).get().then((gallery_infos) ->
                   candidature_obj.cursus_justifications = gallery_infos
 
                   for medium in gallery_infos.media
                     medium_id = medium.match(/\d+$/)[0]
-                    Media.one(medium_id).get().then((media) ->
+                    MediaK.one(medium_id).get().then((media) ->
                       media_index = gallery_infos.media.indexOf(media.url)
                       gallery_infos.media[media_index] = media
                     )
@@ -463,11 +558,11 @@ angular.module('memoire.controllers', ['memoire.services'])
         else
           # get user info (email)
           artist_id = candidature_obj.artist.match(/\d+$/)[0]
-          ArtistsV2.one(artist_id).withHttpConfig({ cache: true}).get().then((artist) ->
+          ArtistsK.one(artist_id).withHttpConfig({ cache: true}).get().then((artist) ->
                 # user
                 candidature_obj.artist = {user:null}
                 user_id = artist.user.match(/\d+$/)[0]
-                candidature_obj.artist.user = Users.one(user_id).get().then((user_infos) ->
+                candidature_obj.artist.user = UsersK.one(user_id).get().then((user_infos) ->
                    candidature_obj.artist.user.email = user_infos.email
                 )
           )
@@ -524,57 +619,16 @@ angular.module('memoire.controllers', ['memoire.services'])
 
 )
 
-.controller('CandidatController', ($rootScope, $scope, ISO3166, $stateParams, RestangularV2, 
-        Candidatures, AdminCandidatures, ArtistsV2,
-        WebsiteV2, Users, Galleries, Media, Lightbox, clipboard, $sce, $filter) ->
+.controller('CandidatController', ($rootScope, $scope, ISO3166, $stateParams, APIV2K, 
+        CandidaturesK, AdminCandidaturesK, ArtistsK,
+        WebsiteK, UsersK, GalleriesK, MediaK, Lightbox, clipboard, $sce, $filter) ->
   # init
   $scope.candidature = []
   $scope.artist = []
   $scope.administrative_galleries = []
   $scope.artwork_galleries = []
 
-  # observation
-  obj_observation = {}
-
-  add_observation = () ->
-    # Be care of this feature
-    # if someone write something about the candidat in same time
-    # it'll make some stange things
-    # Have to load last version of observation and merge it (like git !)
-    console.log("ADD observation")
-    # set default values
-    if(!obj_observation[$rootScope.user.username])
-      obj_observation[$rootScope.user.username] = ""
-    if(!obj_observation['jury'])
-      obj_observation.jury = ''
-    # encode values
-    str_observation = JSON.stringify(obj_observation)
-    # save values
-    $scope.candidature.admin.patch({observation: str_observation})
-
-    # petit crayon !
-    # trouve la candidature dans la liste des candidature en rootscope
-    # et indique s'il y a des observations
-    root_cantidature_observation = _.find($rootScope.candidatures,  (obj) -> return obj.admin.id == $scope.candidature.admin.id )
-    console.log($rootScope.candidatures)
-    root_cantidature_observation.admin.has_observation = (obj_observation.jury != '' || (obj_observation[$rootScope.user.username] && obj_observation[$rootScope.user.username] != ""));
-    $scope.candidature.admin.has_observation = root_cantidature_observation.admin.has_observation
-
-  $scope.$watch("candidature.admin.observation", (newValue, oldValue) ->
-    # set default values
-    if(newValue == "")
-      add_observation()
-    # displays values
-    if(newValue)
-      # decode text
-      obj_observation = JSON.parse(newValue)
-      # assign text to user / jury
-      $scope.jury_observation = obj_observation.jury
-      $scope.personal_observation = obj_observation[$rootScope.user.username]
-  )
-  $scope.add_observation =  (field, value) ->
-      obj_observation[field] = value
-      add_observation()
+  # delete observation
 
   $scope.gender =
     M: fr: "Homme", en: "Male"
@@ -611,35 +665,33 @@ angular.module('memoire.controllers', ['memoire.services'])
 
   loadCandidat = (id) ->
       
-      AdminCandidatures.one(id).get().then((admin_candidature) ->
+      AdminCandidaturesK.one(id).get().then((admin_candidature) ->
           # get application id
           # console.log("admin loaded", admin_candidature)
           candidature_id = admin_candidature.application.match(/\d+$/)[0]
 
-          Candidatures.one(candidature_id).get().then((candidature) ->
+          CandidaturesK.one(candidature_id).get().then((candidature) ->
 
             # set root vars
             $scope.candidature = candidature
             $scope.candidature.admin = admin_candidature
           
             $scope.itw_date = if (candidature.interview_date) then new Date(candidature.interview_date) else new Date()
-            # has observations
-            observation = if admin_candidature.observation then JSON.parse(admin_candidature.observation) else {jury:""}
-            $scope.candidature.admin.has_observation = (observation.jury != '' || (observation[$rootScope.user.username] && observation[$rootScope.user.username] != ""))
+            # 
             artist_id = candidature.artist.match(/\d+$/)[0]
 
-            ArtistsV2.one(artist_id).get().then((artist) ->
+            ArtistsK.one(artist_id).get().then((artist) ->
                 $scope.artist = artist
                 # load artist websites
                 # load artist websites
                 for website in artist.websites
                     website_id = website.match(/\d+$/)[0]
-                    RestangularV2.one('common/website', website_id).get().then((response_website) ->
+                    APIV2K.one('common/website', website_id).get().then((response_website) ->
                         find_website = artist.websites.indexOf(response_website.url)
                         artist.websites[find_website] = response_website
                     )
                 user_id = artist.user.match(/\d+$/)[0]
-                $scope.artist.user = Users.one(user_id).get().then((user_infos) ->
+                $scope.artist.user = UsersK.one(user_id).get().then((user_infos) ->
                   $scope.artist.user = user_infos
                   # add infos under videos
                   $scope.candidature.video_details_and_more = candidature.presentation_video_details
@@ -651,12 +703,12 @@ angular.module('memoire.controllers', ['memoire.services'])
             # get justifications files
             if(candidature.cursus_justifications != null)
                 gallery_id = candidature.cursus_justifications.match(/\d+$/)[0]
-                Galleries.one(gallery_id).get().then((gallery_infos) ->
+                GalleriesK.one(gallery_id).get().then((gallery_infos) ->
                   candidature.cursus_justifications = gallery_infos
 
                   for medium in gallery_infos.media
                     medium_id = medium.match(/\d+$/)[0]
-                    Media.one(medium_id).get().then((media) ->
+                    MediaK.one(medium_id).get().then((media) ->
                       media_index = gallery_infos.media.indexOf(media.url)
                       gallery_infos.media[media_index] = media
                     )
@@ -685,7 +737,7 @@ angular.module('memoire.controllers', ['memoire.services'])
   $scope.binominal_link_id = ""
   setBinominalLinkCandidat = (admincandidature) ->
     admincandidature_id = admincandidature.application.match(/\d+$/)[0]
-    Candidatures.one(admincandidature_id).get().then((application) ->
+    CandidaturesK.one(admincandidature_id).get().then((application) ->
       if($scope.binominal_link_id =="" && application.binomial_application == true)
           $scope.binominal_link_id = admincandidature.id
     )
@@ -699,7 +751,7 @@ angular.module('memoire.controllers', ['memoire.services'])
           # cherche avec ce qu'a remplis le candidat (avec un peu de chance, le nom / prénom)
           for name in binominal_split
             critere = {search: name, application__campaign__is_current_setup:"true", application__application_completed:"true"}
-            AdminCandidatures.getList(critere).then((candidatures) ->
+            AdminCandidaturesK.getList(critere).then((candidatures) ->
               for candidature in candidatures
                 setBinominalLinkCandidat(candidature)
             )
@@ -709,7 +761,7 @@ angular.module('memoire.controllers', ['memoire.services'])
 
 )
 
-.controller('CandidaturesConfigurationController', ($rootScope, $scope, RestangularV2, Campaigns, PromotionsV2) ->
+.controller('CandidaturesConfigurationController', ($rootScope, $scope, APIV2K, CampaignsK, PromotionsK) ->
   $scope.configuration = []
   $scope.promotion = []
 
@@ -718,17 +770,88 @@ angular.module('memoire.controllers', ['memoire.services'])
   $scope.date = (date) ->
     return new Date(date)
 
-  Campaigns.getList({is_current_setup: "true"}).then((current_campaign) ->
+  CampaignsK.getList({is_current_setup: "true"}).then((current_campaign) ->
     $scope.configuration = current_campaign[0]
     $scope.date_of_birth_max = new Date($scope.configuration.date_of_birth_max)
     $scope.interviews_publish_date = new Date($scope.configuration.interviews_publish_date)
     $scope.selected_publish_date = new Date($scope.configuration.selected_publish_date)
     $scope.candidature_date_end = new Date($scope.configuration.candidature_date_end)
+    $scope.application_reminder_email_date = new Date($scope.configuration.application_reminder_email_date)
     # get promo infos
     promo_id = $scope.configuration.promotion.match(/\d+$/)[0]
-    RestangularV2.one("school/promotion/"+promo_id).get().then((promo) ->
+    APIV2K.one("school/promotion/"+promo_id).get().then((promo) ->
         $scope.promo_name = promo.name
         $scope.promotion = promo
     )
   )
+)
+
+
+.controller('CandidaturesStatistiquesController', ($rootScope, $scope, Campaigns, 
+  CandidaturesAnalytics, VimeoToken, Vimeo, Candidatures) ->
+  # int countdown
+  $scope.timer_countdown 
+  $scope.year=null
+
+   # CountDown
+  $scope.refreshCountDown = () ->
+
+      Campaigns.getList({is_current_setup: "true"}).then((current_campaign) ->
+              # set campaign
+              $scope.campaign = current_campaign[0]
+              # set end of campagn
+              dt = new Date($scope.campaign.candidature_date_end)
+              $scope.candidature_date_end = dt
+
+              # we take the opportunity to catch the year
+              $scope.year = dt.getFullYear()
+              # set timer
+              $scope.timer_countdown = Math.round(
+                    (new Date(dt).getTime() - new Date().getTime())/1000)
+              $scope.$broadcast('timer-set-countdown', $scope.timer_countdown);      
+      )
+
+  $scope.refreshCountDown()
+  
+  # Analytics
+  $scope.refreshAnalytics = () ->
+
+      CandidaturesAnalytics.one().get().then((infos) ->
+
+        $scope.analytics = infos[0]
+      
+      , (error) ->
+        $scope.analytics = {"visits":0,"actions":0,"visitors":0,"visitsConverted":0}
+
+      )    
+
+  $scope.refreshAnalytics()
+
+  # VIMEO
+  VimeoToken.one().get().then((settings) ->
+        Vimeo.setDefaultHeaders({Authorization: "Bearer "+ settings.token})
+        $scope.refreshVimeoAnalytics()        
+  )
+
+
+
+  $scope.refreshVimeoAnalytics = () ->
+    Vimeo.one("users/27279451/videos?fields=name,+description,+link&per_page=100&query=Inscription+-+"+$scope.year+"&query_fields=description").get().then((videos_infos) ->
+  
+        $scope.vimeoStatistics=videos_infos.data
+    )
+
+  # dossiers ouverts
+  $scope.refreshCandidatures = () ->
+
+      $scope.candidatures = Candidatures.getList( {'campaign__is_current_setup':'true',}).$object
+      $scope.candidaturesComplete = Candidatures.getList( {'campaign__is_current_setup':'true', "application_completed": 'true', }).$object
+
+
+  $scope.refreshCandidatures();
+
+
+
+
+
 )

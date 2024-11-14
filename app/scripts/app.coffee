@@ -19,18 +19,17 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 # https://github.com/CommonsDev/map/blob/master/scripts/app.js
 
-angular.module('candidature', ['candidature.application'])
 angular.module('memoire', ['memoire.controllers', 'memoire.directives'])
 
 angular.module('kartel',
               [
-                  'memoire', 'candidature', 'ui.router',
+                  'memoire', 'ui.router',
                   'restangular', 'angular-jwt',
                   'ngAnimate', 'chieffancypants.loadingBar', 'ui.bootstrap', 'ngMessages',
                   'ngSanitize', 'markdown',
                   'iso-3166-country-codes', 'ngFileUpload', 'ngPlacesAutocomplete',
                   'angular-clipboard',
-                  'angular-google-analytics',
+                  'angular-google-analytics', 'timer'
               ])
 
 # CORS
@@ -397,6 +396,15 @@ angular.module('kartel',
                   'candidatures_main_view':
                     templateUrl: 'views/candidatures/configuration.html'
                     controller: 'CandidaturesConfigurationController'
+        )
+
+         # - Candidatures Stats
+        $stateProvider.state('candidatures.statistics',
+                url: '/statistics'
+                views:
+                  'candidatures_main_view':
+                    templateUrl: 'views/candidatures/statistics.html'
+                    controller: 'CandidaturesStatistiquesController'
         )
 
 
