@@ -788,7 +788,7 @@ angular.module('memoire.controllers', ['memoire.services'])
 
 
 .controller('CandidaturesStatistiquesController', ($rootScope, $scope, CampaignsK, 
-  CandidaturesAnalytics, VimeoTokenK, Vimeo, Candidatures) ->
+  CandidaturesAnalytics, VimeoTokenK, Vimeo, CandidaturesK) ->
   # int countdown
   $scope.timer_countdown 
   $scope.year=null
@@ -844,8 +844,8 @@ angular.module('memoire.controllers', ['memoire.services'])
   # dossiers ouverts
   $scope.refreshCandidatures = () ->
 
-      $scope.candidatures = Candidatures.getList( {'campaign__is_current_setup':'true',}).$object
-      $scope.candidaturesComplete = Candidatures.getList( {'campaign__is_current_setup':'true', "application_completed": 'true', }).$object
+      $scope.candidatures = CandidaturesK.getList( {'campaign__is_current_setup':'true',}).$object
+      $scope.candidaturesComplete = CandidaturesK.getList( {'campaign__is_current_setup':'true', "application_completed": 'true', }).$object
 
 
   $scope.refreshCandidatures();
