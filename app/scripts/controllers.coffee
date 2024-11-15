@@ -836,7 +836,7 @@ angular.module('memoire.controllers', ['memoire.services'])
 
 
   $scope.refreshVimeoAnalytics = () ->
-    Vimeo.one("users/27279451/videos?fields=name,+description,+link&per_page=100&query=Inscription+-+"+$scope.year+"&query_fields=description").get().then((videos_infos) ->
+    Vimeo.one("users/"+config.vimeo_user_id+"/videos?fields=name,+description,+link&per_page=100&query=Inscription+-+"+$scope.year+"&query_fields=description").get().then((videos_infos) ->
   
         $scope.vimeoStatistics=videos_infos.data
     )

@@ -7,6 +7,7 @@ config = {
 
     kandidatur_api_url: "",
     vimeo_rest_url:"",
+    vimeo_user_id: ,
 
     analytics_live_api: {
         url:"",
