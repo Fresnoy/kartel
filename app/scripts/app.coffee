@@ -28,8 +28,7 @@ angular.module('kartel',
                   'ngAnimate', 'chieffancypants.loadingBar', 'ui.bootstrap', 'ngMessages',
                   'ngSanitize', 'markdown',
                   'iso-3166-country-codes', 'ngFileUpload', 'ngPlacesAutocomplete',
-                  'angular-clipboard',
-                  'angular-google-analytics', 'timer'
+                  'angular-clipboard', 'timer'
               ])
 
 # CORS
@@ -407,9 +406,17 @@ angular.module('kartel',
                     controller: 'CandidaturesStatistiquesController'
         )
 
+        # - Olds candidature's URL redirect to current selection URL
+        $stateProvider.state('candidature',
+                url: '/candidature/*ALLCoucous'
+                views:
+                  'main_view':
+                    controller: ($window) ->                      
+                      $window.location.href = "https://selection.lefresnoy.net"
+                    
+        )
 
-
-
+        
 
 ])
 
@@ -423,23 +430,6 @@ angular.module('kartel',
 
 
 ])
-
-
-.config(['AnalyticsProvider', (AnalyticsProvider) ->
-   # Add configuration code as desired
-   AnalyticsProvider.setAccount('UA-16448202-2')
-   AnalyticsProvider.trackUrlParams(true);
-])
-
-.run(['Analytics', '$rootScope', (Analytics, $rootScope) ->
-
-    $rootScope.$on("$locationChangeStart", (event, next, current) ->
-        Analytics.trackPage(Analytics.getUrl());
-    );
-   # codes
-])
-
-
 
 
 .run(['AmeRestangular', (AmeRestangular) ->
