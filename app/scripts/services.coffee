@@ -108,7 +108,6 @@ angular.module('memoire.services', ['restangular'])
 
 .factory('LoginK', (APIV2K) ->
         return APIV2K.withConfig((RestangularConfigurer) ->
-                RestangularConfigurer.setDefaultHeaders({})
         ).service('rest-auth/login/')
 )
 .factory('LogoutK', (APIV2K) ->

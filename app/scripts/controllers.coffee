@@ -58,8 +58,15 @@ angular.module('memoire.controllers', ['memoire.services'])
     )
 
   $scope.login = (form, params) ->
+
+    # remove potential headers
     delete $http.defaults.headers.common.Authorization
-    params.error=""
+    localStorage.removeItem("Candidaturestoken")
+    localStorage.removeItem('token')
+
+    APIV2K.setDefaultHeaders({});
+
+    params.error = ""
     Login.post(params, "", {}, {})
     .then((auth) ->
           localStorage.setItem('token', auth.access)
