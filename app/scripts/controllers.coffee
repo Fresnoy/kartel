@@ -60,7 +60,7 @@ angular.module('memoire.controllers', ['memoire.services'])
   $scope.login = (form, params) ->
     delete $http.defaults.headers.common.Authorization
     params.error=""
-    Login.post(params, [headers={}])
+    Login.post(params, headers={})
     .then((auth) ->
           localStorage.setItem('token', auth.access)
           $http.defaults.headers.common.Authorization = "JWT "+ localStorage.getItem('token')
@@ -72,7 +72,7 @@ angular.module('memoire.controllers', ['memoire.services'])
         , (error) ->
           params.error = error.data
     )
-    LoginK.post(params, [headers={}])
+    LoginK.post(params, headers={})
     .then((authK) ->
           localStorage.setItem('Candidaturestoken', authK.access)
           APIV2K.setDefaultHeaders({Authorization: "JWT "+ authK.access});
