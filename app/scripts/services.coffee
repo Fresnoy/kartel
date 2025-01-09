@@ -134,11 +134,11 @@ angular.module('memoire.services', ['restangular'])
 )
 .factory('GalleriesK', (APIV2K) ->
         return APIV2K.withConfig((RestangularConfigurer) ->
-        ).service('asset/gallery')
+        ).service('assets/gallery')
 )
 .factory('MediaK', (APIV2K) ->
         return APIV2K.withConfig((RestangularConfigurer) ->
-        ).service('asset/medium')
+        ).service('assets/medium')
 )
 .factory('WebsiteK', (APIV2K) ->
         return APIV2K.withConfig((RestangularConfigurer) ->
