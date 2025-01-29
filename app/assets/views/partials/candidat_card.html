@@ -28,15 +28,19 @@
                   <div class="user-infos">
                     <div>
                         <span class="candidature-number">{{candidature.current_year_application_count}}</span>
-                        <span class="user-first_name preserve-info">{{ candidature.artist.user.first_name }}</span>
+                        <small ng-if="candidature.artist.nickname" 
+                               class="user-nickname preserve-info user-last_name"
+                               > {{ candidature.artist.nickname }}</small>
+                        <span class="hidden forSearch">{{ candidature.artist.nickname }} {{ candidature.artist.user.first_name }} {{ candidature.artist.user.last_name }}</span>
+                        <span ng-if="candidature.artist.nickname==''" 
+                              class="user-first_name preserve-info">{{ candidature.artist.user.first_name }}</span>
                         <span class="oneline nationality hide-infos">
                           <span ng-repeat="nationality in candidature.artist.user.profile.nationality.split(', ') track by $index">
                             <span ng-if='nationality' class="flag-icon flag-icon-{{nationality | lowercase}}" title="{{country.codeToCountry[nationality]}}" />
                           </span>
                         </span>
                     </div>
-                    <span class="user-last_name preserve-info">{{ candidature.artist.user.last_name }}</span>
-                    <small ng-if="candidature.artist.nickname" class="user-nickname preserve-info"> / {{ candidature.artist.nickname }}</small>
+                    <span ng-if="candidature.artist.nickname==''" class="user-last_name preserve-info">{{ candidature.artist.user.last_name }}</span>
                     <div class="user-birthdate preserve-info">{{ candidature.artist.user.profile.birthdate | ageFilter}} ans</div>
                     <div ng-show="candidature.artist.user.profile.mother_tongue" class="langues hide-infos"> Parle
                       {{LANGUAGES_NAME_short[candidature.artist.user.profile.mother_tongue].englishName.split(' ')[0]}},
