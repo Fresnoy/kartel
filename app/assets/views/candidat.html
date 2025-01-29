@@ -30,11 +30,11 @@
   </div>
   <div class="info col-md-9 col-lg-9">
     <h1>
-        <span>{{ artist.user.first_name }}  {{ artist.user.last_name }}</span>
-        <span ng-if="artist.nickname && artist.nickname!=(artist.user.first_name+' '+artist.user.last_name)"
-              title="Nom d'artiste">
-              <small> / <i>{{ artist.nickname }}</i></small>
-        </sapn>
+        <span ng-if="artist.nickname" title="Nom d'artiste">{{ artist.nickname }}
+          <span ng-if="artist.nickname!=(artist.user.first_name+' '+artist.user.last_name)">
+            <small> ({{ artist.user.first_name }}  {{ artist.user.last_name }})</small></span>
+        </span>
+        <span ng-if="!artist.nickname"> {{ artist.user.first_name }}  {{ artist.user.last_name }}</span>
       </h1>
 
     <p><i class="glyphicon glyphicon-dashboard"></i>
@@ -146,7 +146,7 @@
             <div class="person">
               <p>
                 <!-- class="text-danger warning" -->
-                Né<span ng-if="artist.user.profile.gender=='F'">e</span> en {{country.codeToCountry[artist.user.profile.birthplace_country]}}<!--
+                🗓 Né<span ng-if="artist.user.profile.gender=='F'">e</span> en {{country.codeToCountry[artist.user.profile.birthplace_country]}}<!--
                 --><span ng-if='artist.user.profile.birthplace'>({{artist.user.profile.birthplace}})</span>
                 le 
                 <span ng-class="{'text-danger warning': (campaign.date_of_birth_max > artist.user.profile.birthdate)}">
@@ -154,14 +154,14 @@
                 ({{artist.user.profile.birthdate | ageFilter}} ans)</span> -
                   <a ng-show='candidature.identity_card' ng-click='singleLightbox(candidature.identity_card,"Justificatif d’identité")'>Justificatif</a>
                   <span ng-if='!candidature.identity_card' class="text-danger warning">Justificatif d'identité absent</span>
-                <br/>Genre :  {{ gender[artist.user.profile.gender].fr }}
+                <br/>⚥ Genre :  {{ gender[artist.user.profile.gender].fr }}
                 
               </p>
               <br/>
 
             </div>
-            <p>Numéro de Sécurité sociale : {{artist.user.profile.social_insurance_number}}</p>
-            <p>INE : {{candidature.INE}}</p>
+            <p>೯⠀Numéro de Sécurité sociale : {{artist.user.profile.social_insurance_number}}</p>
+            <p>೯⠀INE : {{candidature.INE}}</p>
 
           </div>
 
@@ -175,10 +175,11 @@
 
             <!-- visioconférence --><!-- <p> <i class="glyphicon glyphicon-facetime-video"></i>&nbsp;V : <a href="visioconference:{{candidature.remote_interview_info}}?call" class="">{{ candidature.remote_interview_info }}</a> -->
 
-            <p><i class="glyphicon glyphicon-bullhorn" title="Langues parlées"></i>&nbsp; Langue maternelle :
+            <p><i class="glyphicon glyphicon-comment" title="Langues parlées"></i>&nbsp; Langues : <br/>
+             Maternelle :
             <span class="name" ng-bind="LANGUAGES_NAME_short[artist.user.profile.mother_tongue].englishName.split('(')[0]" />
              <span ng-if="artist.user.profile.other_language">
-                <br/>Autres langues parlées : 
+                <br/>Autres : 
               <span class="language" ng-repeat="language in artist.user.profile.other_language.split(', ')  track by $index">
                 <span class="name" ng-bind="LANGUAGES_NAME[language].englishName.split('(')[0]" /><!-- 
                     Just for the ","
@@ -200,35 +201,40 @@
 
           <div role="tabpanel" class="tab-pane" id="cursus">
             <h3>Cursus</h3>
+            
             <a ng-show="candidature.curriculum_vitae" ng-click='singleLightbox(candidature.curriculum_vitae, "CV")'>Consulter le CV</a>
-              <span ng-if='!candidature.curriculum_vitae' class="text-danger warning">CV absent</span>
-            <p ng-if='candidature.master_degree=="Y"'>Diplome : Bac +5</p>
-            <p ng-if='candidature.master_degree=="P"'>Diplome : Bac +5 en cours</p>
-            <p ng-if='candidature.master_degree=="N"'>
-              Pas de Bac +5 :
-              <a ng-if="candidature.experience_justification" ng-click='singleLightbox(candidature.experience_justification, "7 années Expérience artistiques jusification")' target="_blanck">
+            <span ng-if='!candidature.curriculum_vitae' class="text-danger warning">CV absent</span>
+
+            <h4> <i class="glyphicon glyphicon-education"></i>  Diplôme(s)</h4>
+            <p ng-if='candidature.master_degree=="Y"'>✓ Bac +5</p>
+            <p ng-if='candidature.master_degree=="P"'>~ Bac +5 en cours</p>
+            <p ng-if='candidature.master_degree=="N"'>✘ Pas de Bac +5 :
+              <a ng-if="candidature.experience_justification" ng-click='singleLightbox(candidature.experience_justification, "7 années Expérience artistiques jusification")' 
+                target="_blank"
+                >
                 Consulter le justificatif d'expérience artistique</a>
                 <span ng-if='!candidature.experience_justification' class="text-danger warning">Justificatif d'expérience artistique absent</span>
             </p>
             <div ng-if="candidature.cursus_justifications.media.length">
-              <h4>Justificatifs de diplômes</h4>
-              <ul>
+              <div> Justificatifs : </div>
+              <ul style="list-style-type:none;">
               <li class="justificatifs" ng-repeat="justif in candidature.cursus_justifications.media track by $index">
-                <a ng-click='singleLightbox(justif.file || justif.picture, justif.label)'>{{justif.label}} </a> /
+                <a ng-click='singleLightbox(justif.file || justif.picture, justif.label)'> {{justif.description!="false"?"*":""}} {{justif.label}} </a> 
               </li>
               </ul>
+              <small>*bac +5</small>
             </div>
             <span ng-if='!candidature.cursus_justifications.media.length && !candidature.experience_justification'
               class="text-danger warning">Pas de justificatifs de diplômes</span>
 
             <div ng-if="candidature.free_document">
-              <h4>Document libre / Portfolio</h4>
+              <h4><i class="glyphicon glyphicon-picture"></i> Document libre / Portfolio</h4>
               <p>
                 <a ng-click='singleLightbox(candidature.free_document, "Document libre")'>Consulter le document</a>
               </p>
             </div>
 
-            <h4>Résumé du parcours artistique</h4>
+            <h4><i class="glyphicon glyphicon-list-alt"></i> Résumé du parcours artistique</h4>
             <p ng-bind-html="artist.user.profile.cursus | nl2br" />
 
           </div>
@@ -249,28 +255,35 @@
                  ng-click="$parent.$parent.admin_app_id = binominal_link_id;">{{candidature.binomial_application_with}}</a></p>
             <span ng-if='!candidature.binomial_application_with' class="text-danger warning">Nom du binome absent</span>
           </div>
-          <h4>Projet 1ere année</h4>
-          <a ng-if='candidature.considered_project_1'
+
+          <h4>📽️ Projet 1ere année</h4>
+          <div style="font-size: 1.1em;">
+            <a ng-if='candidature.considered_project_1'
             ng-click='singleLightbox(candidature.considered_project_1, "Projet de première année")' >
-            Consulter la description du projet de première année</a>
+            Description</a>
             <span ng-if='!candidature.considered_project_1' class="text-danger warning">Description absente</span>
-          <br/>
-          <a ng-if='candidature.artistic_referencies_project_1'
+            /
+            <a ng-if='candidature.artistic_referencies_project_1'
             ng-click='singleLightbox(candidature.artistic_referencies_project_1, "Références artistiques du projet de première année")' >
-            Consulter les références artistiques pour ce projet</a>
+            Références artistiques</a>
             <span ng-if='!candidature.artistic_referencies_project_1' class="text-danger warning">Références absentes</span>
-          <h4>Projet 2nd année</h4>
+          </div>
+
+
+          <h4>💻 Projet 2nd année</h4>
+          <div style="font-size: 1.1em;">
           <a ng-if='candidature.considered_project_2'
             ng-click='singleLightbox(candidature.considered_project_2, "Projet de deuxième année")' >
-            Consulter la description du projet de deuxième année</a>
+            Description</a>
             <span ng-if='!candidature.considered_project_2' class="text-danger warning">Description absente</span>
-          <br/>
+          /
           <a ng-if='candidature.artistic_referencies_project_2'
             ng-click='singleLightbox(candidature.artistic_referencies_project_2, "Références artistiques du projet de deuxième année")' >
-            Consulter les références artistiques pour ce projet</a>
+            Références artistiques</a>
             <span ng-if='!candidature.artistic_referencies_project_2' class="text-danger warning">Références absentes</span>
+          </div>
           <div ng-if="candidature.doctorate_interest">
-            <h4>Doctorat</h4>
+            <h4>🎓 Doctorat</h4>
             <p>Interêt pour le cursus doctoral</p>
           </div>
         </div>
