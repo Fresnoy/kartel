@@ -142,7 +142,11 @@
           <p>
             <span ng-if="more.free_document">Document libre : <a ng-if="more.free_document" class="pointer" ng-href="{{more.free_document}}" target="_blank">{{more.free_document}}</a><br/></span>
               <!-- Propositions -->
-            Propositions initiale : <a ng-href="{{more.considered_project_1}}" target="_blank">1ere année</a> / <a ng-href="{{more.considered_project_2}}" target="_blank">2nd année</a>
+            Propositions initiale : <a ng-href="{{more.considered_project_1}}" target="_blank">1ere année</a>
+            (<a ng-href="{{more.artistic_referencies_project_1}}" title="références" target="_blank">refs</a>) 
+            / 
+            <a ng-href="{{more.considered_project_2}}" target="_blank">2nd année</a>
+            (<a ng-href="{{more.artistic_referencies_project_2}}" title="références" target="_blank">refs</a>)
             <br/>
             <!-- VIDEO -->
             Vidéo de présentation de son travail : <a class="pointer" ng-href="{{more.presentation_video}}" target="_blank" title="{{more.presentation_video_details}}">{{more.presentation_video}}</a>
