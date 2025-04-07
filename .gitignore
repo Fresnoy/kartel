@@ -1,3 +1,6 @@
 node_modules/
 docs/.vitepress/cache/
 src/config.js
+.nyc_output/
+coverage/
+cypress/screenshots/
