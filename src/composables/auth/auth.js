@@ -51,10 +51,10 @@ async function login(username, password, router) {
     const data = response.data;
 
 
-    if (response.status === 200 && data?.access) {
+    if (response.status === 200 && data?.token) {
       // https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies secure way
       // https://dev.to/bcerati/les-cookies-httponly-une-securite-pour-vos-tokens-2p8n
-      localStorage.setItem("token", data.access);
+      localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
       fromStorageToRef();
 
