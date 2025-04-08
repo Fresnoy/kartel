@@ -15,7 +15,7 @@ import UnderlineTitle from "@/components/ui/UnderlineTitle.vue";
       <summary class="group relative flex items-center gap-3 cursor-pointer">
         <UnderlineTitle title="Profile" :underlineSize="1" :fontSize="2" />
         <div
-          class="relative invisible group-hover:visible group-open:visible w-5 h-5 border-0.5 border-gray rounded"
+          class="relative invisible group-hover:visible group-open:visible w-5 h-5 border-0.5 border-gray rounded-sm"
         >
           <span
             class="absolute inset-x-1/2 inset-y-1/2 -translate-x-1/2 -translate-y-1/2 block w-3 h-px bg-gray"
@@ -54,7 +54,7 @@ import UnderlineTitle from "@/components/ui/UnderlineTitle.vue";
       <summary class="relative flex items-center gap-3 cursor-pointer">
         <UnderlineTitle title="Artworks" :underlineSize="1" :fontSize="2" />
         <div
-          class="relative invisible group-hover:visible group-open:visible w-5 h-5 border-0.5 border-gray rounded"
+          class="relative invisible group-hover:visible group-open:visible w-5 h-5 border-0.5 border-gray rounded-sm"
         >
           <span
             class="absolute inset-x-1/2 inset-y-1/2 -translate-x-1/2 -translate-y-1/2 block w-3 h-px bg-gray"
@@ -126,7 +126,7 @@ import UnderlineTitle from "@/components/ui/UnderlineTitle.vue";
       <summary class="relative flex items-center gap-3 cursor-pointer">
         <UnderlineTitle title="Guide" :underlineSize="1" :fontSize="2" />
         <div
-          class="relative invisible group-hover:visible group-open:visible w-5 h-5 border-0.5 border-gray rounded"
+          class="relative invisible group-hover:visible group-open:visible w-5 h-5 border-0.5 border-gray rounded-sm"
         >
           <span
             class="absolute inset-x-1/2 inset-y-1/2 -translate-x-1/2 -translate-y-1/2 block w-3 h-px bg-gray"

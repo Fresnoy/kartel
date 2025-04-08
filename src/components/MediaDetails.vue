@@ -57,7 +57,7 @@ import UiDescription from "@/components/ui/UiDescription.vue";
             </ul>
             <span class="mb-1 block w-full h-1 bg-black"></span>
             <div class="w-full flex items-center justify-between">
-              <div class="relative w-5 h-5 border-0.5 border-gray rounded">
+              <div class="relative w-5 h-5 border-0.5 border-gray rounded-sm">
                 <span
                   class="absolute inset-x-1/2 inset-y-1/2 -translate-x-1/2 -translate-y-1/2 block w-3 h-px bg-gray"
                 ></span>
@@ -82,14 +82,14 @@ import UiDescription from "@/components/ui/UiDescription.vue";
                     'Replace with right tags',
                   ]"
                   :key="index"
-                  class="p-1 w-fit h-fit bg-gray-extralight text-xs font-medium uppercase rounded"
+                  class="p-1 w-fit h-fit bg-gray-extralight text-xs font-medium uppercase rounded-sm"
                 >
                   {{ tag }}
                 </li>
               </ul>
               <span class="mb-1 block w-full h-1 bg-black"></span>
               <div class="w-full flex items-center justify-between">
-                <div class="relative w-5 h-5 border-0.5 border-gray rounded">
+                <div class="relative w-5 h-5 border-0.5 border-gray rounded-sm">
                   <span
                     class="absolute inset-x-1/2 inset-y-1/2 -translate-x-1/2 -translate-y-1/2 block w-3 h-px bg-gray"
                   ></span>

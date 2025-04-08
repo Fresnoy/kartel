@@ -114,7 +114,7 @@ onMounted(() => {
         <!-- Can be component to, props Title (Œuvres or Média) -->
         <div>
           <div
-            class="mb-2 w-full after:block after:w-full after:h-1 after:bg-black after:dark:bg-white"
+            class="mb-2 w-full after:block after:w-full after:h-1 after:bg-black dark:after:bg-white"
           >
             <div class="flex items-end justify-between">
               <h2 class="p-2 text-2xl font-bold uppercase">Œuvres</h2>

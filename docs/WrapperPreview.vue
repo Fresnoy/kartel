@@ -27,7 +27,7 @@ onMounted(() => {
   <!-- <div
     v-if="theme"
     :class="{ light: theme.color === 'light', dark: theme.color !== 'light' }"
-    class="relative p-4 w-full h-full flex flex-col items-center justify-center border-2 rounded"
+    class="relative p-4 w-full h-full flex flex-col items-center justify-center border-2 rounded-sm"
   >
     <button @click="toggleTheme()" class="theme top-2 right-2">
       {{ theme.text }}
@@ -35,7 +35,7 @@ onMounted(() => {
     <slot></slot>
   </div> -->
   <div
-    class="relative p-4 w-full h-full flex flex-col items-center justify-center border-2 rounded bg-gray-extralight text-black"
+    class="relative p-4 w-full h-full flex flex-col items-center justify-center border-2 rounded-sm bg-gray-extralight text-black"
   >
     <button @click="toggleTheme()" class="theme top-2 right-2">
       {{ theme.text }}
@@ -47,7 +47,7 @@ onMounted(() => {
 <style scoped>
 @import "../src/css/styles.css";
 
-.rounded {
+.rounded-sm {
   border-radius: 8px;
 }
 
