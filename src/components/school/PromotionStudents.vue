@@ -70,7 +70,7 @@ const storeApi = useConfigApi();
 
     <ul
       v-if="storeApi.promotion.students?.length > 0"
-      class="students grid grid-cols-[repeat(auto-fill,_minmax(10rem,_1fr))] gap-3"
+      class="students grid grid-cols-[repeat(auto-fill,minmax(10rem,1fr))] gap-3"
     >
       <!-- <p>{{ storeApi.promoStudents[0] }}</p> -->
       <!-- fetch all student before and not one by one inside the card -> get an array and can iterate it -->

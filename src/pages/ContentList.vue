@@ -368,7 +368,7 @@ watch(
 
     <div>
       <ul
-        class="pb-12 grid lg:grid-cols-fluid-14-lg grid-cols-fluid-14 flex-grow-0 gap-3"
+        class="pb-12 grid lg:grid-cols-fluid-14-lg grid-cols-fluid-14 grow-0 gap-3"
       >
         <li class="" v-for="content in contents" :key="content">
           <!-- <ArtworkCard

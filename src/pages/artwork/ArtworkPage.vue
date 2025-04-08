@@ -269,7 +269,7 @@ onBeforeUnmount(() => {
             <div class="p-2 flex gap-1">
               <h6
                 v-if="genre.label.replaceAll(/.| [ ]/g, '') !== ''"
-                class="px-2 py-1 bg-gray-extralight text-xs font-medium rounded"
+                class="px-2 py-1 bg-gray-extralight text-xs font-medium rounded-sm"
               >
                 {{ genre.label }}
               </h6>

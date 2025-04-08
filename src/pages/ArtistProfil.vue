@@ -463,7 +463,7 @@ watch(
                   />
                   <div
                     v-if="user?.profile?.cursus"
-                    class="relative w-5 h-5 border-0.5 border-gray rounded"
+                    class="relative w-5 h-5 border-0.5 border-gray rounded-sm"
                   >
                     <span
                       class="absolute inset-x-1/2 inset-y-1/2 -translate-x-1/2 -translate-y-1/2 block w-3 h-px bg-gray"
@@ -478,13 +478,13 @@ watch(
               <div
                 class="relative max-h-52 peer-open:max-h-full peer-open:after:hidden overflow-hidden"
                 :class="{
-                  ' after:block after:absolute after:bottom-0 after:w-full after:h-1/2 after:bg-gradient-to-t after:from-white after:to-transparent after:pointer-events-none':
+                  ' after:block after:absolute after:bottom-0 after:w-full after:h-1/2 after:bg-linear-to-t after:from-white after:to-transparent after:pointer-events-none':
                     user?.profile?.cursus,
                 }"
               >
                 <p
                   v-if="user?.profile?.cursus"
-                  class="text-sm whitespace-pre-line [&>*]:whitespace-pre-line"
+                  class="text-sm whitespace-pre-line *:whitespace-pre-line"
                   v-html="parsedContent(user?.profile?.cursus)"
                 ></p>
                 <p v-else class="text-gray italic">Non renseigné.</p>
