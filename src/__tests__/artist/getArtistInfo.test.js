@@ -74,7 +74,7 @@ describe("test the composable getArtistInfo", () => {
     await getArtist(artistFixture.id);
 
     expect(axios.get).toHaveBeenCalledTimes(1);
-    expect(Number(axios.get.calls[0][0].split("/").pop())).toEqual(
+    expect(Number(axios.get.mock.calls[0][0].split("/").pop())).toEqual(
       artistFixture.id
     );
     expect(artist.value).toEqual(artistFixture);
@@ -108,7 +108,7 @@ describe("test the composable getArtistInfo", () => {
     await getUser(userFixture.default.id);
 
     expect(axios.get).toHaveBeenCalledTimes(1);
-    expect(Number(axios.get.calls[0][0].split("/").pop())).toEqual(
+    expect(Number(axios.get.mock.calls[0][0].split("/").pop())).toEqual(
       userFixture.default.id
     );
     expect(user.value).toEqual(userFixture.default);
@@ -143,7 +143,7 @@ describe("test the composable getArtistInfo", () => {
     await getArtworks(artistFixture.id);
 
     expect(axios.get).toHaveBeenCalledTimes(1);
-    expect(Number(axios.get.calls[0][0].split("=").pop())).toEqual(
+    expect(Number(axios.get.mock.calls[0][0].split("=").pop())).toEqual(
       artistFixture.id
     );
     expect(artworks.value).toEqual(artworkFixture);
@@ -181,10 +181,10 @@ describe("test the composable getArtistInfo", () => {
     await getStudent(artistFixture.id);
 
     expect(axios.get).toHaveBeenCalledTimes(2);
-    expect(Number(axios.get.calls[0][0].split("=").pop())).toEqual(
+    expect(Number(axios.get.mock.calls[0][0].split("=").pop())).toEqual(
       artistFixture.id
     );
-    expect(axios.get.calls[1][0].split("/").pop()).toEqual(
+    expect(axios.get.mock.calls[1][0].split("/").pop()).toEqual(
       promotionFixture.url.split("/").pop()
     );
 
@@ -199,7 +199,7 @@ describe("test the composable getArtistInfo", () => {
     await getStudent(artistFixture.id);
 
     expect(axios.get).toHaveBeenCalledTimes(3);
-    expect(Number(axios.get.calls[2][0].split("=").pop())).toEqual(
+    expect(Number(axios.get.mock.calls[2][0].split("=").pop())).toEqual(
       artistFixture.id
     );
 
@@ -236,7 +236,7 @@ describe("test the composable getArtistInfo", () => {
     await getCandidature(userFixture.default.username);
 
     expect(axios.get).toHaveBeenCalledTimes(1);
-    expect(axios.get.calls[0][0].split("=").pop()).toEqual(
+    expect(axios.get.mock.calls[0][0].split("=").pop()).toEqual(
       userFixture.default.username
     );
 
