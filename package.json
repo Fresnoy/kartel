@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test:unit": "vitest watch --globals",
+    "test:unit": "vitest run --printConsoleTrace=true --silent=false",
     "test:unit:coverage": "vitest run --coverage",
     "test:e2e": "start-server-and-test preview :5173 'cypress run --e2e'",
     "test:e2e:dev": "start-server-and-test 'vite dev --port 5173' :5173 'cypress open --e2e'",
@@ -56,6 +56,6 @@
     "vite-plugin-istanbul": "^4.0.1",
     "vitepress": "^1.0.0-alpha.43",
     "vitepress-plugin-mermaid": "^2.0.10",
-    "vitest": "^0.29.2"
+    "vitest": "^3.1.1"
   }
 }
