@@ -4,12 +4,13 @@ describe("Artist and artworks informations from school, navigate through all pag
   context("Check navigation Home to School", () => {
     it("Home logo redirect should be '/'", () => {
       cy.viewport(1280, 720);
-      cy.visit("/");
+      cy.visit("");
 
       // check if the logo redirect to "/"
       cy.get("[data-test='logo-lg']").click();
       cy.location().should((loc) => {
         expect(loc.href).to.eq(config.url);
+        console.log("coucou", config);
         expect(loc.pathname).to.eq("/");
       });
     });
@@ -21,7 +22,7 @@ describe("Artist and artworks informations from school, navigate through all pag
       // check if the first navbar link which is "school" redirect to "/school/promotion/4"
       cy.get("[data-test='nav-link']").contains("School").click();
       cy.location().should((loc) => {
-        expect(loc.pathname).to.eq("/school/promotion/4");
+        expect(loc.pathname).to.eq("/school/promotion/29");
       });
     });
   });
