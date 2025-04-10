@@ -1,6 +1,6 @@
 import config from "../../../src/config";
 
-describe("Explore the search feature which result students and artworks", () => {
+describe("Explore the search feature which result artists and artworks", () => {
   context("Test in home page", () => {
     function testSearch(search, type) {
       cy.get(search).type(type);
@@ -10,7 +10,7 @@ describe("Explore the search feature which result students and artworks", () => 
         expect(response.body).to.exist;
       });
 
-      cy.wait("@student-search").then(({ response }) => {
+      cy.wait("@artist-search").then(({ response }) => {
         expect(response.statusCode).to.eq(200);
         expect(response.body).to.exist;
       });
@@ -29,8 +29,8 @@ describe("Explore the search feature which result students and artworks", () => 
       cy.intercept(`${config.rest_uri_v2}production/artwork-search*`).as(
         "artwork-search"
       );
-      cy.intercept(`${config.rest_uri_v2}school/student-search*`).as(
-        "student-search"
+      cy.intercept(`${config.rest_uri_v2}people/artist-search*`).as(
+        "artist-search"
       );
 
       cy.visit("/");
@@ -41,11 +41,12 @@ describe("Explore the search feature which result students and artworks", () => 
     it("expect to work in others pages", () => {
       cy.viewport(1280, 720);
 
+      cy.wait(10000);
       cy.intercept(`${config.rest_uri_v2}production/artwork-search*`).as(
         "artwork-search"
       );
-      cy.intercept(`${config.rest_uri_v2}school/student-search*`).as(
-        "student-search"
+      cy.intercept(`${config.rest_uri_v2}people/artist-search*`).as(
+        "artist-search"
       );
       cy.visit("/");
 

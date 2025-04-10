@@ -12,6 +12,7 @@ describe("Students", () => {
 
     cy.get(".promo__link").last().click();
 
+    // doesn't recognize students
     cy.wait("@students").then(({ response }) => {
       expect(response.statusCode).to.eq(200);
       expect(response.body).to.exist;

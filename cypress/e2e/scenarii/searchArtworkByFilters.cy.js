@@ -5,7 +5,7 @@ describe("Search artworks or an artwork in the artworks page and it's filters", 
     beforeEach(() => {
       cy.viewport(1280, 720);
       // let page = 1;
-      cy.intercept(`${config.rest_uri_v2}/production/artwork?*`).as("page");
+      cy.intercept(`${config.rest_uri_v2}/production/artwork?page*`).as("page");
       // watch out the url can be changed in the front with more query and create an error
       cy.intercept(
         `${config.rest_uri_v2}/production/artwork?page_size=20&page=1&production_year=*`
@@ -66,7 +66,8 @@ describe("Search artworks or an artwork in the artworks page and it's filters", 
       ).as("year");
 
       cy.visit("/artworks");
-      cy.get('[data-test="toggle-theme"]').click();
+      // this code is commented in App.vue file
+      // cy.get('[data-test="toggle-theme"]').click();
     });
 
     it("", () => {
@@ -77,8 +78,8 @@ describe("Search artworks or an artwork in the artworks page and it's filters", 
         expect(response.statusCode).to.eq(200);
         expect(response.body).to.exist;
 
-        // 2019 is the third option in select production date.
-        expect(response.url).to.include("production_year=2021");
+        // 2022 is the third option in select production date.
+        expect(response.url).to.include("production_year=2024");
       });
 
       cy.get("#date").select(5);
