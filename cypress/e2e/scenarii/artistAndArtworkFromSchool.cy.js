@@ -100,6 +100,7 @@ describe("Artist and artworks informations from school, navigate through all pag
 
       // check the artist too
       // cy.visit and cy.wait function but not cy.get("a")
+      //doesn't work, AxiosError
       cy.wait(0);
       cy.get("a").contains("Amélie Agbo").should('be.visible').click({ force: true });
       cy.location('pathname').should('eq', '/artist/1606');

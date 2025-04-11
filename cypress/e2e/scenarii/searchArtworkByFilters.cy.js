@@ -89,8 +89,8 @@ describe("Search artworks or an artwork in the artworks page and it's filters", 
         expect(response.statusCode).to.eq(200);
         expect(response.body).to.exist;
 
-        // 2019 is the fifth option in select production date.
-        expect(response.url).to.include("production_year=2019");
+        // 2022 is the fifth option in select production date.
+        expect(response.url).to.include("production_year=2022");
       });
 
       cy.get(
@@ -104,7 +104,7 @@ describe("Search artworks or an artwork in the artworks page and it's filters", 
         expect(url).to.match(/artwork/);
       });
 
-      cy.get(".py-5 > :nth-child(1) > .flex-wrap").contains("2019");
+      cy.get("h3").contains("2022");
     });
   });
 });
