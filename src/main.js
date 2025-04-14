@@ -13,7 +13,7 @@ import "@/composables/interceptors";
 
 const app = createApp(App);
 
-axios.defaults.baseURL = `${config.rest_uri_v2}`;
+axios.defaults.baseURL = `${config.v3_graph}`;
 
 // import translations
 import fr from "@/locales/fr.json";
