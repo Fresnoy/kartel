@@ -10,6 +10,7 @@ import { ref, onMounted } from "vue";
 import UnderlineTitle from "@/components/ui/UnderlineTitle.vue";
 import UiDescription from "@/components/ui/UiDescription.vue";
 import ArtworkCard from "@/components/artwork/ArtworkCard.vue";
+import axios from "axios";
 
 const router = useRouter();
 
@@ -33,7 +34,21 @@ onMounted(() => {
 
   // can combine both function with more function parameters...
   async function getStudent(id) {
-    let response = await fetch(`${config.rest_uri_v2}school/student/${id}`);
+    // let response = await fetch(`${config.rest_uri_v2}school/student/${id}`);
+    let response = await axios.post(`${config.v3_graph}`, {
+      query: `
+      query {
+        student(id: ${id}) {
+          id
+        }
+      }
+      `
+    }, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    
     let data = await response.json();
 
     student.value = data;

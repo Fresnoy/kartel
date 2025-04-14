@@ -3,6 +3,8 @@ import { ref } from "vue";
 
 import axios from "axios";
 
+import config from "@/config";
+
 import { getId } from "@/composables/getId";
 
 export const useConfigApi = defineStore("configApi", () => {
@@ -36,7 +38,7 @@ export const useConfigApi = defineStore("configApi", () => {
      */
     async getPromotion(promoId) {
       let studentsPromotion = promotions.value.find(
-        (promo) => getId(promo.url) == promoId
+        (promo) => (promo.id) == promoId
       );
 
       promotion.value.data = studentsPromotion;
@@ -78,12 +80,47 @@ export const useConfigApi = defineStore("configApi", () => {
      */
     async fetchStudents(promoId) {
       try {
-        let response = await axios.get(
-          `school/student?&promotion=${promoId}&ordering=user__last_name`
+        // let response = await axios.get(
+        //   `school/student?&promotion=${promoId}&ordering=user__last_name`
+        // );
+        let response = await axios.post( `${config.v3_graph}`, {
+         query:`
+          query {
+            promotion(id: ${promoId}) {
+              students {
+                id
+                nickname
+                firstName
+                lastName
+                photo
+                nationality
+                cursus
+                number
+                graduate
+                diplomaMention
+                artist {
+                  id
+                }
+                promotion {
+                  id
+                }
+                user {
+                  id
+                }
+              }
+            }
+          }
+          `
+        }, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
         );
         let data = response.data;
+        console.log("the students are", data.data['promotion'].students);
 
-        return await this.getStudentsInfos(data);
+        return await this.getStudentsInfos(data.data['promotion'].students);
       } catch (err) {
         console.error(err);
       }
@@ -98,8 +135,10 @@ export const useConfigApi = defineStore("configApi", () => {
      */
     async getStudentsInfos(students) {
       const users = students.map(async (student) => {
-        student.userData = student.user_infos;
-        student.artistData = await this.getArtist(student);
+        // student.userData = student.user_infos;
+        student.userData = student;
+        student.artistData = await this.getArtist(student.user.id);
+
         return student;
       });
       return await Promise.all(users);
@@ -134,8 +173,46 @@ export const useConfigApi = defineStore("configApi", () => {
      */
     async getArtist(parent) {
       try {
-        const response = await axios.get(parent.artist);
-        const artistData = response.data;
+        // const response = await axios.get(parent.artist);
+        const response = await axios.post(`${config.v3_graph}`, {
+          query: `
+            query {
+              user(id: ${parent}) {
+                artist {
+                  id
+                  nickname
+                  photo
+                  bioShortFr
+                  bioShortEn
+                  bioFr
+                  bioEn
+                  twitterAccount
+                  facebookProfile
+                  members {
+                    id
+                  }
+                  websites {
+                    id
+                  }
+                  artworks {
+                    id
+                  }
+                  teacher {
+                    id
+                  }
+                  visitingStudent {
+                    id
+                  }
+                }
+              }
+            }
+          `, 
+        }, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+        const artistData = response.data.data.user.artist;
 
         return await artistData;
       } catch (err) {
@@ -150,13 +227,31 @@ export const useConfigApi = defineStore("configApi", () => {
    *
    */
   async function getPromotions() {
-    let response = await axios.get("school/promotion");
-    let data = response.data;
+    // let response = await axios.get("school/promotion");
+    let response = await axios.post(`${config.v3_graph}`, {
+      query: `
+        query{
+          promotions {
+            id
+            name
+            endingYear
+            startingYear
+            picture
+          }
+        }
+      `,
+    }, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    let data = response.data.data['promotions'];
 
     //sort in order to have latest promotion first
     //Sort by descending promotions
     const descendingStartingYear = data.sort(
-      (a, b) => b.starting_year - a.starting_year
+      (a, b) => b.startingYear - a.startingYear
     );
 
     promotions.value = descendingStartingYear;

@@ -26,7 +26,7 @@ const storeApi = useConfigApi();
       <UnderlineTitle
         class="promo__title"
         v-if="storeApi.promotion.data"
-        :title="`${storeApi.promotion.data.name} — ${storeApi.promotion.data.starting_year}-${storeApi.promotion.data.ending_year}`"
+        :title="`${storeApi.promotion.data.name} — ${storeApi.promotion.data.startingYear}-${storeApi.promotion.data.endingYear}`"
         subtitle="Promotion"
         :uppercase="true"
         :underlineSize="1"
@@ -85,7 +85,7 @@ const storeApi = useConfigApi();
       ></StudentCard>
     </ul>
     <p v-else-if="storeApi.promotion.students && !storeApi.promotion.students[0] && !storeApi.promotion.load">
-      Aucun étudiants n'a était trouvé pour cette promotion
+      Aucun étudiant n'a été trouvé pour cette promotion
     </p>
   </div>
 </template>

@@ -85,7 +85,7 @@ onMounted(async () => {
                 :value="getId(promotion.url)"
               >
                 {{
-                  `${promotion.starting_year}-${promotion.ending_year} — ${promotion.name}`
+                  `${promotion.startingYear}-${promotion.endingYear} — ${promotion.name}`
                 }}
               </option>
             </select>
@@ -102,17 +102,17 @@ onMounted(async () => {
         >
           <!-- {{ promotion }}         -->
           <router-link
-            :to="`/school/promotion/${getId(promotion.url)}`"
+            :to="`/school/promotion/${getId(promotion.id)}`"
             class="promo__link p-2 flex flex-col m-3 items-start justify-start gap-1 whitespace-nowrap"
             :class="{
               'bg-gray-extralightest dark:bg-black-light':
                 $route.path.match(/.(school).(promotion)/gm) &&
-                Number($route.params.id) === getId(promotion.url),
+                Number($route.params.id) === getId(promotion.id),
             }"
-            @click="promoId = getId(promotion.url)"
+            @click="promoId = getId(promotion.id)"
           >
             <UnderlineTitle
-              :title="`${promotion.starting_year}-${promotion.ending_year}`"
+              :title="`${promotion.startingYear}-${promotion.endingYear}`"
               :uppercase="false"
               :underlineSize="1"
               :fontSize="5"
