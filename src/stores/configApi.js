@@ -3,7 +3,7 @@ import { ref } from "vue";
 
 import axios from "axios";
 
-import { getId } from "@/composables/getId";
+import config from "@/config";
 
 export const useConfigApi = defineStore("configApi", () => {
   let promotions = ref([]);
@@ -36,7 +36,7 @@ export const useConfigApi = defineStore("configApi", () => {
      */
     async getPromotion(promoId) {
       let studentsPromotion = promotions.value.find(
-        (promo) => getId(promo.url) == promoId
+        (promo) => (promo.id) == promoId
       );
 
       promotion.value.data = studentsPromotion;
@@ -78,31 +78,37 @@ export const useConfigApi = defineStore("configApi", () => {
      */
     async fetchStudents(promoId) {
       try {
-        let response = await axios.get(
-          `school/student?&promotion=${promoId}&ordering=user__last_name`
+        let response = await axios.post( `${config.v3_graph}`, {
+         query:`
+          query {
+            promotion(id: ${promoId}) {
+              students {
+                photo
+                displayName
+                artist {
+                  id
+                }
+                user {
+                 id
+                }
+              }
+            }
+          }
+          `
+        }, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
         );
         let data = response.data;
 
-        return await this.getStudentsInfos(data);
+        sortStudents(data.data.promotion.students, "")
+
+        return data.data.promotion.students;
       } catch (err) {
         console.error(err);
       }
-    }
-
-    /**
-     * Asynchronously retrieves user data for a list of students.
-     * @async
-     *
-     * @param {Array} students - An array of student objects.
-     * @returns {Promise<Array>} - A Promise that resolves to an array of student objects with retrieved user data.
-     */
-    async getStudentsInfos(students) {
-      const users = students.map(async (student) => {
-        student.userData = student.user_infos;
-        student.artistData = await this.getArtist(student);
-        return student;
-      });
-      return await Promise.all(users);
     }
 
     /**
@@ -134,8 +140,22 @@ export const useConfigApi = defineStore("configApi", () => {
      */
     async getArtist(parent) {
       try {
-        const response = await axios.get(parent.artist);
-        const artistData = response.data;
+        const response = await axios.post(`${config.v3_graph}`, {
+          query: `
+            query {
+              user(id: ${parent}) {
+                artist {
+                  id
+                }
+              }
+            }
+          `, 
+        }, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+        const artistData = response.data.data.user.artist;
 
         return await artistData;
       } catch (err) {
@@ -150,13 +170,30 @@ export const useConfigApi = defineStore("configApi", () => {
    *
    */
   async function getPromotions() {
-    let response = await axios.get("school/promotion");
-    let data = response.data;
+    let response = await axios.post(`${config.v3_graph}`, {
+      query: `
+        query{
+          promotions {
+            id
+            name
+            endingYear
+            startingYear
+            picture
+          }
+        }
+      `,
+    }, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    let data = response.data.data.promotions;
 
     //sort in order to have latest promotion first
     //Sort by descending promotions
     const descendingStartingYear = data.sort(
-      (a, b) => b.starting_year - a.starting_year
+      (a, b) => b.startingYear - a.startingYear
     );
 
     promotions.value = descendingStartingYear;
@@ -174,6 +211,20 @@ export const useConfigApi = defineStore("configApi", () => {
   }
 
   /**
+   * Format students to return lastnames in upper case in order to sort them in sortStudent().
+   *
+   * @param {string} fullName - The full name of a student, can be alphabeticalOrder or displayName
+   * @returns {string} - Lastname, or full name if there is no lastname, in uppercase.
+   */
+  function formatSortingNames(fullName) {
+    if (fullName.split(" ").length >= 2) { 
+      let isolatedName = fullName.split(" ").slice(1).join();
+      return isolatedName.toUpperCase();
+    }
+    return fullName.toUpperCase();
+  }
+
+  /**
    * Sorts an array of student objects by last name.
    *
    * @param {Array} students - The array of student objects to sort.
@@ -181,27 +232,16 @@ export const useConfigApi = defineStore("configApi", () => {
    * @returns {Array} - The sorted array of student objects.
    */
   function sortStudents(students, order) {
-    // for Promotion Marguerite Duras sort invert V and Y for Yoo and Villafagne ?!
-    
-    if (order === "descending") {
-      const sort = students.sort((a, b) => {
-        // Sort with lower or upper case for avoid bad sorting because not the same Unicode
-        let aname = a.artistData.nickname ? a.artistData.nickname : a.user_infos.last_name;
-        let bname = b.artistData.nickname ? b.artistData.nickname : b.user_infos.last_name;
-        return aname < bname ? 1 : -1;
-      });
-      console.log(sort)
-      return (students = sort);
-    } else {
-      const sort = students.sort((a, b) => {
-        let aname = a.artistData.nickname ? a.artistData.nickname : a.user_infos.last_name;
-        let bname = b.artistData.nickname ? b.artistData.nickname : b.user_infos.last_name;
-        return aname > bname ? 1 : -1
-      });
-      console.log(sort)
-      return (students = sort);
-    }
-    
+      students.sort((a, b) => {
+        let aName = a.alphabeticalOrder? formatSortingNames(a.alphabeticalOrder): formatSortingNames(a.displayName);
+        let bName = b.alphabeticalOrder? formatSortingNames(b.alphabeticalOrder): formatSortingNames(b.displayName);
+
+
+        if (order === "descending") {
+          return aName < bName ? 1 : -1;
+        }
+        return aName > bName ? 1 : -1;
+      });    
   }
 
   return {

@@ -15,18 +15,12 @@ const storeApi = useConfigApi();
 
 <template>
   <div class="py-4 px-10 w-full flex flex-col gap-10 md:overflow-y-scroll">
-    <!-- <h2 class="p-3" v-if="storeApi.selectedPromo">
-      <i>{{
-        `This is a children of school view and is the promotion
-        ${$route.params.id} ${storeApi.selectedPromo.name}`
-      }}</i>
-    </h2> -->
 
     <div class="w-full flex flex-wrap items-center justify-between gap-3">
       <UnderlineTitle
         class="promo__title"
         v-if="storeApi.promotion.data"
-        :title="`${storeApi.promotion.data.name} — ${storeApi.promotion.data.starting_year}-${storeApi.promotion.data.ending_year}`"
+        :title="`${storeApi.promotion.data.name} — ${storeApi.promotion.data.startingYear}-${storeApi.promotion.data.endingYear}`"
         subtitle="Promotion"
         :uppercase="true"
         :underlineSize="1"
@@ -85,7 +79,7 @@ const storeApi = useConfigApi();
       ></StudentCard>
     </ul>
     <p v-else-if="storeApi.promotion.students && !storeApi.promotion.students[0] && !storeApi.promotion.load">
-      Aucun étudiants n'a était trouvé pour cette promotion
+      Aucun étudiant n'a été trouvé pour cette promotion
     </p>
   </div>
 </template>
