@@ -280,20 +280,19 @@ export const useConfigApi = defineStore("configApi", () => {
    */
   function sortStudents(students, order) {
     // for Promotion Marguerite Duras sort invert V and Y for Yoo and Villafagne ?!
-    
     if (order === "descending") {
       const sort = students.sort((a, b) => {
         // Sort with lower or upper case for avoid bad sorting because not the same Unicode
-        let aname = a.artistData.nickname ? a.artistData.nickname : a.user_infos.last_name;
-        let bname = b.artistData.nickname ? b.artistData.nickname : b.user_infos.last_name;
+        let aname = a.artistData.nickname ? a.artistData.nickname : a.userData.lastName;
+        let bname = b.artistData.nickname ? b.artistData.nickname : b.userData.lastName;
         return aname < bname ? 1 : -1;
       });
       console.log(sort)
       return (students = sort);
     } else {
       const sort = students.sort((a, b) => {
-        let aname = a.artistData.nickname ? a.artistData.nickname : a.user_infos.last_name;
-        let bname = b.artistData.nickname ? b.artistData.nickname : b.user_infos.last_name;
+        let aname = a.artistData.nickname ? a.artistData.nickname : a.userData.lastName;
+        let bname = b.artistData.nickname ? b.artistData.nickname : b.userData.lastName;
         return aname > bname ? 1 : -1
       });
       console.log(sort)

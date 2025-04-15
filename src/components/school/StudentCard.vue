@@ -13,7 +13,7 @@ const props = defineProps({
 const fullname = computed(() => {
   return props.student.artistData.nickname != "" ? 
          `${props.student.artistData.nickname}`:
-         `${props.student.userData.first_name} ${props.student.userData.last_name}`;
+         `${props.student.userData.firstName} ${props.student.userData.lastName}`;
 });
 </script>
 
@@ -28,12 +28,12 @@ const fullname = computed(() => {
         <img
           class="w-full h-44 bg-gray-extralightest"
           :class="{
-            'object-cover': props.student?.userData?.profile?.photo,
-            'p-4': !props.student?.userData?.profile?.photo,
+            'object-cover': props.student?.userData?.photo,
+            'p-4': !props.student?.userData?.photo,
           }"
           :src="
-            props.student?.userData?.profile?.photo
-              ? `${config.media_service}?url=${props.student.userData.profile.photo}&mode=adapt&w=300&fmt=jpg`
+           props.student?.userData?.photo
+              ? `${config.media_service}?url=https://api.lefresnoy.net/media/${props.student.userData.photo}&mode=adapt&w=300&fmt=jpg`
               : userPlaceholder
           "
           :alt="`Photo de ${fullname}`"
@@ -45,11 +45,11 @@ const fullname = computed(() => {
         </div>
         <div v-else class="p-2 w-full capitalize">
           {{ fullname }}
-          <p v-if="props.student.userData.first_name" class="last:font-bold">
-            {{ props.student.userData.first_name }}
+          <p v-if="props.student.userData.firstName" class="last:font-bold">
+            {{ props.student.userData.firstName }}
           </p>
-          <p v-if="props.student.userData.last_name" class="last:font-bold">
-            {{ props.student.userData.last_name }}
+          <p v-if="props.student.userData.lastName" class="last:font-bold">
+            {{ props.student.userData.lastName }}
           </p>
         </div>
       </router-link>
