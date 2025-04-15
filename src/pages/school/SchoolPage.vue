@@ -1,8 +1,6 @@
 <script setup>
 import { useRouter } from "vue-router";
 
-import { getId } from "@/composables/getId";
-
 import { useConfigApi } from "../../stores/configApi";
 import { onMounted, ref, watch } from "vue";
 
@@ -107,7 +105,7 @@ onMounted(async () => {
             :class="{
               'bg-gray-extralightest dark:bg-black-light':
                 $route.path.match(/.(school).(promotion)/gm) &&
-                Number($route.params.id) === promotion.id,
+                $route.params.id === promotion.id,
             }"
             @click="promoId = promotion.id"
           >
