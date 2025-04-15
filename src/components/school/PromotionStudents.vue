@@ -15,12 +15,6 @@ const storeApi = useConfigApi();
 
 <template>
   <div class="py-4 px-10 w-full flex flex-col gap-10 md:overflow-y-scroll">
-    <!-- <h2 class="p-3" v-if="storeApi.selectedPromo">
-      <i>{{
-        `This is a children of school view and is the promotion
-        ${$route.params.id} ${storeApi.selectedPromo.name}`
-      }}</i>
-    </h2> -->
 
     <div class="w-full flex flex-wrap items-center justify-between gap-3">
       <UnderlineTitle
