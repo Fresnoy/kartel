@@ -4,8 +4,6 @@
 
 import axios from "axios";
 
-import config from "@/config";
-
 import { ref } from "vue";
 
 import { getId } from "@/composables/getId";
@@ -60,20 +58,6 @@ function initValues() {
 async function getArtist(id) {
   try {
     const response = await axios.get(`people/artist/${id}`);
-    // const response = await axios({
-    //   url: `${config.v3_graph}`,
-    //   method: 'post',
-    //   data: `
-    //     query GetArtistId {
-    //       users {
-    //       id
-    //       artist {
-    //         id
-    //       }
-    //     }
-    //   }
-    //   `
-    // });
 
     const data = response.data;
 

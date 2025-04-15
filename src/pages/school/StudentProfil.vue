@@ -34,7 +34,6 @@ onMounted(() => {
 
   // can combine both function with more function parameters...
   async function getStudent(id) {
-    // let response = await fetch(`${config.rest_uri_v2}school/student/${id}`);
     let response = await axios.post(`${config.v3_graph}`, {
       query: `
       query {

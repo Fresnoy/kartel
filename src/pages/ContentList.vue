@@ -121,30 +121,12 @@ getTypes();
 
 async function getKeywords() {
   try {
-    // const response = await axios.get("production/artwork-keywords");
-    // It seems to have no keyword in V3 productions
-    const response = await axios.post(`${config.v3_graph}`, {
-      query: `
-        query {
-          productions {
-            ... on ArtworkType {
-              id
-              keywords
-            }
-          }
-        }
-      `
-    }, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
+    const response = await axios.get("production/artwork-keywords");
 
-    const data = response.data.data.productions;
-    console.log("les keyword sont ", data);
+    const data = response.data;
 
     const keywordsName = data.map((keyword) => {
-      return keyword.keywords;
+      return keyword["name"];
     });
 
     const sortedKeywords = keywordsName.sort((a, b) => a.localeCompare(b));

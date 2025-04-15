@@ -1,7 +1,5 @@
 import axios from "axios";
 
-import config from "@/config";
-
 import { ref } from "vue";
 
 let content = ref([]);
@@ -154,9 +152,7 @@ class Content {
 
       setParams(params);
 
-      // return (this.url = `people/artist?page_size=${Content.pageSize}&page=${offset.value}${stringParams}`);
-      // error 404 for now
-      return (this.url = "?query={users{artist{id}}}");
+      return (this.url = `people/artist?page_size=${Content.pageSize}&page=${offset.value}${stringParams}`);
     }
   }
 
@@ -169,30 +165,9 @@ class Content {
     try {
       // need to double verif before the second requests with contentData
 
-      // const response = await axios.get(url);
-      try {
-      const response = await axios.post(`${config.v3_graph}`, {
-        query: `
-          query {
-            users {
-              artist {
-                id
-              }
-            }
-          }
-        `,
-      }, {
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
-
-      this.data = response.data;
-      }  catch (error) {
-        console.error('Error when retrieving artists data:', error);
-      }
-
-      // let data = response.data;
+      const response = await axios.get(url);
+     
+      let data = response.data;
 
       // check if it's the last request to set results
       if (Content.isLastRequest(this.getLastRequest(), { type, id: this.id })) {

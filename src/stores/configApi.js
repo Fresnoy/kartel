@@ -5,8 +5,6 @@ import axios from "axios";
 
 import config from "@/config";
 
-import { getId } from "@/composables/getId";
-
 export const useConfigApi = defineStore("configApi", () => {
   let promotions = ref([]);
   let selectedPromo = ref([]);
@@ -37,9 +35,6 @@ export const useConfigApi = defineStore("configApi", () => {
      * @returns {Promise<void>} A promise that resolves when the promotion has been retrieved and assigned.
      */
     async getPromotion(promoId) {
-      // let studentsPromotion = promotions.value.find(
-      //   (promo) => getId(promo.id) == promoId
-      // );
       let studentsPromotion = promotions.value.find(
         (promo) => (promo.id) == promoId
       );
@@ -83,9 +78,6 @@ export const useConfigApi = defineStore("configApi", () => {
      */
     async fetchStudents(promoId) {
       try {
-        // let response = await axios.get(
-        //   `school/student?&promotion=${promoId}&ordering=user__last_name`
-        // );
         let response = await axios.post( `${config.v3_graph}`, {
          query:`
           query {
@@ -121,7 +113,6 @@ export const useConfigApi = defineStore("configApi", () => {
         }
         );
         let data = response.data;
-        console.log("the students are", data.data.promotion.students);
 
         return await this.getStudentsInfos(data.data.promotion.students);
       } catch (err) {
@@ -138,7 +129,6 @@ export const useConfigApi = defineStore("configApi", () => {
      */
     async getStudentsInfos(students) {
       const users = students.map(async (student) => {
-        // student.userData = student.user_infos;
         student.userData = student;
         student.artistData = await this.getArtist(student.user.id);
 
@@ -176,7 +166,6 @@ export const useConfigApi = defineStore("configApi", () => {
      */
     async getArtist(parent) {
       try {
-        // const response = await axios.get(parent.artist);
         const response = await axios.post(`${config.v3_graph}`, {
           query: `
             query {
@@ -230,7 +219,6 @@ export const useConfigApi = defineStore("configApi", () => {
    *
    */
   async function getPromotions() {
-    // let response = await axios.get("school/promotion");
     let response = await axios.post(`${config.v3_graph}`, {
       query: `
         query{
@@ -249,7 +237,7 @@ export const useConfigApi = defineStore("configApi", () => {
       }
     });
 
-    let data = response.data.data['promotions'];
+    let data = response.data.data.promotions;
 
     //sort in order to have latest promotion first
     //Sort by descending promotions
@@ -283,19 +271,17 @@ export const useConfigApi = defineStore("configApi", () => {
     if (order === "descending") {
       const sort = students.sort((a, b) => {
         // Sort with lower or upper case for avoid bad sorting because not the same Unicode
-        let aname = a.artistData.nickname ? a.artistData.nickname : a.userData.lastName;
-        let bname = b.artistData.nickname ? b.artistData.nickname : b.userData.lastName;
-        return aname < bname ? 1 : -1;
+        let aName = a.artistData.nickname ? a.artistData.nickname : a.userData.lastName;
+        let bName = b.artistData.nickname ? b.artistData.nickname : b.userData.lastName;
+        return aName < bName ? 1 : -1;
       });
-      console.log(sort)
       return (students = sort);
     } else {
       const sort = students.sort((a, b) => {
-        let aname = a.artistData.nickname ? a.artistData.nickname : a.userData.lastName;
-        let bname = b.artistData.nickname ? b.artistData.nickname : b.userData.lastName;
-        return aname > bname ? 1 : -1
+        let aName = a.artistData.nickname ? a.artistData.nickname : a.userData.lastName;
+        let bName = b.artistData.nickname ? b.artistData.nickname : b.userData.lastName;
+        return aName > bName ? 1 : -1
       });
-      console.log(sort)
       return (students = sort);
     }
     

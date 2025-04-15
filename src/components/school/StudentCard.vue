@@ -4,7 +4,6 @@ import config from "@/config";
 import { computed } from "vue";
 
 import userPlaceholder from "@/assets/placeholder_user.svg";
-import { getId } from "@/composables/getId";
 
 const props = defineProps({
   student: Object,
