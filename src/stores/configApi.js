@@ -37,6 +37,9 @@ export const useConfigApi = defineStore("configApi", () => {
      * @returns {Promise<void>} A promise that resolves when the promotion has been retrieved and assigned.
      */
     async getPromotion(promoId) {
+      // let studentsPromotion = promotions.value.find(
+      //   (promo) => getId(promo.id) == promoId
+      // );
       let studentsPromotion = promotions.value.find(
         (promo) => (promo.id) == promoId
       );
@@ -118,9 +121,9 @@ export const useConfigApi = defineStore("configApi", () => {
         }
         );
         let data = response.data;
-        console.log("the students are", data.data['promotion'].students);
+        console.log("the students are", data.data.promotion.students);
 
-        return await this.getStudentsInfos(data.data['promotion'].students);
+        return await this.getStudentsInfos(data.data.promotion.students);
       } catch (err) {
         console.error(err);
       }

@@ -24,7 +24,7 @@ const fullname = computed(() => {
       class="relative h-full border-solid border-2 border-gray hover:border-black dark:hover:border-gray-extralightest"
       :key="props.student.userData.id"
     >
-      <router-link :to="`/artist/${getId(props.student.artist)}`">
+      <router-link :to="`/artist/${props.student.artist.id}`">
         <img
           class="w-full h-44 bg-gray-extralightest"
           :class="{
