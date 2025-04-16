@@ -15,12 +15,9 @@ import {
   artist,
   user,
   artworks,
-  websites,
-  student,
   candidature,
   setup,
 } from "@/composables/artist/getArtistInfo";
-import { getId } from "@/composables/getId";
 
 /**
 
@@ -30,8 +27,6 @@ import { getId } from "@/composables/getId";
 import UnderlineTitle from "@/components/ui/UnderlineTitle.vue";
 import UiDescription from "@/components/ui/UiDescription.vue";
 import ArtworkCard from "@/components/artwork/ArtworkCard.vue";
-
-import UiLink from "@/components/ui/UiLink.vue";
 
 import userPlaceholder from "@/assets/placeholder_user.svg";
 
@@ -154,18 +149,29 @@ watch(
           <div class="flex flex-col lg:flex-row lg:items-end gap-6">
             <div class="relative w-fit h-full flex">
               <img
-                v-if="user?.profile"
+                v-if="artist?.artistPhoto"
                 class="min-h-[25vh] bg-black-extralightest object-cover"
-                :class="{ 'p-5': !user?.profile?.photo }"
+                :class="{ 'p-5': !artist?.artistPhoto }"
                 :src="
-                  user?.profile?.photo
-                    ? `${config.media_service}?url=${user.profile.photo}&mode=adapt&w=1000&fmt=jpg`
+                  artist?.artistPhoto
+                    ? `${config.media_service}?url=https://api.lefresnoy.net/media/${artist?.artistPhoto}&mode=adapt&w=1000&fmt=jpg`
                     : userPlaceholder
                 "
-                :alt="`Photo de ${user.first_name} ${user.last_name}`"
+                :alt="`Photo de ${artist.displayName}`"
+              />
+              <img
+                v-else-if="artist?.photo"
+                class="min-h-[25vh] bg-black-extralightest object-cover"
+                :class="{ 'p-5': !artist?.photo }"
+                :src="
+                  artist?.photo
+                    ? `${config.media_service}?url=https://api.lefresnoy.net/media/${artist?.photo}&mode=adapt&w=1000&fmt=jpg`
+                    : userPlaceholder
+                "
+                :alt="`Photo de ${artist.displayName}`"
               />
               <svg
-                v-if="student?.graduate"
+                v-if="artist?.student?.graduate"
                 class="absolute top-0 right-0 translate-x-1/2 -translate-y-1/2 w-6"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
@@ -182,8 +188,8 @@ watch(
               </h4> -->
               <UnderlineTitle
                 class="w-max"
-                v-if="artist?.nickname"
-                :title="`''${artist.nickname}''`"
+                v-if="artist?.displayName"
+                :title="`${artist.displayName}`"
                 subtitle="Artist"
                 :uppercase="true"
                 :underlineSize="1"
@@ -192,30 +198,28 @@ watch(
 
               <UnderlineTitle
                 class="w-max"
-                v-else-if="
-                  user?.first_name && user?.last_name && !artist.nickname
-                "
-                :title="`${user.first_name} ${user.last_name}`"
+                v-else
+                title="Nom manquant"
                 subtitle="Artist"
                 :uppercase="true"
                 :underlineSize="1"
                 :fontSize="2"
               ></UnderlineTitle>
 
-              <h4 v-if="student?.promotion?.name">
+              <h4 v-if="artist?.student?.promotion?.name">
                 Promotion
                 <router-link
-                  :to="`/school/promotion/${getId(student.promotion.url)}`"
+                  :to="`/school/promotion/${artist.student.promotion.id}`"
                   class="underline"
                 >
-                  {{ student.promotion.name }}
+                  {{ artist.student.promotion.name }}
                 </router-link>
               </h4>
             </div>
           </div>
 
           <div
-            v-if="websites && websites.length !== 0"
+            v-if="artist?.websites && artist?.websites.length !== 0"
             class="flex flex-col gap-3"
           >
             <UnderlineTitle
@@ -227,9 +231,9 @@ watch(
             />
 
             <ul class="flex flex-col gap-2">
-              <li class="" v-for="website in websites" :key="website.id">
-                <a :href="website.link" class="underline" target="_blank">
-                  {{ website.title_fr || website.title_en }}
+              <li class="" v-for="website in artist.websites" :key="website.id">
+                <a :href="website.url" class="underline" target="_blank">
+                  {{ website.titleFr || website.titleEn }}
                 </a>
               </li>
             </ul>
@@ -246,44 +250,29 @@ watch(
                 :fontSize="2"
               />
               <ul class="flex flex-col">
-                <li v-if="artist?.nickname" class="inline-flex gap-2">
+                <li v-if="artist?.displayName" class="inline-flex gap-2">
                   <div class="flex flex-wrap gap-1">
                     <b>Pseudonyme:</b>
                     <p>
-                      {{ artist.nickname }}
+                      {{ artist.displayName }}
                     </p>
                   </div>
                 </li>
 
                 <li
-                  v-else-if="user?.first && user?.last_name"
+                  v-else="artist?.first_name && artist?.last_name"
                   class="inline-flex gap-2"
                 >
                   <div class="flex flex-wrap gap-1">
                     <b>Nom:</b>
                     <p>
-                      {{ user.last_name }}
+                      {{ artist.last_name }}
                     </p>
                   </div>
                   <div class="flex flex-wrap gap-1">
                     <b>Prénom:</b>
                     <p>
-                      {{ user.first_name }}
-                    </p>
-                  </div>
-                </li>
-
-                <li v-else class="inline-flex gap-2">
-                  <div v-if="user?.first_name" class="flex flex-wrap gap-1">
-                    <b>Nom:</b>
-                    <p>
-                      {{ user.last_name }}
-                    </p>
-                  </div>
-                  <div v-if="user?.last_name" class="flex flex-wrap gap-1">
-                    <b>Prénom:</b>
-                    <p>
-                      {{ user.first_name }}
+                      {{ artist.first_name }}
                     </p>
                   </div>
                 </li>
@@ -292,13 +281,13 @@ watch(
                   <b>Nationalité:</b>
                   <p
                     v-if="
-                      user?.profile?.nationality ||
-                      user?.profile?.homeland_country
+                      artist?.nationality ||
+                      artist?.homelandCountry
                     "
                   >
                     {{
-                      user?.profile?.nationality ||
-                      user?.profile?.homeland_country
+                      artist?.nationality ||
+                      artist?.homelandCountry
                     }}
                   </p>
                   <p v-else class="text-gray italic">Non renseigné.</p>
@@ -308,13 +297,13 @@ watch(
                   <h5 class="font-bold">Tel:</h5>
                   <p
                     v-if="
-                      user?.profile?.residence_phone ||
-                      user?.profile?.homeland_phone
+                      artist?.residence_phone ||
+                      artist?.homeland_phone
                     "
                   >
                     {{
-                      user?.profile?.residence_phone ||
-                      user?.profile?.homeland_phone
+                      artist?.residence_phone ||
+                      artist?.homeland_phone
                     }}
                   </p>
                   <p v-else class="text-gray italic">Non renseigné.</p>
@@ -322,25 +311,25 @@ watch(
 
                 <li class="flex flex-wrap gap-1">
                   <h5 class="font-bold">E-Mail:</h5>
-                  <p v-if="user?.email">
-                    {{ user.email }}
+                  <p v-if="artist?.user?.email">
+                    {{ artist.user.email }}
                   </p>
                   <p v-else class="text-gray italic">Non renseigné.</p>
                 </li>
 
                 <li class="flex flex-wrap gap-1">
                   <h5 class="font-bold">Adresse:</h5>
-                  <p v-if="user?.profile?.residence_address">
-                    {{ user.profile.residence_address }}
+                  <p v-if="artist?.residence_address">
+                    {{ artist.residence_address }}
                   </p>
                   <p v-else class="text-gray italic">Non renseigné.</p>
                 </li>
 
                 <li class="flex flex-wrap gap-1">
                   <h5 class="font-bold">N° sécurité sociale:</h5>
-                  <p v-if="user?.profile?.social_insurance_number">
+                  <p v-if="artist?.socialInsuranceNumber">
                     {{
-                      formatSocialNumber(user.profile.social_insurance_number)
+                      formatSocialNumber(artist.socialInsuranceNumber)
                     }}
                   </p>
                   <p v-else class="text-gray italic">Non renseigné.</p>
@@ -462,7 +451,7 @@ watch(
                     :fontSize="2"
                   />
                   <div
-                    v-if="user?.profile?.cursus"
+                    v-if="artist?.cursus"
                     class="relative w-5 h-5 border-0.5 border-gray rounded-sm"
                   >
                     <span
@@ -479,13 +468,13 @@ watch(
                 class="relative max-h-52 peer-open:max-h-full peer-open:after:hidden overflow-hidden"
                 :class="{
                   ' after:block after:absolute after:bottom-0 after:w-full after:h-1/2 after:bg-linear-to-t after:from-white after:to-transparent after:pointer-events-none':
-                    user?.profile?.cursus,
+                  artist?.cursus,
                 }"
               >
                 <p
-                  v-if="user?.profile?.cursus"
+                  v-if="artist?.cursus"
                   class="text-sm whitespace-pre-line *:whitespace-pre-line"
-                  v-html="parsedContent(user?.profile?.cursus)"
+                  v-html="parsedContent(artist?.cursus)"
                 ></p>
                 <p v-else class="text-gray italic">Non renseigné.</p>
               </div>
@@ -493,15 +482,15 @@ watch(
           </div>
 
           <UiDescription
-            v-if="artist?.bio_fr || artist?.bio_en"
-            :desc_fr="artist.bio_fr"
-            :desc_en="artist.bio_en"
+            v-if="artist?.bioFr || artist?.bioEn"
+            :desc_fr="artist.bioFr"
+            :desc_en="artist.bioEn"
           />
         </div>
       </div>
 
       <div
-        v-if="artworks"
+        v-if="artist?.artworks"
         id="artwork"
         class="pl-8 pr-6 py-5 sticky top-20 w-full lg:w-2/5 lg:h-[90svh] lg:overflow-y-auto flex flex-col gap-6"
       >
@@ -526,9 +515,9 @@ watch(
         />
         <ul class="grid grid-cols-2 gap-3">
           <!-- {{ artwork }} -->
-          <li v-for="artwork in artworks" :key="artwork.url">
+          <li v-for="artwork in artist?.artworks" :key="artwork.id">
             <ArtworkCard
-              :url="artwork.url"
+              :url="artwork.id"
               :picture="artwork.picture"
               :title="artwork.title"
             />

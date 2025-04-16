@@ -4,6 +4,8 @@
 
 import axios from "axios";
 
+import config from "@/config";
+
 import { ref } from "vue";
 
 import { getId } from "@/composables/getId";
@@ -25,7 +27,6 @@ import { getId } from "@/composables/getId";
  */
 let artist = ref();
 let artworks = ref();
-let websites = ref();
 let student = ref();
 let user = ref();
 let candidature = ref();
@@ -43,7 +44,6 @@ function initValues() {
 
   artist.value = {};
   artworks.value = [];
-  websites.value = [];
   student.value = {};
   user.value = {};
   candidature.value = {};
@@ -57,9 +57,56 @@ function initValues() {
  */
 async function getArtist(id) {
   try {
-    const response = await axios.get(`people/artist/${id}`);
+    const response = await axios.post(`${config.v3_graph}`, {
+      query:`
+        query GetArtist {
+          artist(id: ${id}) {
+            id
+            displayName
+            firstName
+            lastName
+            artistPhoto
+            photo
+            nationality
+            homelandCountry
+            residencePhone
+            homelandPhone
+            residenceAddress
+            socialInsuranceNumber
+            cursus
+            bioFr
+            bioEn
+            student {
+              graduate
+                promotion {
+                  id
+                  name
+                }
+            }
+             websites {
+              titleEn
+              titleFr
+              url
+            }
+            user {
+              email
+            }
+              artworks {
+              id
+              title
+              picture
+            }
+          }
+        }
+      `
+      }, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    );
 
-    const data = response.data;
+    const data = response.data.data.artist;
 
     artist.value = data;
   } catch (err) {
@@ -87,11 +134,23 @@ async function getUser(id) {
   }
 
   try {
-    const response = await axios.get(`people/user/${id}`, {
-      headers,
-    });
+    const response = await axios.post(`${config.v3_graph}`, {
+      query:`
+        query GetUser {
+          user(id: ${id}) {
+            firstName
+            lastName
+          }
+        }
+      `
+    }, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+    );
 
-    const data = response.data;
+    const data = response.data.data.user;
 
     user.value = data;
   } catch (err) {
@@ -139,41 +198,37 @@ async function getCandidature(username) {
  */
 async function getArtworks(id) {
   try {
-    const response = await axios.get(`production/artwork?authors=${id}`);
+    // const response = await axios.get(`production/artwork?authors=${id}`);
+    const response = await axios.post( `${config.v3_graph}`, {
+      query:`
+        query GetArtwork {
+          artist(id: ${id}) {
+            id
+            firstName
+            lastName
+            displayName
+            artworks {
+              id
+              title
+              picture
+            }
+          }
+        }
+      `
+      }, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    );
 
-    const data = response.data;
+    const data = response.data.data.artist.artworks;
 
     artworks.value = data;
   } catch (err) {
     console.error(err);
     artworks.value = [];
   }
-}
-
-/**
- * Retrieves data from a list of artist websites.
- *
- * @param {Array} artistWebsites - List of artist websites to retrieve data from.
- * @return {Promise} Resolves with an array of website data.
- */
-async function getWebsites(artistWebsites) {
-  if (!artistWebsites) {
-    return;
-  }
-
-  const websitesData = artistWebsites.map(async (website) => {
-    try {
-      const response = await axios.get(website);
-
-      const data = response.data;
-
-      return data;
-    } catch (err) {
-      console.error(err);
-    }
-  });
-
-  websites.value = await Promise.all(websitesData);
 }
 
 /**
@@ -184,9 +239,26 @@ async function getWebsites(artistWebsites) {
  */
 async function getStudent(id) {
   try {
-    const response = await axios.get(`school/student?artist=${id}`);
+    // const response = await axios.get(`school/student?artist=${id}`);
+    const response = await axios.post( `${config.v3_graph}`, {
+        query:`
+          query GetStudent {
+            artist(id: 10) {
+              id
+              student {
+                id
+              }
+            }
+          }
+        `
+      } , {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    );
 
-    const studentData = response.data;
+    const studentData = response.data.data.artist.student;
 
     // return if no student data -> that means that the artist is not a student
     if (!studentData || studentData.length === 0) {
@@ -194,20 +266,7 @@ async function getStudent(id) {
       return;
     }
 
-    try {
-      const response = await axios.get(studentData[0].promotion);
-
-      let promotionData = response.data;
-
-      studentData[0].promotion = promotionData;
-
-      student.value = studentData[0];
-    } catch (err) {
-      console.error(err);
-      student.value = {};
-    }
-
-    // student.value = data;
+    student.value = studentData;
   } catch (err) {
     console.error(err);
     student.value = {};
@@ -223,8 +282,6 @@ async function setup(artistId, auth) {
   await getUser(getId(artist.value.user));
 
   getArtworks(artistId);
-
-  getWebsites(artist.value.websites);
 
   if (auth) {
     getCandidature(user.value.username);
@@ -242,7 +299,6 @@ export {
   artist,
   user,
   artworks,
-  websites,
   student,
   candidature,
 
