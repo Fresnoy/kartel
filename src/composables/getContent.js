@@ -1,12 +1,14 @@
 import axios from "axios";
 
+import config from "@/config";
+
 import { ref } from "vue";
 
 let content = ref([]);
 
-// don't know if the offset will reset after each call of the composables ?! May not but ?!
-//  get header for get next
-let offset = ref(1);
+let first = ref(20);
+let after = ref("");
+let hasNextPage = ref(true);
 
 let load = ref(true);
 
@@ -16,46 +18,6 @@ let load = ref(true);
 let url;
 let stringParams;
 let params = {};
-
-/**
- * AXIOS interceptors to handle the offset of the infinite scroll
- * separate an instance from global axios for specific interceptors
- */
-// const instance = axios.create({
-//   baseURL: `${config.rest_uri_v2}`,
-// });
-
-/**
- * @Helpers https://stackoverflow.com/questions/37897523/axios-get-access-to-response-header-fields - get the headers of the response
- */
-
-/**
- * set the requests interceptors and execute a function at the beginning of a request
- */
-// instance.interceptors.request.use(
-//   function (config) {
-//     // console.log("sending request", config);
-//     return config;
-//   },
-//   function (error) {
-//     return Promise.reject(error);
-//   }
-// );
-
-/**
- * End interceptor which execute function when a request is completed
- */
-// instance.interceptors.response.use(
-//   function (response) {
-//     // get the next and the previous url headers for the offset
-
-//     // console.log("receiving response", response);
-//     return response;
-//   },
-//   function (error) {
-//     return Promise.reject(error);
-//   }
-// );
 
 /**
  *
@@ -69,12 +31,9 @@ function setParams(params) {
   }
 }
 
-// Get artworks, set an observer who fetch the next page
+// Get artworks
 // update params if filters change
 // if the filters change reset artworks
-
-// let contentRequests = new Map();
-
 class Content {
   // requests params setup
   static pageSize = 20;
@@ -98,7 +57,7 @@ class Content {
   constructor(type, parameters) {
     this.type = type;
     this.parameters = parameters;
-    this.id = Content.requests.size + 1;
+    this.id = Content.requests.size + 1; //Requests counted
     this.url;
 
     this.setParamsByType(this.type, this.parameters);
@@ -108,33 +67,57 @@ class Content {
 
   setParamsByType(type, parameters) {
     if (type === "artworks") {
-      const { genres, keywords, productionYear, q, shootingPlace, type } =
+      const { keywords, productionYear, type } =
         parameters;
 
       /**
        * Artwork parameters
        * @typedef {Object} params
-       * @property {string} genres
        * @property {string} keywords
        * @property {string} productionYear
-       * @property {string} query - q string from function parameters
-       * @property {string} shootingPlace
        * @property {string} type
        */
       params = {
-        // genres: genres ? `genres=${genres}` : null,
-        keywords: keywords ? `keywords=${keywords}` : null,
+        keywords: keywords ? `${keywords}` : null,
         productionYear: productionYear
-          ? `production_year=${productionYear}`
+          ? `${productionYear}`
           : null,
-        query: q ? `q=${q}` : null,
-        // shootingPlace: shootingPlace ? `shooting_place=${shootingPlace}` : null,
-        type: type ? `type=${type}` : null,
+        type: type ? `${type}` : null,
       };
 
       setParams(params);
 
-      return (this.url = `production/artwork?page_size=${Content.pageSize}&page=${offset.value}${stringParams}`);
+
+      // Build filters piece of query if there is any filter
+      let arrayFilters = [""]
+
+      if(params.keywords){
+        arrayFilters.push(`hasKeywordName: "${params.keywords}"`)
+      }
+      if(params.productionYear){
+        arrayFilters.push(`belongProductionYear: "${params.productionYear}"`)
+      }
+      if(params.type){
+        arrayFilters.push(`hasType: "${params.type[0].toUpperCase() + params.type.slice(1).toLowerCase()}"`)
+      }
+      let filters = arrayFilters.join(", ")
+
+      return (this.url = `query FetchArtworks {
+        artworksPagination(first: ${first.value}, after: "${after.value}"${filters}) {
+            edges {
+              node {
+                id
+                title
+                picture
+              }
+            }
+            pageInfo {
+              hasNextPage
+              endCursor
+            }
+          }
+        }`);
+
     } else if (type === "artists") {
       const { q, nationality, artist_type } = parameters;
       
@@ -152,10 +135,9 @@ class Content {
 
       setParams(params);
 
-      return (this.url = `people/artist?page_size=${Content.pageSize}&page=${offset.value}${stringParams}`);
+      return (this.url = `people/artist?page_size=${Content.pageSize}&page=${stringParams}`);
     }
   }
-
   /**
    * Fetches content from a given URL and type.
    * @param {string} url - The URL to fetch content from.
@@ -165,45 +147,56 @@ class Content {
     try {
       // need to double verif before the second requests with contentData
 
-      const response = await axios.get(url);
-
-      let data = response.data;
-
-      // check if it's the last request to set results
-      if (Content.isLastRequest(this.getLastRequest(), { type, id: this.id })) {
-        let pnv = { details: "Page non valide." }
-        if (
-          data &&
-          Array.isArray(data) &&
-          data !== pnv
-        ) {
-          let contentData;
-
-          if (type === "artists") {
-            contentData = await Promise.all(this.contentData(data));
-          } else {
-            contentData = data;
+      const response = await axios.post(`${config.v3_graph}`, {
+          query: url
+        }, {
+          headers: {
+            'Content-Type': 'application/json'
           }
-
-          // second verification of it is the last request because timing can pass and request contentData
-          if (
-            Content.isLastRequest(this.getLastRequest(), { type, id: this.id })
-          ) {
-            content.value = [...content.value, ...contentData];
-            offset.value++;
-          }
-
-          load.value = true;
         }
+      );
+      
+      //Register data differently of it's filtered or not
+      let data = {}
+      // For calling all artworks after calling filters. Need to find a better solution
+      // Calls of all artwork have tendencies to loop with the observer
+      if (hasNextPage.value === false) {
+        hasNextPage.value = response.data.data.artworksPagination.pageInfo.hasNextPage;
       }
+      after.value = response.data.data.artworksPagination.pageInfo.endCursor;
+      data = response.data.data.artworksPagination.edges.map(edge => edge.node)
+
+      let pnv = { details: "Page non valide." }
+      if (
+        data &&
+        Array.isArray(data) &&
+        data !== pnv
+      ) {
+        let contentData;
+
+        if (type === "artists") {
+          contentData = await Promise.all(this.contentData(data));
+        } else {
+          contentData = data;
+        }
+
+        if (hasNextPage.value) {
+          hasNextPage.value = response.data.data.artworksPagination.pageInfo.hasNextPage;
+          content.value = [...content.value, ...contentData];
+        }
+
+        load.value = true;
+      }
+
     } catch (err) {
       console.error(err);
 
-      // catch 404 and stop observer -> if the method change from offset to next headers it will be much easier to handle the observer
+      // catch 404
       if (err.response.status === 404) {
         load.value = false;
       }
     }
+
   }
 
   /**
@@ -222,7 +215,7 @@ class Content {
         data.userData = userData;
         return data;
       } catch (err) {
-        console.log(err);
+        console.error(err);
 
         return data;
       }
@@ -264,13 +257,18 @@ async function getContent(type, parameters) {
   return await newContent.fetchContent(newContent.url, newContent.type);
 }
 
+// Need to reset this value in order to don't miss data
+function resetData() {
+  after.value = "";
+}
+
 /**
  *  @exports data for access outside
  */
 export {
   content,
   getContent,
-  offset,
+  resetData,
   load,
   url,
   params,
