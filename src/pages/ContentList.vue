@@ -28,7 +28,6 @@ import UnderlineTitle from "@/components/ui/UnderlineTitle.vue";
 import ArtworkCard from "@/components/artwork/ArtworkCard.vue";
 import ArtistCard from "@/components/artist/ArtistCard.vue";
 import UiSelect from "@/components/ui/UiSelect.vue";
-import FilterSearch from "@/components/ui/FilterSearch.vue";
 
 const router = useRouter();
 
@@ -171,16 +170,14 @@ getKeywords();
 
 function getArtistsTypes() {
   const types = [
-                 {name: "Tous",
-                  value:"artworks__isnull=false"},
                  {name: "Étudiant",
-                  value:"student__isnull=false&artworks__isnull="},
+                  value:"student"},
                  {name: "Artistes Professeurs invités",
-                  value:"teacher__isnull=false&artworks__isnull="},
+                  value:"teacher"},
                  {name: "Scientifiques",
-                  value:"student__science_student__isnull=false&artworks__isnull="},
+                  value:"scienceStudent"},
                  {name: "Artistes invités",
-                  value:"visiting_student__isnull=false&artworks__isnull="},
+                  value:"visitingStudent"},
                  ];
 
   // const sortedTypes = types.sort((a, b) => a.localeCompare(b));
@@ -250,7 +247,7 @@ const handleObserver = (entries) => {
     observer.value = new IntersectionObserver(handleObserver, {
       root: null,
       rootMargin: '0px',
-      threshold: 1.0
+      threshold: 0.1
     });
 
     if(watcher.value) {
@@ -276,9 +273,6 @@ watch(
   }
 );
 
-// onUpdated(() => {
-//   disconnectObserver();
-// })
 </script>
 
 <template>
@@ -306,8 +300,9 @@ watch(
        <UiSelect
         v-if="params && Object.keys(params).includes('artist_type')"
         :options="defArtistsTypes"
+        defaultValue="aucun"
         optionKeyName="label"
-        :selectedValue="artist_type ? artist_type : defArtistsTypes[0].value"
+        :selectedValue="artist_type"
         desc="Artiste"
         @update:option="(newValue) => (artist_type = newValue)"
       ></UiSelect>
