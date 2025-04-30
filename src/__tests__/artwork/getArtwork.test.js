@@ -77,13 +77,13 @@ describe("test the composable getArtistInfo", () => {
     const artistId = getId(artworkFixture[0].url);
     await getArtwork(artistId);
 
-    console.log(axios.get);
+    
 
     /**
      * Count from artworkFixture
      * artwork : 1
      * authors : 1
-     * gallery : 3
+     * gallery : 3 galleries * (1 gallery + 1 medium )
      */
     expect(axios.get).toHaveBeenCalledTimes(8);
     expect(artwork.value).toEqual(artworkFixture[0]);
