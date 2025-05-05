@@ -17,7 +17,6 @@ const props = defineProps({
     required: true,
   },
 });
-
 </script>
 
 <template>
@@ -36,7 +35,7 @@ const props = defineProps({
     >
       <p>{{ gallery.description }}</p>
       <ul class="grid grid-cols-2 gap-3">
-        <li v-for="media in gallery.mediaData" :key="media">
+        <li v-for="media in gallery.media" :key="media">
           <UiMedia
             :url="media.picture"
             :medium="media.medium_url"

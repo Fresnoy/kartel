@@ -7,96 +7,106 @@ import { ref, onMounted } from "vue";
 const props = defineProps([
   "collaborators",
   "partners",
-  "credits_fr",
-  "credits_en",
+  "creditsFr",
+  "creditsEn",
 ]);
 
-let collaborators = ref([]);
-let partners = ref([]);
+/**
+ * this function group collaborators by task and group task when group of people are the same
+ * @returns {array} Return collaborators sorted array
+ */
+const sortCollaborators = () => {
+  if(!props.collaborators || props.collaborators.length === 0) {
+    return [];
+  }
 
-// sort by task label to regroup by label
+  //Create a set of collaborators tasks
+  const collaboratorTasks = [...new Set(props.collaborators.map(collaborator => collaborator.taskName))];
 
-async function getOrganizationData(url) {
-  let response = await fetch(url);
-  let data = await response.json();
-  return data;
+  //group collaborators by task
+  const results = collaboratorTasks.map(taskName => ({
+    [taskName]: props.collaborators
+      .filter(collaborator => collaborator.taskName === taskName)
+      .map(collaborator => collaborator.staffName)
+  }));
+
+  // Initialize new array with a first pair of task, collaborator's name
+  let sortedResults = [{ ...results[0] }];
+
+  // group tasks when group of people are the same
+  for(let result of results) {
+    let regex = new RegExp(`\\b${Object.keys(result)[0]}\\b`, 'i');
+    let newContent = "";
+    let regexNewContent = new RegExp(`\\b${Object.keys(newContent)[0]}\\b`, 'i');
+
+    for (let sortedResult of sortedResults) {
+      // When group of people are the same, but the task isn't present yet in th sorted array
+      // group the tasks names and end this loop turn
+      if(sortedResult !== result && !regex.test(Object.keys(sortedResult)[0]) && Object.values(sortedResult)[0][0] === Object.values(result)[0][0]) {
+        let oldKey = Object.keys(sortedResult)[0];
+        let newKey = `${Object.keys(sortedResult)[0]}, ${Object.keys(result)[0]}`;
+        sortedResult[newKey] = sortedResult[oldKey];
+        delete sortedResult[oldKey];
+        break;
+      }
+      // if it's a new task with a new group of people, fill newContent
+      if(newContent !== result && Object.values(sortedResult)[0][0] !== Object.values(result)[0][0] && !regex.test(Object.keys(sortedResult)[0])) {
+        newContent = { ...result };
+      }
+      // reinitialize newContent if present in the other occurences of sortedResult
+      if(newContent !=="" && regexNewContent.test(Object.keys(sortedResult)[0]) && Object.values(sortedResult)[0][0] === Object.values(newContent)[0][0]) {
+        newContent = "";
+      }
+    }
+    if (newContent !== "") {
+      sortedResults.push(newContent);
+    }
+  }  
+  return sortedResults;
 }
-
-onMounted(() => {
-  props.collaborators.forEach((collaborator) => {
-    async function getCollaborator() {
-      let partnerData = {
-        organization: await getOrganizationData(collaborator.organization),
-        task: await getOrganizationData(collaborator.task),
-      };
-
-      partners.value.push(partnerData);
-    }
-    getCollaborator();
-  });
-
-  props.partners.forEach((partner) => {
-    async function getPartner() {
-      let partnerData = {
-        organization: await getOrganizationData(partner.organization),
-        task: await getOrganizationData(partner.task),
-      };
-
-      partners.value.push(partnerData);
-    }
-    getPartner();
-  });
-  // sort function can be added for organize into the order of the same task label categories
-});
 </script>
 
 <template>
   <div class="flex flex-col gap-6">
     <UiDescription
-      v-if="props.credits_fr || props.credits_en"
-      :desc_fr="props.credits_fr"
-      :desc_en="props.credits_en"
+      v-if="props.creditsFr || props.creditsEn"
+      :desc_fr="props.creditsFr"
+      :desc_en="props.creditsEn"
     />
-
-    <ul v-if="collaborators[0]" class="flex flex-col gap-3">
+    <ul v-if="sortCollaborators()[0]" class="flex flex-col gap-3">
       <UnderlineTitle title="Collaborateurs" :fontSize="3" />
       <li
-        v-for="collaborator in collaborators"
-        :key="collaborator.url"
+        v-for="collaborator in sortCollaborators()"
+        :key="collaborator"
         class="flex flex-col gap-3"
       >
-        <img
-          v-if="partner.organization.picture"
-          class="w-full"
-          :src="collaborator.organization.picture"
-          :alt="collaborator.organization.picture"
-        />
         <h4
           class="text-lg font-medium after:block after:w-20 after:h-1 after:bg-black"
         >
-          {{ collaborator.organization.name }}
+          {{ Object.values(collaborator)[0].join(", ") }}
         </h4>
         <h5 class="text-base font-medium text-gray-dark">
-          {{ collaborator.task.label }}
+          {{ Object.keys(collaborator)[0] }}
         </h5>
-        <p>{{ collaborator.organization.description }}</p>
+        <!-- find a way to reduce, like by grouping according to task -->
+        <!-- a outreach description of the task exist, possible to add it -->
       </li>
     </ul>
 
-    <ul v-if="partners[0]" class="pl-6 flex flex-col gap-3">
+    <ul v-if="props.partners[0]" class="pl-6 flex flex-col gap-3">
       <UnderlineTitle title="Partenaires" :fontSize="3" />
       <li
-        v-for="partner in partners"
-        :key="partner.url"
+        v-for="partner in props.partners"
+        :key="partner.name"
         class="pl-2 flex flex-col gap-1"
       >
         <h5 class="text-base font-medium text-gray-dark">
-          — {{ partner.task.label }}
+          — {{ partner.taskName }}
         </h5>
         <h4
           class="text-lg font-medium after:block after:w-20 after:h-1 after:bg-black"
         >
-          {{ partner.organization.name }}
+          {{ partner.name }}
         </h4>
       </li>
     </ul>

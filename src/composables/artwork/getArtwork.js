@@ -50,13 +50,92 @@ async function getArtwork(id) {
   initValues();
 
   try {
-    const response = await axios.get(`production/artwork/${id}`);
+    // const response = await axios.get(`production/artwork/${id}`);
+    const response = await axios.post( `${config.v3_graph}`, {
+      query: `
+        query GetArtwork {
+          artwork(id: ${id}) {
+            title
+            picture
+            type
+            productionDate
+            descriptionFr
+            descriptionEn
+            creditsFr
+            creditsEn
+            thanksFr
+            thanksEn
+            authors {
+              id
+              displayName
+            }
+            collaborators {
+              staffName
+              taskName
+              task {
+                label
+                description
+              }
+            }
+            partners {
+              taskName
+              name
+            }
+            diffusions {
+              event {
+                title
+              }
+            }
+            teaserGalleries {
+              label
+              description
+              media {
+                picture
+              }
+            }
+            inSituGalleries {
+              label
+              description
+              media {
+                picture
+              }
+            }
+            processGalleries {
+              label
+              description
+              media {
+                picture
+              }
+            }
+            pressGalleries {
+              label
+              description
+              media {
+                picture
+              }
+            }
+            mediationGalleries {
+              label
+              description
+              media {
+                picture
+              }
+            }
+          }
+        }
+      `
+      }, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    );
 
-    const data = response.data;
+    const data = response.data.data.artwork;
 
     artwork.value = data;
 
-    await getAuthors(data.authors);
+    // await getAuthors(data.authors);
 
     /**
      * Get the rest of info about the artwork
@@ -249,26 +328,26 @@ class Media {
  *
  * @param {array} authors
  */
-async function getAuthors(authors) {
-  let authorsData = authors.map(async (author) => {
-    try {
-      const response = await axios.get(author);
+// async function getAuthors(authors) {
+//   let authorsData = authors.map(async (author) => {
+//     try {
+//       const response = await axios.get(author);
 
-      const data = response.data;
+//       const data = response.data;
 
-      if (!data.nickname) {
-        data.username = await getUsername(data.user);
-      }
+//       if (!data.nickname) {
+//         data.username = await getUsername(data.user);
+//       }
 
-      return data;
-    } catch (err) {
-      console.error(err);
-      return {};
-    }
-  });
+//       return data;
+//     } catch (err) {
+//       console.error(err);
+//       return {};
+//     }
+//   });
 
-  authorsStore.value = await Promise.all(authorsData);
-}
+//   authorsStore.value = await Promise.all(authorsData);
+// }
 
 /**
  * Get the user and return the username which combine the first name and last name
@@ -367,7 +446,7 @@ export {
   genres,
   events,
   initValues,
-  getAuthors,
+  // getAuthors,
   getUsername,
   getGalleries,
   getGenres,

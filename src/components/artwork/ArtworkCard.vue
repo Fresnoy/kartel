@@ -7,6 +7,8 @@ import mediaPlaceholder from "@/assets/placeholder_media.svg";
 
 // Condition if id is alone refetch artwork info
 const props = defineProps({
+  id: {
+  },
   picture: {
     required: true,
   },

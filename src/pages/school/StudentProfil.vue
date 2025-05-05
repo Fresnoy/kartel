@@ -140,7 +140,7 @@ onMounted(() => {
             <ArtworkCard
               v-for="(el, index) in 8"
               :key="index"
-              url="url"
+              id="id"
               picture="picture"
               title="title"
             />

@@ -16,7 +16,6 @@ import "@fancyapps/ui/dist/fancybox/fancybox.css";
 /**
  * Composables
  */
-import { getId } from "@/composables/getId";
 import {
   getArtwork,
   artwork,
@@ -118,9 +117,9 @@ onBeforeUnmount(() => {
           <img
             data-fancybox="preview"
             class="min-h-[30vh] bg-black-extralightest"
-            :src="`${config.media_service}?url=${artwork.picture}&mode=adapt&w=1000&fmt=jpg`"
-            :srcset="`${config.media_service}?url=${artwork.picture}&mode=adapt&w=500&fmt=jpg 500w,
-          ${config.media_service}?url=${artwork.picture}&mode=adapt&w=1000&fmt=jpg 1000w`"
+            :src="`${config.media_service}?url=https://api.lefresnoy.net/media/${artwork.picture}&mode=adapt&w=1000&fmt=jpg`"
+            :srcset="`${config.media_service}?url=https://api.lefresnoy.net/media/${artwork.picture}&mode=adapt&w=500&fmt=jpg 500w,
+          ${config.media_service}?url=https://api.lefresnoy.net/media/${artwork.picture}&mode=adapt&w=1000&fmt=jpg 1000w`"
             :alt="`preview picture of ${artwork.title}`"
             sizes="100vw"
           />
@@ -133,42 +132,42 @@ onBeforeUnmount(() => {
 
           <div class="flex flex-wrap items-center text-xl">
             <h3>{{ artwork.type }} de</h3>
-            <div v-if="authors" class="flex">
+            <div v-if="artwork.authors" class="flex">
               <div
                 class="flex items-center"
-                v-for="(author, index) in authors"
+                v-for="(author, index) in artwork.authors"
                 :key="author"
               >
                 <UiLink
                   class="[&>a]:px-0"
-                  :text="author.username || author.nickname"
-                  :url="`/artist/${getId(author.url)}`"
+                  :text="author.displayName"
+                  :url="`/artist/${author.id}`"
                 />
-                <span v-if="!(authors.length <= index + 1)">&</span>
+                <span v-if="!(artwork.authors.length <= index + 1)">&</span>
               </div>
             </div>
             <span>—</span>
-            <h3 v-if="artwork.production_date?.split('-')">
-              {{ "&nbsp" + artwork.production_date?.split("-")[0] }}
+            <h3 v-if="artwork.productionDate?.split('-')">
+              {{ "&nbsp" + artwork.productionDate?.split("-")[0] }}
             </h3>
           </div>
         </section>
 
-        <section v-if="events && events[0]" class="flex flex-col gap-6">
+        <section v-if="artwork.diffusions && artwork.diffusions[0]" class="flex flex-col gap-6">
           <UnderlineTitle
             class="w-max"
-            :title="!events[2] ? 'Diffusion' : 'Diffusions'"
+            :title="!artwork.diffusions[1] ? 'Diffusion' : 'Diffusions'"
             :underlineSize="1"
             :fontSize="2"
           />
 
-          <ul v-for="event in events" :key="event.title">
-            <li>— {{ event.title }}</li>
+          <ul v-for="event in artwork.diffusions" :key="event.title">
+            <li>— {{ event.event.title }}</li>
           </ul>
         </section>
 
         <section
-          v-if="artwork.description_fr || artwork.description_en"
+          v-if="artwork.descriptionFr || artwork.descriptionEn"
           class="flex flex-col gap-6"
         >
           <UnderlineTitle
@@ -179,17 +178,17 @@ onBeforeUnmount(() => {
           />
 
           <UiDescription
-            :desc_fr="artwork.description_fr"
-            :desc_en="artwork.description_en"
+            :desc_fr="artwork.descriptionFr"
+            :desc_en="artwork.descriptionEn"
           />
         </section>
 
         <section
           v-if="
-            artwork.credits_fr ||
-            artwork.credits_en ||
-            (artwork.collaborators && artwork.collaborators[0]) ||
-            (artwork.partners && artwork.partners[0])
+            artwork.creditsFr ||
+            artwork.creditsEn ||
+            artwork.collaborators ||
+            artwork.partners
           "
           class="flex flex-col gap-6"
         >
@@ -203,13 +202,13 @@ onBeforeUnmount(() => {
           <CreditsSection
             :collaborators="artwork.collaborators"
             :partners="artwork.partners"
-            :credits_fr="artwork.credits_fr"
-            :credits_en="artwork.credits_en"
+            :creditsFr="artwork.creditsFr"
+            :creditsEn="artwork.creditsEn"
           />
         </section>
 
         <section
-          v-if="artwork.thanks_fr || artwork.thanks_en"
+          v-if="artwork.thanksFr || artwork.thanksEn"
           class="flex flex-col gap-6"
         >
           <UnderlineTitle
@@ -220,8 +219,8 @@ onBeforeUnmount(() => {
           />
 
           <UiDescription
-            :desc_fr="artwork.thanks_fr"
-            :desc_en="artwork.thanks_en"
+            :desc_fr="artwork.thanksFr"
+            :desc_en="artwork.thanksEn"
           />
         </section>
       </div>
@@ -279,39 +278,39 @@ onBeforeUnmount(() => {
         </div>
 
 
-        <ArtworkGallery
+        <!-- <ArtworkGallery
           v-if="galleries.ame && galleries.ame[0]"
           :galleries="galleries.ame"
           title="Archive"
-        />
+        /> -->
 
         <ArtworkGallery
-          v-if="galleries.teaserGalleries && galleries.teaserGalleries[0]"
-          :galleries="galleries.teaserGalleries"
+          v-if="artwork.teaserGalleries && artwork.teaserGalleries[0]"
+          :galleries="artwork.teaserGalleries"
           title="Teaser"
         />
 
         <ArtworkGallery
-          v-if="galleries.inSituGalleries && galleries.inSituGalleries[0]"
-          :galleries="galleries.inSituGalleries"
+          v-if="artwork.inSituGalleries && artwork.inSituGalleries[0]"
+          :galleries="artwork.inSituGalleries"
           title="In Situ"
         />
 
         <ArtworkGallery
-          v-if="galleries.processGalleries && galleries.processGalleries[0]"
-          :galleries="galleries.processGalleries"
+          v-if="artwork.processGalleries && artwork.processGalleries[0]"
+          :galleries="artwork.processGalleries"
           title="Process"
         />
 
         <ArtworkGallery
-          v-if="galleries.pressGalleries && galleries.pressGalleries[0]"
-          :galleries="galleries.pressGalleries"
+          v-if="artwork.pressGalleries && artwork.pressGalleries[0]"
+          :galleries="artwork.pressGalleries"
           title="Press"
         />
 
         <ArtworkGallery
-          v-if="galleries.mediationGalleries && galleries.mediationGalleries[0]"
-          :galleries="galleries.mediationGalleries"
+          v-if="artwork.mediationGalleries && artwork.mediationGalleries[0]"
+          :galleries="artwork.mediationGalleries"
           title="Médiation"
         />
       </div>

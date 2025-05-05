@@ -336,7 +336,7 @@ watch(
           <component
             :is="component"
             :artist="content"
-            :url="content.url"
+            :id="content.id"
             :picture="content.picture"
             :title="content.title"
           ></component>

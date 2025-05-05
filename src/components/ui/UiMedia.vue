@@ -16,7 +16,6 @@ const props = defineProps({
     required: false,
   },
 });
-
 /**
  * Determine the type of medium based on props.medium and props.url.
  * @returns {string|null} - Returns "iframe" if the medium is a soundcloud link, "pdf" if the url is a pdf, and null if neither.
@@ -25,7 +24,7 @@ const props = defineProps({
 function type() {
   const item = props.medium
     ? props.medium
-    : `${config.media_service}?url=${props.url}&mode=adapt&w=1000&fmt=jpg`;
+    : `${config.media_service}?url=https://api.lefresnoy.net/media/${props.url}&mode=adapt&w=1000&fmt=jpg`;
 
   if (item.includes("soundcloud")) {
     return "iframe";
@@ -38,22 +37,8 @@ function type() {
   return null;
 }
 
-
-function isSameDomain(url){
-
-  let domain = new URL(config.api_url).hostname
-  return url.includes(domain); 
-
-}
-
-function resizeMedia(url, width){
-
-  let same_domain = isSameDomain(url);
-  if(same_domain){
-    return `${config.media_service}?url=${props.url}&mode=adapt&w=${width}&fmt=jpg`
-  }
-  return url;
-
+function resizeMedia(width){
+  return `${config.media_service}?url=https://api.lefresnoy.net/media/${props.url}&mode=adapt&w=${width}&fmt=jpg`
 }
 </script>
 
@@ -72,14 +57,14 @@ function resizeMedia(url, width){
         :href="
           props.medium
             ? props.medium
-            : resizeMedia(props.url, 1000)
+            : resizeMedia(1000)
         "
       >
         <img
           class="w-full h-full object-cover aspect-video"
           :src="
             props.url
-              ? resizeMedia(props.url, 300)
+              ? resizeMedia(300)
               : mediaPlaceholder
           "
           :alt="props.title"

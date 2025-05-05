@@ -517,7 +517,7 @@ watch(
           <!-- {{ artwork }} -->
           <li v-for="artwork in artist?.artworks" :key="artwork.id">
             <ArtworkCard
-              :url="artwork.id"
+              :id="artwork.id"
               :picture="artwork.picture"
               :title="artwork.title"
             />
