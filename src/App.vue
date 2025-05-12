@@ -92,7 +92,7 @@ onUnmounted(() => {
 <template>
   <!-- loader -->
   <span
-    class="z-[9999] fixed top-0 left-0 block w-full h-1 bg-black origin-left"
+    class="z-9999 fixed top-0 left-0 block w-full h-1 bg-black origin-left"
     :class="{ hidden: !load.status && load.progress === 0 }"
     :data-progress="load.progress"
     :style="{ transform: `scaleX(${load.progress / 100 + 1 / 100})` }"

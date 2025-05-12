@@ -77,15 +77,15 @@ describe("test the composable getArtistInfo", () => {
     const artistId = getId(artworkFixture[0].url);
     await getArtwork(artistId);
 
-    console.log(axios.get);
+    
 
     /**
      * Count from artworkFixture
      * artwork : 1
      * authors : 1
-     * gallery : 3
+     * gallery : 3 galleries * (1 gallery + 1 medium )
      */
-    expect(axios.get).toHaveBeenCalledTimes(5);
+    expect(axios.get).toHaveBeenCalledTimes(8);
     expect(artwork.value).toEqual(artworkFixture[0]);
 
     // check if each url is called correctly
@@ -138,8 +138,8 @@ describe("test the composable getArtistInfo", () => {
     await getAuthors(artworkFixture[0].authors);
 
     expect(axios.get).toHaveBeenCalledTimes(2);
-    expect(axios.get.calls[0][0]).toEqual(artworkFixture[0].authors[0]);
-    expect(axios.get.calls[1][0]).toEqual(artistFixture.user);
+    expect(axios.get.mock.calls[0][0]).toEqual(artworkFixture[0].authors[0]);
+    expect(axios.get.mock.calls[1][0]).toEqual(artistFixture.user);
 
     expect(authorsStore.value).toEqual([artistFixture]);
 
