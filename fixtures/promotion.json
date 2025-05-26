@@ -1,6 +1,12 @@
 {
-  "url": "http://preprod.api.lefresnoy.net/v2/school/promotion/26",
-  "name": "Marie Curie",
-  "starting_year": 2020,
-  "ending_year": 2022
+  "data": {
+    "data": {
+      "promotions": {
+        "id": "17",
+        "startingYear": 2020,
+        "endingYear": 2022,
+        "picture": ""
+      }
+    }
+  }
 }

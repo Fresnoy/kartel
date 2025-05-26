@@ -25,18 +25,11 @@ let artists = ref([]);
 function hiddenInput() {
   if (input.value) {
     let value = input.value.match(/\w/g) ? false : true;
-    if (value === true) {
-      return value;
-    }
 
-    if (value === false) {
-      if (Object.keys(artworks.value).length === 0 || !artists.value[0]) {
-        return false;
-      } else {
-        return false;
-      }
-    } else {
+    if (value) {
       return true;
+    } else {
+      return false;
     }
   } else {
     return true;
@@ -262,4 +255,4 @@ async function searchArtists(query) {
   new Artists(query);
 }
 
-export { input, result, artworks, artists, search, hiddenInput };
+export { input, result, artworks, artists, search, hiddenInput, searchArtworks, searchArtists };

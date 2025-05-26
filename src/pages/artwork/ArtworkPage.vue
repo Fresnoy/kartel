@@ -19,8 +19,6 @@ import "@fancyapps/ui/dist/fancybox/fancybox.css";
 import {
   getArtwork,
   artwork,
-  authorsStore as authors,
-  genres,
   initValues,
 } from "@/composables/artwork/getArtwork";
 
@@ -239,48 +237,6 @@ onBeforeUnmount(() => {
             :fontSize="1"
           />
         </div>
-
-        <!-- vérfifier la length du mot, si moins de 3 lettres c'est pas un mot exploitable -->
-        <div
-          v-if="
-            genres &&
-            genres[0] &&
-            genres.length === 1 &&
-            genres[0].label.replaceAll(/.| [ ]/g, '') !== ''
-          "
-          class="mb-10 flex flex-col gap-6"
-        >
-          <UnderlineTitle
-            class="w-max"
-            title="Genres"
-            subtitle="Artist"
-            :uppercase="true"
-            :underlineSize="1"
-            :fontSize="2"
-          />
-          <div
-            v-for="genre in genres"
-            :key="genre"
-            class="w-full flex flex-col"
-          >
-            <div class="p-2 flex gap-1">
-              <h6
-                v-if="genre.label.replaceAll(/.| [ ]/g, '') !== ''"
-                class="px-2 py-1 bg-gray-extralight text-xs font-medium rounded-sm"
-              >
-                {{ genre.label }}
-              </h6>
-            </div>
-            <span class="block w-full h-1 bg-black"></span>
-          </div>
-        </div>
-
-
-        <!-- <ArtworkGallery
-          v-if="galleries.ame && galleries.ame[0]"
-          :galleries="galleries.ame"
-          title="Archive"
-        /> -->
 
         <ArtworkGallery
           v-if="artwork.teaserGalleries && artwork.teaserGalleries[0]"

@@ -270,6 +270,7 @@ function resetData() {
  *  @exports data for access outside
  */
 export {
+  Content,
   content,
   getContent,
   resetData,
@@ -277,4 +278,5 @@ export {
   url,
   params,
   stringParams,
+  after,
 };

@@ -111,9 +111,6 @@ async function getArtist(id) {
     console.error(err);
     artist.value = {};
   }
-
-  // get user information with the id url of artist.user
-  // getUser(getId(data.user));
 }
 
 /**
@@ -200,12 +197,9 @@ async function getCandidature(id) {
         }
       );
 
-    const data = response.data;
+    const data = response.data.data.studentApplication;
 
-    if (data.length > 0) {
-      // get the candidature in data which have selected true
-      candidature.value = data.filter((item) => item.selected)[0];
-    }
+    candidature.value = data;
   } catch (err) {
     console.error(err);
 
@@ -262,11 +256,10 @@ async function getArtworks(id) {
  */
 async function getStudent(id) {
   try {
-    // const response = await axios.get(`school/student?artist=${id}`);
     const response = await axios.post( `${config.v3_graph}`, {
         query:`
           query GetStudent {
-            artist(id: 10) {
+            artist(id: ${id}) {
               id
               student {
                 id
@@ -304,13 +297,10 @@ async function setup(artistId, auth) {
 
   await getUser(artistId);
 
-  getArtworks(artistId);
-
   if (auth) {
     getCandidature(artistId);
   }
 
-  await getStudent(artistId);
 }
 
 /**

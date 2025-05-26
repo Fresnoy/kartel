@@ -5,14 +5,13 @@ import {
   artist,
   user,
   artworks,
-  websites,
   student,
   candidature,
   initValues,
   getArtist,
-  getUser,
   getArtworks,
   getStudent,
+  getUser,
   getCandidature,
 } from "@/composables/artist/getArtistInfo";
 
@@ -23,25 +22,19 @@ import {
 **/
 import artistFixture from "~/fixtures/artist.json";
 import userFixture from "~/fixtures/user.json";
-import artworkFixture from "~/fixtures/artwork.json";
-import websiteFixture from "~/fixtures/website.json";
-import studentFixture from "~/fixtures/student.json";
-import promotionFixture from "~/fixtures/promotion.json";
+import noStudentArtistFixture from "~/fixtures/noStudentArtist.json";
 import applicationFixture from "~/fixtures/studentApplication.json";
-
-// function to mock a response to a promise response
-// function createMockResolveValue(data) {
-//   return {
-//     json: () => new Promise((resolve) => resolve(data)),
-//     ok: true,
-//   };
-// }
 
 vi.mock("axios");
 
 describe("test the composable getArtistInfo", () => {
   beforeEach(() => {
-    axios.get.mockReset();
+    axios.post.mockReset();
+    artist.value = {};
+    artworks.value = [];
+    student.value = {};
+    user.value = {};
+    candidature.value = {};
   });
 
   it("Init values", () => {
@@ -55,17 +48,16 @@ describe("test the composable getArtistInfo", () => {
   });
 
   it("Get artist", async () => {
-    axios.get
+    axios.post
       .mockResolvedValue(
         // default mock but not the first
         {
           data: {
             default: true,
           },
-        }
-      )
+        })
       // success once and fail once
-      .mockResolvedValueOnce({ data: artistFixture })
+      .mockResolvedValueOnce(artistFixture)
       .mockRejectedValueOnce({ mockMessage: "Error" });
 
     /**
@@ -73,57 +65,47 @@ describe("test the composable getArtistInfo", () => {
      */
     await getArtist(artistFixture.id);
 
-    expect(axios.get).toHaveBeenCalledTimes(1);
-    expect(Number(axios.get.mock.calls[0][0].split("/").pop())).toEqual(
-      artistFixture.id
-    );
-    expect(artist.value).toEqual(artistFixture);
+    expect(axios.post).toHaveBeenCalledTimes(1);
+    expect(artist.value).toEqual(artistFixture.data.data.artist);
 
     /**
      * Test with Fail
      */
     await getArtist(artistFixture.id);
 
-    expect(axios.get).toHaveBeenCalledTimes(2);
+    expect(axios.post).toHaveBeenCalledTimes(2);
     expect(artist.value).toEqual({});
   });
 
   it("Get user", async () => {
-    axios.get
-      .mockResolvedValue(
-        // default mock but not the first
+    axios.post
+      .mockResolvedValue(// default mock but not the first
         {
           data: {
             default: true,
           },
-        }
-      )
+        })
       // success once and fail once
-      .mockResolvedValueOnce({ data: userFixture.default })
+      .mockResolvedValueOnce(userFixture)
       .mockRejectedValueOnce({ mockMessage: "Error" });
 
-    /**
-     * Test with success
-     */
-    await getUser(userFixture.default.id);
+    await getUser(userFixture.id);
 
-    expect(axios.get).toHaveBeenCalledTimes(1);
-    expect(Number(axios.get.mock.calls[0][0].split("/").pop())).toEqual(
-      userFixture.default.id
-    );
-    expect(user.value).toEqual(userFixture.default);
+    expect(axios.post).toHaveBeenCalledTimes(1);
+    expect(user.value).toEqual(userFixture.data.data.user);
+  });
 
-    /**
-     * Test with Fail
-     */
-    await getUser(userFixture.default.id);
+  it("Get user error", async () => {
+    const errorMessage = 'Network Error';
+    axios.post.mockResolvedValue(new Error(errorMessage))
 
-    expect(axios.get).toHaveBeenCalledTimes(2);
+    getUser(errorMessage);
+
     expect(user.value).toEqual({});
   });
 
   it("Get artworks", async () => {
-    axios.get
+    axios.post
       .mockResolvedValue(
         // default mock but not the first
         {
@@ -134,31 +116,25 @@ describe("test the composable getArtistInfo", () => {
       )
       // success once and fail once
       // the response of the request is always a array even if it's just one artwork
-      .mockResolvedValueOnce({ data: artworkFixture })
+      .mockResolvedValueOnce(artistFixture)
       .mockRejectedValueOnce({ mockMessage: "Error" });
 
-    /**
-     * Test with success
-     */
-    await getArtworks(artistFixture.id);
+      await getArtworks(artistFixture);
 
-    expect(axios.get).toHaveBeenCalledTimes(1);
-    expect(Number(axios.get.mock.calls[0][0].split("=").pop())).toEqual(
-      artistFixture.id
-    );
-    expect(artworks.value).toEqual(artworkFixture);
+    expect(axios.post).toHaveBeenCalledTimes(1);
+    expect(artworks.value).toEqual(artistFixture.data.data.artist.artworks);
+  });
 
-    // /**
-    //  * Test with Fail
-    //  */
-    await getArtworks(artistFixture.id);
+  it("Get artworks error", async () => {
+    const errorMessage = 'Network Error';
+    axios.post.mockResolvedValue(new Error(errorMessage))
 
-    expect(axios.get).toHaveBeenCalledTimes(2);
+    await getArtworks(errorMessage);
     expect(artworks.value).toEqual([]);
   });
 
-  it("Get student", async () => {
-    axios.get
+  it("Get student succeed", async () => {
+    axios.post
       .mockResolvedValue(
         // default mock but not the first
         {
@@ -169,54 +145,49 @@ describe("test the composable getArtistInfo", () => {
       )
       // success once and fail once
       // the response of the request is always a array even if it's just one artwork
-      .mockResolvedValueOnce({ data: studentFixture })
-      .mockResolvedValueOnce({ data: promotionFixture })
+      .mockResolvedValueOnce(artistFixture)
       .mockRejectedValueOnce({ mockMessage: "Error" })
-      .mockResolvedValueOnce({ data: studentFixture })
-      .mockRejectedValueOnce({ mockMessage: "Error" });
 
-    /**
-     * Test with success
-     */
-    await getStudent(artistFixture.id);
+      await getStudent(artistFixture.id);
 
-    expect(axios.get).toHaveBeenCalledTimes(2);
-    expect(Number(axios.get.mock.calls[0][0].split("=").pop())).toEqual(
-      artistFixture.id
-    );
-    expect(axios.get.mock.calls[1][0].split("/").pop()).toEqual(
-      promotionFixture.url.split("/").pop()
-    );
+      expect(axios.post).toHaveBeenCalledTimes(1);
+      expect(student.value).toEqual(artistFixture.data.data.artist.student);
+  });
 
-    const mockResult = studentFixture;
-    mockResult[0].promotion = promotionFixture;
+  it("Get no student because the artist is not a student", async () => {
+    axios.post
+      .mockResolvedValue(
+        // default mock but not the first
+        {
+          data: {
+            default: true,
+          },
+        }
+      )
+      // success once and fail once
+      // the response of the request is always a array even if it's just one artwork
+      .mockResolvedValueOnce(noStudentArtistFixture)
+      .mockRejectedValueOnce({ mockMessage: "Error" })
 
-    expect(student.value).toEqual(mockResult[0]);
+      await getStudent(noStudentArtistFixture.id);
 
-    /**
-     * Test with fail on first request
-     */
-    await getStudent(artistFixture.id);
+      expect(axios.post).toHaveBeenCalledTimes(1);
+      expect(student.value).toEqual([]);
+  });
 
-    expect(axios.get).toHaveBeenCalledTimes(3);
-    expect(Number(axios.get.mock.calls[2][0].split("=").pop())).toEqual(
-      artistFixture.id
-    );
+  it("Get student error", async () => {
+    const errorMessage = 'Network Error';
+    axios.post.mockResolvedValue(new Error(errorMessage))
 
-    expect(student.value).toEqual({});
+    await getStudent(errorMessage);
 
-    /**
-     * Test with fail on second request
-     */
-    await getStudent(artistFixture.id);
-
-    expect(axios.get).toHaveBeenCalledTimes(5);
-
+    expect(axios.post).toHaveBeenCalledTimes(1);
     expect(student.value).toEqual({});
   });
 
-  it("Get candidature", async () => {
-    axios.get
+  //rework this code, its weird that it work like that
+  it("Get candidature with success", async () => {
+    axios.post
       .mockResolvedValue(
         // default mock but not the first
         {
@@ -227,33 +198,26 @@ describe("test the composable getArtistInfo", () => {
       )
       // success once and fail once
       // the response of the request is always a array even if it's just one artwork
-      .mockResolvedValueOnce({ data: [applicationFixture] })
+      .mockResolvedValueOnce(applicationFixture)
       .mockRejectedValueOnce({ mockMessage: "Error" });
 
-    /**
-     * Test with success
-     */
-    await getCandidature(userFixture.default.username);
+    await getCandidature(applicationFixture.id);
 
-    expect(axios.get).toHaveBeenCalledTimes(1);
-    expect(axios.get.mock.calls[0][0].split("=").pop()).toEqual(
-      userFixture.default.username
-    );
+    expect(axios.post).toHaveBeenCalledTimes(1);
+    expect(candidature.value).toEqual(applicationFixture.data.data.studentApplication);
+  });
 
-    expect(candidature.value).toEqual(applicationFixture);
+  it("Get candidature with error", async () => {
+    const errorMessage = 'Network Error';
+    axios.post.mockResolvedValue(new Error(errorMessage))
 
-    /**
-     * Test with fail
-     */
-    await getCandidature(userFixture.default.username);
-
-    expect(axios.get).toHaveBeenCalledTimes(2);
-
+    await getCandidature(errorMessage);
     expect(candidature.value).toEqual({});
   });
 
-  it("Check setup with auth", async () => {
-    axios.get
+  //rework this test
+  it("Check setup without authentication", async () => {
+    axios.post
       .mockResolvedValue(
         // default mock but not the first
         {
@@ -264,58 +228,15 @@ describe("test the composable getArtistInfo", () => {
       )
       // success once and fail once
       // the response of the request is always a array even if it's just one artwork
-      .mockResolvedValueOnce({ data: artistFixture })
-      .mockResolvedValueOnce({ data: userFixture.default })
-      .mockResolvedValueOnce({ data: artworkFixture })
-      .mockResolvedValueOnce({ data: websiteFixture })
-      .mockResolvedValueOnce({ data: [applicationFixture] })
-      .mockResolvedValueOnce({ data: studentFixture })
-      .mockResolvedValueOnce({ data: promotionFixture });
-
-    await setup(artistFixture.id, true);
-
-    const studentMockResults = studentFixture;
-    studentMockResults[0].promotion = promotionFixture;
-
-    expect(axios.get).toHaveBeenCalledTimes(7);
-    expect(artist.value).toEqual(artistFixture);
-    expect(user.value).toEqual(userFixture.default);
-    expect(artworks.value).toEqual(artworkFixture);
-    expect(websites.value).toEqual([websiteFixture]);
-    expect(candidature.value).toEqual(applicationFixture);
-    expect(student.value).toEqual(studentMockResults[0]);
-  });
-
-  it("Check setup without", async () => {
-    axios.get
-      .mockResolvedValue(
-        // default mock but not the first
-        {
-          data: {
-            default: true,
-          },
-        }
-      )
-      // success once and fail once
-      // the response of the request is always a array even if it's just one artwork
-      .mockResolvedValueOnce({ data: artistFixture })
-      .mockResolvedValueOnce({ data: userFixture.default })
-      .mockResolvedValueOnce({ data: artworkFixture })
-      .mockResolvedValueOnce({ data: websiteFixture })
-      .mockResolvedValueOnce({ data: studentFixture })
-      .mockResolvedValueOnce({ data: promotionFixture });
+      .mockResolvedValueOnce(artistFixture)
+      .mockResolvedValueOnce(userFixture)
 
     await setup(artistFixture.id, false);
+    console.log("artist", artist.value);
+    console.log("user", user.value);
 
-    const studentMockResults = studentFixture;
-    studentMockResults[0].promotion = promotionFixture;
-
-    expect(axios.get).toHaveBeenCalledTimes(6);
-    expect(artist.value).toEqual(artistFixture);
-    expect(user.value).toEqual(userFixture.default);
-    expect(artworks.value).toEqual(artworkFixture);
-    expect(websites.value).toEqual([websiteFixture]);
-    expect(candidature.value).toEqual({});
-    expect(student.value).toEqual(studentMockResults[0]);
+    expect(axios.post).toHaveBeenCalledTimes(2);
+    expect(artist.value).toEqual(artistFixture.data.data.artist);
+    expect(user.value).toEqual(userFixture.data.data.user);
   });
 });

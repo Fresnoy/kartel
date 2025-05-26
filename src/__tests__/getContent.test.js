@@ -1,38 +1,26 @@
-import { flushPromises } from "@vue/test-utils";
-
 import axios from "axios";
 
 import {
+  Content,
   getContent,
+  resetData,
   content,
-  offset,
   load,
   params,
+  after,
 } from "@/composables/getContent";
 
-import artworkFixture from "~/fixtures/artwork.json";
-import artistFixture from "~/fixtures/artist.json";
-
-// function to mock a response to a promise response
-// function createMockResolveValue(data) {
-//   return {
-//     json: () => new Promise((resolve) => resolve(data)),
-//     ok: true,
-//   };
-// }
+import paginatedArtworkFixture from "~/fixtures/paginatedArtwork.json"
+import paginatedArtistFixture from "~/fixtures/paginatedArtist.json"
 
 let artworksParams = {
-  genres: null,
   keywords: null,
   productionYear: null,
-  q: null,
-  shootingPlace: null,
   type: "film",
 };
 
 let artistsParams = {
-  nationality: "FR",
-  q: null,
+  artist_type: null
 };
 
 // instance doesn't work with mock ?! axios.create results undefined
@@ -43,85 +31,58 @@ vi.mock("axios");
 
 describe("test the composable getContent", () => {
   beforeEach(() => {
-    axios.get.mockReset();
-
+    axios.post.mockReset();
+    params.value = {};
     content.value = [];
-    offset.value = 1;
     load.value = false;
+    after.value = "";
   });
 
-  // const mockFetch = vi.spyOn(global, "instance");
-
-  // mockFetch.mockReturnValue(
-  //   // default mock but not the first
-  //   createMockResolveValue({
-  //     default: true,
-  //   })
-  // );
-
   it("check content for artwork", async () => {
-    // mockFetch
-    //   // if once is present it would be the first mock and switch to the next mock or return to the default mock if no next
-    //   .mockReturnValueOnce(createMockResolveValue(artworkFixture))
-    //   .mockReturnValueOnce(createMockResolveValue([artistFixture]));
-
-    axios.get.mockResolvedValue({
-      data: artworkFixture,
-    });
+    axios.post.mockResolvedValue(paginatedArtworkFixture);
 
     // check default value
     expect(content.value).toEqual([]);
     expect(load.value).toEqual(false);
-    expect(offset.value).toEqual(1);
 
-    // console.log(artist);
     await getContent("artworks", artworksParams);
 
-    // leave the requests and replace with mocks
-    // await flushPromises();
-
     // check value after running once getContent
-    expect(content.value).toEqual(artworkFixture);
+    expect(content.value).toEqual(
+      [{
+      id: "1001",
+      title: "Mémoire Fragmentée",
+      picture: "http://127.0.0.1:8000/media/production/film/2021/07/dominati-juliette__0_ynC.png",
+      type: "film"
+    }]);
     expect(load.value).toEqual(true);
-    expect(offset.value).toEqual(2);
 
-    // expect(params).haveOwnProperty("genres");
-    expect(params).haveOwnProperty("keywords");
-    expect(params).haveOwnProperty("productionYear");
-    expect(params).haveOwnProperty("query");
-    // expect(params).haveOwnProperty("shootingPlace", null);
-    expect(params).haveOwnProperty("type", `type=${artworksParams.type}`);
+    expect(params).haveOwnProperty("type", artworksParams.type);
   });
 
   it("check content for artist", async () => {
-    axios.get.mockResolvedValue({
-      data: [artistFixture],
-    });
+    axios.post.mockResolvedValue(paginatedArtistFixture);
+
     // check default value
     expect(content.value).toEqual([]);
     expect(load.value).toEqual(false);
-    expect(offset.value).toEqual(1);
 
     await getContent("artists", artistsParams);
-    // leave the requests and replace with mocks
-    // await flushPromises();
-    // check value after running once getContent
 
-    expect(content.value).toEqual([artistFixture]);
+    expect(content.value).toEqual(
+      [{
+        id: 710,
+        displayName: "Selestane",
+        artistPhoto: "https://media.lefresnoy.net/?url=https://api.lefresnoy.net/media/people/fresnoyprofile/jmjh436g.jpg",
+        photo: "https://media.lefresnoy.net/?url=https://api.lefresnoy.net/media/people/fresnoyprofile/jmjh436g.jpg"
+      }]);
     expect(load.value).toEqual(true);
-    // expect(offset.value).toEqual(2);
-    expect(params).haveOwnProperty(
-      "nationality",
-      `nationality=${artistsParams.nationality}`
-    );
-    expect(params).haveOwnProperty("query", null);
+    
+    expect(params).haveOwnProperty("artist_type", null);
   });
 
   it("catch on fetch fail", async () => {
-    // mockFetch
-    //   // if once is present it would be the first mock and switch to the next mock or return to the default mock if no next
-    //   .mockReturnValueOnce(Promise.reject("Mock Catch API"));
-    axios.get
+    axios.post
       .mockRejectedValueOnce({
         response: {
           status: 403,
@@ -138,13 +99,85 @@ describe("test the composable getContent", () => {
 
     expect(content.value).toEqual([]);
     expect(load.value).toEqual(false);
-    expect(offset.value).toEqual(1);
 
     // check value after running once getContent with 404 error
     await getContent("artists", artistsParams);
 
     expect(content.value).toEqual([]);
     expect(load.value).toEqual(false);
-    expect(offset.value).toEqual(1);
+  });
+
+  it("preparate filter for keywords", () => {
+    axios.post.mockResolvedValue(paginatedArtworkFixture);
+    let parameters = { keywords: "3D" };
+
+    const contentInstance = new Content(paginatedArtworkFixture, parameters);
+
+    const filteredData = contentInstance.filterPreparation(params.value);
+
+    expect(filteredData).toEqual(", hasKeywordName: \"3D\"");
+  });
+
+  it("preparate filter for production year", () => {
+    axios.post.mockResolvedValue(paginatedArtworkFixture);
+    let parameters = { productionYear: "2019" };
+
+    const contentInstance = new Content(paginatedArtworkFixture, parameters);
+
+    const filteredData = contentInstance.filterPreparation(params.value);
+
+    expect(filteredData).toEqual(", belongProductionYear: \"2019\"");
+  });
+
+  it("preparate filter for type of production", () => {
+    axios.post.mockResolvedValue(paginatedArtworkFixture);
+    let parameters = { type: "Film" };
+
+    const contentInstance = new Content(paginatedArtworkFixture, parameters);
+
+    const filteredData = contentInstance.filterPreparation(params.value);
+
+    expect(filteredData).toEqual(", hasType: \"Film\"");
+  });
+
+  it("preparate filter for the three artwork filters", () => {
+    axios.post.mockResolvedValue(paginatedArtworkFixture);
+    let parameters = { productionYear: "2019", keywords: "3D", type: "Film" };
+
+    const contentInstance = new Content(paginatedArtworkFixture, parameters);
+
+    const filteredData = contentInstance.filterPreparation(params.value);
+
+    expect(filteredData).toEqual(", hasKeywordName: \"3D\", belongProductionYear: \"2019\", hasType: \"Film\"");
+  });
+
+  it("preparate filter for an artist type", () => {
+    axios.post.mockResolvedValue(paginatedArtistFixture);
+    let parameters = { artist_type: "student" };
+
+    const contentInstance = new Content(paginatedArtistFixture, parameters);
+
+    const filteredData = contentInstance.filterPreparation(params.value);
+
+    expect(filteredData).toEqual(", isStudent: true");
+  });
+
+  it("have a none existing filter", () => {
+    axios.post.mockResolvedValue(paginatedArtworkFixture);
+    let parameters = { genre: "suspense" };
+
+    const contentInstance = new Content(paginatedArtworkFixture, parameters);
+
+    const filteredData = contentInstance.filterPreparation(params.value);
+
+    expect(filteredData).toEqual("");
+  });
+
+  it("reset the after value", () => {
+    after.value = "content";
+    expect(after.value).toEqual("content");
+
+    resetData();
+    expect(after.value).toEqual("");
   });
 });
