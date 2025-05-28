@@ -8,8 +8,6 @@ import config from "@/config";
 
 import { ref } from "vue";
 
-import { getId } from "@/composables/getId";
-
 /**
  *  const which store and execute all the functions to fetch artist data
  *
@@ -164,18 +162,43 @@ async function getUser(id) {
  *
  * @param {string} username - the username of the artist
  */
-async function getCandidature(username) {
+async function getCandidature(id) {
   try {
-    const response = await axios.get(
-      `school/student-application?search=${username}`,
-      {
-        headers: {
-          "Content-Type": "application/json;charset=UTF-8",
-          // set the token everytime, if the user is not authenticated it's empty and the api send only "not authenticated" informations
-          Authorization: `JWT ${token}`,
-        },
-      }
-    );
+    const response = await axios.post(
+      `${config.v3_graph}`, {
+          query: `query GetCandidature {
+                    studentApplication(id: ${id}) {
+                      artist {
+                        displayName
+                        firstName
+                        lastName
+                        nationality
+                        homelandCountry
+                        residencePhone
+                        homelandPhone
+                        user {
+                          email
+                        }
+                        residenceAddress
+                        socialInsuranceNumber
+                        cursus
+                      }
+                      curriculumVitae
+                      identityCard
+                      consideredProject1
+                      consideredProject2
+                      freeDocument
+                      presentationVideo
+                    }
+                  }
+                  `
+        }, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `JWT ${token}`,
+          }
+        }
+      );
 
     const data = response.data;
 
@@ -279,12 +302,12 @@ async function setup(artistId, auth) {
   // await the artist data for get the user url to not exec the function getUser inside
   await getArtist(artistId);
 
-  await getUser(getId(artist.value.user));
+  await getUser(artistId);
 
   getArtworks(artistId);
 
   if (auth) {
-    getCandidature(user.value.username);
+    getCandidature(artistId);
   }
 
   await getStudent(artistId);

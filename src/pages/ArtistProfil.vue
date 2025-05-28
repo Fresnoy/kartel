@@ -297,13 +297,13 @@ watch(
                   <h5 class="font-bold">Tel:</h5>
                   <p
                     v-if="
-                      artist?.residence_phone ||
-                      artist?.homeland_phone
+                      artist?.residencePhone ||
+                      artist?.homelandPhone
                     "
                   >
                     {{
-                      artist?.residence_phone ||
-                      artist?.homeland_phone
+                      artist?.residencePhone ||
+                      artist?.homelandPhone
                     }}
                   </p>
                   <p v-else class="text-gray italic">Non renseigné.</p>
@@ -319,8 +319,8 @@ watch(
 
                 <li class="flex flex-wrap gap-1">
                   <h5 class="font-bold">Adresse:</h5>
-                  <p v-if="artist?.residence_address">
-                    {{ artist.residence_address }}
+                  <p v-if="artist?.residenceAddress">
+                    {{ artist.residenceAddress }}
                   </p>
                   <p v-else class="text-gray italic">Non renseigné.</p>
                 </li>
@@ -351,11 +351,11 @@ watch(
                   <div class="flex flex-wrap gap-1">
                     <b>CV:</b>
                     <a
-                      v-if="candidature?.curriculum_vitae"
-                      :href="candidature?.curriculum_vitae"
+                      v-if="candidature?.curriculumVitae"
+                      :href="candidature?.curriculumVitae"
                       class="underline"
                     >
-                      {{ formatUrlToText(candidature?.curriculum_vitae) }}
+                      {{ formatUrlToText(candidature?.curriculumVitae) }}
                     </a>
                     <p v-else class="text-gray italic">Non renseigné.</p>
                   </div>
@@ -364,11 +364,11 @@ watch(
                   <div class="flex flex-wrap gap-1">
                     <b>Justificatif d'identité:</b>
                     <a
-                      v-if="candidature?.identity_card"
-                      :href="candidature?.identity_card"
+                      v-if="candidature?.identityCard"
+                      :href="candidature?.identityCard"
                       class="underline"
                     >
-                      {{ formatUrlToText(candidature?.identity_card) }}
+                      {{ formatUrlToText(candidature?.identityCard) }}
                     </a>
                     <p v-else class="text-gray italic">Non renseigné.</p>
                   </div>
@@ -386,24 +386,24 @@ watch(
                   <div class="flex flex-wrap gap-1">
                     <b>Proposition initiale:</b>
                     <a
-                      v-if="candidature?.considered_project_1"
-                      :href="candidature?.considered_project_1"
+                      v-if="candidature?.consideredProject1"
+                      :href="candidature?.consideredProject1"
                       class="underline"
                     >
                       1<sup>ère</sup> année
                     </a>
-                    <span v-if="candidature?.considered_project_2">/</span>
+                    <span v-if="candidature?.consideredProject2">/</span>
                     <a
-                      v-if="candidature?.considered_project_2"
-                      :href="candidature?.considered_project_2"
+                      v-if="candidature?.consideredProject2"
+                      :href="candidature?.consideredProject2"
                       class="underline"
                     >
                       2<sup>ème</sup> année
                     </a>
                     <p
                       v-else-if="
-                        !candidature?.considered_project_1 &&
-                        !candidature?.considered_project_2
+                        !candidature?.consideredProject1 &&
+                        !candidature?.consideredProject2
                       "
                       class="text-gray italic"
                     >
@@ -415,11 +415,11 @@ watch(
                   <div class="flex flex-wrap gap-1">
                     <b>Document libre:</b>
                     <a
-                      v-if="candidature?.free_document"
-                      :href="candidature?.free_document"
+                      v-if="candidature?.freeDocument"
+                      :href="candidature?.freeDocument"
                       class="underline"
                     >
-                      {{ formatUrlToText(candidature?.free_document) }}
+                      {{ formatUrlToText(candidature?.freeDocument) }}
                     </a>
                     <p v-else class="text-gray italic">Non renseigné.</p>
                   </div>
@@ -428,11 +428,11 @@ watch(
                   <div class="flex flex-wrap gap-1">
                     <b>Vidéo de présentation de son travail:</b>
                     <a
-                      v-if="candidature?.presentation_video"
-                      :href="candidature?.presentation_video"
+                      v-if="candidature?.presentationVideo"
+                      :href="candidature?.presentationVideo"
                       class="underline"
                     >
-                      {{ formatUrlToText(candidature?.presentation_video) }}
+                      {{ formatUrlToText(candidature?.presentationVideo) }}
                     </a>
                     <p v-else class="text-gray italic">Non renseigné.</p>
                   </div>

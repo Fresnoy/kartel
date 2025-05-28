@@ -20,9 +20,7 @@ import {
   getArtwork,
   artwork,
   authorsStore as authors,
-  galleries,
   genres,
-  events,
   initValues,
 } from "@/composables/artwork/getArtwork";
 
