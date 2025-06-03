@@ -18,10 +18,10 @@ describe("Artist and artworks informations from school, navigate through all pag
       cy.viewport(1280, 720);
       cy.visit("/");
 
-      // check if the first navbar link which is "school" redirect to "/school/promotion/4"
+      // check if the first navbar link which is "school" redirect to "/school/promotion/29"
       cy.get("[data-test='nav-link']").contains("School").click();
       cy.location().should((loc) => {
-        expect(loc.pathname).to.eq("/school/promotion/4");
+        expect(loc.pathname).to.eq("/school/promotion/29");
       });
     });
   });
@@ -30,37 +30,32 @@ describe("Artist and artworks informations from school, navigate through all pag
     it("Get data of differents promotions", () => {
       cy.viewport(1280, 720);
 
-      // setup the interception of multiple request which occur when we visit "/school"
-      // intercept is always before cy.visit and after it's wait
-      cy.intercept(`${config.rest_uri_v2}school/promotion`).as("promotions");
-      cy.intercept(`${config.rest_uri_v2}school/promotion/*`).as("promotion");
+      // setup the interception of promotion request
+      cy.intercept('POST', `${config.v3_graph}`, (req) => {
+              if (req.body.operationName === 'GetPromotions') {
+                req.alias = 'GetPromotions';
+              }
+            }).as('GetPromotions');
 
       cy.visit("/school");
 
       // wait the request intercepted @promotions declared before and check is body properties
-      cy.wait("@promotions").then(({ response }) => {
+      cy.wait("@GetPromotions").then(({ response }) => {
         expect(response.statusCode).to.eq(200);
         expect(response.body).to.exist;
 
-        // check each properties expected
-        // [FOR ME] important because if the structure of the DB will be modified,
-        // the informations requested will not be the same -> EX: starting_year or started_year
-        response.body.forEach((el) => {
-          // [TODO] for each properties
-          expect(el).to.have.property("url");
-          expect(el).to.have.property("name");
-          expect(el).to.have.property("starting_year");
-          expect(el).to.have.property("ending_year");
+        expect(response.body).to.have.property('data');
+
+        // check all promotions properties expected
+        response.body.data.promotions.forEach((el) => {
+          expect(el).to.have.property('id');
+          expect(el).to.have.property('name');
+          expect(el).to.have.property('startingYear');
+          expect(el).to.have.property('endingYear');
         });
       });
 
       cy.get(":nth-child(5) > .promo__link").click();
-
-      // wait the request intercepted @promotions declared before and check is body
-      cy.wait("@promotion").then(({ response }) => {
-        expect(response.statusCode).to.eq(200);
-        expect(response.body).to.exist;
-      });
     });
 
     it("Get a student from a promotion", () => {

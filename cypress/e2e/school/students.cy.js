@@ -2,26 +2,31 @@ import config from "../../../src/config";
 
 describe("Students", () => {
   it("intercept request of students", () => {
-    //get url path by config !!!
-
-    // intercept any request of /v2/school/promotion
-    cy.intercept(`${config.rest_uri_v2}school/student*`).as("students");
-    cy.intercept(`${config.rest_uri_v2}people/user/*`).as("studentUser");
 
     cy.visit("/school");
 
     cy.get(".promo__link").last().click();
 
+    // intercept students request
+    cy.intercept('POST', `${config.v3_graph}`, (req) => {
+      if (req.body.operationName === 'GetStudents') {
+        req.alias = 'GetStudents';
+      }
+    }).as('students');
+
     cy.wait("@students").then(({ response }) => {
       expect(response.statusCode).to.eq(200);
       expect(response.body).to.exist;
-    });
 
-    cy.wait("@studentUser").then(({ response }) => {
-      expect(response.statusCode).to.eq(200);
-      expect(response.body).to.exist;
-    });
+      expect(response.body).to.have.property('data');
 
-    // check if body exist and if each element of it contains rights properties
+      // check each properties expected
+      response.body.data.promotion.students.forEach((el) => {
+        expect(el).to.have.property('photo');
+        expect(el).to.have.property('displayName');
+        expect(el.artist).to.have.property('id');
+        expect(el.user).to.have.property('id');
+      });
+    });
   });
 });

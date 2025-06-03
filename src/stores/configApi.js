@@ -80,7 +80,7 @@ export const useConfigApi = defineStore("configApi", () => {
       try {
         let response = await axios.post( `${config.v3_graph}`, {
          query:`
-          query {
+          query GetStudents {
             promotion(id: ${promoId}) {
               students {
                 photo
@@ -142,7 +142,7 @@ export const useConfigApi = defineStore("configApi", () => {
       try {
         const response = await axios.post(`${config.v3_graph}`, {
           query: `
-            query {
+            query GetArtist {
               user(id: ${parent}) {
                 artist {
                   id
@@ -172,7 +172,7 @@ export const useConfigApi = defineStore("configApi", () => {
   async function getPromotions() {
     let response = await axios.post(`${config.v3_graph}`, {
       query: `
-        query{
+        query GetPromotions {
           promotions {
             id
             name

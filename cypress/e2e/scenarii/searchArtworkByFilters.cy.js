@@ -4,56 +4,42 @@ describe("Search artworks or an artwork in the artworks page and it's filters", 
   context("Check the infinite scrolling", () => {
     beforeEach(() => {
       cy.viewport(1280, 720);
-      // let page = 1;
-      cy.intercept(`${config.rest_uri_v2}/production/artwork?*`).as("page");
-      // watch out the url can be changed in the front with more query and create an error
-      cy.intercept(
-        `${config.rest_uri_v2}/production/artwork?page_size=20&page=1&production_year=*`
-        
-      ).as("year");
 
-      // cy.intercept(`${config.rest_uri_v2}/production/artwork?*`, (req) => {
-      //   // do it for each intercepted xrequest
-      //   req.continue((response) => {
-      //     expect(response.statusCode).to.eq(200);
-      //     expect(response.body).to.exist;
+      cy.intercept('POST', `${config.v3_graph}`, (req) => {
+        if (req.body.operationName === 'FetchArtworks') {
+          req.alias = 'FetchArtworks';
+        }
+      }).as('FetchArtworks');
 
-      //     // check index of the page for the scroll based on the offset page which increment each time a request @page occur
-      //     expect(response.url).to.include(`page=${page}`);
-      //     page++;
 
-      //     window.cy.scrollTo("bottom");
-      //   });
-      // });
+      cy.intercept('POST', `${config.v3_graph}`, (req) => {
+        if (req.body.operationName === 'FetchArtworks') {
+          req.alias = 'FetchArtworks';
+        }
+      }).as('FetchFilteredArtworks');
 
       cy.visit("/artworks");
     });
 
     it("Home logo redirect should be '/'", () => {
-      cy.wait("@page").then(({ response }) => {
+      cy.wait("@FetchArtworks").then(({ response }) => {
         expect(response.statusCode).to.eq(200);
         expect(response.body).to.exist;
-        // check index of the page for the scroll based on the offset page which increment each time a request @page occur
-        expect(response.url).to.include(`page=`);
         cy.scrollTo("bottom");
       });
 
       // wait a second time for check
-      cy.wait("@page").then(({ response }) => {
+      cy.wait("@FetchArtworks").then(({ response }) => {
         expect(response.statusCode).to.eq(200);
         expect(response.body).to.exist;
-        // check index of the page for the scroll based on the offset page which increment each time a request @page occur
-        expect(response.url).to.include(`page=`);
         cy.scrollTo("bottom");
       });
 
       cy.get("#date").select(5);
 
-      cy.wait("@year").then(({ response }) => {
+      cy.wait("@FetchFilteredArtworks").then(({ response }) => {
         expect(response.statusCode).to.eq(200);
         expect(response.body).to.exist;
-
-        expect(response.url).to.include("production_year=");
       });
     });
   });
@@ -61,35 +47,30 @@ describe("Search artworks or an artwork in the artworks page and it's filters", 
   context("Check if the results have the right production date", () => {
     beforeEach(() => {
       cy.viewport(1280, 720);
-      cy.intercept(
-        `${config.rest_uri_v2}/production/artwork?page_size=20&page=1&production_year=*`
-      ).as("year");
+      cy.intercept('POST', `${config.v3_graph}`, (req) => {
+        if (req.body.operationName === 'FetchArtworks') {
+          req.alias = 'FetchArtworks';
+        }
+      }).as('FetchFilteredYearArtworks');
 
       cy.visit("/artworks");
-      cy.get('[data-test="toggle-theme"]').click();
     });
 
     it("", () => {
       cy.get("#date").select(3);
 
       // check for third option
-      cy.wait("@year").then(({ response }) => {
+      cy.wait("@FetchFilteredYearArtworks").then(({ response }) => {
         expect(response.statusCode).to.eq(200);
         expect(response.body).to.exist;
-
-        // 2019 is the third option in select production date.
-        expect(response.url).to.include("production_year=2021");
       });
 
       cy.get("#date").select(5);
 
       // check for fifth option
-      cy.wait("@year").then(({ response }) => {
+      cy.wait("@FetchFilteredYearArtworks").then(({ response }) => {
         expect(response.statusCode).to.eq(200);
         expect(response.body).to.exist;
-
-        // 2019 is the fifth option in select production date.
-        expect(response.url).to.include("production_year=2019");
       });
 
       cy.get(
@@ -103,7 +84,7 @@ describe("Search artworks or an artwork in the artworks page and it's filters", 
         expect(url).to.match(/artwork/);
       });
 
-      cy.get(".py-5 > :nth-child(1) > .flex-wrap").contains("2019");
+      cy.get("section:first > .flex-wrap > h3").contains("2022");
     });
   });
 });

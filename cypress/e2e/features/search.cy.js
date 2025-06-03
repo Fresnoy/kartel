@@ -1,16 +1,11 @@
 import config from "../../../src/config";
 
-describe("Explore the search feature which result students and artworks", () => {
+describe("Explore the search feature which result artworks", () => {
   context("Test in home page", () => {
     function testSearch(search, type) {
       cy.get(search).type(type);
 
-      cy.wait("@artwork-search").then(({ response }) => {
-        expect(response.statusCode).to.eq(200);
-        expect(response.body).to.exist;
-      });
-
-      cy.wait("@student-search").then(({ response }) => {
+      cy.wait("@GetArtworks").then(({ response }) => {
         expect(response.statusCode).to.eq(200);
         expect(response.body).to.exist;
       });
@@ -26,12 +21,11 @@ describe("Explore the search feature which result students and artworks", () => 
     it("expect to work in home", () => {
       cy.viewport(1280, 720);
 
-      cy.intercept(`${config.rest_uri_v2}production/artwork-search*`).as(
-        "artwork-search"
-      );
-      cy.intercept(`${config.rest_uri_v2}school/student-search*`).as(
-        "student-search"
-      );
+      cy.intercept('POST', `${config.v3_graph}`, (req) => {
+        if (req.body.operationName === 'GetArtworks') {
+          req.alias = 'GetArtworks';
+        }
+      }).as('GetArtworks');
 
       cy.visit("/");
 
@@ -41,19 +35,12 @@ describe("Explore the search feature which result students and artworks", () => 
     it("expect to work in others pages", () => {
       cy.viewport(1280, 720);
 
-      cy.intercept(`${config.rest_uri_v2}production/artwork-search*`).as(
-        "artwork-search"
-      );
-      cy.intercept(`${config.rest_uri_v2}school/student-search*`).as(
-        "student-search"
-      );
+      cy.intercept('POST', `${config.v3_graph}`, (req) => {
+        if (req.body.operationName === 'GetArtworks') {
+          req.alias = 'GetArtworks';
+        }
+      }).as('GetArtworks');
       cy.visit("/");
-
-      // cy.get('[data-test="nav-link"] > .link').and((links) => {
-      //   for (let i = 0; i < links.length; i++) {
-      //     links[i].click();
-      //   }
-      // });
 
       cy.get('[data-test="nav-link"] > .link').first().click();
       testSearch("#search", "cou");
