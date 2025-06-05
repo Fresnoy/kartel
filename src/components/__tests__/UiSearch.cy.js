@@ -4,6 +4,7 @@ import "@/main";
 
 import config from "@/config";
 
+//Baware, this test doesn't work on graphQL for now
 describe("Ui Search", () => {
   it("Check when results", () => {
     cy.intercept(`${config.rest_uri_v2}production/artwork-search*`).as(

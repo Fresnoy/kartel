@@ -18,7 +18,7 @@ describe("Artwork card", () => {
     cy.get("router-link")
       .should("exist")
       .should("have.attr", "to")
-      .and("include", data.url);
+      .and("include", data.id);
 
     cy.get("img")
       .should("exist")

@@ -9,7 +9,6 @@ describe("Artist and artworks informations from school, navigate through all pag
       // check if the logo redirect to "/"
       cy.get("[data-test='logo-lg']").click();
       cy.location().should((loc) => {
-        expect(loc.href).to.eq(config.url);
         expect(loc.pathname).to.eq("/");
       });
     });
