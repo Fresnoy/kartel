@@ -35,11 +35,11 @@ const fullname = computed(() => {
             'p-2': !props.artist?.artistPhoto,
           }"
           :src="
-            `${config.media_service}?url=https://api.lefresnoy.net/media/${props.artist.artistPhoto}&mode=adapt&w=300&fmt=jpg`
+            `${config.media_service}?url=${config.api_media_url}${props.artist.artistPhoto}&mode=adapt&w=300&fmt=jpg`
           "
           :alt="`Photo de ${fullname}`"
         />
-        <img v-else
+        <img v-else-if="props.artist?.photo"
           class="w-full h-44 bg-gray-extralightest"
           :class="{
             'object-cover': props.artist?.photo,
@@ -47,7 +47,7 @@ const fullname = computed(() => {
           }"
           :src="
             props.artist?.photo
-              ? `${config.media_service}?url=https://api.lefresnoy.net/media/${props.artist.photo}&mode=adapt&w=300&fmt=jpg`
+              ? `${config.media_service}?url=${config.api_media_url}${props.artist.photo}&mode=adapt&w=300&fmt=jpg`
               : userPlaceholder
           "
           :alt="`Photo de ${fullname}`"

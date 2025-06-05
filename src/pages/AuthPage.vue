@@ -55,7 +55,7 @@ let password = ref("");
         ></UiInput>
         <div class="mt-4 w-full flex items-center justify-between">
           <a
-            :href="`${config.api_url}account/reset_password/`"
+            :href="`${config.api_media_url}account/reset_password/`"
             class="p-2 text-sm underline"
             >Mot de passe oublié ?</a
           >

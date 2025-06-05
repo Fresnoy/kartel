@@ -32,7 +32,7 @@ const fullname = computed(() => {
           }"
           :src="
            props.student?.photo
-              ? `${config.media_service}?url=https://api.lefresnoy.net/media/${props.student.photo}&mode=adapt&w=300&fmt=jpg`
+              ? `${config.media_service}?url=${config.api_media_url}${props.student.photo}&mode=adapt&w=300&fmt=jpg`
               : userPlaceholder
           "
           :alt="`Photo de ${fullname}`"

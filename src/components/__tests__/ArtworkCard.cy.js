@@ -8,7 +8,7 @@ describe("Artwork card", () => {
   it("Check props", () => {
     let data = {
       url: "/artwork/1",
-      picture: `${config.api_url}src/assets/logo-Fresnoy-transparent.png`,
+      picture: `${config.api_media_url}src/assets/logo-Fresnoy-transparent.png`,
       title: "Hello Cypress",
     };
     cy.mount(ArtworkCard, {

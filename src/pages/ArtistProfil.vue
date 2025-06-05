@@ -154,7 +154,7 @@ watch(
                 :class="{ 'p-5': !artist?.artistPhoto }"
                 :src="
                   artist?.artistPhoto
-                    ? `${config.media_service}?url=https://api.lefresnoy.net/media/${artist?.artistPhoto}&mode=adapt&w=1000&fmt=jpg`
+                    ? `${config.media_service}?url=${config.api_media_url}${artist?.artistPhoto}&mode=adapt&w=1000&fmt=jpg`
                     : userPlaceholder
                 "
                 :alt="`Photo de ${artist.displayName}`"
@@ -165,7 +165,7 @@ watch(
                 :class="{ 'p-5': !artist?.photo }"
                 :src="
                   artist?.photo
-                    ? `${config.media_service}?url=https://api.lefresnoy.net/media/${artist?.photo}&mode=adapt&w=1000&fmt=jpg`
+                    ? `${config.media_service}?url=${config.api_media_url}${artist?.photo}&mode=adapt&w=1000&fmt=jpg`
                     : userPlaceholder
                 "
                 :alt="`Photo de ${artist.displayName}`"

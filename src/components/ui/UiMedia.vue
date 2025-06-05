@@ -24,7 +24,7 @@ const props = defineProps({
 function type() {
   const item = props.medium
     ? props.medium
-    : `${config.media_service}?url=https://api.lefresnoy.net/media/${props.url}&mode=adapt&w=1000&fmt=jpg`;
+    : `${config.media_service}?url=${config.api_media_url}${props.url}&mode=adapt&w=1000&fmt=jpg`;
 
   if (item.includes("soundcloud")) {
     return "iframe";
@@ -38,7 +38,7 @@ function type() {
 }
 
 function resizeMedia(width){
-  return `${config.media_service}?url=https://api.lefresnoy.net/media/${props.url}&mode=adapt&w=${width}&fmt=jpg`
+  return `${config.media_service}?url=${config.api_media_url}${props.url}&mode=adapt&w=${width}&fmt=jpg`
 }
 </script>
 

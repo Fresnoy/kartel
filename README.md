@@ -24,6 +24,10 @@ git clone https://github.com/Fresnoy/kartel.git
 npm install
 ```
 
+## Config file
+
+Duplicate config.dev.js and rename the duplicated file config.js
+
 ### Run the documentation
 
 ```sh

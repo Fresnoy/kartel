@@ -73,8 +73,8 @@ describe("test the composable getContent", () => {
       [{
         id: 710,
         displayName: "Selestane",
-        artistPhoto: "https://media.lefresnoy.net/?url=https://api.lefresnoy.net/media/people/fresnoyprofile/jmjh436g.jpg",
-        photo: "https://media.lefresnoy.net/?url=https://api.lefresnoy.net/media/people/fresnoyprofile/jmjh436g.jpg"
+        artistPhoto: "https://media/people/fresnoyprofile/jmjh436g.jpg",
+        photo: "https://media/people/fresnoyprofile/jmjh436g.jpg"
       }]);
     expect(load.value).toEqual(true);
     

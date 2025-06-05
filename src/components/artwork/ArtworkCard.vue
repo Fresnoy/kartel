@@ -35,7 +35,7 @@ const props = defineProps({
         :alt="props.title"
         :src="
           props.picture
-            ? `${config.media_service}?url=https://api.lefresnoy.net/media/${props.picture}&mode=adapt&w=300&fmt=jpg`
+            ? `${config.media_service}?url=${config.api_media_url}${props.picture}&mode=adapt&w=300&fmt=jpg`
             : mediaPlaceholder
         "
       />

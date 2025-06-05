@@ -111,11 +111,12 @@ onBeforeUnmount(() => {
       >
         <section class="flex flex-col gap-6" ref="preview">
           <img
+            v-if="artwork.picture"
             data-fancybox="preview"
             class="min-h-[30vh] bg-black-extralightest"
-            :src="`${config.media_service}?url=https://api.lefresnoy.net/media/${artwork.picture}&mode=adapt&w=1000&fmt=jpg`"
-            :srcset="`${config.media_service}?url=https://api.lefresnoy.net/media/${artwork.picture}&mode=adapt&w=500&fmt=jpg 500w,
-          ${config.media_service}?url=https://api.lefresnoy.net/media/${artwork.picture}&mode=adapt&w=1000&fmt=jpg 1000w`"
+            :src="`${config.media_service}?url=${config.api_media_url}${artwork.picture}&mode=adapt&w=1000&fmt=jpg`"
+            :srcset="`${config.media_service}?url=${config.api_media_url}${artwork.picture}&mode=adapt&w=500&fmt=jpg 500w,
+          ${config.media_service}?url=${config.api_media_url}${artwork.picture}&mode=adapt&w=1000&fmt=jpg 1000w`"
             :alt="`preview picture of ${artwork.title}`"
             sizes="100vw"
           />
