@@ -36,7 +36,7 @@ function hiddenInput() {
   }
 }
 
-let resultsLength = 3;
+let resultsLength = 100;
 
 let timeout = 0;
 // search function for artworks and artists, artists can be added in the future
