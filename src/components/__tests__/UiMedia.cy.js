@@ -7,7 +7,7 @@ import "@/main";
 describe("Artwork card", () => {
   it("Check props", () => {
     let data = {
-      url: `${config.api_url}src/assets/logo-Fresnoy-transparent.png`,
+      url: `${config.api_media_url}src/assets/logo-Fresnoy-transparent.png`,
       medium: null,
       title: "Hello Cypress",
     };

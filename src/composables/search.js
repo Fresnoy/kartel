@@ -1,5 +1,7 @@
 import axios from "axios";
 
+import config from "@/config";
+
 import { ref } from "vue";
 
 let input = ref();
@@ -23,18 +25,11 @@ let artists = ref([]);
 function hiddenInput() {
   if (input.value) {
     let value = input.value.match(/\w/g) ? false : true;
-    if (value === true) {
-      return value;
-    }
 
-    if (value === false) {
-      if (Object.keys(artworks.value).length === 0 || !artists.value[0]) {
-        return false;
-      } else {
-        return false;
-      }
-    } else {
+    if (value) {
       return true;
+    } else {
+      return false;
     }
   } else {
     return true;
@@ -53,7 +48,7 @@ let timeout = 0;
  * @param {string} input
  */
 function search(input) {
-  if (input.length < 3 || input.replaceAll(" ", "") === "") {
+  if (input.length < 2 || input.replaceAll(" ", "") === "") {
     artworks.value = [];
     artists.value = [];
 
@@ -95,8 +90,30 @@ class Artworks {
    */
   async getArtworks(query) {
     try {
-      let response = await axios.get(`production/artwork-search?q=${query}&page_size=${resultsLength}`);
-      let data = response.data;
+      let response =  await axios.post(`${config.v3_graph}`, {
+        query: `
+          query GetArtworks {
+            artworksPagination(title: "${query}", first: ${resultsLength}) {
+              edges {
+                node {
+                  id
+                  title
+                  picture
+                  type
+                  authors {
+                    displayName
+                  }
+                }
+              }
+            }
+          }
+        `,
+      }, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      let data = response.data.data.artworksPagination.edges.map(edge => edge.node);
 
       if (this.id === instance.artworks.size) {
         for (let artwork of data) {
@@ -104,7 +121,7 @@ class Artworks {
         }
       }
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   }
 }
@@ -128,8 +145,29 @@ class Artists {
    */
   async getArtists(query) {
     try {
-      let response = await axios.get(`people/artist-search?q=${query}&page_size=${resultsLength}`);
-      let data = response.data;
+      let response =  await axios.post(`${config.v3_graph}`, {
+        query: `
+         query GetArtists {
+          artistsPagination(name: "${query}", first: ${resultsLength}) {
+            edges {
+              node {
+                id
+                displayName
+                photo
+                user {
+                  id
+                }
+              }
+            }
+          }
+        }
+        `,
+      }, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      let data = response.data.data.artistsPagination.edges.map(edge => edge.node);
 
       if (this.id === instance.artists.size) {
         for (let artist of data) {
@@ -137,7 +175,7 @@ class Artists {
         }
       }
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   }
 }
@@ -175,7 +213,7 @@ class Artwork extends Result {
 
     return this.authors.map((author) => {
       return (
-        author.nickname || `${author.user.first_name} ${author.user.last_name}`
+        author.displayName
       );
     });
   }
@@ -217,4 +255,4 @@ async function searchArtists(query) {
   new Artists(query);
 }
 
-export { input, result, artworks, artists, search, hiddenInput };
+export { input, result, artworks, artists, search, hiddenInput, searchArtworks, searchArtists };

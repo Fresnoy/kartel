@@ -1,8 +1,6 @@
 <script setup>
 import { useRouter } from "vue-router";
 
-import { getId } from "@/composables/getId";
-
 import { useConfigApi } from "../../stores/configApi";
 import { onMounted, ref, watch } from "vue";
 
@@ -45,7 +43,7 @@ onMounted(async () => {
     await storeApi.getPromotions();
 
     // get the second most recent promotion (avoid the recent because sometimes it's the empty one)
-    router.push(`/school/promotion/${getId(storeApi.promotions[1].url)}`);
+    router.push(`/school/promotion/${storeApi.promotions[1].id}`);
   }
 
   storeApi.getSelectedPromo(promoId.value);
@@ -81,11 +79,11 @@ onMounted(async () => {
               </option>
               <option
                 v-for="promotion in storeApi.promotions"
-                :key="getId(promotion.url)"
-                :value="getId(promotion.url)"
+                :key="promotion.id"
+                :value="promotion.id"
               >
                 {{
-                  `${promotion.starting_year}-${promotion.ending_year} — ${promotion.name}`
+                  `${promotion.startingYear}-${promotion.endingYear} — ${promotion.name}`
                 }}
               </option>
             </select>
@@ -98,21 +96,21 @@ onMounted(async () => {
       <ul class="hidden md:block min-w-min overflow-y-scroll divide-y">
         <li
           v-for="promotion in storeApi.promotions"
-          :key="getId(promotion.url)"
+          :key="promotion.id"
         >
           <!-- {{ promotion }}         -->
           <router-link
-            :to="`/school/promotion/${getId(promotion.url)}`"
+            :to="`/school/promotion/${promotion.id}`"
             class="promo__link p-2 flex flex-col m-3 items-start justify-start gap-1 whitespace-nowrap"
             :class="{
               'bg-gray-extralightest dark:bg-black-light':
                 $route.path.match(/.(school).(promotion)/gm) &&
-                Number($route.params.id) === getId(promotion.url),
+                $route.params.id === promotion.id,
             }"
-            @click="promoId = getId(promotion.url)"
+            @click="promoId = promotion.id"
           >
             <UnderlineTitle
-              :title="`${promotion.starting_year}-${promotion.ending_year}`"
+              :title="`${promotion.startingYear}-${promotion.endingYear}`"
               :uppercase="false"
               :underlineSize="1"
               :fontSize="5"

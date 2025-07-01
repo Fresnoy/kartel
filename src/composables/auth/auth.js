@@ -2,9 +2,15 @@ import axios from "axios";
 
 import { ref } from "vue";
 
+import config from "@/config";
+
 let message = ref({
   status: "normal",
   data: "",
+});
+
+const secondApi = axios.create({
+  baseURL: `${config.rest_uri_v2}`,
 });
 
 /**
@@ -45,7 +51,7 @@ async function login(username, password, router) {
   };
 
   try {
-    const response = await axios.post("rest-auth/login/", {
+    const response = await secondApi.post("auth/", {
       ...body,
     });
     const data = response.data;

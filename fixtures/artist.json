@@ -1,15 +1,64 @@
 {
-  "id": 710,
-  "url": "http://127.0.0.1:8000/v2/people/artist/710",
-  "nickname": "Selestane",
-  "bio_short_fr": "Selene est une artiste talentueuse qui se concentre sur la création de sculptures uniques et expressives.",
-  "bio_short_en": "Selene is a talented artist who focuses on creating unique and expressive sculptures.",
-  "bio_fr": "Selene Lamstane est née à Paris en 1990 et a étudié l'art à l'École nationale supérieure des beaux-arts de Paris. Elle est connue pour son approche innovante de la sculpture, qui combine des éléments de l'art abstrait et du réalisme. Son travail a été exposé dans des galeries à travers l'Europe et les États-Unis, notamment au Salon de Montrouge et à la Biennale de Venise.",
-  "bio_en": "Selene Lamstane was born in Paris in 1990 and studied art at the École nationale supérieure des beaux-arts in Paris. She is known for her innovative approach to sculpture, which combines elements of abstract art and realism. Her work has been exhibited in galleries across Europe and the United States, including at the Salon de Montrouge and the Venice Biennale.",
-  "twitter_account": "@selenelamstaneart",
-  "facebook_profile": "https://www.facebook.com/selene.lamstane.art",
-  "user": "http://127.0.0.1:8000/v2/people/user/999",
-  "websites": [
-    "http://127.0.0.1:8000/v2/common/website/1372"
-  ]
+  "data":
+  {
+    "data": {
+      "artist":
+      {
+        "id": "710",
+        "displayName": "Selestane",
+        "firstName": "Selene",
+        "lastName": "Lamstane",
+        "artistPhoto": "https://media/people/fresnoyprofile/jmjh436g.jpg",
+        "photo": "https://media/people/fresnoyprofile/jmjh436g.jpg",
+        "nationality": "française",
+        "homelandCountry": "France",
+        "residencePhone": "06 66 66 66 66",
+        "homelandPhone": "06 66 66 66 66",
+        "residenceAddress": "",
+        "socialInsuranceNumber": "",
+        "cursus": "",
+        "bioShortFr": "Selene est une artiste talentueuse qui se concentre sur la création de sculptures uniques et expressives.",
+        "bioShortEn": "Selene is a talented artist who focuses on creating unique and expressive sculptures.",
+        "bioFr": "Selene Lamstane est née à Paris en 1990 et a étudié l'art à l'École nationale supérieure des beaux-arts de Paris. Elle est connue pour son approche innovante de la sculpture, qui combine des éléments de l'art abstrait et du réalisme. Son travail a été exposé dans des galeries à travers l'Europe et les États-Unis, notamment au Salon de Montrouge et à la Biennale de Venise.",
+        "bioEn": "Selene Lamstane was born in Paris in 1990 and studied art at the École nationale supérieure des beaux-arts in Paris. She is known for her innovative approach to sculpture, which combines elements of abstract art and realism. Her work has been exhibited in galleries across Europe and the United States, including at the Salon de Montrouge and the Venice Biennale.",
+
+
+        "url": "http://127.0.0.1:8000/v2/people/artist/710",
+
+        "twitter_account": "@selenelamstaneart",
+        "facebook_profile": "https://www.facebook.com/selene.lamstane.art",
+        "user": {
+          "email":"http://127.0.0.1:8000/v2/people/user/999"
+        },
+        "websites": [
+          {
+            "url": "http://preprod.api.lefresnoy.net/v2/common/website/1",
+            "titleFr": "Site de Selene lamstane",
+            "titleEn": "Website of Selene lamstane"
+          }
+        ],
+        "artworks": [
+            {
+            "id": "304",
+            "title": "Mémoire Fragmentée",
+            "picture": "http://127.0.0.1:8000/media/production/film/2021/07/dominati-juliette__0_ynC.png"
+            },
+            {
+              "id": "350",
+              "title": "Le grand déluge",
+              "picture": "http://127.0.0.1:8000/media/production/film/2021/07/dominati-juliette__0_ynC.png"
+            }
+          ],
+        "student": {
+          "id": "20",
+          "graduate": {
+            "promotion": {
+              "id": "17",
+              "name": "Marie Curie"
+            }
+          }
+        }
+      }
+    }
+  }
 }

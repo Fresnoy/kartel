@@ -10,7 +10,9 @@ const props = defineProps({
 });
 
 const fullname = computed(() => {  
-  return `${props.artist.userData.first_name} ${props.artist.userData.last_name}`;
+  return props.artist.displayName != "" ?
+          `${props.artist.displayName}`:
+          "Nom manquant";
 });
 </script>
 
@@ -26,33 +28,35 @@ const fullname = computed(() => {
       class="h-full flex flex-col justify-between"
     >
       <div class="w-full h-44">
-        <img
+        <img v-if="props.artist?.artistPhoto"
           class="w-full h-44 bg-gray-extralightest"
           :class="{
-            'object-cover': props.artist?.userData?.profile?.photo,
-            'p-2': !props.artist?.userData?.profile?.photo,
+            'object-cover': props.artist?.artistPhoto,
+            'p-2': !props.artist?.artistPhoto,
           }"
           :src="
-            props.artist?.userData?.profile?.photo
-              ? `${config.media_service}?url=${props.artist.userData.profile.photo}&mode=adapt&w=300&fmt=jpg`
+            `${config.media_service}?url=${config.api_media_url}${props.artist.artistPhoto}&mode=adapt&w=300&fmt=jpg`
+          "
+          :alt="`Photo de ${fullname}`"
+        />
+        <img v-else-if="props.artist?.photo"
+          class="w-full h-44 bg-gray-extralightest"
+          :class="{
+            'object-cover': props.artist?.photo,
+            'p-2': !props.artist?.photo,
+          }"
+          :src="
+            props.artist?.photo
+              ? `${config.media_service}?url=${config.api_media_url}${props.artist.photo}&mode=adapt&w=300&fmt=jpg`
               : userPlaceholder
           "
           :alt="`Photo de ${fullname}`"
         />
         <!-- Lorem photo ? -->
       </div>
-      <div v-if="props.artist?.nickname" class="p-2 w-full capitalize">
+      <div class="p-2 w-full capitalize">
         <p class="last:font-bold">
-          {{ props.artist?.nickname }}
-        </p>
-      </div>
-
-      <div v-else class="p-2 w-full capitalize">
-        <p v-if="props.artist?.userData?.first_name" class="last:font-bold">
-          {{ props.artist.userData.first_name }}
-        </p>
-        <p v-if="props.artist?.userData?.last_name" class="last:font-bold">
-          {{ props.artist.userData.last_name }}
+          {{ fullname }}
         </p>
       </div>
     </router-link>

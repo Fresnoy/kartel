@@ -1,0 +1,26 @@
+{
+"data":
+    {
+    "data":
+        {
+        "artworksPagination":
+            {
+            "edges":
+                [{
+                "node":
+                    {
+                    "id": "1001",
+                    "title": "Mémoire Fragmentée",
+                    "picture": "http://127.0.0.1:8000/media/production/film/2021/07/dominati-juliette__0_ynC.png",
+                    "type": "film"
+                    }
+                }],
+                "pageInfo": {
+                    "hasNextPage": true,
+                    "endCursor": "YXJyYXljb25uZWN0aW9uOjE5"
+                }
+            }
+        }
+    }
+}
+    

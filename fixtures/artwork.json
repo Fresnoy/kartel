@@ -1,49 +1,55 @@
-[
+{
+  "data":
   {
-    "url": "http://127.0.0.1:8000/v2/artwork/1001",
-    "collaborators": [],
-    "partners": [
+  "data":
+    {
+      "artwork":
       {
-        "organization": "http://127.0.0.1:8000/v2/people/organization/1",
-        "task": "http://127.0.0.1:8000/v2/people/organization-staff/2"
+        "id": "304",
+        "title": "Mémoire Fragmentée",
+        "picture": "http://127.0.0.1:8000/media/production/film/2021/07/dominati-juliette__0_ynC.png",
+        "type": "Sculpture",
+        "productionDate": "2021-07-06",
+        "descriptionFr": "Cette sculpture en bronze représente des fragments de souvenirs. Les formes abstraites et angulaires suggèrent des moments de la vie de l'artiste qui ont été capturés et figés dans le bronze. Les bords rugueux et inégaux rappellent la nature fragile et éphémère des souvenirs. La sculpture est présentée sur un socle en bois massif.",
+        "descriptionEn": "This bronze sculpture depicts fragments of memories. The abstract and angular shapes suggest moments from the artist's life that have been captured and frozen in bronze. The rough and uneven edges recall the fragile and ephemeral nature of memories. The sculpture is presented on a solid wood pedestal.",
+        "creditsFr": "Crédits : \n\n- Réalisation : Jane Doe\n- Scénario : John Smith\n- Montage : Alice Dupont\n- Musique : Paul Johnson",
+        "creditsEn": "Credits: \n\n- Director: Jane Doe\n- Screenplay: John Smith\n- Editing: Alice Dupont\n- Music: Paul Johnson",
+        "thanksFr": "Je tiens à remercier tous ceux qui ont contribué à la création de cette oeuvre, en particulier mes amis et ma famille qui m'ont soutenu tout au long du processus.",
+        "thanksEn": "I would like to thank everyone who helped create this artwork, especially my friends and family who supported me throughout the process.",
+        "authors": [
+          {
+            "id": "710",
+            "displayName": "Selestane"
+          }
+        ],
+        "collaborators": [],
+        "partners": [
+          {
+            "name": "http://127.0.0.1:8000/v2/people/organization/1",
+            "taskName": "http://127.0.0.1:8000/v2/people/organization-staff/2"
+          }
+        ],
+        "diffusions": [
+          {
+            "event": {
+              "title": "Panorama 22"
+            }
+          }
+        ],
+        "teaserGalleries": [],
+        "inSituGalleries": [
+          {
+            "label": "Les Gardiens du Feu",
+            "description": "Cette installation immersive transporte le spectateur dans un monde fantastique peuplé de créatures magiques. Les Gardiens du Feu sont des êtres mystérieux qui protègent les flammes sacrées de la destruction. Cette oeuvre explore les thèmes de la mythologie, de la nature et de la spiritualité.",
+            "media": {
+            "picture": "http://localhost:8000/media/assets/medium/2022/07/ben-slimane-younes_les-gardiens-du-feu_installatio_z9C.jpg"
+            }
+          }
+        ],
+        "processGalleries": [],
+        "pressGalleries": [],
+        "mediationGalleries": ["http://127.0.0.1:8000/v2/assets/gallery/4100"]
       }
-    ],
-    "diffusion": [],
-    "award": [],
-    "keywords": ["sculpture", "abstrait", "bronze"],
-    "title": "Mémoire Fragmentée",
-    "former_title": null,
-    "subtitle": null,
-    "updated_on": "2021-12-13T13:04:25.128560+01:00",
-    "picture": "http://127.0.0.1:8000/media/production/film/2021/07/dominati-juliette__0_ynC.png",
-    "description_short_fr": "",
-    "description_short_en": "",
-    "description_fr": "Cette sculpture en bronze représente des fragments de souvenirs. Les formes abstraites et angulaires suggèrent des moments de la vie de l'artiste qui ont été capturés et figés dans le bronze. Les bords rugueux et inégaux rappellent la nature fragile et éphémère des souvenirs. La sculpture est présentée sur un socle en bois massif.",
-    "description_en": "This bronze sculpture depicts fragments of memories. The abstract and angular shapes suggest moments from the artist's life that have been captured and frozen in bronze. The rough and uneven edges recall the fragile and ephemeral nature of memories. The sculpture is presented on a solid wood pedestal.",
-    "production_date": "2021-07-06",
-    "credits_fr": "Crédits : \n\n- Réalisation : Jane Doe\n- Scénario : John Smith\n- Montage : Alice Dupont\n- Musique : Paul Johnson",
-    "credits_en": "Credits: \n\n- Director: Jane Doe\n- Screenplay: John Smith\n- Editing: Alice Dupont\n- Music: Paul Johnson",
-    "thanks_fr": "Je tiens à remercier tous ceux qui ont contribué à la création de cette oeuvre, en particulier mes amis et ma famille qui m'ont soutenu tout au long du processus.",
-    "thanks_en": "I would like to thank everyone who helped create this artwork, especially my friends and family who supported me throughout the process.",
-    "copyright_fr": "",
-    "copyright_en": "",
-    "duration": "",
-    "shooting_format": "",
-    "aspect_ratio": "",
-    "process": "",
-    "websites": [],
-    "process_galleries": [],
-    "mediation_galleries": ["http://127.0.0.1:8000/v2/assets/gallery/4100"],
-    "in_situ_galleries": [
-      "http://127.0.0.1:8000/v2/assets/gallery/4139",
-      "http://127.0.0.1:8000/v2/assets/gallery/4203"
-    ],
-    "press_galleries": [],
-    "teaser_galleries": [],
-    "authors": ["http://127.0.0.1:8000/v2/people/artist/710"],
-    "beacons": [],
-    "genres": [],
-    "shooting_place": [],
-    "type": "Sculpture"
+    }
   }
-]
+}

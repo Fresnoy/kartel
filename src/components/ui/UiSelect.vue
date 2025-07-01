@@ -31,11 +31,10 @@ onMounted(() => {
           name="date"
           id="date"
           class="px-2 w-24 truncate after:block after:w-10 after:h-1 after:bg-black cursor-pointer"
-          :title="value || props.defaultValue"
           v-model="value"
           @change="$emit('update:option', value) && log($event)"
         >
-          <option :value="null">{{ props.defaultValue }}</option>
+          <option :value="null" selected>{{ props.defaultValue }}</option>
           <option :value="null" disabled>—————</option>
           <option v-for="(option, index) in props.options"
                         :value="option.id ? option.id : (option.value ? option.value : option)"

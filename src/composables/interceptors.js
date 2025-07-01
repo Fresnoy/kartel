@@ -185,4 +185,13 @@ axios.interceptors.response.use(
 /**
  * @export {object} load - the status of the loader
  */
-export { load };
+export { load,
+
+  //request ref for test
+  requests,
+  //export functions for test
+  requestsStatus,
+  requestsProgress,
+  atRequest,
+  atResponse
+ };

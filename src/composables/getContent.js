@@ -1,13 +1,18 @@
 import axios from "axios";
 
+import config from "@/config";
+
 import { ref } from "vue";
 
+// Data fetched
 let content = ref([]);
-
-// don't know if the offset will reset after each call of the composables ?! May not but ?!
-//  get header for get next
-let offset = ref(1);
-
+// Number of elements displayed per page
+let first = ref(20);
+// The code of the following page
+let after = ref("");
+// If there is a next page
+let hasNextPage = ref(false);
+// The loader
 let load = ref(true);
 
 /**
@@ -17,143 +22,117 @@ let url;
 let stringParams;
 let params = {};
 
-/**
- * AXIOS interceptors to handle the offset of the infinite scroll
- * separate an instance from global axios for specific interceptors
- */
-// const instance = axios.create({
-//   baseURL: `${config.rest_uri_v2}`,
-// });
-
-/**
- * @Helpers https://stackoverflow.com/questions/37897523/axios-get-access-to-response-header-fields - get the headers of the response
- */
-
-/**
- * set the requests interceptors and execute a function at the beginning of a request
- */
-// instance.interceptors.request.use(
-//   function (config) {
-//     // console.log("sending request", config);
-//     return config;
-//   },
-//   function (error) {
-//     return Promise.reject(error);
-//   }
-// );
-
-/**
- * End interceptor which execute function when a request is completed
- */
-// instance.interceptors.response.use(
-//   function (response) {
-//     // get the next and the previous url headers for the offset
-
-//     // console.log("receiving response", response);
-//     return response;
-//   },
-//   function (error) {
-//     return Promise.reject(error);
-//   }
-// );
-
-/**
- *
- *  @param {object} params - the differents params to return
- *
- */
-function setParams(params) {
-  stringParams = "";
-  for (let param in params) {
-    params[param] && (stringParams = `${stringParams}&${params[param]}`);
-  }
-}
-
-// Get artworks, set an observer who fetch the next page
+// Get artworks with and without filter
+// Get artists with and without filter
 // update params if filters change
-// if the filters change reset artworks
-
-// let contentRequests = new Map();
-
+// if the filters change update data
 class Content {
-  // requests params setup
-  static pageSize = 20;
-
-  static requests = new Map();
-
-  /**
-   * Checks if the given lastRequest object is the same as the currentRequest object.
-   *
-   * @param {Object} lastRequest - The last request object to compare.
-   * @param {Object} currentRequest - The current request object to compare.
-   * @returns {boolean} - True if the lastRequest and currentRequest have the same id and type, false otherwise.
-   */
-  static isLastRequest(lastRequest, currentRequest) {
-    return (
-      lastRequest.id === currentRequest.id &&
-      lastRequest.type === currentRequest.type
-    );
-  }
-
   constructor(type, parameters) {
     this.type = type;
     this.parameters = parameters;
-    this.id = Content.requests.size + 1;
     this.url;
 
-    this.setParamsByType(this.type, this.parameters);
-
-    Content.requests.set(this.id, { type, id: this.id, url: this.url });
+    this.setParams(this.parameters);
+    this.filterPreparation();
+    this.queryType(this.type)
   }
 
-  setParamsByType(type, parameters) {
-    if (type === "artworks") {
-      const { genres, keywords, productionYear, q, shootingPlace, type } =
-        parameters;
+  /**
+   *  Format parameters in order to serve as a filter
+   *  @param {string} parameters - retrieve the parameters
+   */
+  setParams(parameters) {    
+    let newParams = {}
 
-      /**
-       * Artwork parameters
-       * @typedef {Object} params
-       * @property {string} genres
-       * @property {string} keywords
-       * @property {string} productionYear
-       * @property {string} query - q string from function parameters
-       * @property {string} shootingPlace
-       * @property {string} type
-       */
-      params = {
-        // genres: genres ? `genres=${genres}` : null,
-        keywords: keywords ? `keywords=${keywords}` : null,
-        productionYear: productionYear
-          ? `production_year=${productionYear}`
-          : null,
-        query: q ? `q=${q}` : null,
-        // shootingPlace: shootingPlace ? `shooting_place=${shootingPlace}` : null,
-        type: type ? `type=${type}` : null,
-      };
-
-      setParams(params);
-
-      return (this.url = `production/artwork?page_size=${Content.pageSize}&page=${offset.value}${stringParams}`);
-    } else if (type === "artists") {
-      const { q, nationality, artist_type } = parameters;
-      
-      /**
-       * Artist parameters
-       * @typedef {Object} params
-       * @property {string} query - q string from function parameters
-       * @property {string} nationality
-       */
-      params = {
-        query: q ? `q=${q}` : null,
-        nationality: nationality ? `nationality=${nationality}` : null,
-        artist_type: artist_type ? artist_type : "artworks__isnull=false",
-      };
-
-      setParams(params);
-
-      return (this.url = `people/artist?page_size=${Content.pageSize}&page=${offset.value}${stringParams}`);
+    for (const [key, value] of Object.entries(parameters)) {
+      newParams[key] = value? value : null;
     }
+
+    params = newParams;
+  }
+
+  /**
+   *  Prepare filter piece of query depending of the filters selected.
+   * @returns {string} return the piece of query needed for filter.
+   */
+  filterPreparation() {
+    let arrayFilters = [""];
+
+    if (params.keywords) {
+      arrayFilters.push(`hasKeywordName: "${params.keywords}"`);
+    }
+    if (params.productionYear) {
+      arrayFilters.push(`belongProductionYear: "${params.productionYear}"`);
+    }
+    if (params.type) {
+      arrayFilters.push(`hasType: "${params.type[0].toUpperCase() + params.type.slice(1).toLowerCase()}"`);
+    }
+    if (params.artist_type && params.artist_type != "<empty string>") {
+      let typeName = params.artist_type[0].toUpperCase() + params.artist_type.substring(1);
+      arrayFilters.push(`is${typeName}: true`);
+    }
+    let filters = arrayFilters.join(", ");
+
+    return filters
+  }
+
+  /**
+   *  Call the right query function according to the type displayed
+   *  @param {string} type - the type, artworks or artists
+   */
+  queryType(type) {
+    if (type === "artworks") {
+      this.artworksQuery();
+    } else if (type === "artists") {
+      this.artistsQuery();
+    }
+  }
+
+  /**
+   * query fetching the artists.
+   * @returns query needed to call the artists.
+   */
+  artistsQuery() {
+    return (this.url = `
+        query FetchArtists {
+          artistsPagination(name: "", first: ${first.value}, after: "${after.value}"${this.filterPreparation()}) {
+            edges {
+              node {
+                id
+                displayName
+                artistPhoto
+                photo
+              }
+            }
+            pageInfo {
+              hasNextPage
+              endCursor
+            }
+          }
+        }
+        `);
+  }
+
+  /**
+   * query fetching the artworks.
+   * @returns query needed to call the artworks.
+   */
+  artworksQuery() {
+    return (this.url = `query FetchArtworks {
+        artworksPagination(first: ${first.value}, after: "${after.value}"${this.filterPreparation()}) {
+            edges {
+              node {
+                id
+                title
+                picture
+              }
+            }
+            pageInfo {
+              hasNextPage
+              endCursor
+            }
+          }
+        }`);
   }
 
   /**
@@ -161,81 +140,96 @@ class Content {
    * @param {string} url - The URL to fetch content from.
    * @param {string} type - The type of content to fetch.
    */
-  async fetchContent(url, type) {
+  async fetchData(url, type) {
     try {
-      // need to double verif before the second requests with contentData
-
-      const response = await axios.get(url);
-
-      let data = response.data;
-
-      // check if it's the last request to set results
-      if (Content.isLastRequest(this.getLastRequest(), { type, id: this.id })) {
-        let pnv = { details: "Page non valide." }
-        if (
-          data &&
-          Array.isArray(data) &&
-          data !== pnv
-        ) {
-          let contentData;
-
-          if (type === "artists") {
-            contentData = await Promise.all(this.contentData(data));
-          } else {
-            contentData = data;
+      const response = await axios.post(`${config.v3_graph}`, {
+          query: url
+        }, {
+          headers: {
+            'Content-Type': 'application/json'
           }
-
-          // second verification of it is the last request because timing can pass and request contentData
-          if (
-            Content.isLastRequest(this.getLastRequest(), { type, id: this.id })
-          ) {
-            content.value = [...content.value, ...contentData];
-            offset.value++;
-          }
-
-          load.value = true;
         }
+      );
+
+      let data = {}
+
+      let paginationType = ""
+      if (type === "artworks") {
+        paginationType = "artworksPagination";
+      } else if (type === "artists") {
+        paginationType = "artistsPagination";
       }
+
+      hasNextPage.value = response.data.data[paginationType].pageInfo.hasNextPage;
+      data = response.data.data[paginationType].edges.map(edge => edge.node);
+
+      this.handleDataPagination(data, response, paginationType);
+
+      load.value = true;
     } catch (err) {
       console.error(err);
 
-      // catch 404 and stop observer -> if the method change from offset to next headers it will be much easier to handle the observer
+      // catch 404
       if (err.response.status === 404) {
         load.value = false;
+      }
+    }
+
+  }
+
+  /**
+   * Handle behaviour according to page order concerned, mostly agregate current and new piece of data.
+   * @param {string} data - last data loaded.
+   * @param {string} response - data full response of the last data loaded (include endCursor and hasnextpage).
+   * @param {string} paginationType - Type of pagination, here artworks of artists.
+   */
+  handleDataPagination(data, response, paginationType) {
+    if (data &&
+      Array.isArray(data)) {
+      let contentData = data;
+
+      let isAfterDifferentFromEndCursor = after.value !== response.data.data[paginationType].pageInfo.endCursor;
+      // Agregate new page of data to the current data displayed
+      // The second condition is here to avoid same data called twice.
+      if (hasNextPage.value && isAfterDifferentFromEndCursor) {
+        hasNextPage.value = response.data.data[paginationType].pageInfo.hasNextPage;
+        content.value = [...content.value, ...contentData];
+        after.value = response.data.data[paginationType].pageInfo.endCursor;
+      } else {
+        let isEndCursor = response.data.data[paginationType].pageInfo.endCursor;
+        let isDataLeft = response.data.data[paginationType].edges != [];
+
+        // Ensure last page of data are called
+        // and call doesn't loop to the beginning again.
+        if (hasNextPage.value === false && isEndCursor && isDataLeft) {
+          content.value = [...content.value, ...contentData];
+          after.value = response.data.data[paginationType].pageInfo.endCursor;
+        }
       }
     }
   }
 
   /**
-   * Get the content data for each content in data and return a promise
+   * Get the content data for each content in data and return a promise.
    *
    * @param {Array<Object>} data - An array of data objects.
    * @returns {Array<Promise<Object>>} - An array of promises that resolve to the
    * transformed data objects. The promises may reject if the GET request fails.
    */
   contentData(data) {
-    return data.map(async (data) => {
       try {
-        const response = await axios.get(data.user);
-        let userData = response.data;
-
-        data.userData = userData;
+        let filteredData = data.filter((user) => user.artist);
+        let artistsArray = [];
+        for (let i= 0; i < filteredData.length; i++){
+          artistsArray.push(filteredData[i].artist)
+        }
+        data = artistsArray;
         return data;
       } catch (err) {
-        console.log(err);
+        console.error(err);
 
         return data;
       }
-    });
-  }
-
-  /**
-   * Returns the last request of Content.
-   *
-   * @returns {object} The last request made, or undefined if no request was made.
-   */
-  getLastRequest() {
-    return Array.from(Content.requests.values()).pop();
   }
 }
 
@@ -260,20 +254,29 @@ async function getContent(type, parameters) {
   // create a new content
   const newContent = new Content(type, parameters);
 
-  // fetch the content with instance function (not doing that inside the constructor because can deal with async await)
-  return await newContent.fetchContent(newContent.url, newContent.type);
+  // fetch the content with instance function
+  // (not doing that inside the constructor because can deal with async await)
+  return await newContent.fetchData(newContent.url, newContent.type);
+}
+
+/**
+/* Need to reset this value in order to doesn't miss new data loads
+*/
+function resetData() {
+  after.value = "";
 }
 
 /**
  *  @exports data for access outside
  */
 export {
+  Content,
   content,
   getContent,
-  offset,
+  resetData,
   load,
   url,
   params,
-  setParams,
   stringParams,
+  after,
 };

@@ -1,0 +1,25 @@
+{
+"data":
+    {
+    "data":
+        {
+        "artistsPagination":
+            {
+            "edges":
+                [{
+                "node":
+                    {
+                    "id": 710,
+                    "displayName": "Selestane",
+                    "artistPhoto": "https://media/people/fresnoyprofile/jmjh436g.jpg",
+                    "photo": "https://media/people/fresnoyprofile/jmjh436g.jpg"
+                    }
+                }],
+                "pageInfo": {
+                    "hasNextPage": true,
+                    "endCursor": "Jldskfjs75uZjkhhjhofS"
+                }
+            }
+        }
+    }
+}

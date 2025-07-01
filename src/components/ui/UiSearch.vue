@@ -1,11 +1,8 @@
 <script setup>
-import config from "@/config";
-
 import { watch } from "vue";
 
 import { load } from "@/composables/interceptors";
 
-import { getId } from "@/composables/getId";
 import {
   input,
   result,
@@ -92,21 +89,21 @@ watch(
           </h6>
           <li v-for="artist in artists" :key="artist">
             <router-link
-              :to="`/artist/${getId(artist.url)}`"
+              :to="`/artist/${artist.id}`"
               class="px-1 py-2 flex flex-col border-l-2 border-gray divide-y"
             >
               <div>
-                <h5 v-if="artist.nickname" class="text-base font-medium">
-                  {{ artist.nickname }}
+                <h5 v-if="artist.displayName" class="text-base font-medium">
+                  {{ artist.displayName }}
                 </h5>
                 <h5 v-else class="text-base font-medium">
-                  {{ `${artist.user.first_name}  ${artist.user.last_name}` }}
+                  Nom manquant
                 </h5>
               </div>
               <div class="flex flex-col">
                 <h6
                   class="text-sm font-medium text-right"
-                  v-for="artwork in artist.artworks"
+                  v-for="artwork in artist.artwork"
                   :key="artwork.title"
                 >
                   {{ artwork.title }}
@@ -145,7 +142,7 @@ watch(
 
           <li v-for="artwork in artworks" :key="artwork">
             <router-link
-              :to="`/artwork/${getId(artwork.url)}`"
+              :to="`/artwork/${artwork.id}`"
               class="px-1 py-2 flex flex-col border-l-2 border-gray divide-y"
             >
               <div>
@@ -154,11 +151,11 @@ watch(
               </div>
               <div
                 class="flex flex-col gap-1"
-                v-for="author in artwork.authorsNames"
+                v-for="author in artwork.authors"
                 :key="author"
               >
                 <h6 class="text-sm font-medium text-right">
-                  {{ author }}
+                  {{ author.displayName }}
                 </h6>
               </div>
             </router-link>

@@ -8,7 +8,7 @@ describe("Artwork card", () => {
   it("Check props", () => {
     let data = {
       url: "/artwork/1",
-      picture: `${config.api_url}src/assets/logo-Fresnoy-transparent.png`,
+      picture: `${config.api_media_url}src/assets/logo-Fresnoy-transparent.png`,
       title: "Hello Cypress",
     };
     cy.mount(ArtworkCard, {
@@ -18,7 +18,7 @@ describe("Artwork card", () => {
     cy.get("router-link")
       .should("exist")
       .should("have.attr", "to")
-      .and("include", data.url);
+      .and("include", data.id);
 
     cy.get("img")
       .should("exist")

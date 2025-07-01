@@ -1,9 +1,11 @@
 <script setup>
 import axios from "axios";
 
+import config from "@/config";
+
 import { useRouter } from "vue-router";
 
-import { ref, computed, onMounted, watch, vModelCheckbox } from "vue";
+import { ref, computed, onMounted, watch } from "vue";
 
 /**
 
@@ -13,8 +15,8 @@ import { ref, computed, onMounted, watch, vModelCheckbox } from "vue";
 import {
   content as contents,
   getContent,
-  offset,
   load,
+  resetData,
 } from "@/composables/getContent";
 
 /**
@@ -26,12 +28,14 @@ import UnderlineTitle from "@/components/ui/UnderlineTitle.vue";
 import ArtworkCard from "@/components/artwork/ArtworkCard.vue";
 import ArtistCard from "@/components/artist/ArtistCard.vue";
 import UiSelect from "@/components/ui/UiSelect.vue";
-import FilterSearch from "@/components/ui/FilterSearch.vue";
 
 const router = useRouter();
 
 let typeOfContent = ref();
 let watcher = ref();
+let hasNextPage = ref(true);
+let loader = ref(true)
+let observer = ref();
 
 const component = computed(() => {
   if (typeOfContent.value === "artworks") {
@@ -75,10 +79,8 @@ let artist_type = ref(null);
 // let typeOfContent define the params and display them inside the dom with a includes or something like a dictionnary
 let params = ref();
 
-// watcher execute once after moving to another page -> he watch the ref be reseted ?!
+// watcher
 watch([genres, keywords, productionYear, q, shootingPlace, type, artist_type], () => {
-  // prevent the observer to fetch at the same time
-  observer.unobserve(watcher.value);
 
   // authorized path to execute router
   let paths = ["/artists", "/artworks"]
@@ -87,13 +89,6 @@ watch([genres, keywords, productionYear, q, shootingPlace, type, artist_type], (
   if (paths.includes(router.currentRoute.value.path)) {
     router.push({ path: typeOfContent.value, query: { ...params.value } });
   }
-
-  // getContent(typeOfContent.value, params.value);
-
-  // reobserve
-  observer.observe(watcher.value);
-
-  // getContent("artwork", params.value);
 });
 
 // set option of production year for select based on a min (1998) to now
@@ -109,7 +104,7 @@ function getYears() {
 getYears();
 
 function getTypes() {
-  const types = ["films", "installation", "performance"];
+  const types = ["film", "installation", "performance"];
 
   const sortedTypes = types.sort((a, b) => a.localeCompare(b));
 
@@ -119,14 +114,50 @@ getTypes();
 
 async function getKeywords() {
   try {
-    const response = await axios.get("production/artwork-keywords");
+    const response = await axios.post(`${config.v3_graph}`, {
+      query:
+      `
+      query MyQuery {
+        productions {
+          ... on ArtworkType {
+            keywords {
+              name
+            }
+          }
+        }
+      }
+      `
+      }, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    );
 
-    const data = response.data;
+    const data = response.data.data.productions;
 
-    const keywordsName = data.map((keyword) => {
-      return keyword["name"];
-    });
+    //Having keywords by production
+    const keywordsEntry = data.map((entry) => {
+      if (entry.keywords?.length > 0) {
+        return entry.keywords;
+      }
+    }).filter(item => item !== undefined);
 
+    const allKeywordsName = [];
+
+    //isolate names and push them into an array
+    for (let i =0; i < keywordsEntry.length; i++) {
+      for (let j =0; j < keywordsEntry[i].length; j++) {
+        allKeywordsName.push(keywordsEntry[i][j].name)
+      }
+    }
+
+    // remove double entries
+    const keywordsNameSet = new Set(allKeywordsName)
+
+    const keywordsName = [...keywordsNameSet]
+
+    // sort by name
     const sortedKeywords = keywordsName.sort((a, b) => a.localeCompare(b));
 
     defKeywords.value = sortedKeywords;
@@ -139,16 +170,14 @@ getKeywords();
 
 function getArtistsTypes() {
   const types = [
-                 {name: "Tous",
-                  value:"artworks__isnull=false"},
                  {name: "Étudiant",
-                  value:"student__isnull=false&artworks__isnull="},
+                  value:"student"},
                  {name: "Artistes Professeurs invités",
-                  value:"teacher__isnull=false&artworks__isnull="},
+                  value:"teacher"},
                  {name: "Scientifiques",
-                  value:"student__science_student__isnull=false&artworks__isnull="},
+                  value:"scienceStudent"},
                  {name: "Artistes invités",
-                  value:"visiting_student__isnull=false&artworks__isnull="},
+                  value:"visitingStudent"},
                  ];
 
   // const sortedTypes = types.sort((a, b) => a.localeCompare(b));
@@ -158,90 +187,28 @@ function getArtistsTypes() {
 }
 getArtistsTypes();
 
-// each time the watcher intersecting fetch a new load of artworks
-const handleObserver = (entries) => {
-  entries.forEach(async (entry) => {
-    // console.log(entry);
-    // console.log(load.value);
-
-    // console.info("watcher");
-
-    function isInViewport(element) {
-      const rect = element.getBoundingClientRect();
-
-      return (
-        rect.top >= 0 &&
-        rect.top <=
-          (window.innerHeight || document.documentElement.clientHeight)
-      );
-    }
-
-    async function watcherWorker() {
-      // console.log("entry", entry);
-
-      // setTimeout(async () => {
-      //   console.log(isInViewport(watcher.value));
-      //   await getContent(typeOfContent.value, params.value);
-      // }, 1000);
-
-      if (entry.isIntersecting) {
-        // await getContent(typeOfContent.value, params.value);
-
-        // set an return if no next page (For now based on if a request not results)
-
-        if (isInViewport(watcher.value)) {
-          // check before get content the load value
-          if (!load.value) {
-            return;
-          }
-
-          await getContent(typeOfContent.value, params.value);
-
-          // and check after the getContent
-          if (load.value) {
-            return watcherWorker();
-          }
-        }
-      }
-      return;
-    }
-    watcherWorker();
-
-    // if (load.value && entry.isIntersecting) {
-    //   // observer cause duplicate request sometimes
-    //   await getContent(typeOfContent.value, params.value);
-    // } else if (!load.value && entry.intersectionRatio === 1) {
-    //   // intersectingRatio equal to the ration visible of the watcher 1 indicate that is it full visible in the page
-    //   // this is for avoid the watcher to be full visible in the beginning and block the infinite scroll
-    //   // [BUG] but for small size load to because the page load with nothing from the beginning -> maybe check if artworks is not empty
-    //   offset.value++;
-    //   await getContent(typeOfContent.value, params.value);
-    //   offset.value--;
-    // }
-  });
+// fetch a load of artworks
+const fetchData = async () => {
+    await getContent(typeOfContent.value, params.value);
+    loader.value = false
 };
 
-const observer = new IntersectionObserver(handleObserver);
-
-function setup() {
+async function setup() {
+  // Reset page parameter in order to don't miss data
+  resetData()
 
   // name or path to set default content
   typeOfContent.value = router.currentRoute.value.path.replace("/", "");
   contents.value = [];
-  offset.value = 1;
   load.value = true;
 
   let queries = router.currentRoute.value.query;
-  // let queriesArr = Object.keys(queries).map((key) => queries[key]);
 
   // set params with type
   if (typeOfContent.value === "artworks") {
     params.value = {
-      genres,
-      keywords,
       productionYear,
-      q,
-      shootingPlace,
+      keywords,
       type,
     };
   } else {
@@ -259,13 +226,40 @@ function setup() {
       : (params.value[param] = null);
   }
 
-  // if (queriesArr.every((value) => value === null)) {
-  //   getContent(typeOfContent.value, params.value);
-  // }
+  // Need to disconnect the observer to avoid fetch duplicated data
+  disconnectObserver();
 
-  // set the observer
-  observer.observe(watcher.value);
+  // Fetch the data
+  await fetchData();
+
+  initializeObserver();
 }
+
+// Add observer to fetch more new data if they are
+const handleObserver = (entries) => {
+    const target = entries[0];
+    if (target.isIntersecting && hasNextPage.value) {
+      fetchData();
+    }
+  };
+
+  const initializeObserver = () => {
+    observer.value = new IntersectionObserver(handleObserver, {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.1
+    });
+
+    if(watcher.value) {
+      observer.value.observe(watcher.value);
+    }
+  }
+
+  const disconnectObserver = () => {
+    if(observer.value) {
+      observer.value.disconnect();
+    }
+  }
 
 onMounted(() => {
   setup();
@@ -275,12 +269,10 @@ onMounted(() => {
 watch(
   () => router.currentRoute.value.fullPath,
   () => {
-    // need to dismount the observer to remount another one and prevent observer to not work
-    observer.unobserve(watcher.value);
-
     setup();
   }
 );
+
 </script>
 
 <template>
@@ -305,32 +297,15 @@ watch(
         @update:option="(newValue) => (productionYear = newValue)"
       ></UiSelect>
 
-      <!-- <UiSelect
-        v-if="params && Object.keys(params).includes('nationality')"
-        :options="defNationality"
-        defaultValue="toutes nationalités"
-        :selectedValue="nationality"
-        desc="Nationalité"
-        @update:option="(newValue) => (nationality = newValue)"
-      ></UiSelect> -->
-
        <UiSelect
         v-if="params && Object.keys(params).includes('artist_type')"
         :options="defArtistsTypes"
+        defaultValue="aucun"
         optionKeyName="label"
-        :selectedValue="artist_type ? artist_type : defArtistsTypes[0].value"
+        :selectedValue="artist_type"
         desc="Artiste"
         @update:option="(newValue) => (artist_type = newValue)"
       ></UiSelect>
-        <!--  -->
-      <!-- <UiSelect
-        v-if="params && Object.keys(params).includes('genres')"
-        :options="defGenres"
-        defaultValue="tout genres"
-        :selectedValue="genres"
-        desc="Genres"
-        @update:option="(newValue) => (genres = newValue)"
-      ></UiSelect> -->
 
       <UiSelect
         v-if="params && Object.keys(params).includes('keywords')"
@@ -341,15 +316,6 @@ watch(
         @update:option="(newValue) => (keywords = newValue)"
       ></UiSelect>
 
-      <!-- <UiSelect
-        v-if="params && Object.keys(params).includes('shootingPlace')"
-        :options="defShootingPlace"
-        defaultValue="tout"
-        :selectedValue="shootingPlace"
-        desc="Lieu de tournage"
-        @update:option="(newValue) => (shootingPlace = newValue)"
-      ></UiSelect> -->
-
       <UiSelect
         v-if="params && Object.keys(params).includes('type')"
         :options="defType"
@@ -359,10 +325,6 @@ watch(
         @update:option="(newValue) => (type = newValue)"
       ></UiSelect>
 
-      <!-- <FilterSearch
-        :query="q"
-        @update:modelValue="(newValue) => (q = newValue)"
-      ></FilterSearch> -->
     </div>
     <span class="my-3 w-full h-0.5 block bg-gray-extralight"></span>
 
@@ -371,15 +333,10 @@ watch(
         class="pb-12 grid lg:grid-cols-fluid-14-lg grid-cols-fluid-14 grow-0 gap-3"
       >
         <li class="" v-for="content in contents" :key="content">
-          <!-- <ArtworkCard
-            :url="content.url"
-            :picture="content.picture"
-            :title="content.title"
-          /> -->
           <component
             :is="component"
             :artist="content"
-            :url="content.url"
+            :id="content.id"
             :picture="content.picture"
             :title="content.title"
           ></component>
