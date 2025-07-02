@@ -33,15 +33,15 @@ const props = defineProps({
 .link::after {
   content: "";
   position: absolute;
-  bottom: 0.3rem;
+  bottom: calc(var(--spacing) * 0.5);
   width: 100%;
   height: 0.125rem;
   display: block;
   background: #000;
-  animation: link-out 1s forwards;
+  animation: link-out 0.6s forwards;
 }
 .link:hover::after {
-  animation: link-in 1s forwards;
+  animation: link-in 0.5s forwards;
   /* animation-fill-mode: forwards; */
 }
 
@@ -54,15 +54,15 @@ const props = defineProps({
     right: 0;
     width: 100%;
   }
-  50% {
-    bottom: 0.3rem;
+  40% {
+    bottom: calc(var(--spacing) * 0.4);
     width: 0.25rem;
     height: 0.125rem;
     transform: translateY(0%);
   }
   100% {
     right: 0;
-    bottom: 42%;
+    bottom: calc(var(--spacing) * 4);
     width: 0.25rem;
     height: 0.25rem;
     transform: translateY(75%);
@@ -77,8 +77,8 @@ const props = defineProps({
     height: 0.25rem;
     transform: translateY(75%);
   }
-  50% {
-    bottom: 0.3rem;
+  60% {
+    bottom: calc(var(--spacing) * 0.4);
     width: 0.25rem;
     height: 0.125rem;
     transform: translateY(0%);

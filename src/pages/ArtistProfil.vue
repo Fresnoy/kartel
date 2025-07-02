@@ -160,7 +160,7 @@ watch(
                 :alt="`Photo de ${artist.displayName}`"
               />
               <img
-                v-else-if="artist?.photo"
+                v-else
                 class="min-h-[25vh] bg-black-extralightest object-cover"
                 :class="{ 'p-5': !artist?.photo }"
                 :src="

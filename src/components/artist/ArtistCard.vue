@@ -39,7 +39,7 @@ const fullname = computed(() => {
           "
           :alt="`Photo de ${fullname}`"
         />
-        <img v-else-if="props.artist?.photo"
+        <img v-else
           class="w-full h-44 bg-gray-extralightest"
           :class="{
             'object-cover': props.artist?.photo,
