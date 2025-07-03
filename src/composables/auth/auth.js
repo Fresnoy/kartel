@@ -25,8 +25,19 @@ let user = ref({
  * Get user and token from storage and set to ref user
  */
 function fromStorageToRef() {
-  user.value.user = JSON.parse(localStorage.getItem("user")) || "";
-  user.value.token = localStorage.getItem("token") || "";
+  try {
+    // if user is not a valid json, it will throw an error
+    // and we will set user to an empty object
+    user.value.user = JSON.parse(localStorage.getItem("user")) || "";
+    user.value.token = localStorage.getItem("token") || "";
+  } catch (error) {
+    
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+    user.value.user = "";
+    user.value.token = "";
+    console.error("Error parsing user from localStorage:", error);
+  }
 }
 
 /**
@@ -51,7 +62,7 @@ async function login(username, password, router) {
   };
 
   try {
-    const response = await secondApi.post("auth/", {
+    const response = await secondApi.post("rest-auth/login/", {
       ...body,
     });
     const data = response.data;

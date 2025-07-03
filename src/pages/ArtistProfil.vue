@@ -34,7 +34,7 @@ const router = useRouter();
 
 let artistId = router.currentRoute.value.params.id;
 
-let token = !!localStorage.getItem("token");
+let token = localStorage.getItem("token") || false;
 
 // refs from the composable
 // auth is true for now because method to verif auth is not created
@@ -168,7 +168,7 @@ watch(
                     ? `${config.media_service}?url=${config.api_media_url}${artist?.photo}&mode=adapt&w=1000&fmt=jpg`
                     : userPlaceholder
                 "
-                :alt="`Photo de ${artist.displayName}`"
+                :alt="`Photo de ${artist?.displayName}`"
               />
               <svg
                 v-if="artist?.student?.graduate"
