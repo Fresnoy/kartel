@@ -1,6 +1,6 @@
 <h1><i class="glyphicon glyphicon-user"></i>&nbsp;
   <span ng-if="student.artist.nickname">"{{ student.artist.nickname }}"</span>
-  <span ng-if="!student.artist.nickname">{{ student.user.first_name }} {{ student.user.last_name }}</span>
+  <span ng-if="!student.artist.nickname">{{ student.artist.user.first_name }} {{ student.artist.user.last_name }}</span>
 </h1>
 <div class="promotion">
   Promotion <a ui-sref="school.promotion({id: promotion.id})">{{ promotion.name }}</a>
@@ -12,14 +12,14 @@
 
     <h2><i class="glyphicon glyphicon-question-sign"></i>&nbsp;A propos</h2>
 
-    <div ng-if="student.user.birthdate || student.user.birthplace">
-      Né(e) <span ng-if="student.user.birthdate">le {{ student.user.birthdate | date : "d MMMM"  | translate_en_to_fr }}</span> <span ng-if="student.user.birthplace">à {{ student.user.birthplace }}</span>.
+    <div ng-if="student.artist.user.birthdate || student.artist.user.birthplace">
+      Né(e) <span ng-if="student.artist.user.birthdate">le {{ student.artist.user.birthdate | date : "d MMMM"  | translate_en_to_fr }}</span> <span ng-if="student.artist.user.birthplace">à {{ student.artist.user.birthplace }}</span>.
     </div>
 
     <div class="links">
       <ul>
-        <li class="phone" ng-if="student.user.homeland_phone && isAuthenticated">
-          <i class="glyphicon glyphicon-earphone "></i>&nbsp;<a href="tel:{{ student.user.homeland_phone }}" class="" target="_blank">{{ student.user.homeland_phone }}</a>
+        <li class="phone" ng-if="student.artist.user.homeland_phone && isAuthenticated">
+          <i class="glyphicon glyphicon-earphone "></i>&nbsp;<a href="tel:{{ student.artist.user.homeland_phone }}" class="" target="_blank">{{ student.artist.user.homeland_phone }}</a>
         </li>
         <li class="websites" ng-if="student.websites.length">
           <i class="glyphicon glyphicon-link"></i>&nbsp;Web :
@@ -129,7 +129,7 @@
 
         <div role="tabpanel" class="tab-pane" id="more-cursus">
           <h4>Cursus</h4>
-          <p ng-bind-html="student.user.cursus|markdown"></p>
+          <p ng-bind-html="student.artist.user.cursus|markdown"></p>
           <p>Curiculum Vitae : <a ng-show="more.curriculum_vitae" ng-href='{{more.curriculum_vitae}}' target="_blank">{{more.curriculum_vitae}}</a></p>
         </div>
 
@@ -176,8 +176,8 @@
 
 
 <div class="photo col-sm-3">
-  <div class="thumbnail" ng-if="student.user.photo" >
-    <fresnoy-thumbnail thurl="'media/'+student.user.photo" thwidth="300" thheight="400"></fresnoy-thumbnail>
+  <div class="thumbnail" ng-if="student.artist.user.photo" >
+    <fresnoy-thumbnail thurl="'media/'+student.artist.user.photo" thwidth="300" thheight="400"></fresnoy-thumbnail>
   </div>
 </div>
 

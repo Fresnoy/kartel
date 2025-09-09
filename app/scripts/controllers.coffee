@@ -317,7 +317,7 @@ angular.module('memoire.controllers', ['memoire.services'])
     # Get more infos from candidature
     $scope.more = null
     $scope.country = ISO3166
-    critere = {search: student.user.username, ordering:'-id'}
+    critere = {search: student.artist.user.username, ordering:'-id'}
     Candidatures.getList(critere).then((candidatures) ->
           if(candidatures.length)
               $scope.more = candidatures[0]
