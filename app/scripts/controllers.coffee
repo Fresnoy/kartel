@@ -317,14 +317,7 @@ angular.module('memoire.controllers', ['memoire.services'])
     # Get more infos from candidature
     $scope.more = null
     $scope.country = ISO3166
-    if(student.artist.user)
-      loadCandidature({search: student.artist.user.username, ordering:'-id'})
-  
-    else
-      Artists.one(student.artist.collectives[0].split("/").reverse()[0]).get().then((artist) ->
-        if(artist.user)
-          loadCandidature({search: artist.user.username, ordering:'-id'})
-      )
+    
     # loadCandidature({search: student.artist.user.username, ordering:'-id'})
     loadCandidature = (critere) ->
       Candidatures.getList(critere).then((candidatures) ->
@@ -338,7 +331,14 @@ angular.module('memoire.controllers', ['memoire.services'])
                 )
               )
       )
-
+    if(student.artist.user)
+      loadCandidature({search: student.artist.user.username, ordering:'-id'})
+  
+    else
+      Artists.one(student.artist.collectives[0].split("/").reverse()[0]).get().then((artist) ->
+        if(artist.user)
+          loadCandidature({search: artist.user.username, ordering:'-id'})
+      )
 
   )
 
