@@ -176,7 +176,7 @@
 
 
 <div class="photo col-sm-3">
-  <div class="thumbnail" ng-if="student.artist.user.photo" >
+  <div class="thumbnail" ng-if="student.artist.user.photo && !student.artist.artist_photo" >
     <fresnoy-thumbnail thurl="'media/'+student.artist.user.photo" thwidth="300" thheight="400"></fresnoy-thumbnail>
   </div>
   <div class="thumbnail" ng-if="student.artist.artist_photo" >
