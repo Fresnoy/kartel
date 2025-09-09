@@ -284,7 +284,7 @@ angular.module('memoire.controllers', ['memoire.services'])
     Lightbox.openModal([image], 0)
 )
 
-.controller('StudentController', ($scope, $rootScope, $stateParams, Students, Artworks, Promotions, Candidatures, ArtistsV2, Users, ISO3166) ->
+.controller('StudentController', ($scope, $rootScope, $stateParams, Students, Artworks, Artists, Promotions, Candidatures, ArtistsV2, Users, ISO3166) ->
   # main title
   $rootScope.main_title="Kartel - Étudiant"
 
@@ -317,8 +317,17 @@ angular.module('memoire.controllers', ['memoire.services'])
     # Get more infos from candidature
     $scope.more = null
     $scope.country = ISO3166
-    critere = {search: student.artist.user.username, ordering:'-id'}
-    Candidatures.getList(critere).then((candidatures) ->
+    if(student.artist.user)
+      loadCandidature({search: student.artist.user.username, ordering:'-id'})
+  
+    else
+      Artists.one(student.artist.collectives[0].split("/").reverse()[0]).get().then((artist) ->
+        if(artist.user)
+          loadCandidature({search: artist.user.username, ordering:'-id'})
+      )
+    # loadCandidature({search: student.artist.user.username, ordering:'-id'})
+    loadCandidature = (critere) ->
+      Candidatures.getList(critere).then((candidatures) ->
           if(candidatures.length)
               $scope.more = candidatures[0]
               $scope.more.artist = ArtistsV2.one($scope.more.artist.split("/").reverse()[0]).get().then((artist) ->
@@ -329,6 +338,7 @@ angular.module('memoire.controllers', ['memoire.services'])
                 )
               )
       )
+
 
   )
 
