@@ -78,11 +78,12 @@
         <a ng-click="goTo()">
           <div class="media">
             <div class="media-left">
-              <div ng-if="match.model.user">
-                <fresnoy-thumbnail ng-if="match.model.user.photo" class="media-object" thurl="'media/' + match.model.user.photo" thwidth="40" thheight="40"></fresnoy-thumbnail>
-                <img ng-if="!match.model.user.photo" src="images/anonymous.jpg" width="40" height="40" alt="no picture">
+              <div ng-if="match.model.artist">
+                <fresnoy-thumbnail ng-if="match.model.artist.artist_photo" class="media-object" thurl="'media/' + match.model.artist.artist_photo" thwidth="40" thheight="40"></fresnoy-thumbnail>
+                <fresnoy-thumbnail ng-if="!match.model.artist.artist_photo && match.model.artist.user.photo" class="media-object" thurl="'media/' + match.model.artist.user.photo" thwidth="40" thheight="40"></fresnoy-thumbnail>
+                <img ng-if="!match.model.artist.user.photo && !match.model.artist.artist_photo" src="images/anonymous.jpg" width="40" height="40" alt="no picture">
               </div>
-              <div ng-if="!match.model.user">
+              <div ng-if="!match.model.artist">
                 <fresnoy-thumbnail ng-if="match.model.picture" class="media-object" thurl="match.model.picture" thwidth="40" thheight="40"></fresnoy-thumbnail>
                 <img ng-if="!match.model.picture" src="images/anonymous.jpg" width="40" height="40" alt="no picture">
               </div>
@@ -92,7 +93,7 @@
                   <span ng-bind-html="match.model.title | uibTypeaheadHighlight:query"></span>
                   <br/><small><fresnoy-authors authors="match.model.authors"/></small>
               </h4>
-              <h4 class="media-heading" ng-if="match.model.user">
+              <h4 class="media-heading" ng-if="match.model.artist">
                 <span ng-bind-html="match.model | artist_name | uibTypeaheadHighlight:query"></span>
               </h4>
             </div>
