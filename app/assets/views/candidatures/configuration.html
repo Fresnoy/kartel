@@ -186,10 +186,12 @@
                         );
                         reminder_modif=!reminder_modif;
                         " >Valider</button>
+    </div>
      <h4 ng-init='reminder_modif2=false' ng-show=!reminder_modif2>
       {{ application_reminder_email_date_2  | date : "EEEE d MMMM yyyy" | translate_en_to_fr }}
       <a ng-click="reminder_modif2=!reminder_modif2" ><i class="glyphicon glyphicon-edit"></i>  </a>
     </h4>
+    
     <div ng-show=reminder_modif2>
       <input type="date" name="cRemiderDate2" ng-model="application_reminder_email_date_2"/>
 
