@@ -794,6 +794,7 @@ angular.module('memoire.controllers', ['memoire.services'])
     $scope.selected_publish_date = new Date($scope.configuration.selected_publish_date)
     $scope.candidature_date_end = new Date($scope.configuration.candidature_date_end)
     $scope.application_reminder_email_date = new Date($scope.configuration.application_reminder_email_date)
+    $scope.application_reminder_email_date_2 = new Date($scope.configuration.application_reminder_email_date_2)
     # get promo infos
     promo_id = $scope.configuration.promotion.match(/\d+$/)[0]
     APIV2K.one("school/promotion/"+promo_id).get().then((promo) ->
