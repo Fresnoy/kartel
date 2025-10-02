@@ -2,9 +2,15 @@
 import config from "@/config";
 import { useRouter } from "vue-router";
 
-import { ref, onMounted, watch } from "vue";
+import { ref, onMounted, onBeforeUnmount, watch } from "vue";
 
 import { marked } from "marked";
+
+/**
+ * Modules
+ */
+import { Fancybox } from "@fancyapps/ui";
+import "@fancyapps/ui/dist/fancybox/fancybox.css";
 
 /**
 
@@ -88,8 +94,16 @@ function formatUrlToText(url) {
   return url;
 }
 
+let preview = ref();
+
 onMounted(() => {
   setup(artistId, token);
+  Fancybox.bind(preview.value, "[data-fancybox]");
+  
+});
+
+onBeforeUnmount(() => {
+  Fancybox.destroy();
 });
 
 // Save the first route which mount the component and store it
@@ -104,6 +118,7 @@ watch(
 
     artistId = router.currentRoute.value.params.id;
     setup(artistId, token);
+    Fancybox.bind("[data-fancybox]");
   }
 );
 
@@ -240,7 +255,7 @@ watch(
           </div>
 
           <!-- need a method which check the validity of the token instead of just verify it existence -->
-          <div v-if="token" class="flex flex-wrap gap-6">
+          <div v-if="token && artist" class="flex flex-wrap gap-6">
             <div class="flex flex-col gap-3 flex-[1_1_20rem]">
               <UnderlineTitle
                 class="w-max"
@@ -389,6 +404,7 @@ watch(
                       v-if="candidature?.consideredProject1"
                       :href="candidature?.consideredProject1"
                       class="underline"
+                      target="_blank"
                     >
                       1<sup>ère</sup> année
                     </a>
@@ -397,6 +413,7 @@ watch(
                       v-if="candidature?.consideredProject2"
                       :href="candidature?.consideredProject2"
                       class="underline"
+                      target="_blank"
                     >
                       2<sup>ème</sup> année
                     </a>
@@ -418,6 +435,7 @@ watch(
                       v-if="candidature?.freeDocument"
                       :href="candidature?.freeDocument"
                       class="underline"
+                      target="_blank"
                     >
                       {{ formatUrlToText(candidature?.freeDocument) }}
                     </a>
@@ -431,6 +449,7 @@ watch(
                       v-if="candidature?.presentationVideo"
                       :href="candidature?.presentationVideo"
                       class="underline"
+                      data-fancybox="preview"
                     >
                       {{ formatUrlToText(candidature?.presentationVideo) }}
                     </a>

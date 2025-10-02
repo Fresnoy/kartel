@@ -94,6 +94,9 @@ async function getArtist(id) {
               title
               picture
             }
+            studentApplication{
+              id
+            }
           }
         }
       `
@@ -298,7 +301,13 @@ async function setup(artistId, auth) {
   await getUser(artistId);
 
   if (auth) {
-    getCandidature(artistId);
+    // get the studentapplication (array) max id value
+    console.log(artist.value.studentApplication);
+    if (artist.value.studentApplication) {
+      let maxId = artist.value.studentApplication.map(app => app.id).reduce((a, b) => Math.max(a, b), 0);
+      console.log(maxId)
+      getCandidature(maxId);
+    }
   }
 
 }
