@@ -402,18 +402,18 @@ watch(
                     <b>Proposition initiale:</b>
                     <a
                       v-if="candidature?.consideredProject1"
-                      :href="candidature?.consideredProject1"
+                      :href="`${config.api_media_url}${candidature?.consideredProject1}`"
                       class="underline"
-                      target="_blank"
+                      data-fancybox="preview"
                     >
                       1<sup>ère</sup> année
                     </a>
                     <span v-if="candidature?.consideredProject2">/</span>
                     <a
                       v-if="candidature?.consideredProject2"
-                      :href="candidature?.consideredProject2"
+                      :href="`${config.api_media_url}${candidature?.consideredProject2}`"
                       class="underline"
-                      target="_blank"
+                      data-fancybox="preview"
                     >
                       2<sup>ème</sup> année
                     </a>
@@ -433,9 +433,9 @@ watch(
                     <b>Document libre:</b>
                     <a
                       v-if="candidature?.freeDocument"
-                      :href="candidature?.freeDocument"
+                      :href="`${config.api_media_url}${candidature?.freeDocument}`"
                       class="underline"
-                      target="_blank"
+                      data-fancybox="preview"
                     >
                       {{ formatUrlToText(candidature?.freeDocument) }}
                     </a>
@@ -447,7 +447,9 @@ watch(
                     <b>Vidéo de présentation de son travail:</b>
                     <a
                       v-if="candidature?.presentationVideo"
-                      :href="candidature?.presentationVideo"
+                      :href="candidature?.presentationVideo.includes('vimeo') ? 
+                        `https://vimeo.com/${candidature?.presentationVideo.split('/').reverse()[0]}` 
+                        : candidature?.presentationVideo"
                       class="underline"
                       data-fancybox="preview"
                     >
