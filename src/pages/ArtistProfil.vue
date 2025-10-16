@@ -369,6 +369,7 @@ watch(
                       v-if="candidature?.curriculumVitae"
                       :href="`${config.api_media_url}${candidature?.curriculumVitae}`"
                       class="underline"
+                      data-fancybox="preview"
                     >
                       {{ formatUrlToText(candidature?.curriculumVitae) }}
                     </a>
@@ -382,6 +383,7 @@ watch(
                       v-if="candidature?.identityCard"
                       :href="`${config.api_media_url}${candidature?.identityCard}`"
                       class="underline"
+                      data-fancybox="preview"
                     >
                       {{ formatUrlToText(candidature?.identityCard) }}
                     </a>
