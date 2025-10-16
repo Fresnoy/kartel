@@ -367,7 +367,7 @@ watch(
                     <b>CV:</b>
                     <a
                       v-if="candidature?.curriculumVitae"
-                      :href="${config.api_media_url}${candidature?.curriculumVitae}"
+                      :href="`${config.api_media_url}${candidature?.curriculumVitae}`"
                       class="underline"
                     >
                       {{ formatUrlToText(candidature?.curriculumVitae) }}
@@ -380,7 +380,7 @@ watch(
                     <b>Justificatif d'identité:</b>
                     <a
                       v-if="candidature?.identityCard"
-                      :href="${config.api_media_url}${candidature?.identityCard}"
+                      :href="`${config.api_media_url}${candidature?.identityCard}`"
                       class="underline"
                     >
                       {{ formatUrlToText(candidature?.identityCard) }}
