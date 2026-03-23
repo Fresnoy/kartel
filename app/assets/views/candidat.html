@@ -30,11 +30,12 @@
   </div>
   <div class="info col-md-9 col-lg-9">
     <h1>
-        <span ng-if="artist.nickname" title="Nom d'artiste">{{ artist.nickname }}
+        <span ng-if="artist.nickname && (candidature.artist.user.profile.preferred_first_name.length>0 || candidature.artist.user.profile.preferred_last_name.length>0)" title="Nom d'artiste">{{ artist.nickname }}
           <span ng-if="artist.nickname!=(artist.user.first_name+' '+artist.user.last_name)">
             <small> ({{ artist.user.first_name }}  {{ artist.user.last_name }})</small></span>
         </span>
-        <span ng-if="!artist.nickname"> {{ artist.user.first_name }}  {{ artist.user.last_name }}</span>
+        <span ng-if="!artist.nickname && (artist.user.profile.preferred_first_name.length>0 || artist.user.profile.preferred_last_name.length>0)"> {{ artist.user.profile.preferred_first_name }}  {{ artist.user.profile.preferred_last_name }}</span>
+        <span ng-if="!artist.nickname && !artist.user.profile.preferred_first_name.length>0 && !artist.user.profile.preferred_last_name.length>0"> {{ artist.user.first_name }}  {{ artist.user.last_name }}</span>
       </h1>
 
     <p><i class="glyphicon glyphicon-dashboard"></i>
@@ -219,7 +220,7 @@
               <div> Justificatifs : </div>
               <ul style="list-style-type:none;">
               <li class="justificatifs" ng-repeat="justif in candidature.cursus_justifications.media track by $index">
-                <a ng-click='singleLightbox(justif.file || justif.picture, justif.label)'> {{justif.description!="false"?"*":""}} {{justif.label}} </a> 
+                <a ng-click='singleLightbox(justif.file || justif.picture, justif.label)'> {{justif.description.toLowerCase().includes("master")?"*":""}} {{justif.label}} </a> 
               </li>
               </ul>
               <small>*bac +5</small>
