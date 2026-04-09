@@ -30,7 +30,8 @@
   </div>
   <div class="info col-md-9 col-lg-9">
     <h1>
-        <span ng-if="artist.nickname && (candidature.artist.user.profile.preferred_first_name.length>0 || candidature.artist.user.profile.preferred_last_name.length>0)" title="Nom d'artiste">{{ artist.nickname }}
+        <span ng-if="artist.nickname " 
+              title="Nom d'artiste">{{ artist.nickname }}
           <span ng-if="artist.nickname!=(artist.user.first_name+' '+artist.user.last_name)">
             <small> ({{ artist.user.first_name }}  {{ artist.user.last_name }})</small></span>
         </span>
@@ -145,6 +146,13 @@
           <div role="tabpanel" class="tab-pane" id="admin-infos">
             <h3>Infos</h3>
             <div class="person">
+              <p class="">
+                <span>Prénom : </span>{{artist.user.first_name }}<br/>
+                <span>Nom : </span>{{artist.user.last_name }}<br/>
+                <span>Prénom d'usage : </span><span ng-bind-html="artist.user.profile.preferred_first_name || '<em>Non renseigné</em>'"></span><br/>
+                <span>Nom d'usage : </span><span ng-bind-html="artist.user.profile.preferred_last_name || '<em>Non renseigné</em>'"></span><br/>
+                <span>Pseudo / Nom d'artiste : </span><span ng-bind-html="artist.nickname || '<em>Non renseigné</em>'"></span><br/>
+              </p>
               <p>
                 <!-- class="text-danger warning" -->
                 🗓 Né<span ng-if="artist.user.profile.gender=='F'">e</span> en {{country.codeToCountry[artist.user.profile.birthplace_country]}}<!--
@@ -170,6 +178,7 @@
 
           <div role="tabpanel" class="tab-pane" id="contact">
             <h3>Contact</h3>
+
             <p><i class="glyphicon glyphicon-earphone"></i>&nbsp;<a href="tel:{{artist.user.profile.homeland_phone}}" class="" target="_blank">{{ artist.user.profile.homeland_phone }}</a></p>
 
             <p><i class="glyphicon glyphicon-envelope"></i>&nbsp;<a href="mailto:{{artist.user.email}}" class="" target="_blank">{{ artist.user.email }}</a></p>
