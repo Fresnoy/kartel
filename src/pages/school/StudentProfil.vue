@@ -59,7 +59,6 @@ onMounted(() => {
 
       user.value = data;
     }
-
     let userId = getId(student.value.user);
     getUser(userId);
   }
@@ -151,7 +150,6 @@ onMounted(() => {
 
     <div class="w-full flex flex-col">
       <RouterView />
-
       <div class="hidden p-2 w-full text-sm">
         <h2 class="font-bold">Artist Profile</h2>
         <p>{{ artist }}</p>

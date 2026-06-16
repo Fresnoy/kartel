@@ -54,12 +54,17 @@ function initValues() {
  *
  */
 async function getArtist(id) {
+  token = localStorage.getItem("token") || "";
+
   try {
     const response = await axios.post(`${config.v3_graph}`, {
       query:`
         query GetArtist {
           artist(id: ${id}) {
             id
+            collectives{
+              id
+            }
             displayName
             firstName
             lastName
@@ -71,6 +76,7 @@ async function getArtist(id) {
             homelandPhone
             residenceAddress
             socialInsuranceNumber
+            birthdate
             cursus
             bioFr
             bioEn
@@ -102,7 +108,8 @@ async function getArtist(id) {
       `
       }, {
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          ...(token && {'Authorization': `JWT ${token}`})
         }
       }
     );
@@ -123,11 +130,12 @@ async function getArtist(id) {
  *
  */
 async function getUser(id) {
+  token = localStorage.getItem("token") || "";
   let headers = {
     "Content-Type": "application/json;charset=UTF-8",
   };
 
-  if (!!token) {
+  if (token) {
     headers.Authorization = `JWT ${token}`;
   }
 
@@ -142,9 +150,7 @@ async function getUser(id) {
         }
       `
     }, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
+      headers: headers
     }
     );
 
@@ -298,14 +304,12 @@ async function setup(artistId, auth) {
   // await the artist data for get the user url to not exec the function getUser inside
   await getArtist(artistId);
 
-  await getUser(artistId);
-
   if (auth) {
     // get the studentapplication (array) max id value
-    console.log(artist.value.studentApplication);
+    
     if (artist.value.studentApplication) {
       let maxId = artist.value.studentApplication.map(app => app.id).reduce((a, b) => Math.max(a, b), 0);
-      console.log(maxId)
+      
       getCandidature(maxId);
     }
   }

@@ -378,6 +378,16 @@ watch(
                 </li>
                 <li class="inline-flex gap-2">
                   <div class="flex flex-wrap gap-1">
+                    <b>Date de naissance:</b>
+                    <p v-if="artist?.birthdate">
+                      {{ new Date(artist.birthdate).toLocaleDateString('fr-FR') }}
+                    </p>
+                    
+                    <p v-else class="text-gray italic">Non renseigné.</p>
+                  </div>
+                </li>
+                <li class="inline-flex gap-2">
+                  <div class="flex flex-wrap gap-1">
                     <b>Justificatif d'identité:</b>
                     <a
                       v-if="candidature?.identityCard"
