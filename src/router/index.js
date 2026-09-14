@@ -117,6 +117,15 @@ const router = createRouter({
         title: "Œuvre - Kartel",
       },
     },
+    // Staff
+    {
+      path: "/staff/:id",
+      name: "staff",
+      component: () => import("../pages/people/StaffPage.vue"),
+      meta: {
+        title: "Staff - Kartel",
+      },
+    },
     // For visualisation but need to be children of artist and artwork
     {
       path: "/media",

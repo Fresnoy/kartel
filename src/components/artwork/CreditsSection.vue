@@ -27,7 +27,7 @@ const sortCollaborators = () => {
   const results = collaboratorTasks.map(taskName => ({
     [taskName]: props.collaborators
       .filter(collaborator => collaborator.taskName === taskName)
-      .map(collaborator => collaborator.staffName)
+      .map(collaborator => [collaborator.staffName, collaborator.staff.id])
   }));
 
   // Initialize new array with a first pair of task, collaborator's name
@@ -73,28 +73,26 @@ const sortCollaborators = () => {
       :desc_fr="props.creditsFr"
       :desc_en="props.creditsEn"
     />
-    <ul v-if="sortCollaborators()[0]" class="flex flex-col gap-3">
-      <UnderlineTitle title="Collaborateurs" :fontSize="3" />
+    <ul v-if="sortCollaborators()[0]" class="flex flex-col gap-3" text-gray-dark>
+      <!-- <UnderlineTitle title="" :fontSize="3" /> -->
       <li
         v-for="collaborator in sortCollaborators()"
         :key="collaborator"
-        class="flex flex-col gap-3"
+        class=""
       >
-        <h4
-          class="text-lg font-medium after:block after:w-20 after:h-1 after:bg-black"
-        >
-          {{ Object.values(collaborator)[0].join(", ") }}
-        </h4>
-        <h5 class="text-base font-medium text-gray-dark">
-          {{ Object.keys(collaborator)[0] }}
-        </h5>
-        <!-- find a way to reduce, like by grouping according to task -->
-        <!-- a outreach description of the task exist, possible to add it -->
+            <template v-for="(c, index) in Object.values(collaborator)[0]" :key="c[1]">
+              <router-link :to="`/staff/${c[1]}`" class="hover:underline">
+                {{ c[0] }}
+              </router-link>
+              <span v-if="index < Object.values(collaborator)[0].length - 1">,&nbsp;</span>
+            </template>
+            &nbsp;: {{ Object.keys(collaborator)[0] }}
+      
       </li>
     </ul>
 
-    <ul v-if="props.partners[0]" class="pl-6 flex flex-col gap-3">
-      <UnderlineTitle title="Partenaires" :fontSize="3" />
+    <ul v-if="props.partners[0]" class=" flex flex-col gap-3">
+      <!-- <UnderlineTitle title="Partenaires" :fontSize="3" /> -->
       <li
         v-for="partner in props.partners"
         :key="partner.name"
