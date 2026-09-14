@@ -57,6 +57,10 @@ async function getArtwork(id) {
                 label
                 description
               }
+              staff {
+                id
+                displayName
+              }
             }
             partners {
               taskName
