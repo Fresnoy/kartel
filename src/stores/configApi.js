@@ -87,6 +87,7 @@ export const useConfigApi = defineStore("configApi", () => {
                 displayName
                 artist {
                   id
+                  alphabeticalOrder
                 }
                 user {
                  id
@@ -233,9 +234,8 @@ export const useConfigApi = defineStore("configApi", () => {
    */
   function sortStudents(students, order) {
       students.sort((a, b) => {
-        let aName = a.alphabeticalOrder? formatSortingNames(a.alphabeticalOrder): formatSortingNames(a.displayName);
-        let bName = b.alphabeticalOrder? formatSortingNames(b.alphabeticalOrder): formatSortingNames(b.displayName);
-
+        let aName = a.alphabeticalOrder? a.artist.alphabeticalOrder: a.displayName;
+        let bName = b.alphabeticalOrder? b.artist.alphabeticalOrder: b.displayName;
 
         if (order === "descending") {
           return aName < bName ? 1 : -1;
