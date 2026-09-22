@@ -42,8 +42,8 @@ onMounted(async () => {
   if (!storeApi.promotions[0]) {
     await storeApi.getPromotions();
 
-    // get the second most recent promotion (avoid the recent because sometimes it's the empty one)
-    router.push(`/school/promotion/${storeApi.promotions[1].id}`);
+    // get the first promotion (most recent)
+    router.push(`/school/promotion/${storeApi.promotions[0].id}`);
   }
 
   storeApi.getSelectedPromo(promoId.value);
