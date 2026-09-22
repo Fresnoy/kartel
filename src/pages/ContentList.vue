@@ -54,7 +54,7 @@ const component = computed(() => {
 
 let defGenres = ref(null);
 let defKeywords = ref(null);
-let defNationality = ref(null);
+let defNationalities = ref(null);
 let defProductionYear = ref([]);
 // let defQ = ref(null);
 let defShootingPlace = ref(null);
@@ -80,7 +80,7 @@ let artist_type = ref(null);
 let params = ref();
 
 // watcher
-watch([genres, keywords, productionYear, q, shootingPlace, type, artist_type], () => {
+watch([genres, keywords, productionYear, q, shootingPlace, type, artist_type, nationality], () => {
 
   // authorized path to execute router
   let paths = ["/artists", "/artworks"]
@@ -187,8 +187,46 @@ function getArtistsTypes() {
 }
 getArtistsTypes();
 
+// get alla nationalities of artists
+async function getNationalities() {
+  try {
+    const response = await axios.post(`${config.v3_graph}`, {
+      query:
+      `
+      query MyQuery {
+        artists {
+          nationality
+        }
+      }
+      `
+      }, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+    const data = response.data.data.artists;
+    // extract only the nationalities, may some are null, some are twice or thee ',' separated, so we need to split them and remove duplicates
+    const regionNames = new Intl.DisplayNames(['fr'], { type: 'region' });
+    const nationalities = new Set(
+      data.flatMap(({ nationality }) => nationality
+        ? nationality.split(',').map(n => n.trim().slice(0, 2).toUpperCase())
+        : [])
+    );
+
+    defNationalities.value = [...nationalities]
+      .sort()
+      .map(id => ({ value:id, name: regionNames.of(id) }));
+
+  } catch (err) {
+    console.error(err);
+  }
+}
+getNationalities();
+
 // fetch a load of artworks
 const fetchData = async () => {
+    console.log("FETCH DATA")
     await getContent(typeOfContent.value, params.value);
     loader.value = false
 };
@@ -305,6 +343,15 @@ watch(
         :selectedValue="artist_type"
         desc="Artiste"
         @update:option="(newValue) => (artist_type = newValue)"
+      ></UiSelect>
+       <UiSelect
+        v-if="params && Object.keys(params).includes('nationality')"
+        :options="defNationalities"
+        defaultValue="aucun"
+        optionKeyName="label"
+        :selectedValue="nationality"
+        desc="Nationalité"
+        @update:option="(newValue) => (nationality = newValue)"
       ></UiSelect>
 
       <UiSelect

@@ -71,6 +71,9 @@ class Content {
       let typeName = params.artist_type[0].toUpperCase() + params.artist_type.substring(1);
       arrayFilters.push(`is${typeName}: true`);
     }
+    if (params.nationality && params.nationality != "<empty string>") {
+      arrayFilters.push(`nationality: "${params.nationality}"`);
+    }
     let filters = arrayFilters.join(", ");
 
     return filters
