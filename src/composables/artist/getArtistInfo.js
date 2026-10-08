@@ -81,6 +81,9 @@ async function getArtist(id) {
             bioFr
             bioEn
             student {
+              id
+              diplomaFile
+              diplomaMention
               graduate
                 promotion {
                   id
@@ -99,6 +102,8 @@ async function getArtist(id) {
               id
               title
               picture
+              productionContract
+              productionDate
             }
             studentApplication{
               id

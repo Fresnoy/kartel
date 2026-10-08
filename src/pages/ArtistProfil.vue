@@ -74,6 +74,21 @@ const formatSocialNumber = (number) => {
   return number.toString().replaceAll(",", "");
 };
 
+
+const formatDomain = (url) => {
+  if (!url) return ''
+  try {
+    // Si l'URL n'a pas de protocole, on en ajoute un temporairement pour l'API URL
+    const validUrl = url.includes('://') ? url : `http://${url}`
+    const hostname = new URL(validUrl).hostname
+    
+    // On retire le "www." du début s'il est présent
+    return hostname.replace(/^www\./, '')
+  } catch {
+    return url
+  }
+}
+
 /**
  * parsed raw description from markdown or html (or both) and parse it
  * @param {string} content - desc from props via bio.data
@@ -245,11 +260,12 @@ watch(
               :fontSize="2"
             />
 
-            <ul class="flex flex-col gap-2">
-              <li class="" v-for="website in artist.websites" :key="website.id">
+            <ul class="flex flex-row gap-1">
+              <li class="flex gap-1" v-for="(website, index) in artist.websites" :key="website.id">
                 <a :href="website.url" class="underline" target="_blank">
-                  {{ website.titleFr || website.titleEn }}
+                  {{ formatDomain(website.url) }} 
                 </a>
+                <span v-if="index != Object.keys(artist.websites).length - 1"> - </span> 
               </li>
             </ul>
           </div>
@@ -332,13 +348,7 @@ watch(
                   <p v-else class="text-gray italic">Non renseigné.</p>
                 </li>
 
-                <li class="flex flex-wrap gap-1">
-                  <h5 class="font-bold">Adresse:</h5>
-                  <p v-if="artist?.residenceAddress">
-                    {{ artist.residenceAddress }}
-                  </p>
-                  <p v-else class="text-gray italic">Non renseigné.</p>
-                </li>
+                
 
                 <li class="flex flex-wrap gap-1">
                   <h5 class="font-bold">N° sécurité sociale:</h5>
@@ -348,6 +358,61 @@ watch(
                     }}
                   </p>
                   <p v-else class="text-gray italic">Non renseigné.</p>
+                </li>
+              </ul>
+
+              <UnderlineTitle
+                  class="w-max mt-6 mb-3"
+                  title="Administratif :"
+                  :uppercase="true"
+                  :underlineSize="1"
+                  :fontSize="4"
+                />
+              <ul>
+                <li class="inline-flex gap-2">
+                  <div class="flex flex-wrap gap-1">
+                    <div v-if="artist.student.graduate">
+                      <b>Diplômé, </b>
+                      <span class="italic" v-if="artist.student.diplomaMention">
+                        Mension {{ artist.student.diplomaMention }}
+                      </span>
+                      <a v-if="artist.student.diplomaFile" :href="`${config.api_media_url}${artist.student.diplomaFile}`" 
+                      target="_blank" class="">↗</a>
+                      <a v-else class="text-gray italic underline" :href="`${config.api_url}admin/school/student/${artist.student.id}/`" target="_blank" >
+                        Ajouter le diplôme
+                      </a>
+                    </div>
+                    <div v-else>
+                      
+                        <a class=" italic" :href="`${config.api_url}admin/school/student/${artist.student.id}/`" target="_blank" >
+                        Non diplômé ✎
+                      </a>
+                    </div>
+                  </div>
+                  <div v-if="artist.artworks">
+                    <li v-for="artwork in artist?.artworks" :key="artwork.id">
+                      <div class="flex flex-wrap gap-1">
+                        <b>Contrat de production {{ artwork.productionDate.split("-")[0] }} :</b>
+                        <a
+                          v-if="artwork?.productionContract"
+                          :href="`${config.api_media_url}${artwork?.productionContract}`"
+                          class="underline"
+                          data-fancybox="preview"
+                        >
+                          {{ formatUrlToText(artwork?.productionContract) }}
+                        </a>
+                        <p v-else class="text-gray italic">
+                          <a class="" :href="`${config.api_url}admin/production/artwork/${artwork.id}/#id_production_contract`" target="_blank" >
+                           Non renseigné ＋
+                        </a>
+                        </p>
+                      </div>
+                    </li>
+
+                  </div>
+                </li>
+                <li>
+                  
                 </li>
               </ul>
             </div>
