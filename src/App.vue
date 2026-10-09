@@ -22,7 +22,7 @@ const router = useRouter();
 let navigation = ref({
   open: false,
   children: [
-    { name: "School", path: "/school/promotion/28" },
+    { name: "School", path: "/school/promotion/9999" },
     { name: "Artists", path: "/artists" },
     { name: "Artworks", path: "/artworks" },
   ],

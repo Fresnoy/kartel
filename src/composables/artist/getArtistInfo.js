@@ -56,57 +56,70 @@ function initValues() {
 async function getArtist(id) {
   token = localStorage.getItem("token") || "";
 
+  const artistQuery=`id
+          displayName
+          firstName
+          lastName
+          nickname
+          artistPhoto
+          photo
+          nationality
+          homelandCountry
+          residencePhone
+          homelandPhone
+          residenceAddress
+          birthdate
+          cursus
+          bioFr
+          bioEn
+          student {
+            id
+            diplomaFile
+            diplomaMention
+            graduate
+              promotion {
+                id
+                name
+              }
+          }
+          websites {
+            titleEn
+            titleFr
+            url
+          }
+          user {
+            email
+            profile{
+              preferredFirstName
+              preferredLastName
+            }
+          }
+          artworks {
+            id
+            title
+            picture
+            productionContract
+            productionDate
+          }
+          studentApplication{
+            id
+            curriculumVitae
+            identityCard
+            consideredProject1
+            consideredProject2
+            freeDocument
+            presentationVideo
+          }`
+
   try {
     const response = await axios.post(`${config.v3_graph}`, {
+
       query:`
         query GetArtist {
           artist(id: ${id}) {
-            id
+            ${artistQuery}
             collectives{
-              id
-            }
-            displayName
-            firstName
-            lastName
-            artistPhoto
-            photo
-            nationality
-            homelandCountry
-            residencePhone
-            homelandPhone
-            residenceAddress
-            socialInsuranceNumber
-            birthdate
-            cursus
-            bioFr
-            bioEn
-            student {
-              id
-              diplomaFile
-              diplomaMention
-              graduate
-                promotion {
-                  id
-                  name
-                }
-            }
-             websites {
-              titleEn
-              titleFr
-              url
-            }
-            user {
-              email
-            }
-              artworks {
-              id
-              title
-              picture
-              productionContract
-              productionDate
-            }
-            studentApplication{
-              id
+              ${artistQuery}
             }
           }
         }

@@ -272,7 +272,9 @@ watch(
 
           <!-- need a method which check the validity of the token instead of just verify it existence -->
           <div v-if="token && artist" class="flex flex-wrap gap-6">
+
             <div class="flex flex-col gap-3 flex-[1_1_20rem]">
+
               <UnderlineTitle
                 class="w-max"
                 title="Contact"
@@ -280,30 +282,51 @@ watch(
                 :underlineSize="1"
                 :fontSize="2"
               />
-              <ul class="flex flex-col">
-                <li v-if="artist?.displayName" class="inline-flex gap-2">
-                  <div class="flex flex-wrap gap-1">
+              
+              <ul class="flex flex-col" v-for="artist in (artist?.collectives?.length > 0 ? artist.collectives : [artist])" :key="artist.id">
+                
+                <li class="inline-flex gap-2 mb-1">
+                  <div  class="flex flex-wrap gap-1">
                     <b>Pseudonyme:</b>
-                    <p>
-                      {{ artist.displayName }}
+                    <p v-if="artist.nickname">
+                      {{ artist.nickname  }}
                     </p>
+                    <p v-else class="text-gray italic">Non renseigné.</p>
                   </div>
                 </li>
 
                 <li
-                  v-else="artist?.first_name && artist?.last_name"
-                  class="inline-flex gap-2"
+                  v-if="artist?.firstName || artist?.lastName"
+                  class="flex flex-col mb-1"
                 >
-                  <div class="flex flex-wrap gap-1">
+                  <div class="flex gap-1 ">
                     <b>Nom:</b>
                     <p>
-                      {{ artist.last_name }}
+                      {{ artist.lastName }}
                     </p>
                   </div>
-                  <div class="flex flex-wrap gap-1">
+                  <div class="flex  gap-1">
                     <b>Prénom:</b>
                     <p>
-                      {{ artist.first_name }}
+                      {{ artist.firstName }}
+                    </p>
+                  </div>
+                </li>
+
+                 <li
+                  v-if="artist?.user?.profile.preferredLastName || artist?.user?.profile.preferredFirstName"
+                  class="flex flex-col mb-1"
+                >
+                  <div class="flex  gap-1">
+                    <b>Nom d'usage:</b>
+                    <p>
+                      {{ artist.user.profile.preferredLastName }}
+                    </p>
+                  </div>
+                  <div class="flex  gap-1">
+                    <b>Prénom d'usage:</b>
+                    <p>
+                      {{ artist.user.profile.preferredFirstName }}
                     </p>
                   </div>
                 </li>
@@ -349,16 +372,6 @@ watch(
                 </li>
 
                 
-
-                <li class="flex flex-wrap gap-1">
-                  <h5 class="font-bold">N° sécurité sociale:</h5>
-                  <p v-if="artist?.socialInsuranceNumber">
-                    {{
-                      formatSocialNumber(artist.socialInsuranceNumber)
-                    }}
-                  </p>
-                  <p v-else class="text-gray italic">Non renseigné.</p>
-                </li>
               </ul>
 
               <UnderlineTitle
@@ -371,20 +384,20 @@ watch(
               <ul>
                 <li class="inline-flex gap-2">
                   <div class="flex flex-wrap gap-1">
-                    <div v-if="artist.student.graduate">
+                    <div v-if="artist?.student?.graduate">
                       <b>Diplômé, </b>
-                      <span class="italic" v-if="artist.student.diplomaMention">
-                        Mension {{ artist.student.diplomaMention }}
+                      <span class="italic" v-if="artist?.student?.diplomaMention">
+                        Mension {{ artist?.student?.diplomaMention }}
                       </span>
-                      <a v-if="artist.student.diplomaFile" :href="`${config.api_media_url}${artist.student.diplomaFile}`" 
+                      <a v-if="artist?.student?.diplomaFile" :href="`${config.api_media_url}${artist?.student?.diplomaFile}`" 
                       target="_blank" class="">↗</a>
-                      <a v-else class="text-gray italic underline" :href="`${config.api_url}admin/school/student/${artist.student.id}/`" target="_blank" >
+                      <a v-else class="text-gray italic underline" :href="`${config.api_url}admin/school/student/${artist?.student?.id}/`" target="_blank" >
                         Ajouter le diplôme
                       </a>
                     </div>
                     <div v-else>
                       
-                        <a class=" italic" :href="`${config.api_url}admin/school/student/${artist.student.id}/`" target="_blank" >
+                        <a class=" italic" :href="`${config.api_url}admin/school/student/${artist?.student?.id}/`" target="_blank" >
                         Non diplômé ✎
                       </a>
                     </div>
@@ -426,7 +439,7 @@ watch(
                 :fontSize="2"
               />
 
-              <ul class="flex flex-col">
+              <ul class="flex flex-col" v-for="artist in (artist?.collectives?.length > 0 ? artist.collectives : [artist])" :key="artist.id" :set="candidature=artist?.studentApplication?artist.studentApplication[0]:null">
                 <li class="inline-flex gap-2">
                   <div class="flex flex-wrap gap-1">
                     <b>CV:</b>
