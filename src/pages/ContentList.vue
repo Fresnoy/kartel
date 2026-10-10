@@ -129,7 +129,8 @@ async function getKeywords() {
       `
       }, {
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'X-GraphQL-Cache' : 'true'
         }
       }
     );
@@ -201,7 +202,8 @@ async function getNationalities() {
       `
       }, {
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'X-GraphQL-Cache' : 'true'
         }
       }
     );
