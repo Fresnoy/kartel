@@ -102,6 +102,7 @@ async function getArtist(id) {
             productionDate
           }
           studentApplication{
+            createdOn
             id
             curriculumVitae
             identityCard
@@ -321,16 +322,6 @@ async function setup(artistId, auth) {
 
   // await the artist data for get the user url to not exec the function getUser inside
   await getArtist(artistId);
-
-  if (auth) {
-    // get the studentapplication (array) max id value
-    
-    if (artist.value.studentApplication) {
-      let maxId = artist.value.studentApplication.map(app => app.id).reduce((a, b) => Math.max(a, b), 0);
-      
-      getCandidature(maxId);
-    }
-  }
 
 }
 

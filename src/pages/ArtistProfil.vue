@@ -19,9 +19,6 @@ import "@fancyapps/ui/dist/fancybox/fancybox.css";
 **/
 import {
   artist,
-  user,
-  artworks,
-  candidature,
   setup,
 } from "@/composables/artist/getArtistInfo";
 
@@ -88,6 +85,7 @@ const formatDomain = (url) => {
     return url
   }
 }
+
 
 /**
  * parsed raw description from markdown or html (or both) and parse it
@@ -439,7 +437,10 @@ watch(
                 :fontSize="2"
               />
 
-              <ul class="flex flex-col" v-for="artist in (artist?.collectives?.length > 0 ? artist.collectives : [artist])" :key="artist.id" :set="candidature=artist?.studentApplication?artist.studentApplication[0]:null">
+              <ul class="flex flex-col" 
+                v-for="artist in (artist?.collectives?.length > 0 ? artist.collectives : [artist])" 
+                :key="artist.id" 
+                :set="candidature=artist?.studentApplication.pop() ?? null">
                 <li class="inline-flex gap-2">
                   <div class="flex flex-wrap gap-1">
                     <b>CV:</b>
