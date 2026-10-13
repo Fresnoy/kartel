@@ -53,7 +53,7 @@ const router = createRouter({
         {
           // promotion will be rendered inside School's <router-view> (Don't forget the router-view element to render children)
           // when /school/promotion/:id is matched
-          path: "promotion/:id",
+          path: "promotion/:id?",
           name: "promotion",
           component: () => import("../components/school/PromotionStudents.vue"),
         },

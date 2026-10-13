@@ -39,14 +39,14 @@ function selectPromotion(id) {
 onMounted(async () => {
   promoId.value = router.currentRoute.value.params.id;
 
-  if (!storeApi.promotions[0]) {
+  if (!storeApi.promotions[0] || promoId == "") {
     await storeApi.getPromotions();
 
     // get the first promotion (most recent)
     router.push(`/school/promotion/${storeApi.promotions[0].id}`);
   }
 
-  storeApi.getSelectedPromo(promoId.value);
+  storeApi.getSelectedPromo(promoId.value != "" ? promoId.value : storeApi.promotions[0].id );
 });
 </script>
 
