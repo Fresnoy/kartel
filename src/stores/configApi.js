@@ -104,7 +104,7 @@ export const useConfigApi = defineStore("configApi", () => {
         );
         let data = response.data;
 
-        sortStudents(data.data.promotion.students, "")
+        sortStudents(data.data?.promotion?.students, "")
 
         return data.data.promotion.students;
       } catch (err) {

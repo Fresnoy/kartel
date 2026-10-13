@@ -30,7 +30,7 @@ function parsedContent(content) {
     <div class="p-4 w-full bg-gray-extralightest dark:bg-black-light">
       <p
         v-if="bio?.data"
-        class="text-xs text-gray dark:text-gray-extralight whitespace-pre-line"
+        class="text-sm text-gray-dark dark:text-gray-extralight whitespace-pre-line"
         v-html="parsedContent(bio.data)"
       ></p>
     </div>
