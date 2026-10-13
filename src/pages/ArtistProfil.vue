@@ -385,7 +385,7 @@ watch(
             </div>
 
             <!-- AUTRES INFORMATIONS & CANDIDATURES -->
-            <div class="flex flex-col gap-4 flex-[1_1_22rem] break-all">
+            <div class="flex flex-col gap-4 flex-[1_1_22rem] break-all" v-if="artist.candidature || artist.collectives[0]?.studentApplication[0] ">
               <UnderlineTitle
                 class="w-max"
                 title="Autres informations & Candidature"
