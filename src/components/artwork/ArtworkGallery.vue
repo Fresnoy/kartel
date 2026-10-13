@@ -38,7 +38,7 @@ const props = defineProps({
         <li v-for="media in gallery.media" :key="media">
           <UiMedia
             :url="media.picture"
-            :medium="media.medium_url"
+            :medium="media.mediumUrl"
             :title="media.label"
           />
         </li>

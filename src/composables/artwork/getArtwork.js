@@ -76,6 +76,7 @@ async function getArtwork(id) {
               description
               media {
                 picture
+                mediumUrl
               }
             }
             inSituGalleries {
@@ -83,6 +84,7 @@ async function getArtwork(id) {
               description
               media {
                 picture
+                mediumUrl
               }
             }
             processGalleries {
@@ -90,6 +92,7 @@ async function getArtwork(id) {
               description
               media {
                 picture
+                mediumUrl
               }
             }
             pressGalleries {
@@ -97,6 +100,7 @@ async function getArtwork(id) {
               description
               media {
                 picture
+                mediumUrl
               }
             }
             mediationGalleries {
@@ -104,6 +108,7 @@ async function getArtwork(id) {
               description
               media {
                 picture
+                mediumUrl
               }
             }
           }

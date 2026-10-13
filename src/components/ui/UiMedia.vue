@@ -3,6 +3,9 @@
 import config from "@/config";
 
 import mediaPlaceholder from "@/assets/placeholder_media.svg";
+import mediaPlaceholderDoc from "@/assets/placeholder_media_document.svg";
+import mediaPlaceholderSound from "@/assets/placeholder_media_sound.svg";
+import mediaPlaceholderVideo from "@/assets/placeholder_media_video.svg";
 
 const props = defineProps({
   url: {
@@ -30,11 +33,36 @@ function type() {
     return "iframe";
   }
 
+  if (item.includes("vimeo")) {
+    return "iframe";
+  }
+
   if (item.includes(".pdf")) {
     return "pdf";
   }
 
   return null;
+}
+
+function getPlaceHolder(str) {
+  const audioType = ["soundcloud", "mp3", "wav", "ogg"];
+  const videoType = ["vimeo", "mp4", "mpeg4"];
+  const documentType = ["pdf", "doc"];
+  const value = str?.toLowerCase() ?? "";
+
+  console.log("placeHolader", str)
+
+  if (audioType.some((type) => value.includes(type))) {
+    return mediaPlaceholderSound;
+  }
+  if (videoType.some((type) => value.includes(type))) {
+    return mediaPlaceholderVideo;
+  }
+  if (documentType.some((type) => value.includes(type))) {
+    return mediaPlaceholderDoc;
+  }
+
+  return mediaPlaceholder;
 }
 
 function resizeMedia(width){
@@ -54,18 +82,15 @@ function resizeMedia(width){
         data-fancybox="gallery"
         :data-type="type()"
         :data-caption="props.title"
-        :href="
-          props.medium
-            ? props.medium
-            : resizeMedia(1000)
-        "
+        
+        :data-src="props.medium ? props.medium : resizeMedia(1000)"
       >
         <img
           class="w-full h-full object-cover aspect-video"
           :src="
             props.url
               ? resizeMedia(300)
-              : mediaPlaceholder
+              : getPlaceHolder(props.medium)
           "
           :alt="props.title"
         />
