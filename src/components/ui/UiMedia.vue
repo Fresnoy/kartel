@@ -68,6 +68,16 @@ function getPlaceHolder(str) {
 function resizeMedia(width){
   return `${config.media_service}?url=${config.api_media_url}${props.url}&mode=adapt&w=${width}&fmt=jpg`
 }
+
+function rewriteMedia(url){
+  if(url.includes("soundcloud") && !url.includes("url=") ){
+    return "https://w.soundcloud.com/player/?url="+url
+  }
+
+  return url
+
+}
+
 </script>
 
 <!-- Change the name with MediaCard might be better for reuse -->
@@ -82,8 +92,8 @@ function resizeMedia(width){
         data-fancybox="gallery"
         :data-type="type()"
         :data-caption="props.title"
-        
-        :data-src="props.medium ? props.medium : resizeMedia(1000)"
+        :data-height="200"
+        :data-src="props.medium ? rewriteMedia(props.medium) : resizeMedia(1000)"
       >
         <img
           class="w-full h-full object-cover aspect-video"
