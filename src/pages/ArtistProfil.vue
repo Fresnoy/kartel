@@ -2,7 +2,7 @@
 import config from "@/config";
 import { useRouter } from "vue-router";
 
-import { ref, onMounted, onBeforeUnmount, watch } from "vue";
+import { ref, onMounted, onBeforeUnmount, watch, computed } from "vue";
 
 import { marked } from "marked";
 
@@ -13,9 +13,7 @@ import { Fancybox } from "@fancyapps/ui";
 import "@fancyapps/ui/dist/fancybox/fancybox.css";
 
 /**
-
   Composables
-
 **/
 import {
   artist,
@@ -23,9 +21,7 @@ import {
 } from "@/composables/artist/getArtistInfo";
 
 /**
-
   Components
-
 **/
 import UnderlineTitle from "@/components/ui/UnderlineTitle.vue";
 import UiDescription from "@/components/ui/UiDescription.vue";
@@ -39,19 +35,21 @@ let artistId = router.currentRoute.value.params.id;
 
 let token = localStorage.getItem("token") || false;
 
-// refs from the composable
-// auth is true for now because method to verif auth is not created
-// const { artist, user, artwork, student, candidature, setup } = getArtistInfo(
-//   artistId,
-//   token
-// );
 let responsive = ref(false);
 
 /**
- *
- *  @params {number} number - the social insurance number
- *
+ * Détermine le type de profil (Solo, Duo, Trio, Collectif)
  */
+const artistTypeLabel = computed(() => {
+  if (!artist.value?.collectives || artist.value.collectives.length === 0) {
+    return "Artiste Solo";
+  }
+  const count = artist.value.collectives.length;
+  if (count === 2) return "Duo d'artistes";
+  if (count === 3) return "Trio d'artistes";
+  return `Collectif (${count} membres)`;
+});
+
 const formatSocialNumber = (number) => {
   const socialNumberRegex =
     /\S{1}\s{1}\S{2}\s{1}\S{2}\s{1}\S{2}\s{1}\S{3}\s{1}\S{3}\s{1}\S{2}/gm;
@@ -71,21 +69,16 @@ const formatSocialNumber = (number) => {
   return number.toString().replaceAll(",", "");
 };
 
-
 const formatDomain = (url) => {
-  if (!url) return ''
+  if (!url) return '';
   try {
-    // Si l'URL n'a pas de protocole, on en ajoute un temporairement pour l'API URL
-    const validUrl = url.includes('://') ? url : `http://${url}`
-    const hostname = new URL(validUrl).hostname
-    
-    // On retire le "www." du début s'il est présent
-    return hostname.replace(/^www\./, '')
+    const validUrl = url.includes('://') ? url : `http://${url}`;
+    const hostname = new URL(validUrl).hostname;
+    return hostname.replace(/^www\./, '');
   } catch {
-    return url
+    return url;
   }
-}
-
+};
 
 /**
  * parsed raw description from markdown or html (or both) and parse it
@@ -97,7 +90,6 @@ function parsedContent(content) {
 
 function formatUrlToText(url) {
   const filenameRegex = /\S{0,}[.]\S{0,}/gm;
-
   const split = url.split("/");
 
   if (!!split[split.length - 1].match(filenameRegex)) {
@@ -112,19 +104,16 @@ let preview = ref();
 onMounted(() => {
   setup(artistId, token);
   Fancybox.bind(preview.value, "[data-fancybox]");
-  
 });
 
 onBeforeUnmount(() => {
   Fancybox.destroy();
 });
 
-// Save the first route which mount the component and store it
 const routeName = router.currentRoute.value.name;
 watch(
   () => router.currentRoute.value.path,
   () => {
-    // if the route is not the same as the first, prevent a new setup call
     if (router.currentRoute.value.name !== routeName) {
       return;
     }
@@ -134,20 +123,13 @@ watch(
     Fancybox.bind("[data-fancybox]");
   }
 );
-
 </script>
 
 <template>
-  <!-- Student profile can be a component for artworks to -->
-  <!-- Need 2 differents system because artworks and media is not the same importance and not the same amount of info -->
-  <!-- Need to pass props before initialization ? -->
-  <!-- like title, subtitle, desc/bio fr & en, Artworks / Medias -->
-  <!-- and another component can be create for media selected -->
-
-  <!-- max h-screen ?? -> overflow scroll for component ? -->
   <main
     class="lg:pr-20 w-full min-h-screen flex flex-col gap-1 lg:gap-5 divide-y lg:divide-y-0"
   >
+    <!-- Navigation mobile responsive -->
     <div
       class="sticky z-10 top-14 w-full flex justify-around lg:hidden divide-x bg-white"
     >
@@ -174,30 +156,22 @@ watch(
     >
       <div class="pl-8 pr-6 pt-5 pb-12 lg:w-3/5 flex flex-col">
         <div id="content" class="flex flex-col gap-10">
+          
+          <!-- En-tête : Photo et Nom -->
           <div class="flex flex-col lg:flex-row lg:items-end gap-6">
             <div class="relative w-fit h-full flex">
               <img
-                v-if="artist?.artistPhoto"
-                class="min-h-[25vh] bg-black-extralightest object-cover"
-                :class="{ 'p-5': !artist?.artistPhoto }"
+                v-if="artist?.displayPhoto"
+                class="min-h-[300px] bg-black-extralightest object-cover"
+                :class="{ 'p-5': !artist?.displayPhoto }"
                 :src="
-                  artist?.artistPhoto
-                    ? `${config.media_service}?url=${config.api_media_url}${artist?.artistPhoto}&mode=adapt&w=1000&fmt=jpg`
+                  artist?.displayPhoto
+                    ? `${config.media_service}?url=${config.api_media_url}${artist?.displayPhoto}&w=300&h=300&mode=clip&fmt=jpg`
                     : userPlaceholder
                 "
                 :alt="`Photo de ${artist.displayName}`"
               />
-              <img
-                v-else
-                class="min-h-[25vh] bg-black-extralightest object-cover"
-                :class="{ 'p-5': !artist?.photo }"
-                :src="
-                  artist?.photo
-                    ? `${config.media_service}?url=${config.api_media_url}${artist?.photo}&mode=adapt&w=1000&fmt=jpg`
-                    : userPlaceholder
-                "
-                :alt="`Photo de ${artist?.displayName}`"
-              />
+              
               <svg
                 v-if="artist?.student?.graduate"
                 class="absolute top-0 right-0 translate-x-1/2 -translate-y-1/2 w-6"
@@ -210,10 +184,12 @@ watch(
               </svg>
             </div>
 
-            <div v-if="artist" class="w-2/3 flex flex-col">
-              <!-- <h4 v-if="user?.profile?.nationality" class="font-medium">
-                {{ user.profile.nationality }}
-              </h4> -->
+            <div v-if="artist" class="w-2/3 flex flex-col gap-2">
+              <!-- Badge du type d'artiste (Solo / Duo / Trio / Collectif) -->
+              <span class="px-2.5 py-1 text-xs font-semibold bg-gray-100 text-gray-800 rounded-md w-fit border border-gray-200">
+                {{ artistTypeLabel }}
+              </span>
+
               <UnderlineTitle
                 class="w-max"
                 v-if="artist?.displayName"
@@ -246,6 +222,7 @@ watch(
             </div>
           </div>
 
+          <!-- Sites et liens -->
           <div
             v-if="artist?.websites && artist?.websites.length !== 0"
             class="flex flex-col gap-3"
@@ -263,147 +240,130 @@ watch(
                 <a :href="website.url" class="underline" target="_blank">
                   {{ formatDomain(website.url) }} 
                 </a>
-                <span v-if="index != Object.keys(artist.websites).length - 1"> - </span> 
+                <span v-if="index != artist.websites.length - 1"> - </span> 
               </li>
             </ul>
           </div>
 
-          <!-- need a method which check the validity of the token instead of just verify it existence -->
-          <div v-if="token && artist" class="flex flex-wrap gap-6">
+          <!-- Section Contacts & Administratif & Autres infos (Affiché si token présent) -->
+          <div v-if="token && artist" class="flex flex-wrap gap-8">
 
-            <div class="flex flex-col gap-3 flex-[1_1_20rem]">
-
+            <!-- CONTACTS PAR MEMBRE -->
+            <div class="flex flex-col gap-4 flex-[1_1_22rem]">
               <UnderlineTitle
                 class="w-max"
-                title="Contact"
+                title="Contact & Informations"
                 :uppercase="true"
                 :underlineSize="1"
                 :fontSize="2"
               />
               
-              <ul class="flex flex-col" v-for="artist in (artist?.collectives?.length > 0 ? artist.collectives : [artist])" :key="artist.id">
-                
-                <li class="inline-flex gap-2 mb-1">
-                  <div  class="flex flex-wrap gap-1">
-                    <b>Pseudonyme:</b>
-                    <p v-if="artist.nickname">
-                      {{ artist.nickname  }}
+              <!-- Boucle propre par membre (collectif ou artiste solo) -->
+              <div 
+                v-for="(member, idx) in (artist?.collectives?.length > 0 ? artist.collectives : [artist])" 
+                :key="member.id || idx"
+                class="flex flex-col gap-3 p-4 bg-gray-extralightest rounded-lg border border-gray-200"
+              >
+                <!-- En-tête du membre si duo/trio -->
+                <div v-if="artist?.collectives?.length > 0" class="border-b pb-2 mb-1">
+                  <span class="text-xs font-bold uppercase tracking-wider text-gray-500">Membre {{ idx + 1 }}</span>
+                  <h4 class="font-bold text-base">{{ member.displayName || `${member.firstName || ''} ${member.lastName || ''}`.trim() || 'Membre sans nom' }}</h4>
+                </div>
+
+                <ul class="flex flex-col gap-2 text-sm">
+                  <li class="flex flex-wrap gap-1">
+                    <b>Pseudonyme :</b>
+                    <p v-if="member.nickname">{{ member.nickname }}</p>
+                    <p v-else class="text-gray italic">Non renseigné.</p>
+                  </li>
+
+                  <li class="flex flex-col">
+                    <div class="flex gap-1">
+                      <b>Nom :</b>
+                      <p>{{ member.lastName || 'Non renseigné' }}</p>
+                    </div>
+                    <div class="flex gap-1">
+                      <b>Prénom :</b>
+                      <p>{{ member.firstName || 'Non renseigné' }}</p>
+                    </div>
+                  </li>
+
+                  <li v-if="member?.user?.profile?.preferredLastName || member?.user?.profile?.preferredFirstName" class="flex flex-col">
+                    <div class="flex gap-1">
+                      <b>Nom d'usage :</b>
+                      <p>{{ member.user.profile.preferredLastName }}</p>
+                    </div>
+                    <div class="flex gap-1">
+                      <b>Prénom d'usage :</b>
+                      <p>{{ member.user.profile.preferredFirstName }}</p>
+                    </div>
+                  </li>
+
+                  <li class="flex flex-wrap gap-1">
+                    <b>Nationalité :</b>
+                    <p v-if="member?.nationality || member?.homelandCountry">
+                      {{ member?.nationality || member?.homelandCountry }}
                     </p>
                     <p v-else class="text-gray italic">Non renseigné.</p>
-                  </div>
-                </li>
+                  </li>
 
-                <li
-                  v-if="artist?.firstName || artist?.lastName"
-                  class="flex flex-col mb-1"
-                >
-                  <div class="flex gap-1 ">
-                    <b>Nom:</b>
-                    <p>
-                      {{ artist.lastName }}
+                  <li class="flex flex-wrap gap-1">
+                    <b>Tel :</b>
+                    <p v-if="member?.residencePhone || member?.homelandPhone">
+                      {{ member?.residencePhone || member?.homelandPhone }}
                     </p>
-                  </div>
-                  <div class="flex  gap-1">
-                    <b>Prénom:</b>
-                    <p>
-                      {{ artist.firstName }}
+                    <p v-else class="text-gray italic">Non renseigné.</p>
+                  </li>
+
+                  <li class="flex flex-wrap gap-1">
+                    <b>Date de naissance :</b>
+                    <p v-if="member?.birthdate">
+                      {{ new Date(member.birthdate).toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' }) }} 
+                      ({{ new Date().getFullYear() - new Date(member.birthdate).getFullYear() }} ans)
                     </p>
-                  </div>
-                </li>
+                    <p v-else class="text-gray italic">Non renseigné.</p>
+                  </li>
 
-                 <li
-                  v-if="artist?.user?.profile.preferredLastName || artist?.user?.profile.preferredFirstName"
-                  class="flex flex-col mb-1"
-                >
-                  <div class="flex  gap-1">
-                    <b>Nom d'usage:</b>
-                    <p>
-                      {{ artist.user.profile.preferredLastName }}
-                    </p>
-                  </div>
-                  <div class="flex  gap-1">
-                    <b>Prénom d'usage:</b>
-                    <p>
-                      {{ artist.user.profile.preferredFirstName }}
-                    </p>
-                  </div>
-                </li>
+                  <li class="flex flex-wrap gap-1">
+                    <b>E-Mail :</b>
+                    <p v-if="member?.user?.email">{{ member.user.email }}</p>
+                    <p v-else class="text-gray italic">Non renseigné.</p>
+                  </li>
+                </ul>
+              </div>
 
-                <li class="flex flex-wrap gap-1">
-                  <b>Nationalité:</b>
-                  <p
-                    v-if="
-                      artist?.nationality ||
-                      artist?.homelandCountry
-                    "
-                  >
-                    {{
-                      artist?.nationality ||
-                      artist?.homelandCountry
-                    }}
-                  </p>
-                  <p v-else class="text-gray italic">Non renseigné.</p>
-                </li>
-
-                <li class="flex flex-wrap gap-1">
-                  <h5 class="font-bold">Tel:</h5>
-                  <p
-                    v-if="
-                      artist?.residencePhone ||
-                      artist?.homelandPhone
-                    "
-                  >
-                    {{
-                      artist?.residencePhone ||
-                      artist?.homelandPhone
-                    }}
-                  </p>
-                  <p v-else class="text-gray italic">Non renseigné.</p>
-                </li>
-
-                <li class="flex flex-wrap gap-1">
-                  <h5 class="font-bold">E-Mail:</h5>
-                  <p v-if="artist?.user?.email">
-                    {{ artist.user.email }}
-                  </p>
-                  <p v-else class="text-gray italic">Non renseigné.</p>
-                </li>
-
-                
-              </ul>
-
-              <UnderlineTitle
-                  class="w-max mt-6 mb-3"
-                  title="Administratif :"
+              <!-- Section Administrative -->
+              <div class="mt-4 flex flex-col gap-3">
+                <UnderlineTitle
+                  class="w-max mb-2"
+                  title="Administratif"
                   :uppercase="true"
                   :underlineSize="1"
                   :fontSize="4"
                 />
-              <ul>
-                <li class="inline-flex gap-2">
-                  <div class="flex flex-wrap gap-1">
+                <ul class="flex flex-col gap-2 text-sm">
+                  <li class="flex flex-wrap gap-1 items-center">
                     <div v-if="artist?.student?.graduate">
                       <b>Diplômé, </b>
                       <span class="italic" v-if="artist?.student?.diplomaMention">
-                        Mension {{ artist?.student?.diplomaMention }}
+                        Mention {{ artist?.student?.diplomaMention }}
                       </span>
-                      <a v-if="artist?.student?.diplomaFile" :href="`${config.api_media_url}${artist?.student?.diplomaFile}`" 
-                      target="_blank" class="">↗</a>
-                      <a v-else class="text-gray italic underline" :href="`${config.api_url}admin/school/student/${artist?.student?.id}/`" target="_blank" >
+                      <a v-if="artist?.student?.diplomaFile" :href="`${config.api_media_url}${artist?.student?.diplomaFile}`" target="_blank" class="ml-1 underline text-blue-600">↗ Voir diplôme</a>
+                      <a v-else class="text-gray italic underline ml-1" :href="`${config.api_url}admin/school/student/${artist?.student?.id}/`" target="_blank">
                         Ajouter le diplôme
                       </a>
                     </div>
                     <div v-else>
-                      
-                        <a class=" italic" :href="`${config.api_url}admin/school/student/${artist?.student?.id}/`" target="_blank" >
+                      <a class="italic underline" :href="`${config.api_url}admin/school/student/${artist?.student?.id}/`" target="_blank">
                         Non diplômé ✎
                       </a>
                     </div>
-                  </div>
-                  <div v-if="artist.artworks">
+                  </li>
+
+                  <div v-if="artist.artworks" class="flex flex-col gap-2 mt-2">
                     <li v-for="artwork in artist?.artworks" :key="artwork.id">
-                      <div class="flex flex-wrap gap-1">
-                        <b>Contrat de production {{ artwork.productionDate.split("-")[0] }} :</b>
+                      <div class="flex flex-wrap gap-1 items-center">
+                        <b>Contrat de production {{ artwork.productionDate ? artwork.productionDate.split("-")[0] : '' }} :</b>
                         <a
                           v-if="artwork?.productionContract"
                           :href="`${config.api_media_url}${artwork?.productionContract}`"
@@ -413,37 +373,43 @@ watch(
                           {{ formatUrlToText(artwork?.productionContract) }}
                         </a>
                         <p v-else class="text-gray italic">
-                          <a class="" :href="`${config.api_url}admin/production/artwork/${artwork.id}/#id_production_contract`" target="_blank" >
-                           Non renseigné ＋
-                        </a>
+                          <a class="underline" :href="`${config.api_url}admin/production/artwork/${artwork.id}/#id_production_contract`" target="_blank">
+                            Non renseigné ＋
+                          </a>
                         </p>
                       </div>
                     </li>
-
                   </div>
-                </li>
-                <li>
-                  
-                </li>
-              </ul>
+                </ul>
+              </div>
             </div>
 
-            <div class="flex flex-col gap-3 flex-[1_1_20rem] break-all">
+            <!-- AUTRES INFORMATIONS & CANDIDATURES -->
+            <div class="flex flex-col gap-4 flex-[1_1_22rem] break-all">
               <UnderlineTitle
                 class="w-max"
-                title="Autres informations"
+                title="Autres informations & Candidature"
                 :uppercase="true"
                 :underlineSize="1"
                 :fontSize="2"
               />
 
-              <ul class="flex flex-col" 
-                v-for="artist in (artist?.collectives?.length > 0 ? artist.collectives : [artist])" 
-                :key="artist.id" 
-                :set="candidature=artist?.studentApplication.pop() ?? null">
-                <li class="inline-flex gap-2">
-                  <div class="flex flex-wrap gap-1">
-                    <b>CV:</b>
+              <!-- Boucle propre par membre pour les pièces et candidatures -->
+              <div 
+                v-for="(member, idx) in (artist?.collectives?.length > 0 ? artist.collectives : [artist])" 
+                :key="member.id || idx"
+                class="flex flex-col gap-3 p-4 bg-gray-extralightest rounded-lg border border-gray-200"
+                :set="candidature = member?.studentApplication?.[member.studentApplication.length - 1] ?? null"
+              >
+                <!-- En-tête du membre si duo/trio -->
+                <div v-if="artist?.collectives?.length > 0" class="border-b pb-2 mb-1">
+                  <span class="text-xs font-bold uppercase tracking-wider text-gray-500">Candidature / Dossier - Membre {{ idx + 1 }}</span>
+                  <h4 class="font-bold text-base">{{ member.displayName || `${member.firstName || ''} ${member.lastName || ''}`.trim() || 'Membre sans nom' }}</h4>
+                </div>
+
+                <ul class="flex flex-col gap-2 text-sm">
+                  <li class="flex flex-wrap gap-1">
+                    <b>CV :</b>
                     <a
                       v-if="candidature?.curriculumVitae"
                       :href="`${config.api_media_url}${candidature?.curriculumVitae}`"
@@ -453,21 +419,10 @@ watch(
                       {{ formatUrlToText(candidature?.curriculumVitae) }}
                     </a>
                     <p v-else class="text-gray italic">Non renseigné.</p>
-                  </div>
-                </li>
-                <li class="inline-flex gap-2">
-                  <div class="flex flex-wrap gap-1">
-                    <b>Date de naissance:</b>
-                    <p v-if="artist?.birthdate">
-                      {{ new Date(artist.birthdate).toLocaleDateString('fr-FR') }}
-                    </p>
-                    
-                    <p v-else class="text-gray italic">Non renseigné.</p>
-                  </div>
-                </li>
-                <li class="inline-flex gap-2">
-                  <div class="flex flex-wrap gap-1">
-                    <b>Justificatif d'identité:</b>
+                  </li>
+                  
+                  <li class="flex flex-wrap gap-1">
+                    <b>Justificatif d'identité :</b>
                     <a
                       v-if="candidature?.identityCard"
                       :href="`${config.api_media_url}${candidature?.identityCard}`"
@@ -477,51 +432,38 @@ watch(
                       {{ formatUrlToText(candidature?.identityCard) }}
                     </a>
                     <p v-else class="text-gray italic">Non renseigné.</p>
-                  </div>
-                </li>
+                  </li>
 
-                <UnderlineTitle
-                  class="w-max mt-6 mb-3"
-                  title="Dans le cadre de sa candidature:"
-                  :uppercase="true"
-                  :underlineSize="1"
-                  :fontSize="4"
-                />
-
-                <li class="inline-flex gap-2">
-                  <div class="flex flex-wrap gap-1">
-                    <b>Proposition initiale:</b>
-                    <a
-                      v-if="candidature?.consideredProject1"
-                      :href="`${config.api_media_url}${candidature?.consideredProject1}`"
-                      class="underline"
-                      data-fancybox="preview"
-                    >
-                      1<sup>ère</sup> année
-                    </a>
-                    <span v-if="candidature?.consideredProject2">/</span>
-                    <a
-                      v-if="candidature?.consideredProject2"
-                      :href="`${config.api_media_url}${candidature?.consideredProject2}`"
-                      class="underline"
-                      data-fancybox="preview"
-                    >
-                      2<sup>ème</sup> année
-                    </a>
-                    <p
-                      v-else-if="
-                        !candidature?.consideredProject1 &&
-                        !candidature?.consideredProject2
-                      "
-                      class="text-gray italic"
-                    >
-                      Non renseigné.
-                    </p>
+                  <div class="mt-2 pt-2 border-t border-gray-200">
+                    <span class="font-bold text-xs uppercase text-gray-600 block mb-2">Dans le cadre de sa candidature :</span>
                   </div>
-                </li>
-                <li class="inline-flex gap-2">
-                  <div class="flex flex-wrap gap-1">
-                    <b>Document libre:</b>
+
+                  <li class="flex flex-wrap gap-1">
+                    <b>Proposition initiale :</b>
+                    <span v-if="candidature?.consideredProject1 || candidature?.consideredProject2" class="flex gap-1">
+                      <a
+                        v-if="candidature?.consideredProject1"
+                        :href="`${config.api_media_url}${candidature?.consideredProject1}`"
+                        class="underline"
+                        data-fancybox="preview"
+                      >
+                        1<sup>ère</sup> année
+                      </a>
+                      <span v-if="candidature?.consideredProject1 && candidature?.consideredProject2">/</span>
+                      <a
+                        v-if="candidature?.consideredProject2"
+                        :href="`${config.api_media_url}${candidature?.consideredProject2}`"
+                        class="underline"
+                        data-fancybox="preview"
+                      >
+                        2<sup>ème</sup> année
+                      </a>
+                    </span>
+                    <p v-else class="text-gray italic">Non renseigné.</p>
+                  </li>
+
+                  <li class="flex flex-wrap gap-1">
+                    <b>Document libre :</b>
                     <a
                       v-if="candidature?.freeDocument"
                       :href="`${config.api_media_url}${candidature?.freeDocument}`"
@@ -531,11 +473,10 @@ watch(
                       {{ formatUrlToText(candidature?.freeDocument) }}
                     </a>
                     <p v-else class="text-gray italic">Non renseigné.</p>
-                  </div>
-                </li>
-                <li class="inline-flex gap-2">
-                  <div class="flex flex-wrap gap-1">
-                    <b>Vidéo de présentation de son travail:</b>
+                  </li>
+
+                  <li class="flex flex-wrap gap-1">
+                    <b>Vidéo de présentation :</b>
                     <a
                       v-if="candidature?.presentationVideo"
                       :href="candidature?.presentationVideo.includes('vimeo') ? 
@@ -547,12 +488,13 @@ watch(
                       {{ formatUrlToText(candidature?.presentationVideo) }}
                     </a>
                     <p v-else class="text-gray italic">Non renseigné.</p>
-                  </div>
-                </li>
-              </ul>
+                  </li>
+                </ul>
+              </div>
             </div>
 
-            <div class="w-full flex flex-col gap-3 flex-[1_1_20rem]">
+            <!-- CURSUS -->
+            <div class="w-full flex flex-col gap-3">
               <details class="group peer">
                 <summary
                   class="group relative flex items-center gap-3 cursor-pointer"
@@ -579,7 +521,7 @@ watch(
               <div
                 class="relative max-h-52 peer-open:max-h-full peer-open:after:hidden overflow-hidden"
                 :class="{
-                  ' after:block after:absolute after:bottom-0 after:w-full after:h-1/2 after:bg-linear-to-t after:from-white after:to-transparent after:pointer-events-none':
+                  'after:block after:absolute after:bottom-0 after:w-full after:h-1/2 after:bg-linear-to-t after:from-white after:to-transparent after:pointer-events-none':
                   artist?.cursus,
                 }"
               >
@@ -592,15 +534,21 @@ watch(
               </div>
             </div>
           </div>
-
+          <UnderlineTitle
+                    title="Biographie"
+                    :underlineSize="1"
+                    :fontSize="2"
+                  />
           <UiDescription
             v-if="artist?.bioFr || artist?.bioEn"
             :desc_fr="artist.bioFr"
             :desc_en="artist.bioEn"
+            
           />
         </div>
       </div>
 
+      <!-- Colonne des œuvres (Artwork) -->
       <div
         v-if="artist?.artworks"
         id="artwork"
@@ -626,7 +574,6 @@ watch(
           :fontSize="2"
         />
         <ul class="grid grid-cols-2 gap-3">
-          <!-- {{ artwork }} -->
           <li v-for="artwork in artist?.artworks" :key="artwork.id">
             <ArtworkCard
               :id="artwork.id"

@@ -61,7 +61,7 @@ async function getArtist(id) {
           firstName
           lastName
           nickname
-          artistPhoto
+          displayPhoto
           photo
           nationality
           homelandCountry
@@ -195,6 +195,7 @@ async function getCandidature(id) {
                     studentApplication(id: ${id}) {
                       artist {
                         displayName
+                        displayPhoto
                         firstName
                         lastName
                         nationality
